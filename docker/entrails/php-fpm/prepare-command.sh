@@ -2,9 +2,8 @@
 cd /var/www/html
 mkdir -p public/uploads/images
 composer install
-
-#yarn install
-#yarn encore dev
+yarn install
+yarn encore dev
 
 until php bin/console doctrine:query:sql -q "show tables"; do
 	echo "--------------------------------"
