@@ -1,0 +1,10 @@
+#!/bin/bash
+echo "-----------------------------------------------------"
+echo "------ [ ALEXEY WILL BE LIVE IN FEW MOMENTS! ] ------"
+echo "-----------------------------------------------------"
+echo "---------------- [ HAVE  PATIENCE! ] ----------------"
+echo "-----------------------------------------------------"
+sleep 3
+docker-compose build --no-cache --force-rm
+docker-compose up
+# docker-compose up --detach

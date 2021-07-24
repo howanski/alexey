@@ -1,0 +1,2 @@
+#!/bin/bash
+docker exec -it alexey-php /bin/bash

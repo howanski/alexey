@@ -1,0 +1,11 @@
+APP_ENV=dev
+APP_NAME=alexey
+COMPOSE_PROJECT_NAME=alexey
+DATABASE_URL="mysql://alexey_user:alexey_password@database:3306/alexey_db?serverVersion=8.0"
+DOMAIN=howanski
+MYSQL_DATABASE=alexey_db
+MYSQL_PASSWORD=alexey_password
+MYSQL_ROOT_PASSWORD=alexey_root_password
+MYSQL_USER=alexey_user
+PMA_ABSOLUTE_URI=http://APP_NAME.DOMAIN/phpmyadmin
+PMA_HOST=database
