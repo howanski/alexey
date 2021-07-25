@@ -3,21 +3,19 @@
 {% block title %}Alexey | Dashboard
 {% endblock %}
 
-{% block body %}
-	<div class="container-fluid">
-		<div class="d-sm-flex align-items-center justify-content-between mb-4">
-			<h1 class="h3 mb-0 text-gray-500">Dashboard</h1>
-		</div>
-		<div class="row">
-			<div class="col-xl-12 col-lg-12">
-				<div class="card shadow bg-dark mb-4">
-					<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-						<h6 class="m-0 font-weight-bold text-primary">Weather</h6>
-					</div>
-					<div class="card-body">
-						<img style="filter: invert(80%)" src="https://www.meteo.pl/um/metco/leg_um_pl_cbase_256.png">
-						<img style="filter: invert(80%)" src="https://www.meteo.pl/um/metco/mgram_pict.php?ntype=0u&row=367&col=262&lang=pl">
-					</div>
+{% block pageContent %}
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-400">Dashboard</h1>
+	</div>
+	<div class="row">
+		<div class="col-xl-12 col-lg-12">
+			<div class="card shadow bg-dark mb-4">
+				<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+					<h6 class="m-0 font-weight-bold text-primary">Weather</h6>
+				</div>
+				<div class="card-body">
+					<img style="filter: invert(80%)" src="https://www.meteo.pl/um/metco/leg_um_pl_cbase_256.png">
+					<img style="filter: invert(80%)" src="https://www.meteo.pl/um/metco/mgram_pict.php?ntype=0u&row=367&col=262&lang=pl">
 				</div>
 			</div>
 		</div>
