@@ -12,3 +12,30 @@
     font-weight: 400;
     color: #5e81ac;
 }
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #3b4252;
+    background-clip: border-box;
+    border: 1px solid #434c5e;
+    border-radius: 0.35rem;
+}
+
+.card-header {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: #3b4252;
+    border-bottom: 1px solid #434c5e;
+}
+
+.text-primary {
+    color: #81a1c1 !important;
+}
+
+a.text-primary:hover, a.text-primary:focus {
+    color: #5e81ac !important;
+}
