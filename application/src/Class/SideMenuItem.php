@@ -24,16 +24,35 @@ class SideMenuItem
      */
     private $destination;
 
+    /**
+     * @var array
+     */
+    private $children = [];
+
+    /**
+     * @var bool
+     */
+    private $isHeading;
+
+    /**
+     * @var bool
+     */
+    private $isDivider;
+
     public function __construct(
         string $name = '',
         string $destination = '/',
         string $icon = 'fa-cog',
-        bool $isActive = false
+        bool $isActive = false,
+        bool $isHeading = false,
+        array $children = [],
     ) {
         $this->setName($name);
         $this->setDestination($destination);
         $this->setIcon($icon);
         $this->setIsActive($isActive);
+        $this->setIsHeading($isHeading);
+        $this->setChildren($children);
     }
 
     /**
@@ -128,6 +147,83 @@ class SideMenuItem
     public function setDestination(string $destination)
     {
         $this->destination = $destination;
+
+        return $this;
+    }
+
+    public function haveChildren()
+    {
+        return !empty($this->getChildren());
+    }
+
+    /**
+     * Get the value of children
+     *
+     * @return  []SideMenuItem
+     */
+    public function getChildren(): array
+    {
+        return $this->children;
+    }
+
+    /**
+     * Set the value of children
+     *
+     * @param  array  $children
+     *
+     * @return  self
+     */
+    public function setChildren(array $children)
+    {
+        $this->children = $children;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of isHeading
+     *
+     * @return  bool
+     */
+    public function getIsHeading()
+    {
+        return $this->isHeading;
+    }
+
+    /**
+     * Set the value of isHeading
+     *
+     * @param  bool  $isHeading
+     *
+     * @return  self
+     */
+    public function setIsHeading(bool $isHeading)
+    {
+        $this->isHeading = $isHeading;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of isDivider
+     *
+     * @return  bool
+     */
+    public function getIsDivider()
+    {
+        return $this->isDivider;
+    }
+
+    /**
+     * Set the value of isDivider
+     *
+     * @param  bool  $isDivider
+     *
+     * @return  self
+     */
+    public function setIsDivider(bool $isDivider)
+    {
+        $this->isDivider = $isDivider;
 
         return $this;
     }
