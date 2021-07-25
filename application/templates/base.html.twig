@@ -27,7 +27,7 @@
 
 			<!-- Content Wrapper -->
 			<div
-				id="content-wrapper" class="d-flex flex-column">
+				id="content-wrapper" class="d-flex flex-column bg-dark">
 
 				<!-- Main Content -->
 				<div
@@ -35,7 +35,7 @@
 
 					<!-- Topbar -->
 					<nav
-						class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+						class="navbar navbar-expand navbar-light bg-dark topbar mb-4 static-top shadow">
 
 						<!-- Sidebar Toggle (Topbar) -->
 						<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -59,7 +59,7 @@
 							class="navbar-nav ml-auto">
 
 							<!-- Nav Item - Search Dropdown (Visible Only XS) -->
-							<li class="nav-item dropdown no-arrow d-sm-none">
+							{# <li class="nav-item dropdown no-arrow d-sm-none">
 								<a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<i class="fas fa-search fa-fw"></i>
 								</a>
@@ -76,7 +76,7 @@
 										</div>
 									</form>
 								</div>
-							</li>
+							</li> #}
 
 							<!-- Nav Item - Alerts -->
 							{# <li class="nav-item dropdown no-arrow mx-1">
@@ -224,7 +224,7 @@
 
 					<!-- Begin Page Content -->
                     {% block body %}
-					<div
+					{# <div
 						class="container-fluid">
 
 						<!-- Page Heading -->
@@ -554,7 +554,7 @@
 							</div>
 						</div>
 
-					</div>
+					</div> #}
                     {% endblock %}
 					<!-- /.container-fluid -->
 
@@ -562,7 +562,7 @@
 				<!-- End of Main Content -->
 
 				<!-- Footer -->
-				<footer class="sticky-footer bg-white">
+				<footer class="sticky-footer bg-dark">
 					<div class="container my-auto">
 						<div class="copyright text-center my-auto">
 							<span>Alexey by Maciej Howański</span>

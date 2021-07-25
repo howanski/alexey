@@ -1,0 +1,14 @@
+.bg-gradient-dark {
+    background-color: #2e3440;
+    background-image: linear-gradient(180deg, #3b4252 10%, #2e3440 100%);
+    background-size: cover;
+}
+
+.bg-dark {
+    background-color: #2e3440 !important;
+}
+
+.btn-link {
+    font-weight: 400;
+    color: #5e81ac;
+}
