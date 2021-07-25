@@ -39,3 +39,9 @@
 a.text-primary:hover, a.text-primary:focus {
     color: #5e81ac !important;
 }
+
+.bg-login-image {
+    background: url("https://source.unsplash.com/Gh6vZQLjg5k/600x800");
+    background-position: center;
+    background-size: cover;
+  }
