@@ -15,10 +15,4 @@ class DashboardController extends AbstractController
             'controller_name' => 'DashboardController',
         ]);
     }
-
-    #[Route('/preview', name: 'dashboard_themed_pewview')]
-    public function indexPreview(): Response
-    {
-        return $this->render('dashboard/preview.html.twig', []);
-    }
 }
