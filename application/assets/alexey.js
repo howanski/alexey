@@ -8,5 +8,5 @@ import './sb_admin_2/css/sb-admin-2.css';
 import './sb_admin_2/vendor/fontawesome-free/css/all.css';
 import './styles/color-overrides-nord.css'
 
-import './sb_admin_2/js/bootstrap4/js/bootstrap.bundle.js';
+import './../node_modules/bootstrap/dist/js/bootstrap.bundle.js';
 import './sb_admin_2/js/sb-admin-2.js';
