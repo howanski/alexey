@@ -6,6 +6,7 @@ use Twig\TwigFunction;
 use App\Class\SideMenuItem;
 use Twig\Extension\AbstractExtension;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 
 class AlexeySideMenuProvider extends AbstractExtension
 {
@@ -24,14 +25,28 @@ class AlexeySideMenuProvider extends AbstractExtension
      */
     private $currentRoute;
 
-    public function __construct(RequestStack $requestStack)
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    public function __construct(RequestStack $requestStack, RouterInterface $router)
     {
         $this->requestStack = $requestStack;
         $this->currentRequest = $this->requestStack->getCurrentRequest();
-        $this->currentRoute = $this->currentRequest->getRequestUri();
+        /**
+         * currentRequest will be empty on CLI mode
+         * Sometimes we'd like to run app via CLI with Twig enabled, which would case app crash in following lines
+         */
+        if ($this->currentRequest) {
+            $this->currentRoute = $this->currentRequest->getRequestUri();
+        } else {
+            $this->currentRoute = '/';
+        }
+        $this->router = $router;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('alexeySideMenu', [$this, 'exportMenuSchema']),
@@ -44,7 +59,9 @@ class AlexeySideMenuProvider extends AbstractExtension
     public function exportMenuSchema(): array
     {
         $sideMenu = [];
-        $sideMenu[] = new SideMenuItem('Dashboard', '/', 'fa-tachometer-alt', $this->isActiveRoute('/'));
+        $route = $this->router->generate('dashboard');
+        $sideMenu[] = new SideMenuItem('Dashboard', $route, 'fa-tachometer-alt', $this->isActiveRoute($route));
+        $route = $this->router->generate('settings');
         $sideMenu[] = new SideMenuItem('Settings', '/settings', 'fa-wrench', $this->isActiveRoute('/settings'));
 
         /**
