@@ -16,6 +16,7 @@ class NetworkMachineType extends AbstractType
             ->add('name')
             ->add('macAddress')
             ->add('wakeDestination')
+            ->add('showOnDashboard')
         ;
     }
 

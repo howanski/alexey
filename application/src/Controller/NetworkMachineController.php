@@ -80,10 +80,10 @@ class NetworkMachineController extends AbstractController
         return $this->redirectToRoute('network_machine_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}/wake', name: 'network_machine_wake', methods: ['GET'])]
-    public function wake(NetworkMachine $networkMachine): Response
+    #[Route('/{id}/wake/and-back-to/{backRoute}', name: 'network_machine_wake', methods: ['GET'])]
+    public function wake(NetworkMachine $networkMachine, string $backRoute, Request $request): Response
     {
         exec('wakeonlan -i ' . $networkMachine->getWakeDestination() . ' ' . $networkMachine->getMacAddress());
-        return $this->redirectToRoute('network_machine_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute($backRoute, [], Response::HTTP_SEE_OTHER);
     }
 }

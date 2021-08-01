@@ -59,6 +59,11 @@ class NetworkMachine
      */
     private $lastSeen;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $showOnDashboard = false;
+
     public function __construct()
     {
         $this->status = self::STATUS_UNKNOWN;
@@ -101,6 +106,16 @@ class NetworkMachine
     public function getStatusReadable(): string
     {
         return self::STATUSES_READABLE[$this->getStatus()];
+    }
+
+    public function isReachable(): bool
+    {
+        return $this->getStatus() === self::STATUS_REACHABLE;
+    }
+
+    public function canBeWoken(): bool
+    {
+        return (!empty($this->getMacAddress()) && !empty($this->getWakeDestination()) && !$this->isReachable());
     }
 
     public function setStatus(int $status): self
@@ -158,6 +173,18 @@ class NetworkMachine
     public function setWakeDestination($wakeDestination)
     {
         $this->wakeDestination = $wakeDestination;
+
+        return $this;
+    }
+
+    public function getShowOnDashboard(): bool
+    {
+        return $this->showOnDashboard;
+    }
+
+    public function setShowOnDashboard(bool $showOnDashboard): self
+    {
+        $this->showOnDashboard = $showOnDashboard;
 
         return $this;
     }
