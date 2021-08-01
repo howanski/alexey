@@ -14,6 +14,8 @@ class NetworkMachineType extends AbstractType
         $builder
             ->add('uri')
             ->add('name')
+            ->add('macAddress')
+            ->add('wakeDestination')
         ;
     }
 

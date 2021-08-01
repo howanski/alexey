@@ -71,12 +71,19 @@ class NetworkMachineController extends AbstractController
     #[Route('/{id}', name: 'network_machine_delete', methods: ['POST'])]
     public function delete(Request $request, NetworkMachine $networkMachine): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$networkMachine->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $networkMachine->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($networkMachine);
             $entityManager->flush();
         }
 
+        return $this->redirectToRoute('network_machine_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/wake', name: 'network_machine_wake', methods: ['GET'])]
+    public function wake(NetworkMachine $networkMachine): Response
+    {
+        exec('wakeonlan -i ' . $networkMachine->getWakeDestination() . ' ' . $networkMachine->getMacAddress());
         return $this->redirectToRoute('network_machine_index', [], Response::HTTP_SEE_OTHER);
     }
 }

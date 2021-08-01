@@ -39,6 +39,17 @@ class NetworkMachine
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=23, nullable=true)
+     * @link https://en.wikipedia.org/wiki/MAC_address
+     */
+    private $macAddress;
+
+    /**
+     * @ORM\Column(type="string", length=23, nullable=true)
+     */
+    private $wakeDestination;
+
+    /**
      * @ORM\Column(type="smallint")
      */
     private $status;
@@ -107,6 +118,46 @@ class NetworkMachine
     public function setLastSeen(?\DateTimeInterface $lastSeen): self
     {
         $this->lastSeen = $lastSeen;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of macAddress
+     */
+    public function getMacAddress(): string
+    {
+        return strval($this->macAddress);
+    }
+
+    /**
+     * Set the value of macAddress
+     *
+     * @return  self
+     */
+    public function setMacAddress($macAddress)
+    {
+        $this->macAddress = $macAddress;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of wakeDestination
+     */
+    public function getWakeDestination(): string
+    {
+        return strval($this->wakeDestination);
+    }
+
+    /**
+     * Set the value of wakeDestination
+     *
+     * @return  self
+     */
+    public function setWakeDestination($wakeDestination)
+    {
+        $this->wakeDestination = $wakeDestination;
 
         return $this;
     }

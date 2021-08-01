@@ -10,6 +10,21 @@ For now it serves as an experimenting field for Symfony 5 and Docker capabilitie
 
 I love simple deployments. For development-ready instance all you need is Docker, Docker-Compose and Bash:
 
+First of all - if you want Wake On LAN to work, you must configure network OUTSIDE containers in [docker-compose.yml](./docker/docker-compose.yml)
+
+```yaml
+...BLAH BLAH BLAH...
+    wake_lan:
+        driver: macvlan
+        driver_opts:
+            parent: enp3s0 #set your host network card here, i.e. eth0
+        ipam:
+            driver: default
+            config:
+                - subnet: 192.168.1.0/24 #set your network addressation here
+...BLAH BLAH BLAH...
+```
+And then it's a childsplay:
 ```bash
 # go to docker catalogue
 cd docker
@@ -21,7 +36,7 @@ cd docker
 ./alexey_console_php
 #create user
 php bin/console alexey:user:new
-# and now open your browser on localhost and accept ;-)
+# and now open your browser on localhost and accept suspicious key ;-)
 ```
 Above scenario should work out-of-the-box if there are no port conflicts with your containers. Alexey containers will be up every time you turn on your computer.
 
