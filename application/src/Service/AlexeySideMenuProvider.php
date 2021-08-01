@@ -59,10 +59,12 @@ class AlexeySideMenuProvider extends AbstractExtension
     public function exportMenuSchema(): array
     {
         $sideMenu = [];
+
         $route = $this->router->generate('dashboard');
         $sideMenu[] = new SideMenuItem('Dashboard', $route, 'fa-tachometer-alt', $this->isActiveRoute($route));
-        $route = $this->router->generate('settings');
-        $sideMenu[] = new SideMenuItem('Settings', '/settings', 'fa-wrench', $this->isActiveRoute('/settings'));
+
+        $route = $this->router->generate('network_machine_index');
+        $sideMenu[] = new SideMenuItem('Machines', $route, 'fa-server', $this->isActiveRoute($route));
 
         /**
          * Sample menu elements
@@ -124,14 +126,14 @@ class AlexeySideMenuProvider extends AbstractExtension
         if ($route == $this->currentRoute) {
             return true;
         }
-        if ($this->currentRoute == '/') {
+        if ($this->currentRoute == '/' || $route == '/') {
             return false;
         }
-        $strpos = strpos($route, $this->currentRoute);
-        if ($strpos == false) {
+        $strpos = strpos($this->currentRoute, $route);
+        if ($strpos === false) {
             return false;
         }
-        if ($strpos == 0) {
+        if ($strpos === 0) {
             return true;
         }
         return false;

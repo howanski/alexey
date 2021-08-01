@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "08de0631d96618ad900b08895732188d",
+    "content-hash": "995045a3f504fb75f115dd947fe40015",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1585,6 +1585,43 @@
                 }
             ],
             "time": "2021-05-22T16:11:15+00:00"
+        },
+        {
+            "name": "geerlingguy/ping",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/geerlingguy/Ping.git",
+                "reference": "e0206326e23c99e3e8820e24705f8ca517adff93"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/geerlingguy/Ping/zipball/e0206326e23c99e3e8820e24705f8ca517adff93",
+                "reference": "e0206326e23c99e3e8820e24705f8ca517adff93",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "JJG/Ping.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeff Geerling",
+                    "email": "jeff@jeffgeerling.com"
+                }
+            ],
+            "description": "A PHP class to ping hosts.",
+            "support": {
+                "issues": "https://github.com/geerlingguy/Ping/issues",
+                "source": "https://github.com/geerlingguy/Ping/tree/1.2.1"
+            },
+            "time": "2019-07-29T21:54:12+00:00"
         },
         {
             "name": "laminas/laminas-code",

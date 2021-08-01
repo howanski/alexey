@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}NetworkMachine index{% endblock %}
+
+{% block pageContent %}
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-400">Machines</h1>
+	</div>
+	<div class="row">
+		<div class="col-xl-12 col-lg-12">
+			<div class="card shadow bg-dark mb-4">
+				<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+					<h6 class="m-0 font-weight-bold text-primary">Machines status</h6>
+				</div>
+				<div class="card-body">
+			    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Uri</th>
+                <th>Status</th>
+                <th>Last seen</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for network_machine in network_machines %}
+            <tr>
+                <td>{{ network_machine.id }}</td>
+                <td>{{ network_machine.name }}</td>
+                <td>{{ network_machine.uri }}</td>
+                <td>{{ network_machine.statusReadable }}</td>
+                <td>{{ network_machine.lastSeen | date("Y.m.d H:i:s") }}</td>
+                <td>
+                    <a href="{{ path('network_machine_show', {'id': network_machine.id}) }}" class="btn btn-sm btn-success">Show</a>
+                    <a href="{{ path('network_machine_edit', {'id': network_machine.id}) }}" class="btn btn-sm btn-warning">Edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" href="{{ path('network_machine_new') }}">Create new</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}

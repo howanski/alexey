@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit NetworkMachine{% endblock %}
+
+{% block pageContent %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-400">Edit Machine #{{ network_machine.id }}</h1>
+	</div>
+    {{ include('network_machine/_form.html.twig', {'button_label': 'Update'}) }}
+    <div class="row">
+        <a href="{{ path('network_machine_index') }}" class="btn btn-success">Back to list</a>
+        {{ include('network_machine/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

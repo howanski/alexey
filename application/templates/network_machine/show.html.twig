@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}NetworkMachine{% endblock %}
+
+{% block pageContent %}
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-400">Machine #{{ network_machine.id }}</h1>
+	</div>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ network_machine.id }}</td>
+            </tr>
+            <tr>
+                <th>Uri</th>
+                <td>{{ network_machine.uri }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ network_machine.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row">
+        <a href="{{ path('network_machine_index') }}" class="btn btn-success">Back to list</a>
+        <a href="{{ path('network_machine_edit', {'id': network_machine.id}) }}" class="btn btn-warning">Edit</a>
+        {{ include('network_machine/_delete_form.html.twig') }}
+    </div>
+{% endblock %}
