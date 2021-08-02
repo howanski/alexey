@@ -18,19 +18,21 @@
 		<div class="row">
 			{% for machine in dashboard_data.machines %}
 				<div class="col-xl-3 col-md-6 mb-4">
-					<div class="card {% if machine.isReachable %} border-left-success {% else %} border-left-warning {% endif %} shadow h-100 py-2">
+					<div class="card {% if machine.isReachable %} border-left-success {% elseif machine.lastSeen %} border-left-warning {% else %} border-left-danger {% endif %} shadow h-100 py-2">
 						<div class="card-body">
 							<div class="row no-gutters align-items-center">
 								<div class="col mr-2">
-									<div class="text-xs font-weight-bold {% if machine.isReachable %} text-success {% else %} text-warning {% endif %} text-uppercase mb-1">
+									<div class="text-xs font-weight-bold {% if machine.isReachable %} text-success {% elseif machine.lastSeen %} text-warning {% else %} text-danger {% endif %} text-uppercase mb-1">
 										Machine:
 										{{machine.name}}</div>
-									<div class="h5 mb-0 font-weight-bold text-gray-800">{{machine.lastSeen|date("Y.m.d H:i:s")}}</div>
+									{% if machine.lastSeen %}
+										<div class="h5 mb-0 font-weight-bold text-gray-800">{{machine.lastSeen|date("Y.m.d H:i:s")}}</div>
+									{% endif %}
 								</div>
 								<div class="col-auto">
 									{% if machine.canBeWoken %}
 										<a href="{{ path('network_machine_wake', {'id': machine.id, 'backRoute': 'dashboard'}) }}">
-											<i class="fas fa-power-off fa-2x text-gray-300"></i>
+											<i class="fas fa-power-off fa-2x text-success"></i>
 										</a>
 									{% else %}
 										<i class="fas fa-server fa-2x text-gray-300"></i>
