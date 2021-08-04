@@ -66,6 +66,9 @@ class AlexeySideMenuProvider extends AbstractExtension
         $route = $this->router->generate('network_machine_index');
         $sideMenu[] = new SideMenuItem('Machines', $route, 'fa-server', $this->isActiveRoute($route));
 
+        $route = $this->router->generate('weather');
+        $sideMenu[] = new SideMenuItem('Weather', $route, 'fa-cloud-sun', $this->isActiveRoute($route));
+
         /**
          * Sample menu elements
          */
