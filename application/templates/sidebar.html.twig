@@ -15,7 +15,7 @@
 	<!-- Navigation links -->
 	{% for  topMenuKey, menuItem in alexeySideMenu() %}
 		{% if menuItem.haveChildren %}
-			<li class="nav-item">
+			<li class="nav-item{% if menuItem.isActive %} active {% endif %}">
 				<a class="nav-link{% if not menuItem.isActive %} collapsed{% endif %}" href="#" data-toggle="collapse" data-target="#collapseTopMenu{{topMenuKey}}" aria-expanded="{% if menuItem.isActive %}true{% else %}false{% endif %}" aria-controls="collapseTopMenu{{topMenuKey}}">
 					<i class="fas fa-fw {{menuItem.icon}}"></i>
 					<span>{{menuItem.name}}</span>
