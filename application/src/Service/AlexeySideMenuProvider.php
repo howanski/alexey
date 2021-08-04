@@ -63,11 +63,20 @@ class AlexeySideMenuProvider extends AbstractExtension
         $route = $this->router->generate('dashboard');
         $sideMenu[] = new SideMenuItem('Dashboard', $route, 'fa-tachometer-alt', $this->isActiveRoute($route));
 
-        $route = $this->router->generate('network_machine_index');
-        $sideMenu[] = new SideMenuItem('Machines', $route, 'fa-server', $this->isActiveRoute($route));
 
         $route = $this->router->generate('weather');
         $sideMenu[] = new SideMenuItem('Weather', $route, 'fa-cloud-sun', $this->isActiveRoute($route));
+
+
+        $menuItem = new SideMenuItem('Network', '/network', 'fa-wifi', $this->isActiveRoute('/network'));
+
+        $route = $this->router->generate('network_machine_index');
+        $networkMachines = new SideMenuItem('Machines', $route, 'fa-server', $this->isActiveRoute($route));
+
+        $route = $this->router->generate('network_usage');
+        $networkUsage = new SideMenuItem('Usage', $route, 'fa-network-wired', $this->isActiveRoute($route));
+        $menuItem->setChildren([$networkMachines, $networkUsage]);
+        $sideMenu[] = $menuItem;
 
         /**
          * Sample menu elements

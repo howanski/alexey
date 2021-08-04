@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/network-machine')]
+#[Route('/network/machines')]
 class NetworkMachineController extends AbstractController
 {
     #[Route('/', name: 'network_machine_index', methods: ['GET'])]
