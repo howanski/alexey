@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}NetworkMachine{% endblock %}
+{% block title %}Alexey | Machines | {{network_machine.name}}{% endblock %}
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">Machine #{{ network_machine.id }} - {{ network_machine.name }}</h1>
+		<h1 class="h3 mb-0 text-gray-400">Network ~> Machines ~> #{{ network_machine.id }} - {{ network_machine.name }}</h1>
 	</div>
 
     <table class="table">
