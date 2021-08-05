@@ -15,10 +15,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'alexey:machines:ping',
+    name: 'alexey:network:machines:ping',
     description: 'Ping all networkMachines',
 )]
-class AlexeyMachinesPingCommand extends Command
+class AlexeyNetworkMachinesPingCommand extends Command
 {
     /**
      * @var NetworkMachineRepository
