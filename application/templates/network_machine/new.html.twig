@@ -4,7 +4,7 @@
 
 {% block pageContent %}
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">Network ~> Machines ~> New Machine</h1>
+		<h1 class="h3 mb-0 text-gray-400">Network ~> <a href="{{ path('network_machine_index') }}" class="text-info">Machines</a> ~> New Machine</h1>
 	</div>
     {{ include('network_machine/_form.html.twig') }}
     <a href="{{ path('network_machine_index') }}" class="btn btn-success">Back to list</a>
