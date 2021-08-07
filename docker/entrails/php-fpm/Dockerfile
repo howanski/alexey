@@ -7,4 +7,5 @@ RUN apt-get update > /dev/null && apt-get install -y rsync mariadb-client procps
 ENV PHP_IDE_CONFIG "serverName=application"
 COPY xdebug.ini /etc/php/8.0/mods-available/xdebug.ini
 COPY supervisor-alexey-machines-ping.conf /etc/supervisor/conf.d/supervisor-alexey-machines-ping.conf
+COPY supervisor-alexey-network-usage-record.conf /etc/supervisor/conf.d/supervisor-alexey-network-usage-record.conf
 WORKDIR /var/www/html
