@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "995045a3f504fb75f115dd947fe40015",
+    "content-hash": "3ec822f78e6d6a7d0b0a1b2bed798f61",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1622,6 +1622,49 @@
                 "source": "https://github.com/geerlingguy/Ping/tree/1.2.1"
             },
             "time": "2019-07-29T21:54:12+00:00"
+        },
+        {
+            "name": "if0xx/huawei-hilink-api",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/if0xx/Huawei-Hilink-API.git",
+                "reference": "bc395d181b54efafd90531631ce73240c3bfd5ad"
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "if0xx\\HuaweiHilinkApi": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Henrik Sylvester Pedersen",
+                    "email": "hsp@hsp.dk",
+                    "homepage": "http://blog.hsp.dk",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Ulf Buermeyer",
+                    "email": "ulf@buermeyer.de",
+                    "homepage": "https://buermeyer.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A barebones API to interact with the Huawei routers that support the Hilink XML API",
+            "homepage": "https://github.com/if0xx/Huawei-Hilink-API",
+            "keywords": [
+                "Hilink",
+                "Huawei",
+                "api"
+            ],
+            "time": "2017-04-22T15:11:36+00:00"
         },
         {
             "name": "laminas/laminas-code",

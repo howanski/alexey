@@ -13,6 +13,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/orm": "^2.9",
         "geerlingguy/ping": "^1.2",
+        "if0xx/huawei-hilink-api": "^0.1.0",
         "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^6.1",
         "symfony/asset": "5.3.*",
@@ -98,5 +99,11 @@
             "allow-contrib": false,
             "require": "5.3.*"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url":  "https://github.com/if0xx/Huawei-Hilink-API.git"
+        }
+    ]
 }
