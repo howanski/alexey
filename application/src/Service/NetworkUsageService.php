@@ -3,25 +3,37 @@
 namespace App\Service;
 
 use DateTime;
+use DateInterval;
 use SimpleXMLElement;
 use App\Entity\NetworkStatistic;
 use if0xx\HuaweiHilinkApi\Router;
+use App\Service\SimpleSettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Class\NetworkUsageProviderSettings;
-use DateInterval;
 
 class NetworkUsageService
 {
-    private const NETWORK_USAGE_PROVIDER_HUAWEI = 'HILINK';
+    public const NETWORK_USAGE_PROVIDER_HUAWEI = 'HILINK';
+    public const NETWORK_USAGE_PROVIDER_NONE = 'NONE';
+
+    private const PROVIDER_TYPE = 'NETWORK_USAGE_PROVIDER_TYPE';
+    private const PROVIDER_ADDRESS = 'NETWORK_USAGE_PROVIDER_ADDRESS';
+    private const PROVIDER_PASSWORD = 'NETWORK_USAGE_PROVIDER_PASSWORD';
 
     /**
      * @var EntityManagerInterface
      */
     private $em;
 
-    public function __construct(EntityManagerInterface $em)
+    /**
+     * @var SimpleSettingsService
+     */
+    private $simpleSettingsService;
+
+    public function __construct(EntityManagerInterface $em, SimpleSettingsService $simpleSettingsService)
     {
         $this->em = $em;
+        $this->simpleSettingsService = $simpleSettingsService;
     }
 
     public function getCurrentStatistic($alsoSave = false)
@@ -31,7 +43,7 @@ class NetworkUsageService
         $stat = null;
         if ($type === self::NETWORK_USAGE_PROVIDER_HUAWEI) {
             $stat = $this->getCurrentStatisticFromHuawei($connectionSettings);
-        } elseif (empty($type)) {
+        } elseif (empty($type) || $type === self::NETWORK_USAGE_PROVIDER_NONE) {
             // No settings, no work, great!
         } else {
             throw new \Exception('Unknown network usage provider.');
@@ -78,12 +90,26 @@ class NetworkUsageService
         return $stat;
     }
 
-    private function getConnectionSettings(): NetworkUsageProviderSettings
+    public function getConnectionSettings(): NetworkUsageProviderSettings
     {
-        $settings = new NetworkUsageProviderSettings();
-        $settings->setProviderType(self::NETWORK_USAGE_PROVIDER_HUAWEI);
-        $settings->setAddress('TODO');
-        $settings->setPassword('TODO');
-        return $settings;
+        $networkSettings = new NetworkUsageProviderSettings();
+        $settingsArray = $this->simpleSettingsService->getSettings([
+            self::PROVIDER_TYPE,
+            self::PROVIDER_ADDRESS,
+            self::PROVIDER_PASSWORD
+        ]);
+        $networkSettings->setProviderType(strval($settingsArray[self::PROVIDER_TYPE]));
+        $networkSettings->setAddress(strval($settingsArray[self::PROVIDER_ADDRESS]));
+        $networkSettings->setPassword(strval($settingsArray[self::PROVIDER_PASSWORD]));
+        return $networkSettings;
+    }
+
+    public function saveConnectionSettings(NetworkUsageProviderSettings $settings)
+    {
+        $this->simpleSettingsService->saveSettings([
+            self::PROVIDER_TYPE => $settings->getProviderType(),
+            self::PROVIDER_ADDRESS => $settings->getAddress(),
+            self::PROVIDER_PASSWORD => $settings->getPassword()
+        ]);
     }
 }

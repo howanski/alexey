@@ -19,10 +19,10 @@ class SimpleSettingRepository extends ServiceEntityRepository
         parent::__construct($registry, SimpleSetting::class);
     }
 
-    public function findAllByKeys($keys)
+    public function findAllByKeys($keys): array
     {
         return $this->createQueryBuilder('ss')
-            ->andWhere('ss.settingKey IN :val')
+            ->andWhere('ss.settingKey IN (:val)')
             ->setParameter('val', $keys)
             ->getQuery()
             ->getResult();
