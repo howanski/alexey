@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Class\HHelpers;
 use App\Repository\NetworkStatisticRepository;
 use DateTime;
 use DateTimeInterface;
@@ -36,6 +37,11 @@ class NetworkStatistic
      * @var int
      */
     private $dataDownloadedInFrame = 0;
+
+    /**
+     * @var NetworkStatistic
+     */
+    private $referencePoint;
 
     /**
      * @ORM\ManyToOne(targetEntity=NetworkStatisticTimeFrame::class, inversedBy="networkStatistics")
@@ -123,5 +129,119 @@ class NetworkStatistic
         $this->timeFrame = $timeFrame;
 
         return $this;
+    }
+
+    /**
+     * @param  NetworkStatistic  $referencePoint
+     *
+     * @return  self
+     */
+    public function setReferencePoint(NetworkStatistic $referencePoint)
+    {
+        $this->referencePoint = $referencePoint;
+
+        return $this;
+    }
+
+    private function ensureReferencePointSet()
+    {
+        /**
+         * If no reference point set, measures are done on empty statistic set on $timeFrame start
+         */
+        if (!($this->referencePoint instanceof NetworkStatistic)) {
+            $referencePoint = new NetworkStatistic();
+            $timeFrame = $this->getTimeFrame();
+            $referencePoint->setTimeFrame($timeFrame);
+            $referencePoint->setProbingTime($timeFrame->getBillingFrameStart());
+            $referencePoint->setDataUploadedInFrame(0);
+            $referencePoint->setDataDownloadedInFrame(0);
+            $this->setReferencePoint($referencePoint);
+        }
+    }
+
+    /**
+     * Time
+     */
+
+    public function getTimeLeftTillFrameEnd(): int
+    {
+        $startTime = $this->getProbingTime()->getTimestamp();
+        $endTime = $this->getTimeFrame()->getBillingFrameEnd()->getTimestamp();
+        return ($endTime - $startTime);
+    }
+
+    /**
+     * @return integer value of seconds passed
+     */
+    public function getTimePassedFromReferencePoint(): int
+    {
+        $this->ensureReferencePointSet();
+        $startTime = $this->referencePoint->getProbingTime()->getTimestamp();
+        $endTime = $this->getProbingTime()->getTimestamp();
+        return ($endTime - $startTime);
+    }
+
+    /**
+     * Download
+     */
+
+    public function getDataDownloadedFromReferencePoint(): int
+    {
+        $this->ensureReferencePointSet();
+        return ($this->getDataDownloadedInFrame() - $this->referencePoint->getDataDownloadedInFrame());
+    }
+
+    public function getDownloadSpeedFromReferencePoint(): float
+    {
+        return ($this->getDataDownloadedFromReferencePoint() / $this->getTimePassedFromReferencePoint());
+    }
+
+    public function getDownloadSpeedFromReferencePointReadable(): string
+    {
+        return HHelpers::formatBytes((int)$this->getDownloadSpeedFromReferencePoint()) . '/s';
+    }
+
+    /**
+     * Upload
+     */
+
+    public function getDataUploadedFromReferencePoint(): int
+    {
+        $this->ensureReferencePointSet();
+        return ($this->getDataUploadedInFrame() - $this->referencePoint->getDataUploadedInFrame());
+    }
+
+    public function getUploadSpeedFromReferencePoint(): float
+    {
+        return ($this->getDataUploadedFromReferencePoint() / $this->getTimePassedFromReferencePoint());
+    }
+
+    public function getUploadSpeedFromReferencePointReadable(): string
+    {
+        return HHelpers::formatBytes((int)$this->getUploadSpeedFromReferencePoint()) . '/s';
+    }
+
+    /**
+     * Download + Upload
+     */
+
+    public function getTotalTrafficFromReferencePoint(): int
+    {
+        return ($this->getDataDownloadedFromReferencePoint() + $this->getDataUploadedFromReferencePoint());
+    }
+
+    public function getTotalTrafficFromReferencePointReadable(): string
+    {
+        return HHelpers::formatBytes($this->getTotalTrafficFromReferencePoint());
+    }
+
+    public function getTotalSpeedFromReferencePoint(): float
+    {
+        return ($this->getDownloadSpeedFromReferencePoint() + $this->getUploadSpeedFromReferencePoint());
+    }
+
+    public function getTotalSpeedFromReferencePointReadable(): string
+    {
+        return HHelpers::formatBytes($this->getTotalSpeedFromReferencePoint()) . '/s';
     }
 }

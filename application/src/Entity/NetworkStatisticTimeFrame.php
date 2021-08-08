@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Class\HHelpers;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -99,6 +100,15 @@ class NetworkStatisticTimeFrame
     public function getBillingFrameDataLimit()
     {
         return $this->billingFrameDataLimit;
+    }
+
+
+    /**
+     * @return  string
+     */
+    public function getBillingFrameDataLimitReadable(): string
+    {
+        return HHelpers::formatBytes($this->getBillingFrameDataLimit());
     }
 
     /**
