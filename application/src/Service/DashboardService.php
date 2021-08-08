@@ -13,9 +13,15 @@ class DashboardService
      */
     private $em;
 
-    public function __construct(EntityManagerInterface $em)
+    /**
+     * @var NetworkUsageService
+     */
+    private $networkUsageService;
+
+    public function __construct(EntityManagerInterface $em, NetworkUsageService $networkUsageService)
     {
         $this->em = $em;
+        $this->networkUsageService = $networkUsageService;
     }
 
     public function getDashboardData(): array
@@ -26,6 +32,14 @@ class DashboardService
 
         $networkMachineRepository = $this->getNetworkMachineRepository();
         $dashboardData['machines'] = $networkMachineRepository->findBy(['showOnDashboard' => true]);
+
+
+        $networkUsageSettings = $this->networkUsageService->getConnectionSettings();
+        $showNetworkUsageOnDashboard =
+            ($networkUsageSettings->getShowOnDashboard() === NetworkUsageService::DASHBOARD_SHOW);
+        if ($showNetworkUsageOnDashboard) {
+            $dashboardData['network_statistic'] = $this->networkUsageService->getCurrentStatistic(false);
+        }
 
         return $dashboardData;
     }

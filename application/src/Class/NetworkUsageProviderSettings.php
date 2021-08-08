@@ -20,6 +20,11 @@ class NetworkUsageProviderSettings
     private $password;
 
     /**
+     * @var string
+     */
+    private $showOnDashboard;
+
+    /**
      * @return  string
      */
     public function getProviderType()
@@ -75,6 +80,26 @@ class NetworkUsageProviderSettings
     public function setPassword(string $password)
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @return  string
+     */
+    public function getShowOnDashboard()
+    {
+        return $this->showOnDashboard;
+    }
+
+    /**
+     * @param  string  $showOnDashboard
+     *
+     * @return  self
+     */
+    public function setShowOnDashboard(string $showOnDashboard)
+    {
+        $this->showOnDashboard = $showOnDashboard;
 
         return $this;
     }
