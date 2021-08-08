@@ -17,6 +17,7 @@
 			<a href="{{ path('network_usage_settings') }}" class="fas fa-cog text-info"></a>
 		</h1>
 	</div>
+	{% if data_current %}
 	<table class="table table-dark">
 		<thead>
 			<tr>
@@ -33,6 +34,7 @@
 			</tr>
 		</tbody>
 	</table>
+	{% endif %}
 	<div class="card shadow mb-4">
 		<div class="card-header py-3">
 			<h6 class="m-0 font-weight-bold text-primary">Outside traffic speed</h6>
