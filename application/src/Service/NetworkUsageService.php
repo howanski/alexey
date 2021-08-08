@@ -10,6 +10,9 @@ use if0xx\HuaweiHilinkApi\Router;
 use App\Service\SimpleSettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Class\NetworkUsageProviderSettings;
+use App\Entity\NetworkStatisticTimeFrame;
+use App\Repository\NetworkStatisticTimeFrameRepository;
+use DateTimeInterface;
 
 class NetworkUsageService
 {
@@ -30,10 +33,19 @@ class NetworkUsageService
      */
     private $simpleSettingsService;
 
-    public function __construct(EntityManagerInterface $em, SimpleSettingsService $simpleSettingsService)
-    {
+    /**
+     * @var NetworkStatisticTimeFrameRepository
+     */
+    private $networkStatisticTimeFrameRepository;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        SimpleSettingsService $simpleSettingsService,
+        NetworkStatisticTimeFrameRepository $networkStatisticTimeFrameRepository
+    ) {
         $this->em = $em;
         $this->simpleSettingsService = $simpleSettingsService;
+        $this->networkStatisticTimeFrameRepository = $networkStatisticTimeFrameRepository;
     }
 
     public function getCurrentStatistic($alsoSave = false)
@@ -53,6 +65,29 @@ class NetworkUsageService
             $this->em->flush();
         }
         return $stat;
+    }
+
+    public function getConnectionSettings(): NetworkUsageProviderSettings
+    {
+        $networkSettings = new NetworkUsageProviderSettings();
+        $settingsArray = $this->simpleSettingsService->getSettings([
+            self::PROVIDER_TYPE,
+            self::PROVIDER_ADDRESS,
+            self::PROVIDER_PASSWORD
+        ]);
+        $networkSettings->setProviderType(strval($settingsArray[self::PROVIDER_TYPE]));
+        $networkSettings->setAddress(strval($settingsArray[self::PROVIDER_ADDRESS]));
+        $networkSettings->setPassword(strval($settingsArray[self::PROVIDER_PASSWORD]));
+        return $networkSettings;
+    }
+
+    public function saveConnectionSettings(NetworkUsageProviderSettings $settings)
+    {
+        $this->simpleSettingsService->saveSettings([
+            self::PROVIDER_TYPE => $settings->getProviderType(),
+            self::PROVIDER_ADDRESS => $settings->getAddress(),
+            self::PROVIDER_PASSWORD => $settings->getPassword()
+        ]);
     }
 
     private function getCurrentStatisticFromHuawei(NetworkUsageProviderSettings $connectionSettings): NetworkStatistic
@@ -83,33 +118,25 @@ class NetworkUsageService
         $stat = new NetworkStatistic();
         $stat->setDataDownloadedInFrame($currentMonthDownload);
         $stat->setDataUploadedInFrame($currentMonthUpload);
-        $stat->setBillingFrameDataLimit($trafficMaxLimit);
-        $stat->setBillingFrameStart($monthStart);
-        $stat->setBillingFrameEnd($monthEnd);
+        $timeFrame = $this->getTimeFrame($monthStart, $monthEnd, $trafficMaxLimit);
+        $stat->setTimeFrame($timeFrame);
 
         return $stat;
     }
 
-    public function getConnectionSettings(): NetworkUsageProviderSettings
+    private function getTimeFrame(DateTimeInterface $frameStart, DateTimeInterface $frameEnd, int $frameDataLimit)
     {
-        $networkSettings = new NetworkUsageProviderSettings();
-        $settingsArray = $this->simpleSettingsService->getSettings([
-            self::PROVIDER_TYPE,
-            self::PROVIDER_ADDRESS,
-            self::PROVIDER_PASSWORD
+        $timeFrame = $this->networkStatisticTimeFrameRepository->findOneBy([
+            'billingFrameStart' => $frameStart,
+            'billingFrameEnd' => $frameEnd
         ]);
-        $networkSettings->setProviderType(strval($settingsArray[self::PROVIDER_TYPE]));
-        $networkSettings->setAddress(strval($settingsArray[self::PROVIDER_ADDRESS]));
-        $networkSettings->setPassword(strval($settingsArray[self::PROVIDER_PASSWORD]));
-        return $networkSettings;
-    }
-
-    public function saveConnectionSettings(NetworkUsageProviderSettings $settings)
-    {
-        $this->simpleSettingsService->saveSettings([
-            self::PROVIDER_TYPE => $settings->getProviderType(),
-            self::PROVIDER_ADDRESS => $settings->getAddress(),
-            self::PROVIDER_PASSWORD => $settings->getPassword()
-        ]);
+        if (!($timeFrame instanceof NetworkStatisticTimeFrame)) {
+            $timeFrame = new NetworkStatisticTimeFrame();
+        }
+        $timeFrame->setBillingFrameDataLimit($frameDataLimit);
+        $timeFrame->setBillingFrameStart($frameStart);
+        $timeFrame->setBillingFrameEnd($frameEnd);
+        $this->em->persist($timeFrame);
+        return $timeFrame;
     }
 }

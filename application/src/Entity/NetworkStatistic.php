@@ -26,18 +26,6 @@ class NetworkStatistic
     private $probingTime;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @var DateTime
-     */
-    private $billingFrameStart;
-
-    /**
-     * @ORM\Column(type="datetime")
-     * @var DateTime
-     */
-    private $billingFrameEnd;
-
-    /**
      * @ORM\Column(type="bigint")
      * @var int
      */
@@ -50,10 +38,10 @@ class NetworkStatistic
     private $dataDownloadedInFrame = 0;
 
     /**
-     * @ORM\Column(type="bigint")
-     * @var int
+     * @ORM\ManyToOne(targetEntity=NetworkStatisticTimeFrame::class, inversedBy="networkStatistics")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $billingFrameDataLimit = 0;
+    private $timeFrame;
 
     public function __construct()
     {
@@ -81,46 +69,6 @@ class NetworkStatistic
     public function setProbingTime(DateTime $probingTime)
     {
         $this->probingTime = $probingTime;
-
-        return $this;
-    }
-
-    /**
-     * @return  DateTime
-     */
-    public function getBillingFrameStart()
-    {
-        return $this->billingFrameStart;
-    }
-
-    /**
-     * @param  DateTime  $billingFrameStart
-     *
-     * @return  self
-     */
-    public function setBillingFrameStart(DateTime $billingFrameStart)
-    {
-        $this->billingFrameStart = $billingFrameStart;
-
-        return $this;
-    }
-
-    /**
-     * @return  DateTime
-     */
-    public function getBillingFrameEnd()
-    {
-        return $this->billingFrameEnd;
-    }
-
-    /**
-     * @param  DateTime  $billingFrameEnd
-     *
-     * @return  self
-     */
-    public function setBillingFrameEnd(DateTime $billingFrameEnd)
-    {
-        $this->billingFrameEnd = $billingFrameEnd;
 
         return $this;
     }
@@ -165,22 +113,14 @@ class NetworkStatistic
         return $this;
     }
 
-    /**
-     * @return  int
-     */
-    public function getBillingFrameDataLimit()
+    public function getTimeFrame(): ?NetworkStatisticTimeFrame
     {
-        return $this->billingFrameDataLimit;
+        return $this->timeFrame;
     }
 
-    /**
-     * @param  int  $billingFrameDataLimit
-     *
-     * @return  self
-     */
-    public function setBillingFrameDataLimit(int $billingFrameDataLimit)
+    public function setTimeFrame(?NetworkStatisticTimeFrame $timeFrame): self
     {
-        $this->billingFrameDataLimit = $billingFrameDataLimit;
+        $this->timeFrame = $timeFrame;
 
         return $this;
     }
