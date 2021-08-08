@@ -244,4 +244,24 @@ class NetworkStatistic
     {
         return HHelpers::formatBytes($this->getTotalSpeedFromReferencePoint()) . '/s';
     }
+
+    public function getTrafficLeft(): int
+    {
+        return ($this->getTimeFrame()->getBillingFrameDataLimit() - ($this->getDataUploadedInFrame() + $this->getDataDownloadedInFrame()));
+    }
+
+    public function getTrafficLeftReadable(): string
+    {
+        return HHelpers::formatBytes($this->getTrafficLeft());
+    }
+
+    public function getTransferRateLeft(): float
+    {
+        return ($this->getTrafficLeft() / $this->getTimeLeftTillFrameEnd());
+    }
+
+    public function getTransferRateLeftReadable(): string
+    {
+        return HHelpers::formatBytes((int)$this->getTransferRateLeft()) . '/s';
+    }
 }
