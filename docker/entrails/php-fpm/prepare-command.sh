@@ -1,6 +1,7 @@
 #!/bin/bash
 cd /var/www/html
 mkdir -p public/uploads/images
+rm -rf public/build
 composer install
 yarn install
 yarn encore dev

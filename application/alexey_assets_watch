@@ -1,4 +1,4 @@
 #!/bin/bash
 clear
 rm -rf public/build/
-yarn encore dev
+yarn encore dev --watch
