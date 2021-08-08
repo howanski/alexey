@@ -13,10 +13,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class NetworkUsageController extends AbstractController
 {
     #[Route('/', name: 'network_usage')]
-    public function index(): Response
+    public function index(NetworkUsageService $networkUsageService): Response
     {
         return $this->render('network_usage/index.html.twig', [
-            'controller_name' => 'NetworkUsageController',
+            'data_current' => $networkUsageService->getCurrentStatistic(false),
         ]);
     }
 
