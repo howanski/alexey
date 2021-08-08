@@ -9,7 +9,7 @@ class HHelpers
 {
     public static function formatBytes(int $bytes, int $precision = 2, bool $asPowerOfTens = false): string
     {
-        $units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
+        $units = array('B', 'kB', 'MB', 'GB', 'TB', 'PB');
 
         $bytes = max($bytes, 0);
         $power = floor(($bytes ? log($bytes) : 0) / log(1024));
