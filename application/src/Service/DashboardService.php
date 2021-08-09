@@ -38,7 +38,11 @@ class DashboardService
         $showNetworkUsageOnDashboard =
             ($networkUsageSettings->getShowOnDashboard() === NetworkUsageService::DASHBOARD_SHOW);
         if ($showNetworkUsageOnDashboard) {
-            $dashboardData['network_statistic'] = $this->networkUsageService->getCurrentStatistic(false);
+            try {
+                $dashboardData['network_statistic'] = $this->networkUsageService->getCurrentStatistic(false);
+            } catch (\Exception $e) {
+                //TODO: For now ignored, but test would be useful
+            }
         }
 
         return $dashboardData;
