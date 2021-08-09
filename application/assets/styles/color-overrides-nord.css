@@ -64,3 +64,8 @@ a.text-primary:focus {
   background-position: center;
   background-size: cover;
 }
+
+.table-dark {
+	color: #fff;
+	background-color: #3b4252;
+}
