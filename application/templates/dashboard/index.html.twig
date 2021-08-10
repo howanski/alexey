@@ -63,7 +63,7 @@ window.location.reload(false);
 									<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
 										Optimal transfer:
 									</div>
-									<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.transferRateLeftReadable }}</div>
+									<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.getTransferRateLeftReadable(4) }}</div>
 								</div>
 								<div class="col-auto">
 									<a href="{{ path('network_usage') }}">
@@ -82,7 +82,7 @@ window.location.reload(false);
 									<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
 										Traffic left:
 									</div>
-									<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.trafficLeftReadable }}</div>
+									<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.getTrafficLeftReadable(4) }}</div>
 								</div>
 								<div class="col-auto">
 									<a href="{{ path('network_usage') }}">

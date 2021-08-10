@@ -250,9 +250,9 @@ class NetworkStatistic
         return ($this->getTimeFrame()->getBillingFrameDataLimit() - ($this->getDataUploadedInFrame() + $this->getDataDownloadedInFrame()));
     }
 
-    public function getTrafficLeftReadable(): string
+    public function getTrafficLeftReadable(int $precision = 2): string
     {
-        return HHelpers::formatBytes($this->getTrafficLeft());
+        return HHelpers::formatBytes($this->getTrafficLeft(), $precision);
     }
 
     public function getTransferRateLeft(): float
@@ -260,8 +260,8 @@ class NetworkStatistic
         return ($this->getTrafficLeft() / $this->getTimeLeftTillFrameEnd());
     }
 
-    public function getTransferRateLeftReadable(): string
+    public function getTransferRateLeftReadable(int $precision = 2): string
     {
-        return HHelpers::formatBytes((int)$this->getTransferRateLeft()) . '/s';
+        return HHelpers::formatBytes((int)$this->getTransferRateLeft(), $precision) . '/s';
     }
 }
