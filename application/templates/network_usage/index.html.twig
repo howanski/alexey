@@ -24,6 +24,7 @@
 				<th scope="col">Traffic left</th>
 				<th scope="col">Optimal speed</th>
 				<th scope="col">Billing window end</th>
+				<th scope="col">Chart type</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -31,6 +32,7 @@
 				<td>{{ data_current.trafficLeftReadable }}</td>
 				<td>{{ data_current.transferRateLeftReadable }}</td>
 				<td>{{ data_current.timeFrame.billingFrameEnd | date("Y.m.d H:i:s") }}</td>
+				<td>Traffic Speed Today</td>
 			</tr>
 		</tbody>
 	</table>

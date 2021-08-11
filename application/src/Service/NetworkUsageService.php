@@ -23,7 +23,7 @@ class NetworkUsageService
     public const DASHBOARD_SHOW = 'SHOW';
     public const DASHBOARD_HIDE = 'HIDE';
 
-    public const CHART_TYPE_DAILY_CONSOLIDATED = 'daily-consolidated';
+    public const CHART_TYPE_SPEED_TODAY = 'speed-today';
 
     private const PROVIDER_TYPE = 'NETWORK_USAGE_PROVIDER_TYPE';
     private const PROVIDER_ADDRESS = 'NETWORK_USAGE_PROVIDER_ADDRESS';
@@ -111,8 +111,9 @@ class NetworkUsageService
     {
         $labels = [];
         $datasets = [];
-        if ($chartDataType === self::CHART_TYPE_DAILY_CONSOLIDATED) {
-            $chdata = $this->getDataForChartDailyConsolidated();
+        if ($chartDataType === self::CHART_TYPE_SPEED_TODAY) {
+            $today = new DateTime('today');
+            $chdata = $this->prepareDataForChart($today, 'speed');
             $labels = $chdata['labels'];
             $datasets = $chdata['datasets'];
         }
@@ -122,22 +123,25 @@ class NetworkUsageService
         ];
     }
 
-    private function getDataForChartDailyConsolidated(): array
+    private function prepareDataForChart(DateTimeInterface $dateFrom, string $dataType): array
     {
         $data = [];
         $labels = [];
         $datasets = [];
         $datasets[0] = [];
         $now = new DateTime('now');
-        $today = new DateTime('today');
-        $networkStatistics = $this->getPreparedEntitiesForChart($today, $now);
+        $networkStatistics = $this->getPreparedEntitiesForChart($dateFrom, $now);
 
         /**
          * @var NetworkStatistic $stat
          */
         foreach ($networkStatistics as $stat) {
             $labels[] = $stat->getProbingTime()->format('H:i:s');
-            $datasets[0][] = (int)($stat->getTotalSpeedFromReferencePoint() / 1024);
+            if ('speed' == $dataType) {
+                $datasets[0][] = (int)($stat->getTotalSpeedFromReferencePoint() / 1024);
+            } else {
+                $datasets[0][] = 0;
+            }
         }
         $data['labels'] = $labels;
         $data['datasets'] = $datasets;
@@ -160,10 +164,12 @@ class NetworkUsageService
         }
         foreach ($networkStatistics as $key => $stat) {
             if (isset($networkStatistics[$key + 1])) {
-                $networkStatistics[$key + 1]->setReferencePoint($stat);
+                if ($stat->getTimeFrame() == $networkStatistics[$key + 1]->getTimeFrame()) {
+                    $networkStatistics[$key + 1]->setReferencePoint($stat);
+                }
             }
         }
-        array_shift($networkStatistics); //first one will have bad statistics
+        array_shift($networkStatistics); //first one will have bad statistics //TODO: also breaking points
         return $networkStatistics;
     }
 

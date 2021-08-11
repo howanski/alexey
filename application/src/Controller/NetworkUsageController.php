@@ -14,13 +14,16 @@ use Symfony\Component\Routing\RouterInterface;
 #[Route('/network/usage')]
 class NetworkUsageController extends AbstractController
 {
-    #[Route('/', name: 'network_usage')]
-    public function index(NetworkUsageService $networkUsageService, RouterInterface $routerInterface): Response
-    {
+    #[Route('/info/{chartType}', name: 'network_usage')]
+    public function index(
+        NetworkUsageService $networkUsageService,
+        RouterInterface $routerInterface,
+        string $chartType = NetworkUsageService::CHART_TYPE_SPEED_TODAY
+    ): Response {
         return $this->render('network_usage/index.html.twig', [
             'data_current' => $networkUsageService->getCurrentStatistic(false),
             'chart_data_src' => $routerInterface->generate('network_usage_chart_data', [
-                'chartType' => NetworkUsageService::CHART_TYPE_DAILY_CONSOLIDATED
+                'chartType' => $chartType
             ])
         ]);
     }
