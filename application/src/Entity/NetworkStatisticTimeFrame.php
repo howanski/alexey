@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\NetworkStatisticTimeFrameRepository;
+use Carbon\Carbon;
 
 /**
  * @ORM\Entity(repositoryClass=NetworkStatisticTimeFrameRepository::class)
@@ -151,5 +152,12 @@ class NetworkStatisticTimeFrame
         }
 
         return $this;
+    }
+
+    public function getBillingFrameEndReadable(): string
+    {
+        $conventionalTime = $this->getBillingFrameEnd();
+        $carbonised = new Carbon($conventionalTime);
+        return $carbonised->diffForHumans();
     }
 }

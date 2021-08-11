@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\NetworkMachineRepository;
+use Carbon\Carbon;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\NetworkMachineRepository;
 
 /**
  * @ORM\Entity(repositoryClass=NetworkMachineRepository::class)
@@ -187,5 +188,12 @@ class NetworkMachine
         $this->showOnDashboard = $showOnDashboard;
 
         return $this;
+    }
+
+    public function getLastSeenReadable(): string
+    {
+        $conventionalTime = $this->getLastSeen();
+        $carbonised = new Carbon($conventionalTime);
+        return $carbonised->diffForHumans();
     }
 }

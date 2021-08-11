@@ -31,7 +31,7 @@ window.location.reload(false);
 										Machine:
 										{{machine.name}}</div>
 									{% if machine.lastSeen %}
-										<div class="h5 mb-0 font-weight-bold text-gray-800">{{machine.lastSeen|date("Y.m.d H:i:s")}}</div>
+										<div class="h5 mb-0 font-weight-bold text-gray-800">Last seen {{ machine.lastSeenReadable }}</div>
 									{% endif %}
 								</div>
 								<div class="col-auto">
@@ -101,7 +101,7 @@ window.location.reload(false);
 									<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
 										Billing window end:
 									</div>
-									<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.timeFrame.billingFrameEnd | date("Y.m.d H:i:s") }}</div>
+									<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.timeFrame.billingFrameEndReadable }}</div>
 								</div>
 								<div class="col-auto">
 									<a href="{{ path('network_usage') }}">
