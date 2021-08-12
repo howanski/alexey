@@ -91,7 +91,7 @@ class NetworkUsageService
         $datasets = [];
         if ($chartDataType === self::CHART_TYPE_SPEED_TODAY) {
             $today = new DateTime('today');
-            $chdata = $this->prepareDataForChart($today, 'speed');
+            $chdata = $this->prepareDataForChart($today);
             $labels = $chdata['labels'];
             $datasets = $chdata['datasets'];
         }
@@ -101,12 +101,13 @@ class NetworkUsageService
         ];
     }
 
-    private function prepareDataForChart(DateTimeInterface $dateFrom, string $dataType): array
+    private function prepareDataForChart(DateTimeInterface $dateFrom): array
     {
         $data = [];
         $labels = [];
         $datasets = [];
-        $datasets[0] = [];
+        $datasets['speed_relative'] = [];
+        $datasets['speed_left'] = [];
         $now = new DateTime('now');
         $networkStatistics = $this->getPreparedEntitiesForChart($dateFrom, $now);
 
@@ -115,11 +116,8 @@ class NetworkUsageService
          */
         foreach ($networkStatistics as $stat) {
             $labels[] = $stat->getProbingTime()->format('H:i:s');
-            if ('speed' == $dataType) {
-                $datasets[0][] = (int)($stat->getTotalSpeedFromReferencePoint() / 1024);
-            } else {
-                $datasets[0][] = 0;
-            }
+            $datasets['speed_relative'][] = (int)($stat->getTotalSpeedFromReferencePoint() / 1024);
+            $datasets['speed_left'][] = round(($stat->getTransferRateLeft() / 1024), 2);
         }
         $data['labels'] = $labels;
         $data['datasets'] = $datasets;
