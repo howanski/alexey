@@ -2,6 +2,8 @@
 
 namespace App\Class;
 
+use Carbon\Carbon;
+use Carbon\CarbonTimeZone;
 use DateTime;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -49,7 +51,6 @@ class OpenWeatherOneApiResponse
         $this->latitude = $weatherSettings->getLatitude();
         $this->longitude = $weatherSettings->getLongitude();
         $this->apiKey = $weatherSettings->getApiKey();
-        $this->ensureWeatherDataFetched(); // TODO: move me to getters - no unneeded API calls
     }
 
     private function ensureWeatherDataFetched()
@@ -68,5 +69,25 @@ class OpenWeatherOneApiResponse
 
             $this->rawApiResponse = $response->toArray();
         }
+    }
+
+    public function getHourlyWeatherReadable()
+    {
+        $this->ensureWeatherDataFetched();
+        $timeZone = new CarbonTimeZone('Europe/Warsaw');
+        $raw = $this->rawApiResponse;
+        $readable = [
+            'hourly' => []
+        ];
+        foreach ($raw['hourly'] as $hourly) {
+            $readable['hourly'][] = [
+                'temperature' => $hourly['temp'],
+                'time' => (new Carbon($hourly['dt']))->setTimezone($timeZone),
+                'weather' => $hourly['weather'][0]['description'],
+                'weather_icon' => $hourly['weather'][0]['icon'],
+                'rain' => array_key_exists('rain', $hourly) ? $hourly['rain']['1h'] : 0,
+            ];
+        }
+        return $readable;
     }
 }

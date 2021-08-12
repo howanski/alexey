@@ -9,20 +9,29 @@
 			<a href="{{ path('weather_settings') }}" class="fas fa-cog text-info"></a>
 		</h1>
 	</div>
-	{# {{dump(weather_data)}} #}
-	<div class="example-wrapper">
-		<div class="row">
-			<div class="col-xl-12 col-lg-12">
-				<div class="card shadow bg-dark mb-4">
-					<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-						<h6 class="m-0 font-weight-bold text-primary">Weather ICM</h6>
-					</div>
+	<div class="row">
+		{% for weather in weather_data.getHourlyWeatherReadable().hourly %}
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card {% if weather.rain > 0  %} border-left-warning {% else %} border-left-success {% endif %} shadow h-100 py-2">
 					<div class="card-body">
-						<img style="filter: invert(80%)" src="https://www.meteo.pl/um/metco/leg_um_pl_cbase_256.png">
-						<img style="filter: invert(80%)" src="https://www.meteo.pl/um/metco/mgram_pict.php?ntype=0u&row=367&col=262&lang=pl">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold {% if weather.rain > 0  %} text-warning {% else %} text-success {% endif %} text-uppercase mb-1">
+									{{weather.time}} ({{weather.time.diffForHumans}})
+								</div>
+								<div class="h5 mb-0 font-weight-bold text-gray-500">
+									{{weather.weather}}
+									<br>{{weather.temp}} °C
+									{% if weather.rain > 0  %}<br>Rain: {{weather.rain}}{% endif %}
+								</div>
+							</div>
+							<div class="col-auto">
+								<img src="http://openweathermap.org/img/wn/{{ weather.weather_icon }}@2x.png">
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		{% endfor %}
 	</div>
 {% endblock %}
