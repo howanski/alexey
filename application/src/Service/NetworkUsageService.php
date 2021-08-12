@@ -12,6 +12,7 @@ use App\Service\SimpleSettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\NetworkStatisticTimeFrame;
 use App\Class\NetworkUsageProviderSettings;
+use App\Form\NetworkChartType;
 use App\Repository\NetworkStatisticRepository;
 use App\Repository\NetworkStatisticTimeFrameRepository;
 
@@ -19,8 +20,6 @@ class NetworkUsageService
 {
     public const NETWORK_USAGE_PROVIDER_HUAWEI = 'HILINK';
     public const NETWORK_USAGE_PROVIDER_NONE = 'NONE';
-
-    public const CHART_TYPE_SPEED_TODAY = 'speed-today';
 
     /**
      * @var EntityManagerInterface
@@ -89,9 +88,28 @@ class NetworkUsageService
     {
         $labels = [];
         $datasets = [];
-        if ($chartDataType === self::CHART_TYPE_SPEED_TODAY) {
-            $today = new DateTime('today');
+        $today = new DateTime('today');
+        // TODO: refactor this, I'm too sleepy right now
+        if ($chartDataType == NetworkChartType::CHART_TYPE_TODAY) {
             $chdata = $this->prepareDataForChart($today);
+            $labels = $chdata['labels'];
+            $datasets = $chdata['datasets'];
+        } elseif ($chartDataType == NetworkChartType::CHART_TYPE_WEEK) {
+            $shift = new DateInterval('P1W');
+            $today->sub($shift);
+            $chdata = $this->prepareDataForChart($today);
+            $labels = $chdata['labels'];
+            $datasets = $chdata['datasets'];
+        } elseif ($chartDataType == NetworkChartType::CHART_TYPE_MONTH) {
+            $shift = new DateInterval('P1M');
+            $today->sub($shift);
+            $chdata = $this->prepareDataForChart($today);
+            $labels = $chdata['labels'];
+            $datasets = $chdata['datasets'];
+        } elseif ($chartDataType == NetworkChartType::CHART_TYPE_BILLING_FRAME) {
+            $currentStat = $this->getCurrentStatistic();
+            $billingStart = $currentStat->getTimeFrame()->getBillingFrameStart();
+            $chdata = $this->prepareDataForChart($billingStart);
             $labels = $chdata['labels'];
             $datasets = $chdata['datasets'];
         }
@@ -115,8 +133,8 @@ class NetworkUsageService
          * @var NetworkStatistic $stat
          */
         foreach ($networkStatistics as $stat) {
-            $labels[] = $stat->getProbingTime()->format('H:i:s');
-            $datasets['speed_relative'][] = (int)($stat->getTotalSpeedFromReferencePoint() / 1024);
+            $labels[] = $stat->getProbingTime()->format('d.m H:i');
+            $datasets['speed_relative'][] = round(($stat->getTotalSpeedFromReferencePoint() / 1024), 2);
             $datasets['speed_left'][] = round(($stat->getTransferRateLeft() / 1024), 2);
         }
         $data['labels'] = $labels;
@@ -145,7 +163,7 @@ class NetworkUsageService
                 }
             }
         }
-        array_shift($networkStatistics); //first one will have bad statistics //TODO: also breaking points
+        array_shift($networkStatistics); //first one can have bad statistics
         return $networkStatistics;
     }
 

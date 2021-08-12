@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\NetworkChartType;
 use App\Service\NetworkUsageService;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\NetworkUsageProviderSettingsType;
@@ -18,9 +19,22 @@ class NetworkUsageController extends AbstractController
     public function index(
         NetworkUsageService $networkUsageService,
         RouterInterface $routerInterface,
-        string $chartType = NetworkUsageService::CHART_TYPE_SPEED_TODAY
+        string $chartType = NetworkChartType::CHART_TYPE_TODAY
     ): Response {
+        $typeSettings = ['chartType' => $chartType];
+        $form = $this->createForm(NetworkChartType::class, $typeSettings);
+        $chartRoutes = [];
+        foreach (NetworkChartType::CHART_TYPES as $possibleChartType) {
+            $chartRoutes[$possibleChartType] = $routerInterface->generate(
+                'network_usage',
+                [
+                    'chartType' => $possibleChartType
+                ]
+            );
+        }
         return $this->render('network_usage/index.html.twig', [
+            'chart_selector_form' => $form->createView(),
+            'chart_routes' => $chartRoutes,
             'data_current' => $networkUsageService->getCurrentStatistic(false),
             'chart_data_src' => $routerInterface->generate('network_usage_chart_data', [
                 'chartType' => $chartType

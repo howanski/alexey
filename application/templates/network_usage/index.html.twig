@@ -9,6 +9,15 @@
 	</script>
 	{{ encore_entry_script_tags('alexey') }}
 	{{ encore_entry_script_tags('network-usage-chart') }}
+	<script>
+		let chartRoutes = {{ chart_routes | json_encode | raw }};
+		let chartChanger = document.getElementById('network_chart_chartType');
+		chartChanger.addEventListener('change', (event) => {
+  		let elemVal = event.target.value;
+		let route = chartRoutes[elemVal];
+		window.location.replace(route);
+		});
+	</script>
 {% endblock %}
 
 {% block pageContent %}
@@ -18,24 +27,28 @@
 		</h1>
 	</div>
 	{% if data_current %}
-	<table class="table table-dark">
-		<thead>
-			<tr>
-				<th scope="col">Traffic left</th>
-				<th scope="col">Optimal speed</th>
-				<th scope="col">Billing window end</th>
-				<th scope="col">Chart type</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>{{ data_current.trafficLeftReadable }}</td>
-				<td>{{ data_current.transferRateLeftReadable }}</td>
-				<td>{{ data_current.timeFrame.billingFrameEndReadable }}</td>
-				<td>Traffic Speed Today</td>
-			</tr>
-		</tbody>
-	</table>
+		<table class="table table-dark">
+			<thead>
+				<tr>
+					<th scope="col">Traffic left</th>
+					<th scope="col">Optimal speed</th>
+					<th scope="col">Billing window end</th>
+					<th scope="col">Chart type</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ data_current.trafficLeftReadable }}</td>
+					<td>{{ data_current.transferRateLeftReadable }}</td>
+					<td>{{ data_current.timeFrame.billingFrameEndReadable }}</td>
+					<td>
+						{{ form_start(chart_selector_form) }}
+						{{ form_widget(chart_selector_form) }}
+						{{ form_end(chart_selector_form) }}
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	{% endif %}
 	<div class="card shadow mb-4">
 		<div class="card-header py-3">
