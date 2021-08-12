@@ -3,8 +3,9 @@
 namespace App\Service;
 
 use App\Entity\NetworkMachine;
-use App\Repository\NetworkMachineRepository;
+use App\Service\SimpleSettingsService;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\NetworkMachineRepository;
 
 class DashboardService
 {
@@ -36,7 +37,7 @@ class DashboardService
 
         $networkUsageSettings = $this->networkUsageService->getConnectionSettings();
         $showNetworkUsageOnDashboard =
-            ($networkUsageSettings->getShowOnDashboard() === NetworkUsageService::DASHBOARD_SHOW);
+            ($networkUsageSettings->getShowOnDashboard() === SimpleSettingsService::UNIVERSAL_TRUTH);
         if ($showNetworkUsageOnDashboard) {
             try {
                 $dashboardData['network_statistic'] = $this->networkUsageService->getCurrentStatistic(false);

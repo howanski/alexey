@@ -8,6 +8,9 @@ use App\Repository\SimpleSettingRepository;
 
 class SimpleSettingsService
 {
+    public const UNIVERSAL_TRUTH = 'BOOL_TRUE';
+    public const UNIVERSAL_FALSE = 'BOOL_FALSE';
+
     /**
      * @var EntityManagerInterface
      */

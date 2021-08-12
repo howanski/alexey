@@ -20,15 +20,7 @@ class NetworkUsageService
     public const NETWORK_USAGE_PROVIDER_HUAWEI = 'HILINK';
     public const NETWORK_USAGE_PROVIDER_NONE = 'NONE';
 
-    public const DASHBOARD_SHOW = 'SHOW';
-    public const DASHBOARD_HIDE = 'HIDE';
-
     public const CHART_TYPE_SPEED_TODAY = 'speed-today';
-
-    private const PROVIDER_TYPE = 'NETWORK_USAGE_PROVIDER_TYPE';
-    private const PROVIDER_ADDRESS = 'NETWORK_USAGE_PROVIDER_ADDRESS';
-    private const PROVIDER_PASSWORD = 'NETWORK_USAGE_PROVIDER_PASSWORD';
-    private const SHOW_ON_DASHBOARD = 'NETWORK_USAGE_SHOW_ON_DASHBOARD';
 
     /**
      * @var EntityManagerInterface
@@ -84,27 +76,13 @@ class NetworkUsageService
     public function getConnectionSettings(): NetworkUsageProviderSettings
     {
         $networkSettings = new NetworkUsageProviderSettings();
-        $settingsArray = $this->simpleSettingsService->getSettings([
-            self::PROVIDER_TYPE,
-            self::PROVIDER_ADDRESS,
-            self::PROVIDER_PASSWORD,
-            self::SHOW_ON_DASHBOARD,
-        ]);
-        $networkSettings->setProviderType(strval($settingsArray[self::PROVIDER_TYPE]));
-        $networkSettings->setAddress(strval($settingsArray[self::PROVIDER_ADDRESS]));
-        $networkSettings->setPassword(strval($settingsArray[self::PROVIDER_PASSWORD]));
-        $networkSettings->setShowOnDashboard(strval($settingsArray[self::SHOW_ON_DASHBOARD]));
+        $networkSettings->selfConfigure($this->simpleSettingsService);
         return $networkSettings;
     }
 
     public function saveConnectionSettings(NetworkUsageProviderSettings $settings)
     {
-        $this->simpleSettingsService->saveSettings([
-            self::PROVIDER_TYPE => $settings->getProviderType(),
-            self::PROVIDER_ADDRESS => $settings->getAddress(),
-            self::PROVIDER_PASSWORD => $settings->getPassword(),
-            self::SHOW_ON_DASHBOARD => $settings->getShowOnDashboard(),
-        ]);
+        $settings->selfPersist($this->simpleSettingsService);
     }
 
     public function getDataForChart($chartDataType): array

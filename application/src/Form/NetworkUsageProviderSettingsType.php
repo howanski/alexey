@@ -5,11 +5,11 @@ namespace App\Form;
 use App\Service\NetworkUsageService;
 use Symfony\Component\Form\AbstractType;
 use App\Class\NetworkUsageProviderSettings;
+use App\Service\SimpleSettingsService;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class NetworkUsageProviderSettingsType extends AbstractType
 {
@@ -26,8 +26,8 @@ class NetworkUsageProviderSettingsType extends AbstractType
             ->add('password', TextType::class, ['required' => true])
             ->add('showOnDashboard', ChoiceType::class, [
                 'choices' => [
-                    'HIDE' => NetworkUsageService::DASHBOARD_HIDE,
-                    'SHOW' => NetworkUsageService::DASHBOARD_SHOW
+                    'HIDE' => SimpleSettingsService::UNIVERSAL_FALSE,
+                    'SHOW' => SimpleSettingsService::UNIVERSAL_TRUTH
                 ]
             ]);
     }
