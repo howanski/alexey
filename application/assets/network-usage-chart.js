@@ -4,6 +4,8 @@ import axios from "axios";
 // Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 // Chart.defaults.global.defaultFontColor = '#858796';
 
+var myLineChart = null;
+
 function number_format(number, decimals, dec_point, thousands_sep) {
   // *     example: number_format(1234.56, 2, ',', ' ');
   // *     return: '1 234,56'
@@ -31,131 +33,122 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 
 function createChart(chartConfig) {
   var ctx = document.getElementById("myAreaChart");
-  var myLineChart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: chartConfig.labels,
-      datasets: [
-        {
-          label: "Traffic rate (kB/s)",
-          lineTension: 0.3,
-          backgroundColor: "rgba(78, 115, 223, 0.05)",
-          borderColor: "rgba(78, 115, 223, 1)",
-          pointRadius: 3,
-          pointBackgroundColor: "rgba(78, 115, 223, 1)",
-          pointBorderColor: "rgba(78, 115, 223, 1)",
-          pointHoverRadius: 3,
-          pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-          pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-          pointHitRadius: 10,
-          pointBorderWidth: 2,
-          data: chartConfig.datasets['speed_relative'],
-        },
-        {
-          label: "Traffic left (kB/s)",
-          lineTension: 0.3,
-          backgroundColor: "rgba(78, 222, 223, 0.05)",
-          borderColor: "rgba(78, 222, 223, 1)",
-          pointRadius: 3,
-          pointBackgroundColor: "rgba(78, 222, 223, 1)",
-          pointBorderColor: "rgba(78, 222, 223, 1)",
-          pointHoverRadius: 3,
-          pointHoverBackgroundColor: "rgba(78, 222, 223, 1)",
-          pointHoverBorderColor: "rgba(78, 222, 223, 1)",
-          pointHitRadius: 10,
-          pointBorderWidth: 2,
-          data: chartConfig.datasets['speed_left'],
-        },
-      ],
-    },
-    options: {
-      maintainAspectRatio: false,
-      layout: {
-        padding: {
-          left: 10,
-          right: 25,
-          top: 25,
-          bottom: 0,
-        },
-      },
-      scales: {
-        xAxes: [
-          {
-            time: {
-              unit: "time",
-            },
-            gridLines: {
-              display: false,
-              drawBorder: false,
-            },
-            ticks: {
-              maxTicksLimit: 7,
-            },
-          },
-        ],
-        yAxes: [
-          {
-            ticks: {
-              maxTicksLimit: 5,
-              padding: 10,
-              // Include a dollar sign in the ticks
-              // callback: function(value, index, values) {
-              //   return '$' + number_format(value);
-              // }
-            },
-            gridLines: {
-              color: "rgb(234, 236, 244)",
-              zeroLineColor: "rgb(234, 236, 244)",
-              drawBorder: false,
-              borderDash: [2],
-              zeroLineBorderDash: [2],
-            },
-          },
+  if (myLineChart) {
+    myLineChart.data.labels = chartConfig.labels;
+    myLineChart.data.datasets = [
+      chartConfig.datasets["speed_relative"],
+      chartConfig.datasets["speed_left"],
+    ];
+    myLineChart.update('none');
+  } else {
+    myLineChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: chartConfig.labels,
+        datasets: [
+          chartConfig.datasets["speed_relative"],
+          chartConfig.datasets["speed_left"],
         ],
       },
-      legend: {
-        display: false,
-      },
-      tooltips: {
-        backgroundColor: "rgb(255,255,255)",
-        bodyFontColor: "#858796",
-        titleMarginBottom: 10,
-        titleFontColor: "#6e707e",
-        titleFontSize: 14,
-        borderColor: "#dddfeb",
-        borderWidth: 1,
-        xPadding: 15,
-        yPadding: 15,
-        displayColors: false,
-        intersect: false,
-        mode: "index",
-        caretPadding: 10,
-        callbacks: {
-          label: function (tooltipItem, chart) {
-            var datasetLabel =
-              chart.datasets[tooltipItem.datasetIndex].label || "";
-            return datasetLabel + ": $" + number_format(tooltipItem.yLabel);
+      options: {
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            left: 10,
+            right: 25,
+            top: 25,
+            bottom: 0,
+          },
+        },
+        scales: {
+          xAxes: [
+            {
+              time: {
+                unit: "time",
+              },
+              gridLines: {
+                display: false,
+                drawBorder: false,
+              },
+              ticks: {
+                maxTicksLimit: 7,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              ticks: {
+                maxTicksLimit: 5,
+                padding: 10,
+                // Include a dollar sign in the ticks
+                // callback: function(value, index, values) {
+                //   return '$' + number_format(value);
+                // }
+              },
+              gridLines: {
+                color: "rgb(234, 236, 244)",
+                zeroLineColor: "rgb(234, 236, 244)",
+                drawBorder: false,
+                borderDash: [2],
+                zeroLineBorderDash: [2],
+              },
+            },
+          ],
+        },
+        legend: {
+          display: false,
+        },
+        tooltips: {
+          backgroundColor: "rgb(255,255,255)",
+          bodyFontColor: "#858796",
+          titleMarginBottom: 10,
+          titleFontColor: "#6e707e",
+          titleFontSize: 14,
+          borderColor: "#dddfeb",
+          borderWidth: 1,
+          xPadding: 15,
+          yPadding: 15,
+          displayColors: false,
+          intersect: false,
+          mode: "index",
+          caretPadding: 10,
+          callbacks: {
+            label: function (tooltipItem, chart) {
+              var datasetLabel =
+                chart.datasets[tooltipItem.datasetIndex].label || "";
+              return datasetLabel + ": $" + number_format(tooltipItem.yLabel);
+            },
           },
         },
       },
-    },
-  });
+    });
+  }
 }
 
-axios
-  .get(window.chart_data_src)
-  .then(function (response) {
-    // handle success
-    let chartConfig = {
-      labels: response.data.labels,
-      datasets: response.data.datasets,
-    };
-    createChart(chartConfig);
-  })
-  .catch(function (error) {
-    // handle error
-    alert(error);
-  })
-  .then(function () {
-    // always executed
-  });
+function updateChartData() {
+  axios
+    .get(window.chart_data_src)
+    .then(function (response) {
+      // handle success
+      let chartConfig = {
+        labels: response.data.labels,
+        datasets: response.data.datasets,
+      };
+      createChart(chartConfig);
+    })
+    .catch(function (error) {
+      // handle error
+      alert(error);
+    })
+    .then(function () {
+      // always executed
+    });
+}
+
+function run() {
+  updateChartData();
+  setTimeout(() => {
+    run();
+  }, 30000);
+}
+run();

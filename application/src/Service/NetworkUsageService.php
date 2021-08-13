@@ -89,6 +89,7 @@ class NetworkUsageService
         $labels = [];
         $datasets = [];
         $today = new DateTime('today');
+        $now = new DateTime('now');
         // TODO: refactor this, I'm too sleepy right now
         if ($chartDataType == NetworkChartType::CHART_TYPE_TODAY) {
             $chdata = $this->prepareDataForChart($today);
@@ -104,6 +105,18 @@ class NetworkUsageService
             $shift = new DateInterval('P1M');
             $today->sub($shift);
             $chdata = $this->prepareDataForChart($today);
+            $labels = $chdata['labels'];
+            $datasets = $chdata['datasets'];
+        } elseif ($chartDataType == NetworkChartType::CHART_TYPE_HOURS_TWO) {
+            $shift = new DateInterval('PT2H');
+            $now->sub($shift);
+            $chdata = $this->prepareDataForChart($now);
+            $labels = $chdata['labels'];
+            $datasets = $chdata['datasets'];
+        } elseif ($chartDataType == NetworkChartType::CHART_TYPE_MINUTES_TEN) {
+            $shift = new DateInterval('PT10M');
+            $now->sub($shift);
+            $chdata = $this->prepareDataForChart($now);
             $labels = $chdata['labels'];
             $datasets = $chdata['datasets'];
         } elseif ($chartDataType == NetworkChartType::CHART_TYPE_BILLING_FRAME) {
@@ -124,8 +137,36 @@ class NetworkUsageService
         $data = [];
         $labels = [];
         $datasets = [];
-        $datasets['speed_relative'] = [];
-        $datasets['speed_left'] = [];
+        $datasets['speed_relative'] = [
+            'label' => "Traffic rate (kB/s)",
+            'lineTension' => 0.3,
+            'backgroundColor' => "rgba(78, 115, 223, 0.05)",
+            'borderColor' => "rgba(78, 115, 223, 1)",
+            'pointRadius' => 3,
+            'pointBackgroundColor' => "rgba(78, 115, 223, 1)",
+            'pointBorderColor' => "rgba(78, 115, 223, 1)",
+            'pointHoverRadius' => 3,
+            'pointHoverBackgroundColor' => "rgba(78, 115, 223, 1)",
+            'pointHoverBorderColor' => "rgba(78, 115, 223, 1)",
+            'pointHitRadius' => 10,
+            'pointBorderWidth' => 2,
+            'data' => [],
+        ];
+        $datasets['speed_left'] = [
+            'label' => "Traffic left (kB/s)",
+            'lineTension' => 0.3,
+            'backgroundColor' => "rgba(78, 222, 223, 0.05)",
+            'borderColor' => "rgba(78, 222, 223, 1)",
+            'pointRadius' => 3,
+            'pointBackgroundColor' => "rgba(78, 222, 223, 1)",
+            'pointBorderColor' => "rgba(78, 222, 223, 1)",
+            'pointHoverRadius' => 3,
+            'pointHoverBackgroundColor' => "rgba(78, 222, 223, 1)",
+            'pointHoverBorderColor' => "rgba(78, 222, 223, 1)",
+            'pointHitRadius' => 10,
+            'pointBorderWidth' => 2,
+            'data' => [],
+        ];
         $now = new DateTime('now');
         $networkStatistics = $this->getPreparedEntitiesForChart($dateFrom, $now);
 
@@ -134,8 +175,8 @@ class NetworkUsageService
          */
         foreach ($networkStatistics as $stat) {
             $labels[] = $stat->getProbingTime()->format('d.m H:i');
-            $datasets['speed_relative'][] = round(($stat->getTotalSpeedFromReferencePoint() / 1024), 2);
-            $datasets['speed_left'][] = round(($stat->getTransferRateLeft() / 1024), 2);
+            $datasets['speed_relative']['data'][] = round(($stat->getTotalSpeedFromReferencePoint() / 1024), 2);
+            $datasets['speed_left']['data'][] = round(($stat->getTransferRateLeft() / 1024), 2);
         }
         $data['labels'] = $labels;
         $data['datasets'] = $datasets;
