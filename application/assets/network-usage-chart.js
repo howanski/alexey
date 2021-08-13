@@ -39,7 +39,7 @@ function createChart(chartConfig) {
       chartConfig.datasets["speed_relative"],
       chartConfig.datasets["speed_left"],
     ];
-    myLineChart.update('none');
+    myLineChart.update("none");
   } else {
     myLineChart = new Chart(ctx, {
       type: "line",
@@ -130,9 +130,16 @@ function updateChartData() {
     .get(window.chart_data_src)
     .then(function (response) {
       // handle success
+      let responseData = response.data;
+      let ctl = document.getElementById("current_traffic_left");
+      let ctrl = document.getElementById("current_transfer_rate_left");
+      let cbfe = document.getElementById("current_billing_frame_end");
+      ctrl.innerHTML = responseData.current.current_transfer_rate_left;
+      ctl.innerHTML = responseData.current.current_traffic_left;
+      cbfe.innerHTML = responseData.current.current_billing_frame_end;
       let chartConfig = {
-        labels: response.data.labels,
-        datasets: response.data.datasets,
+        labels: responseData.labels,
+        datasets: responseData.datasets,
       };
       createChart(chartConfig);
     })

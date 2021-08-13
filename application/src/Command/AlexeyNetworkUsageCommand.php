@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Service\NetworkUsageService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -22,10 +23,16 @@ class AlexeyNetworkUsageCommand extends Command
      */
     private $service;
 
-    public function __construct(NetworkUsageService $service)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+
+    public function __construct(NetworkUsageService $service, EntityManagerInterface $em)
     {
         parent::__construct();
         $this->service = $service;
+        $this->em = $em;
     }
 
     protected function configure(): void
@@ -43,7 +50,9 @@ class AlexeyNetworkUsageCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $sleepSecondsAfterFinish = intval($input->getArgument('sleepSecondsAfterFinish'));
         $io->note('Starting!');
-        $this->service->getCurrentStatistic(true);
+        $stat = $this->service->getCurrentStatistic();
+        $this->em->persist($stat);
+        $this->em->flush($stat);
         $io->success(sprintf('All done, now sleeping %s seconds before ending process...', $sleepSecondsAfterFinish));
         sleep($sleepSecondsAfterFinish);
         return Command::SUCCESS;

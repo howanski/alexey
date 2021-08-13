@@ -53,7 +53,7 @@ class NetworkUsageService
         $this->networkStatisticRepository = $networkStatisticRepository;
     }
 
-    public function getCurrentStatistic($alsoSave = false)
+    public function getCurrentStatistic(): NetworkStatistic
     {
         $connectionSettings = $this->getConnectionSettings();
         $type = $connectionSettings->getProviderType();
@@ -65,11 +65,13 @@ class NetworkUsageService
         } else {
             throw new \Exception('Unknown network usage provider.');
         }
-        if ($alsoSave && !empty($stat)) {
-            $this->em->persist($stat);
-            $this->em->flush();
-        }
         return $stat;
+    }
+
+    public function getLatestStatistic(): NetworkStatistic
+    {
+        $latest = $this->networkStatisticRepository->getLatestOne();
+        return $latest;
     }
 
     public function getConnectionSettings(): NetworkUsageProviderSettings
@@ -86,49 +88,45 @@ class NetworkUsageService
 
     public function getDataForChart($chartDataType): array
     {
-        $labels = [];
-        $datasets = [];
+        $chdata = [
+            'labels' => [],
+            'datasets' => []
+        ];
         $today = new DateTime('today');
         $now = new DateTime('now');
-        // TODO: refactor this, I'm too sleepy right now
         if ($chartDataType == NetworkChartType::CHART_TYPE_TODAY) {
             $chdata = $this->prepareDataForChart($today);
-            $labels = $chdata['labels'];
-            $datasets = $chdata['datasets'];
         } elseif ($chartDataType == NetworkChartType::CHART_TYPE_WEEK) {
             $shift = new DateInterval('P1W');
             $today->sub($shift);
             $chdata = $this->prepareDataForChart($today);
-            $labels = $chdata['labels'];
-            $datasets = $chdata['datasets'];
         } elseif ($chartDataType == NetworkChartType::CHART_TYPE_MONTH) {
             $shift = new DateInterval('P1M');
             $today->sub($shift);
             $chdata = $this->prepareDataForChart($today);
-            $labels = $chdata['labels'];
-            $datasets = $chdata['datasets'];
         } elseif ($chartDataType == NetworkChartType::CHART_TYPE_HOURS_TWO) {
             $shift = new DateInterval('PT2H');
             $now->sub($shift);
             $chdata = $this->prepareDataForChart($now);
-            $labels = $chdata['labels'];
-            $datasets = $chdata['datasets'];
         } elseif ($chartDataType == NetworkChartType::CHART_TYPE_MINUTES_TEN) {
             $shift = new DateInterval('PT10M');
             $now->sub($shift);
             $chdata = $this->prepareDataForChart($now);
-            $labels = $chdata['labels'];
-            $datasets = $chdata['datasets'];
         } elseif ($chartDataType == NetworkChartType::CHART_TYPE_BILLING_FRAME) {
-            $currentStat = $this->getCurrentStatistic();
+            $currentStat = $this->getLatestStatistic();
             $billingStart = $currentStat->getTimeFrame()->getBillingFrameStart();
             $chdata = $this->prepareDataForChart($billingStart);
-            $labels = $chdata['labels'];
-            $datasets = $chdata['datasets'];
         }
+        $latestStat = $this->getLatestStatistic();
+        $current = [
+            'current_traffic_left' => $latestStat->getTrafficLeftReadable(4),
+            'current_transfer_rate_left' => $latestStat->getTransferRateLeftReadable(4),
+            'current_billing_frame_end' => $latestStat->getTimeFrame()->getBillingFrameEndReadable(),
+        ];
         return [
-            'labels' => $labels,
-            'datasets' => $datasets
+            'labels' => $chdata['labels'],
+            'datasets' => $chdata['datasets'],
+            'current' => $current
         ];
     }
 
@@ -175,8 +173,8 @@ class NetworkUsageService
          */
         foreach ($networkStatistics as $stat) {
             $labels[] = $stat->getProbingTime()->format('d.m H:i');
-            $datasets['speed_relative']['data'][] = round(($stat->getTotalSpeedFromReferencePoint() / 1024), 2);
-            $datasets['speed_left']['data'][] = round(($stat->getTransferRateLeft() / 1024), 2);
+            $datasets['speed_relative']['data'][] = round(($stat->getTotalSpeedFromReferencePoint() / 1024), 4);
+            $datasets['speed_left']['data'][] = round(($stat->getTransferRateLeft() / 1024), 4);
         }
         $data['labels'] = $labels;
         $data['datasets'] = $datasets;

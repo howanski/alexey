@@ -36,4 +36,13 @@ class NetworkStatisticRepository extends ServiceEntityRepository
         $qb->distinct(true);
         return $qb->getQuery()->getResult();
     }
+
+    public function getLatestOne(): NetworkStatistic
+    {
+        $qb = $this->createQueryBuilder('ns')
+            ->addOrderBy('ns.id', 'DESC')
+            ->setMaxResults(1);
+        $qb->distinct(true);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }
