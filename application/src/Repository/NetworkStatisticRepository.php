@@ -41,8 +41,18 @@ class NetworkStatisticRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('ns')
             ->addOrderBy('ns.id', 'DESC')
-            ->setMaxResults(1);
+            ->setMaxResults(2);
         $qb->distinct(true);
-        return $qb->getQuery()->getOneOrNullResult();
+        $result = $qb->getQuery()->getResult();
+        if (is_array($result)) {
+            if (array_key_exists(1, $result)) {
+                $result[0]->setReferencePoint($result[1]);
+            }
+            if (array_key_exists(0, $result)) {
+                $result = $result[0];
+            }
+        }
+
+        return $result;
     }
 }

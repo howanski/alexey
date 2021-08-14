@@ -121,6 +121,7 @@ class NetworkUsageService
         $current = [
             'current_traffic_left' => $latestStat->getTrafficLeftReadable(4),
             'current_transfer_rate_left' => $latestStat->getTransferRateLeftReadable(4),
+            'current_transfer_rate' => $latestStat->getTotalSpeedFromReferencePointReadable(),
             'current_billing_frame_end' => $latestStat->getTimeFrame()->getBillingFrameEndReadable(),
         ];
         return [

@@ -133,8 +133,10 @@ function updateChartData() {
       let responseData = response.data;
       let ctl = document.getElementById("current_traffic_left");
       let ctrl = document.getElementById("current_transfer_rate_left");
+      let ctr = document.getElementById("current_transfer_rate");
       let cbfe = document.getElementById("current_billing_frame_end");
       ctrl.innerHTML = responseData.current.current_transfer_rate_left;
+      ctr.innerHTML = responseData.current.current_transfer_rate;
       ctl.innerHTML = responseData.current.current_traffic_left;
       cbfe.innerHTML = responseData.current.current_billing_frame_end;
       let chartConfig = {
