@@ -54,10 +54,10 @@ class WeatherService
             self::SHOW_ON_DASHBOARD,
         ]);
         $settings = new WeatherSettings();
-        $settings->setLatitude($arraySettings[self::LATITUDE]);
-        $settings->setLongitude($arraySettings[self::LONGITUDE]);
-        $settings->setApiKey($arraySettings[self::API_KEY]);
-        $settings->setShowOnDashboard($arraySettings[self::SHOW_ON_DASHBOARD]);
+        $settings->setLatitude(strval($arraySettings[self::LATITUDE]));
+        $settings->setLongitude(strval($arraySettings[self::LONGITUDE]));
+        $settings->setApiKey(strval($arraySettings[self::API_KEY]));
+        $settings->setShowOnDashboard(strval($arraySettings[self::SHOW_ON_DASHBOARD]));
         return $settings;
     }
 
