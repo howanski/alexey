@@ -73,7 +73,12 @@ class OpenWeatherOneApiResponse
 
     public function getHourlyWeatherReadable()
     {
-        $this->ensureWeatherDataFetched();
+        try {
+            $this->ensureWeatherDataFetched();
+        } catch (\Exception $e) {
+            return ['hourly' => []];
+        }
+
         $timeZone = new CarbonTimeZone('Europe/Warsaw');
         $raw = $this->rawApiResponse;
         $readable = [

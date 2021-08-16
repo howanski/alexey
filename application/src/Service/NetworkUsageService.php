@@ -68,7 +68,7 @@ class NetworkUsageService
         return $stat;
     }
 
-    public function getLatestStatistic(): NetworkStatistic
+    public function getLatestStatistic(): ?NetworkStatistic
     {
         $latest = $this->networkStatisticRepository->getLatestOne();
         return $latest;
@@ -118,12 +118,22 @@ class NetworkUsageService
             $chdata = $this->prepareDataForChart($billingStart);
         }
         $latestStat = $this->getLatestStatistic();
-        $current = [
-            'current_traffic_left' => $latestStat->getTrafficLeftReadable(4),
-            'current_transfer_rate_left' => $latestStat->getTransferRateLeftReadable(4),
-            'current_transfer_rate' => $latestStat->getTotalSpeedFromReferencePointReadable(),
-            'current_billing_frame_end' => $latestStat->getTimeFrame()->getBillingFrameEndReadable(),
-        ];
+        if ($latestStat instanceof NetworkStatistic) {
+            $current = [
+                'current_traffic_left' => $latestStat->getTrafficLeftReadable(4),
+                'current_transfer_rate_left' => $latestStat->getTransferRateLeftReadable(4),
+                'current_transfer_rate' => $latestStat->getTotalSpeedFromReferencePointReadable(),
+                'current_billing_frame_end' => $latestStat->getTimeFrame()->getBillingFrameEndReadable(),
+            ];
+        } else {
+            $current = [
+                'current_traffic_left' => 0,
+                'current_transfer_rate_left' => 0,
+                'current_transfer_rate' => 0,
+                'current_billing_frame_end' => 0,
+            ];
+        }
+
         return [
             'labels' => $chdata['labels'],
             'datasets' => $chdata['datasets'],

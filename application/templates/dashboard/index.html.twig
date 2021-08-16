@@ -31,7 +31,8 @@ window.location.reload(false);
 										Machine:
 										{{machine.name}}</div>
 									{% if machine.lastSeen %}
-										<div class="h5 mb-0 font-weight-bold text-gray-800">Last seen {{ machine.lastSeenReadable }}</div>
+										<div class="h5 mb-0 font-weight-bold text-gray-800">Last seen
+											{{ machine.lastSeenReadable }}</div>
 									{% endif %}
 								</div>
 								<div class="col-auto">
@@ -49,70 +50,70 @@ window.location.reload(false);
 				</div>
 			{% endfor %}
 		</div>
-		{# TODO: refactor cards #}
-		{% if dashboard_data.network_statistic is defined %}
-			<div class="row">
-				<h5 class="text-gray-400">Network Usage</h1>
-			</div>
-			<div class="row">
-				<div class="col-xl-3 col-md-6 mb-4">
-					<div class="card  border-left-success shadow h-100 py-2">
-						<div class="card-body">
-							<div class="row no-gutters align-items-center">
-								<div class="col mr-2">
-									<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
-										Optimal transfer:
-									</div>
-									<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.getTransferRateLeftReadable(4) }}</div>
+	{% endif %}
+	{# TODO: refactor cards #}
+	{% if dashboard_data.network_statistic is defined and dashboard_data.network_statistic is not null %}
+		<div class="row">
+			<h5 class="text-gray-400">Network Usage</h1>
+		</div>
+		<div class="row">
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card  border-left-success shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
+									Optimal transfer:
 								</div>
-								<div class="col-auto">
-									<a href="{{ path('network_usage') }}">
-										<i class="far fa-eye fa-2x text-success"></i>
-									</a>
-								</div>
+								<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.getTransferRateLeftReadable(4) }}</div>
 							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-xl-3 col-md-6 mb-4">
-					<div class="card  border-left-success shadow h-100 py-2">
-						<div class="card-body">
-							<div class="row no-gutters align-items-center">
-								<div class="col mr-2">
-									<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
-										Traffic left:
-									</div>
-									<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.getTrafficLeftReadable(4) }}</div>
-								</div>
-								<div class="col-auto">
-									<a href="{{ path('network_usage') }}">
-										<i class="far fa-eye fa-2x text-success"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-xl-3 col-md-6 mb-4">
-					<div class="card  border-left-success shadow h-100 py-2">
-						<div class="card-body">
-							<div class="row no-gutters align-items-center">
-								<div class="col mr-2">
-									<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
-										Billing window end:
-									</div>
-									<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.timeFrame.billingFrameEndReadable }}</div>
-								</div>
-								<div class="col-auto">
-									<a href="{{ path('network_usage') }}">
-										<i class="far fa-eye fa-2x text-success"></i>
-									</a>
-								</div>
+							<div class="col-auto">
+								<a href="{{ path('network_usage') }}">
+									<i class="far fa-eye fa-2x text-success"></i>
+								</a>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		{% endif %}
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card  border-left-success shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
+									Traffic left:
+								</div>
+								<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.getTrafficLeftReadable(4) }}</div>
+							</div>
+							<div class="col-auto">
+								<a href="{{ path('network_usage') }}">
+									<i class="far fa-eye fa-2x text-success"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card  border-left-success shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
+									Billing window end:
+								</div>
+								<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.timeFrame.billingFrameEndReadable }}</div>
+							</div>
+							<div class="col-auto">
+								<a href="{{ path('network_usage') }}">
+									<i class="far fa-eye fa-2x text-success"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	{% endif %}
 {% endblock %}
