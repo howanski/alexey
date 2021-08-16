@@ -10,4 +10,5 @@ ENV PHP_IDE_CONFIG "serverName=application"
 COPY xdebug.ini /etc/php/8.0/mods-available/xdebug.ini
 COPY supervisor-alexey-machines-ping.conf /etc/supervisor/conf.d/supervisor-alexey-machines-ping.conf
 COPY supervisor-alexey-network-usage-record.conf /etc/supervisor/conf.d/supervisor-alexey-network-usage-record.conf
+COPY supervisor-alexey-transmission-tune.conf /etc/supervisor/conf.d/supervisor-alexey-transmission-tune.conf
 WORKDIR /var/www/html
