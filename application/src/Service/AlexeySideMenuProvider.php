@@ -15,9 +15,9 @@ class AlexeySideMenuProvider extends AbstractExtension
 {
     private RequestStack $requestStack;
 
-    private Request $currentRequest;
+    private ?Request $currentRequest;
 
-    private string $currentRoute;
+    private ?string $currentRoute;
 
     private RouterInterface $router;
 
@@ -25,15 +25,7 @@ class AlexeySideMenuProvider extends AbstractExtension
     {
         $this->requestStack = $requestStack;
         $this->currentRequest = $this->requestStack->getCurrentRequest();
-        /**
-         * currentRequest will be empty on CLI mode
-         * Sometimes we'd like to run app via CLI with Twig enabled, which would case app crash in following lines
-         */
-        if ($this->currentRequest) {
-            $this->currentRoute = $this->currentRequest->getRequestUri();
-        } else {
-            $this->currentRoute = '/';
-        }
+        $this->currentRoute = $this?->currentRequest?->getRequestUri();
         $this->router = $router;
     }
 
@@ -62,13 +54,13 @@ class AlexeySideMenuProvider extends AbstractExtension
         $menuItem = new SideMenuItem('Network', '/network', 'fa-wifi', $this->isActiveRoute('/network'));
 
         $route = $this->router->generate('network_machine_index');
-        $networkMachines = new SideMenuItem('Machines', $route, 'fa-server', $this->isActiveRoute($route));
+        $networkMachines = new SideMenuItem('Machines', $route, '', $this->isActiveRoute($route));
 
         $route = $this->router->generate('network_usage');
-        $networkUsage = new SideMenuItem('Usage', $route, 'fa-network-wired', $this->isActiveRoute($route));
+        $networkUsage = new SideMenuItem('Usage', $route, '', $this->isActiveRoute($route));
 
         $route = $this->router->generate('network_transmission');
-        $networkTransmission = new SideMenuItem('Transmission', $route, 'fa-network-wired', $this->isActiveRoute($route));
+        $networkTransmission = new SideMenuItem('Transmission', $route, '', $this->isActiveRoute($route));
 
         $menuItem->setChildren([$networkMachines, $networkUsage, $networkTransmission]);
         $sideMenu[] = $menuItem;
