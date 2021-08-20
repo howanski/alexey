@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Class;
 
 use App\Service\SimpleSettingsService;
@@ -11,27 +13,15 @@ class NetworkUsageProviderSettings
     private const PROVIDER_PASSWORD = 'NETWORK_USAGE_PROVIDER_PASSWORD';
     private const SHOW_ON_DASHBOARD = 'NETWORK_USAGE_SHOW_ON_DASHBOARD';
 
-    /**
-     * @var string
-     */
-    private $providerType;
+    private string $providerType;
 
-    /**
-     * @var string
-     */
-    private $address;
+    private string $address;
 
-    /**
-     * @var string
-     */
-    private $password;
+    private string $password;
 
-    /**
-     * @var string
-     */
-    private $showOnDashboard;
+    private string $showOnDashboard;
 
-    public function selfConfigure(SimpleSettingsService $simpleSettingsService)
+    public function selfConfigure(SimpleSettingsService $simpleSettingsService): void
     {
         $settingsArray = $simpleSettingsService->getSettings([
             self::PROVIDER_TYPE,
@@ -55,83 +45,47 @@ class NetworkUsageProviderSettings
         ]);
     }
 
-    /**
-     * @return  string
-     */
-    public function getProviderType()
+    public function getProviderType(): string
     {
         return $this->providerType;
     }
 
-    /**
-     * @param  string  $providerType
-     *
-     * @return  self
-     */
-    public function setProviderType(string $providerType)
+    public function setProviderType(string $providerType): self
     {
         $this->providerType = $providerType;
-
         return $this;
     }
 
-    /**
-     * @return  string
-     */
-    public function getAddress()
+    public function getAddress(): string
     {
         return $this->address;
     }
 
-    /**
-     * @param  string  $address
-     *
-     * @return  self
-     */
-    public function setAddress(string $address)
+    public function setAddress(string $address): self
     {
         $this->address = $address;
-
         return $this;
     }
 
-    /**
-     * @return  string
-     */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
 
-    /**
-     * @param  string  $password
-     *
-     * @return  self
-     */
-    public function setPassword(string $password)
+    public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
 
-    /**
-     * @return  string
-     */
-    public function getShowOnDashboard()
+    public function getShowOnDashboard(): string
     {
         return $this->showOnDashboard;
     }
 
-    /**
-     * @param  string  $showOnDashboard
-     *
-     * @return  self
-     */
-    public function setShowOnDashboard(string $showOnDashboard)
+    public function setShowOnDashboard(string $showOnDashboard): self
     {
         $this->showOnDashboard = $showOnDashboard;
-
         return $this;
     }
 }

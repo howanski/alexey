@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Service\NetworkUsageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,15 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class AlexeyNetworkUsageCommand extends Command
 {
-    /**
-     * @var NetworkUsageService
-     */
-    private $service;
+    private NetworkUsageService $service;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
     public function __construct(NetworkUsageService $service, EntityManagerInterface $em)
     {

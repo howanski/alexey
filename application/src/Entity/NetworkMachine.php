@@ -1,20 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Carbon\Carbon;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\NetworkMachineRepository;
 
-/**
- * @ORM\Entity(repositoryClass=NetworkMachineRepository::class)
- */
+#[ORM\Entity(repositoryClass: NetworkMachineRepository::class)]
 class NetworkMachine
 {
     public const STATUS_UNKNOWN = 0;
     public const STATUS_UNREACHABLE = 1;
     public const STATUS_REACHABLE = 2;
-
 
     private const STATUSES_READABLE = [
         self::STATUS_UNKNOWN => '?',
@@ -22,60 +21,43 @@ class NetworkMachine
         self::STATUS_REACHABLE => 'Visible',
     ];
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $uri;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $uri;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $name;
 
-    /**
-     * @ORM\Column(type="string", length=23, nullable=true)
-     * @link https://en.wikipedia.org/wiki/MAC_address
-     */
-    private $macAddress;
+    #[ORM\Column(type: 'string', length: 23, nullable: true)]
+    private ?string $macAddress;
 
-    /**
-     * @ORM\Column(type="string", length=23, nullable=true)
-     */
-    private $wakeDestination;
+    #[ORM\Column(type: 'string', length: 23, nullable: true)]
+    private ?string $wakeDestination;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private $status;
+    #[ORM\Column(type: 'smallint')]
+    private int $status;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $lastSeen;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $lastSeen;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    private $showOnDashboard = false;
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $showOnDashboard = false;
 
     public function __construct()
     {
         $this->status = self::STATUS_UNKNOWN;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getUri(): ?string
+    public function getUri(): string
     {
         return $this->uri;
     }
@@ -83,11 +65,10 @@ class NetworkMachine
     public function setUri(string $uri): self
     {
         $this->uri = $uri;
-
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -95,11 +76,10 @@ class NetworkMachine
     public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
-    public function getStatus(): ?int
+    public function getStatus(): int
     {
         return $this->status;
     }
@@ -122,7 +102,6 @@ class NetworkMachine
     public function setStatus(int $status): self
     {
         $this->status = $status;
-
         return $this;
     }
 
@@ -134,47 +113,28 @@ class NetworkMachine
     public function setLastSeen(?\DateTimeInterface $lastSeen): self
     {
         $this->lastSeen = $lastSeen;
-
         return $this;
     }
 
-    /**
-     * Get the value of macAddress
-     */
-    public function getMacAddress(): string
+    public function getMacAddress(): ?string
     {
         return strval($this->macAddress);
     }
 
-    /**
-     * Set the value of macAddress
-     *
-     * @return  self
-     */
-    public function setMacAddress($macAddress)
+    public function setMacAddress($macAddress): self
     {
         $this->macAddress = $macAddress;
-
         return $this;
     }
 
-    /**
-     * Get the value of wakeDestination
-     */
-    public function getWakeDestination(): string
+    public function getWakeDestination(): ?string
     {
         return strval($this->wakeDestination);
     }
 
-    /**
-     * Set the value of wakeDestination
-     *
-     * @return  self
-     */
-    public function setWakeDestination($wakeDestination)
+    public function setWakeDestination($wakeDestination): self
     {
         $this->wakeDestination = $wakeDestination;
-
         return $this;
     }
 
@@ -186,7 +146,6 @@ class NetworkMachine
     public function setShowOnDashboard(bool $showOnDashboard): self
     {
         $this->showOnDashboard = $showOnDashboard;
-
         return $this;
     }
 

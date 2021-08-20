@@ -1,43 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Class;
 
 class SideMenuItem
 {
-    /**
-     * @var string
-     */
-    private $icon;
 
-    /**
-     * @var bool
-     */
-    private $isActive;
+    private string $icon;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private bool $isActive;
 
-    /**
-     * @var string
-     */
-    private $destination;
+    private string $name;
 
-    /**
-     * @var array
-     */
-    private $children = [];
+    private string $destination;
 
-    /**
-     * @var bool
-     */
-    private $isHeading;
+    private array $children;
 
-    /**
-     * @var bool
-     */
-    private $isDivider;
+    private bool $isHeading;
+
+    private bool $isDivider;
 
     public function __construct(
         string $name = '',
@@ -46,6 +28,7 @@ class SideMenuItem
         bool $isActive = false,
         bool $isHeading = false,
         array $children = [],
+        bool $isDivider = false,
     ) {
         $this->setName($name);
         $this->setDestination($destination);
@@ -53,175 +36,87 @@ class SideMenuItem
         $this->setIsActive($isActive);
         $this->setIsHeading($isHeading);
         $this->setChildren($children);
+        $this->setIsDivider($isDivider);
     }
 
-    /**
-     * Get the value of icon
-     *
-     * @return  string
-     */
-    public function getIcon()
+    public function getIcon(): string
     {
         return $this->icon;
     }
 
-    /**
-     * Set the value of icon
-     *
-     * @param  string  $icon
-     *
-     * @return  self
-     */
-    public function setIcon(string $icon)
+    public function setIcon(string $icon): self
     {
         $this->icon = $icon;
-
         return $this;
     }
 
-    /**
-     * Get the value of isActive
-     *
-     * @return  bool
-     */
-    public function getIsActive()
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }
 
-    /**
-     * Set the value of isActive
-     *
-     * @param  bool  $isActive
-     *
-     * @return  self
-     */
-    public function setIsActive(bool $isActive)
+    public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
-
         return $this;
     }
 
-    /**
-     * Get the value of name
-     *
-     * @return  string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Set the value of name
-     *
-     * @param  string  $name
-     *
-     * @return  self
-     */
-    public function setName(string $name)
+    public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
-    /**
-     * Get the value of destination
-     *
-     * @return  string
-     */
-    public function getDestination()
+    public function getDestination(): string
     {
         return $this->destination;
     }
 
-    /**
-     * Set the value of destination
-     *
-     * @param  string  $destination
-     *
-     * @return  self
-     */
-    public function setDestination(string $destination)
+    public function setDestination(string $destination): self
     {
         $this->destination = $destination;
-
         return $this;
     }
 
-    public function haveChildren()
+    public function haveChildren(): bool
     {
         return !empty($this->getChildren());
     }
 
-    /**
-     * Get the value of children
-     *
-     * @return  []SideMenuItem
-     */
     public function getChildren(): array
     {
         return $this->children;
     }
 
-    /**
-     * Set the value of children
-     *
-     * @param  array  $children
-     *
-     * @return  self
-     */
-    public function setChildren(array $children)
+    public function setChildren(array $children): self
     {
         $this->children = $children;
-
         return $this;
     }
 
-    /**
-     * Get the value of isHeading
-     *
-     * @return  bool
-     */
-    public function getIsHeading()
+    public function getIsHeading(): bool
     {
         return $this->isHeading;
     }
 
-    /**
-     * Set the value of isHeading
-     *
-     * @param  bool  $isHeading
-     *
-     * @return  self
-     */
-    public function setIsHeading(bool $isHeading)
+    public function setIsHeading(bool $isHeading): self
     {
         $this->isHeading = $isHeading;
 
         return $this;
     }
 
-    /**
-     * Get the value of isDivider
-     *
-     * @return  bool
-     */
-    public function getIsDivider()
+    public function getIsDivider(): bool
     {
         return $this->isDivider;
     }
 
-    /**
-     * Set the value of isDivider
-     *
-     * @param  bool  $isDivider
-     *
-     * @return  self
-     */
-    public function setIsDivider(bool $isDivider)
+    public function setIsDivider(bool $isDivider): self
     {
         $this->isDivider = $isDivider;
 

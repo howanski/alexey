@@ -1,43 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Class;
 
 use Carbon\Carbon;
 use Carbon\CarbonTimeZone;
-use DateTime;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class OpenWeatherOneApiResponse
 {
-    /**
-     * @var array
-     */
-    private $rawApiResponse = [];
+    private array $rawApiResponse;
 
-    /**
-     * @var HttpClientInterface
-     */
-    private $client;
+    private HttpClientInterface $client;
 
-    /**
-     * @var DateTime
-     */
-    private $now;
+    private string $latitude;
 
-    /**
-     * @var string
-     */
-    private $latitude;
+    private string $longitude;
 
-    /**
-     * @var string
-     */
-    private $longitude;
-
-    /**
-     * @var string
-     */
-    private $apiKey;
+    private string $apiKey;
 
     public function setRawApiResponse(array $rawApiResponse): self
     {
@@ -53,13 +34,12 @@ class OpenWeatherOneApiResponse
         $this->apiKey = $weatherSettings->getApiKey();
     }
 
-    private function ensureWeatherDataFetched()
+    private function ensureWeatherDataFetched(): void
     {
         if (empty($this->rawApiResponse)) {
             if (empty($this->client)) {
                 throw new \Exception('http client not set');
             }
-            $this->now = new DateTime('now');
             $response = $this->client->request(
                 'GET',
                 'https://api.openweathermap.org/data/2.5/onecall?lat=' . $this->latitude .
@@ -71,7 +51,7 @@ class OpenWeatherOneApiResponse
         }
     }
 
-    public function getHourlyWeatherReadable()
+    public function getHourlyWeatherReadable(): array
     {
         try {
             $this->ensureWeatherDataFetched();

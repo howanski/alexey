@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Class\TransmissionSettings;
@@ -7,7 +9,6 @@ use App\Entity\NetworkStatistic;
 use App\Service\NetworkUsageService;
 use App\Service\SimpleSettingsService;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,15 +22,9 @@ use Transmission\Transmission;
 )]
 class AlexeyNetworkTransmissionTuneCommand extends Command
 {
-    /**
-     * @var NetworkUsageService
-     */
-    private $service;
+    private NetworkUsageService $service;
 
-    /**
-     * @var TransmissionSettings
-     */
-    private $settings;
+    private TransmissionSettings $settings;
 
     public function __construct(NetworkUsageService $service, SimpleSettingsService $simpleSettingsService)
     {
@@ -88,6 +83,9 @@ class AlexeyNetworkTransmissionTuneCommand extends Command
         $speed = intval($speed);
         if ($speed < 5) {
             $speed = 5;
+        }
+        if ($speed > 1024) {
+            $speed = 1024; // 8 Mbit
         }
         return $speed;
     }

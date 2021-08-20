@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Class;
 
 class WeatherSettings
@@ -7,93 +9,53 @@ class WeatherSettings
     public const DASHBOARD_SHOW = 'SHOW';
     public const DASHBOARD_HIDE = 'HIDE';
 
-    /**
-     * @var string
-     */
-    private $latitude;
+    private string $latitude;
 
-    /**
-     * @var string
-     */
-    private $longitude;
+    private string $longitude;
 
-    /**
-     * @var string
-     */
-    private $apiKey;
+    private string $apiKey;
 
-    /**
-     * @var string
-     */
-    private $showOnDashboard;
+    private string $showOnDashboard;
 
-    /**
-     * @return  string
-     */
     public function getLatitude(): string
     {
         return $this->latitude;
     }
 
-    /**
-     * @param  string  $latitude
-     * @return  self
-     */
-    public function setLatitude(string $latitude)
+    public function setLatitude(string $latitude): self
     {
         $this->latitude = $latitude;
         return $this;
     }
 
-    /**
-     * @return  string
-     */
     public function getLongitude(): string
     {
         return $this->longitude;
     }
 
-    /**
-     * @param  string  $longitude
-     * @return  self
-     */
-    public function setLongitude(string $longitude)
+    public function setLongitude(string $longitude): self
     {
         $this->longitude = $longitude;
         return $this;
     }
 
-    /**
-     * @return  string
-     */
     public function getApiKey(): string
     {
         return $this->apiKey;
     }
 
-    /**
-     * @param  string  $apiKey
-     * @return  self
-     */
-    public function setApiKey(string $apiKey)
+    public function setApiKey(string $apiKey): self
     {
         $this->apiKey = $apiKey;
         return $this;
     }
 
-    /**
-     * @return  string
-     */
     public function getShowOnDashboard(): string
     {
         return $this->showOnDashboard;
     }
 
-    /**
-     * @param  string  $showOnDashboard
-     * @return  self
-     */
-    public function setShowOnDashboard(string $showOnDashboard)
+    public function setShowOnDashboard(string $showOnDashboard): self
     {
         $this->showOnDashboard = $showOnDashboard;
         return $this;

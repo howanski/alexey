@@ -1,34 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use Twig\TwigFunction;
 use App\Class\SideMenuItem;
 use Twig\Extension\AbstractExtension;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class AlexeySideMenuProvider extends AbstractExtension
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private RequestStack $requestStack;
 
-    /**
-     * @var Request
-     */
-    private $currentRequest;
+    private Request $currentRequest;
 
-    /**
-     * @var string
-     */
-    private $currentRoute;
+    private string $currentRoute;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(RequestStack $requestStack, RouterInterface $router)
     {
@@ -77,44 +68,9 @@ class AlexeySideMenuProvider extends AbstractExtension
         $networkUsage = new SideMenuItem('Usage', $route, 'fa-network-wired', $this->isActiveRoute($route));
         $menuItem->setChildren([$networkMachines, $networkUsage]);
         $sideMenu[] = $menuItem;
-
-        /**
-         * Sample menu elements
-         */
-        // $sideMenu[] = $this->createDivider();
-        // $sideMenu[] = $this->createHeading('One More Heading');
-
-        // $withChildren = new SideMenuItem('OneWithChildren', '/', 'fa-wrench');
-        // $childrenFirst = [];
-        // $childrenFirst[] = $this->createHeading('PAparara 1:');
-        // $childrenFirst[] = $this->createDivider();
-        // $childrenFirst[] = new SideMenuItem('Charts', '/', 'fa-chart-area');
-        // $childrenFirst[] = new SideMenuItem('Tables', '/', 'fa-table');
-        // $withChildren->setChildren($childrenFirst);
-        // $sideMenu[] = $withChildren;
-
-        // $withChildrenActive = new SideMenuItem('WithChildren Active', '/', 'fa-wrench', true);
-        // $childrenOfActive = [];
-        // $childrenOfActive[] = $this->createHeading('PAparara 1:');
-        // $childrenOfActive[] = new SideMenuItem('Charts', '/', 'fa-chart-area');
-        // $childrenOfActive[] = $this->createDivider();
-        // $childrenOfActive[] = new SideMenuItem('Tables', '/', 'fa-table');
-        // $childrenOfActive[] = $this->createHeading('PAparara 2');
-
-        // $withChildrenActive->setChildren($childrenOfActive);
-        // $sideMenu[] = $withChildrenActive;
-
-
-        // $sideMenu[] = new SideMenuItem('Charts', '/', 'fa-chart-area', true);
-        // $sideMenu[] = new SideMenuItem('Tables', '/', 'fa-table');
         return $sideMenu;
     }
 
-
-    /**
-     * @param string $title
-     * @return SideMenuItem
-     */
     private function createHeading(string $title): SideMenuItem
     {
         $heading = new SideMenuItem();
@@ -123,9 +79,6 @@ class AlexeySideMenuProvider extends AbstractExtension
         return $heading;
     }
 
-    /**
-     * @return SideMenuItem
-     */
     private function createDivider(): SideMenuItem
     {
         $divider = new SideMenuItem();

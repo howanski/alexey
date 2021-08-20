@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Class\HHelpers;
@@ -8,146 +10,92 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=NetworkStatisticRepository::class)
- */
+#[ORM\Entity(repositoryClass: NetworkStatisticRepository::class)]
 class NetworkStatistic
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="bigint")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'bigint')]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @var DateTime
-     */
-    private $probingTime;
+    #[ORM\Column(type: 'datetime')]
+    private DateTime $probingTime;
 
-    /**
-     * @ORM\Column(type="bigint")
-     * @var int
-     */
-    private $dataUploadedInFrame = 0;
+    #[ORM\Column(type: 'bigint')]
+    private int $dataUploadedInFrame = 0;
 
-    /**
-     * @ORM\Column(type="bigint")
-     * @var int
-     */
-    private $dataDownloadedInFrame = 0;
+    #[ORM\Column(type: 'bigint')]
+    private int $dataDownloadedInFrame = 0;
 
-    /**
-     * @var NetworkStatistic
-     */
-    private $referencePoint;
+    private NetworkStatistic $referencePoint;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=NetworkStatisticTimeFrame::class, inversedBy="networkStatistics")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $timeFrame;
+    #[ORM\ManyToOne(targetEntity: NetworkStatisticTimeFrame::class, inversedBy: 'networkStatistics')]
+    #[ORM\JoinColumn(nullable: false)]
+    private NetworkStatisticTimeFrame $timeFrame;
 
     public function __construct()
     {
         $this->probingTime = new DateTime('now');
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return  DateTime
-     */
-    public function getProbingTime()
+    public function getProbingTime(): DateTime
     {
         return $this->probingTime;
     }
 
-    /**
-     * @param  DateTime  $probingTime
-     *
-     * @return  self
-     */
-    public function setProbingTime(DateTime $probingTime)
+    public function setProbingTime(DateTime $probingTime): self
     {
         $this->probingTime = $probingTime;
-
         return $this;
     }
 
-    /**
-     * @return  int
-     */
-    public function getDataUploadedInFrame()
+    public function getDataUploadedInFrame(): int
     {
         return $this->dataUploadedInFrame;
     }
 
-    /**
-     * @param  int  $dataUploadedInFrame
-     *
-     * @return  self
-     */
-    public function setDataUploadedInFrame(int $dataUploadedInFrame)
+    public function setDataUploadedInFrame(int $dataUploadedInFrame): self
     {
         $this->dataUploadedInFrame = $dataUploadedInFrame;
-
         return $this;
     }
 
-    /**
-     * @return  int
-     */
-    public function getDataDownloadedInFrame()
+    public function getDataDownloadedInFrame(): int
     {
         return $this->dataDownloadedInFrame;
     }
 
-    /**
-     * @param  int  $dataDownloadedInFrame
-     *
-     * @return  self
-     */
-    public function setDataDownloadedInFrame(int $dataDownloadedInFrame)
+    public function setDataDownloadedInFrame(int $dataDownloadedInFrame): self
     {
         $this->dataDownloadedInFrame = $dataDownloadedInFrame;
-
         return $this;
     }
 
-    public function getTimeFrame(): ?NetworkStatisticTimeFrame
+    public function getTimeFrame(): NetworkStatisticTimeFrame
     {
         return $this->timeFrame;
     }
 
-    public function setTimeFrame(?NetworkStatisticTimeFrame $timeFrame): self
+    public function setTimeFrame(NetworkStatisticTimeFrame $timeFrame): self
     {
         $this->timeFrame = $timeFrame;
-
         return $this;
     }
 
-    /**
-     * @param  NetworkStatistic  $referencePoint
-     *
-     * @return  self
-     */
-    public function setReferencePoint(NetworkStatistic $referencePoint)
+    public function setReferencePoint(NetworkStatistic $referencePoint): self
     {
         $this->referencePoint = $referencePoint;
-
         return $this;
     }
 
-    private function ensureReferencePointSet()
+    private function ensureReferencePointSet(): void
     {
-        /**
-         * If no reference point set, measures are done on empty statistic set on $timeFrame start
-         */
+        // If no reference point set, measures are done on empty statistic set on $timeFrame start
         if (!($this->referencePoint instanceof NetworkStatistic)) {
             $referencePoint = new NetworkStatistic();
             $timeFrame = $this->getTimeFrame();
@@ -159,9 +107,7 @@ class NetworkStatistic
         }
     }
 
-    /**
-     * Time
-     */
+    // Time
 
     public function getTimeLeftTillFrameEnd(): int
     {
@@ -170,9 +116,7 @@ class NetworkStatistic
         return ($endTime - $startTime);
     }
 
-    /**
-     * @return integer value of seconds passed
-     */
+    // seconds passed
     public function getTimePassedFromReferencePoint(): int
     {
         $this->ensureReferencePointSet();
@@ -181,9 +125,7 @@ class NetworkStatistic
         return ($endTime - $startTime);
     }
 
-    /**
-     * Download
-     */
+    // Download
 
     public function getDataDownloadedFromReferencePoint(): int
     {
@@ -201,9 +143,7 @@ class NetworkStatistic
         return HHelpers::formatBytes((int)$this->getDownloadSpeedFromReferencePoint()) . '/s';
     }
 
-    /**
-     * Upload
-     */
+    // Upload
 
     public function getDataUploadedFromReferencePoint(): int
     {
@@ -221,9 +161,7 @@ class NetworkStatistic
         return HHelpers::formatBytes((int)$this->getUploadSpeedFromReferencePoint()) . '/s';
     }
 
-    /**
-     * Download + Upload
-     */
+    // Download + Upload
 
     public function getTotalTrafficFromReferencePoint(): int
     {
@@ -247,7 +185,8 @@ class NetworkStatistic
 
     public function getTrafficLeft(): int
     {
-        return ($this->getTimeFrame()->getBillingFrameDataLimit() - ($this->getDataUploadedInFrame() + $this->getDataDownloadedInFrame()));
+        return ($this->getTimeFrame()->getBillingFrameDataLimit() -
+            ($this->getDataUploadedInFrame() + $this->getDataDownloadedInFrame()));
     }
 
     public function getTrafficLeftReadable(int $precision = 2): string

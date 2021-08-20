@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Entity\NetworkMachine;
@@ -9,15 +11,9 @@ use App\Repository\NetworkMachineRepository;
 
 class DashboardService
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    /**
-     * @var NetworkUsageService
-     */
-    private $networkUsageService;
+    private NetworkUsageService $networkUsageService;
 
     public function __construct(EntityManagerInterface $em, NetworkUsageService $networkUsageService)
     {

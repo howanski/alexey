@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\NetworkStatistic;
@@ -21,8 +23,6 @@ class NetworkStatisticRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param DateTime $from
-     * @param DateTime $to
      * @return NetworkStatistic[]
      */
     public function getOrderedFromTimeRange(DateTime $from, DateTime $to): array
@@ -37,7 +37,7 @@ class NetworkStatisticRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getLatestOne(): ?NetworkStatistic
+    public function getLatestOne(): NetworkStatistic
     {
         $qb = $this->createQueryBuilder('ns')
             ->addOrderBy('ns.id', 'DESC')

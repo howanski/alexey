@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Entity\NetworkMachine;
@@ -20,15 +22,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class AlexeyNetworkMachinesPingCommand extends Command
 {
-    /**
-     * @var NetworkMachineRepository
-     */
-    private $networkMachineRepository;
+    private NetworkMachineRepository $networkMachineRepository;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
     public function __construct(EntityManagerInterface $em)
     {

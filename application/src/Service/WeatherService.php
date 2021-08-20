@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Service\SimpleSettingsService;
@@ -14,15 +16,9 @@ class WeatherService
     private const API_KEY = 'WEATHER_API_KEY';
     private const SHOW_ON_DASHBOARD = 'WEATHER_SHOW_ON_DASHBOARD';
 
-    /**
-     * @var HttpClientInterface
-     */
-    private $client;
+    private HttpClientInterface $client;
 
-    /**
-     * @var SimpleSettingsService
-     */
-    private $simpleSettingsService;
+    private SimpleSettingsService $simpleSettingsService;
 
     public function __construct(HttpClientInterface $client, SimpleSettingsService $simpleSettingsService)
     {

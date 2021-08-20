@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use DateTime;
@@ -21,25 +23,13 @@ class NetworkUsageService
     public const NETWORK_USAGE_PROVIDER_HUAWEI = 'HILINK';
     public const NETWORK_USAGE_PROVIDER_NONE = 'NONE';
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    /**
-     * @var SimpleSettingsService
-     */
-    private $simpleSettingsService;
+    private SimpleSettingsService $simpleSettingsService;
 
-    /**
-     * @var NetworkStatisticTimeFrameRepository
-     */
-    private $networkStatisticTimeFrameRepository;
+    private NetworkStatisticTimeFrameRepository $networkStatisticTimeFrameRepository;
 
-    /**
-     * @var NetworkStatisticRepository
-     */
-    private $networkStatisticRepository;
+    private NetworkStatisticRepository $networkStatisticRepository;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -68,7 +58,7 @@ class NetworkUsageService
         return $stat;
     }
 
-    public function getLatestStatistic(): ?NetworkStatistic
+    public function getLatestStatistic(): NetworkStatistic
     {
         $latest = $this->networkStatisticRepository->getLatestOne();
         return $latest;
@@ -81,7 +71,7 @@ class NetworkUsageService
         return $networkSettings;
     }
 
-    public function saveConnectionSettings(NetworkUsageProviderSettings $settings)
+    public function saveConnectionSettings(NetworkUsageProviderSettings $settings): void
     {
         $settings->selfPersist($this->simpleSettingsService);
     }
@@ -223,14 +213,8 @@ class NetworkUsageService
         $huaweiRouter->setAddress($connectionSettings->getAddress());
         $huaweiRouter->login('admin', $connectionSettings->getPassword());
 
-        /**
-         * @var SimpleXMLElement $monthStats
-         */
         $monthStats = $huaweiRouter->getMonthStats();
 
-        /**
-         * @var SimpleXMLElement $monthStats
-         */
         $startDate = $huaweiRouter->generalizedGet('api/monitoring/start_date');
 
         $currentMonthDownload = (int)$monthStats->CurrentMonthDownload;
@@ -251,8 +235,11 @@ class NetworkUsageService
         return $stat;
     }
 
-    private function getTimeFrame(DateTimeInterface $frameStart, DateTimeInterface $frameEnd, int $frameDataLimit)
-    {
+    private function getTimeFrame(
+        DateTimeInterface $frameStart,
+        DateTimeInterface $frameEnd,
+        int $frameDataLimit
+    ): NetworkStatisticTimeFrame {
         $timeFrame = $this->networkStatisticTimeFrameRepository->findOneBy([
             'billingFrameStart' => $frameStart,
             'billingFrameEnd' => $frameEnd

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Class;
 
 use App\Service\SimpleSettingsService;
@@ -13,37 +15,19 @@ class TransmissionSettings
     private const AGGRESSION = 'TRANSMISSION_AGGRESSION';
     private const IS_ACTIVE = 'TRANSMISSION_THROTTLE_ACTIVE';
 
-    /**
-     * @var string
-     */
-    private $host;
+    private string $host;
 
-    /**
-     * @var string
-     */
-    private $user;
+    private string $user;
 
-    /**
-     * @var string
-     */
-    private $password;
+    private string $password;
 
-    /**
-     * @var string
-     */
-    private $targetSpeed;
+    private string $targetSpeed;
 
-    /**
-     * @var string
-     */
-    private $algorithmAggression;
+    private string $algorithmAggression;
 
-    /**
-     * @var string
-     */
-    private $isActive;
+    private string $isActive;
 
-    public function selfConfigure(SimpleSettingsService $simpleSettingsService)
+    public function selfConfigure(SimpleSettingsService $simpleSettingsService): void
     {
         $settingsArray = $simpleSettingsService->getSettings([
             self::IS_ACTIVE,
@@ -61,7 +45,7 @@ class TransmissionSettings
         $this->setAlgorithmAggression(strval($settingsArray[self::AGGRESSION]));
     }
 
-    public function selfPersist(SimpleSettingsService $simpleSettingsService)
+    public function selfPersist(SimpleSettingsService $simpleSettingsService): void
     {
         $simpleSettingsService->saveSettings([
             self::IS_ACTIVE => $this->getIsActive(),
@@ -73,123 +57,69 @@ class TransmissionSettings
         ]);
     }
 
-    /**
-     * @return  string
-     */
-    public function getHost()
+    public function getHost(): string
     {
         return $this->host;
     }
 
-    /**
-     * @param  string  $host
-     *
-     * @return  self
-     */
-    public function setHost(string $host)
+    public function setHost(string $host): self
     {
         $this->host = $host;
-
         return $this;
     }
 
-    /**
-     * @return  string
-     */
-    public function getUser()
+    public function getUser(): string
     {
         return $this->user;
     }
 
-    /**
-     * @param  string  $user
-     *
-     * @return  self
-     */
-    public function setUser(string $user)
+    public function setUser(string $user): self
     {
         $this->user = $user;
-
         return $this;
     }
 
-    /**
-     * @return  string
-     */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
 
-    /**
-     * @param  string  $password
-     *
-     * @return  self
-     */
-    public function setPassword(string $password)
+    public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
 
-    /**
-     * @return  string
-     */
-    public function getTargetSpeed()
+    public function getTargetSpeed(): string
     {
         return $this->targetSpeed;
     }
 
-    /**
-     * @param  string  $targetSpeed
-     *
-     * @return  self
-     */
-    public function setTargetSpeed(string $targetSpeed)
+    public function setTargetSpeed(string $targetSpeed): self
     {
         $this->targetSpeed = $targetSpeed;
-
         return $this;
     }
 
-    /**
-     * @return  string
-     */
-    public function getAlgorithmAggression()
+    public function getAlgorithmAggression(): string
     {
         return $this->algorithmAggression;
     }
 
-    /**
-     * @param  string  $algorithmAggression
-     *
-     * @return  self
-     */
-    public function setAlgorithmAggression(string $algorithmAggression)
+    public function setAlgorithmAggression(string $algorithmAggression): self
     {
         $this->algorithmAggression = $algorithmAggression;
-
         return $this;
     }
 
-    /**
-     * @return  string
-     */
-    public function getIsActive()
+    public function getIsActive(): string
     {
         return $this->isActive;
     }
 
-    /**
-     * @param  string  $isActive
-     *
-     * @return  self
-     */
-    public function setIsActive(string $isActive)
+    public function setIsActive(string $isActive): self
     {
         $this->isActive = $isActive;
-
         return $this;
     }
 }

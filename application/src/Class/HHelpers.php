@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Class;
 
-/**
- * Howanski's Helpers
- */
+// Howanski's Helpers
 class HHelpers
 {
-    public static function formatBytes(int $bytes, int $precision = 2, bool $asPowerOfTens = false): string
+    public static function formatBytes(int|float $bytes, int $precision = 2, bool $asPowerOfTens = false): string
     {
         $units = array('B', 'kB', 'MB', 'GB', 'TB', 'PB');
 

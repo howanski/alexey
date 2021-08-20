@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Entity\SimpleSetting;
@@ -11,15 +13,9 @@ class SimpleSettingsService
     public const UNIVERSAL_TRUTH = 'BOOL_TRUE';
     public const UNIVERSAL_FALSE = 'BOOL_FALSE';
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    /**
-     * @var SimpleSettingRepository
-     */
-    private $simpleSettingRepository;
+    private SimpleSettingRepository $simpleSettingRepository;
 
     public function __construct(EntityManagerInterface $em)
     {

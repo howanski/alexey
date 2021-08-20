@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Class\HHelpers;
@@ -10,39 +12,24 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\NetworkStatisticTimeFrameRepository;
 use Carbon\Carbon;
 
-/**
- * @ORM\Entity(repositoryClass=NetworkStatisticTimeFrameRepository::class)
- */
+#[ORM\Entity(repositoryClass: NetworkStatisticTimeFrameRepository::class)]
 class NetworkStatisticTimeFrame
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @var DateTime
-     */
-    private $billingFrameStart;
+    #[ORM\Column(type: 'datetime')]
+    private DateTime $billingFrameStart;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @var DateTime
-     */
-    private $billingFrameEnd;
+    #[ORM\Column(type: 'datetime')]
+    private DateTime $billingFrameEnd;
 
-    /**
-     * @ORM\Column(type="bigint")
-     * @var int
-     */
-    private $billingFrameDataLimit = 0;
+    #[ORM\Column(type: 'bigint')]
+    private int $billingFrameDataLimit = 0;
 
-    /**
-     * @ORM\OneToMany(targetEntity=NetworkStatistic::class, mappedBy="timeFrame", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: NetworkStatistic::class, mappedBy: 'timeFrame', orphanRemoval: true)]
     private $networkStatistics;
 
     public function __construct()
@@ -50,83 +37,49 @@ class NetworkStatisticTimeFrame
         $this->networkStatistics = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return  DateTime
-     */
-    public function getBillingFrameStart()
+    public function getBillingFrameStart(): DateTime
     {
         return $this->billingFrameStart;
     }
 
-    /**
-     * @param  DateTime  $billingFrameStart
-     *
-     * @return  self
-     */
-    public function setBillingFrameStart(DateTime $billingFrameStart)
+    public function setBillingFrameStart(DateTime $billingFrameStart): self
     {
         $this->billingFrameStart = $billingFrameStart;
-
         return $this;
     }
 
-    /**
-     * @return  DateTime
-     */
-    public function getBillingFrameEnd()
+    public function getBillingFrameEnd(): DateTime
     {
         return $this->billingFrameEnd;
     }
 
-    /**
-     * @param  DateTime  $billingFrameEnd
-     *
-     * @return  self
-     */
-    public function setBillingFrameEnd(DateTime $billingFrameEnd)
+    public function setBillingFrameEnd(DateTime $billingFrameEnd): self
     {
         $this->billingFrameEnd = $billingFrameEnd;
-
         return $this;
     }
 
-    /**
-     * @return  int
-     */
-    public function getBillingFrameDataLimit()
+    public function getBillingFrameDataLimit(): int
     {
         return $this->billingFrameDataLimit;
     }
 
-
-    /**
-     * @return  string
-     */
     public function getBillingFrameDataLimitReadable(): string
     {
         return HHelpers::formatBytes($this->getBillingFrameDataLimit());
     }
 
-    /**
-     * @param  int  $billingFrameDataLimit
-     *
-     * @return  self
-     */
-    public function setBillingFrameDataLimit(int $billingFrameDataLimit)
+    public function setBillingFrameDataLimit(int $billingFrameDataLimit): self
     {
         $this->billingFrameDataLimit = $billingFrameDataLimit;
-
         return $this;
     }
 
-    /**
-     * @return Collection|NetworkStatistic[]
-     */
     public function getNetworkStatistics(): Collection
     {
         return $this->networkStatistics;
