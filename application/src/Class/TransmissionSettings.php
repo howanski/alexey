@@ -57,6 +57,22 @@ class TransmissionSettings
         ]);
     }
 
+    public function getProposedThrottleSpeed(int|float $speedLeft): int
+    {
+        $speedLeftkB = $speedLeft / 1024;
+        $targetSpeed = intval($this->getTargetSpeed());
+        $aggression = intval($this->getAlgorithmAggression());
+        $speed = (($speedLeftkB - $targetSpeed) * $aggression) + $targetSpeed;
+        $speed = intval($speed);
+        if ($speed < 5) {
+            $speed = 5; // minimum - transmission ignores smaller values
+        }
+        if ($speed > 1024) {
+            $speed = 1024; // 8 Mbit
+        }
+        return $speed;
+    }
+
     public function getHost(): string
     {
         return $this->host;

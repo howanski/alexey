@@ -66,24 +66,13 @@ class AlexeySideMenuProvider extends AbstractExtension
 
         $route = $this->router->generate('network_usage');
         $networkUsage = new SideMenuItem('Usage', $route, 'fa-network-wired', $this->isActiveRoute($route));
-        $menuItem->setChildren([$networkMachines, $networkUsage]);
+
+        $route = $this->router->generate('network_transmission');
+        $networkTransmission = new SideMenuItem('Transmission', $route, 'fa-network-wired', $this->isActiveRoute($route));
+
+        $menuItem->setChildren([$networkMachines, $networkUsage, $networkTransmission]);
         $sideMenu[] = $menuItem;
         return $sideMenu;
-    }
-
-    private function createHeading(string $title): SideMenuItem
-    {
-        $heading = new SideMenuItem();
-        $heading->setIsHeading(true);
-        $heading->setName($title);
-        return $heading;
-    }
-
-    private function createDivider(): SideMenuItem
-    {
-        $divider = new SideMenuItem();
-        $divider->setIsDivider(true);
-        return $divider;
     }
 
     private function isActiveRoute(string $route): bool

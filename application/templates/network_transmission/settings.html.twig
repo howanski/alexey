@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alexey | Transmission Throttling Settings
+{% endblock %}
+
+{% block pageContent %}
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-400">Network ~> Transmission Throttling Settings </h1>
+	</div>
+	    {{ form_start(form) }}
+    	{{ form_widget(form) }}
+    	<button class="btn btn-warning">Save</button>
+		{{ form_end(form) }}
+		Current proposed speed: {{ current }} kB/s
+{% endblock %}

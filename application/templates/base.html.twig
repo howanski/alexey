@@ -32,6 +32,13 @@
 					<!-- End of Topbar -->
 					<!-- Begin Page Content -->
 					<div class="container-fluid">
+					{% for type, flashes in app.flashes %}
+						{% for message in flashes %}
+							<div class="alert alert-{{type}}">
+								{{ message }}
+							</div>
+						{% endfor %}
+					{% endfor %}
 					{% block pageContent %}
                     {% endblock %}
 					</div>

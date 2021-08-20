@@ -57,7 +57,7 @@ class AlexeyNetworkTransmissionTuneCommand extends Command
                 $client = $transmission->getclient();
                 $client->authenticate($this->settings->getUser(), $this->settings->getPassword());
                 $session = $transmission->getSession();
-                $speed = $this->getBestSpeed($stat);
+                $speed = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft());
                 $io->note('Setting ' . $speed . 'kBps');
                 $session->setDownloadSpeedLimit($speed);
                 $session->setAltSpeedDown($speed);
@@ -71,22 +71,5 @@ class AlexeyNetworkTransmissionTuneCommand extends Command
         $io->success(sprintf('All done, now sleeping %s seconds before ending process...', $sleepSecondsAfterFinish));
         sleep($sleepSecondsAfterFinish);
         return Command::SUCCESS;
-    }
-
-    private function getBestSpeed(NetworkStatistic $networkStatistic)
-    {
-        $speedLeft = $networkStatistic->getTransferRateLeft();
-        $speedLeftkB = $speedLeft / 1024;
-        $targetSpeed = intval($this->settings->getTargetSpeed());
-        $aggression = intval($this->settings->getAlgorithmAggression());
-        $speed = (($speedLeftkB - $targetSpeed) * $aggression) + $targetSpeed;
-        $speed = intval($speed);
-        if ($speed < 5) {
-            $speed = 5;
-        }
-        if ($speed > 1024) {
-            $speed = 1024; // 8 Mbit
-        }
-        return $speed;
     }
 }
