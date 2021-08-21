@@ -43,7 +43,7 @@ class NetworkUsageService
         $this->networkStatisticRepository = $networkStatisticRepository;
     }
 
-    public function getCurrentStatistic(): NetworkStatistic
+    public function getCurrentStatistic(): ?NetworkStatistic
     {
         $connectionSettings = $this->getConnectionSettings();
         $type = $connectionSettings->getProviderType();

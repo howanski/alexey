@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Entity\NetworkStatistic;
 use App\Service\NetworkUsageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -46,8 +47,10 @@ class AlexeyNetworkUsageCommand extends Command
         $sleepSecondsAfterFinish = intval($input->getArgument('sleepSecondsAfterFinish'));
         $io->note('Starting!');
         $stat = $this->service->getCurrentStatistic();
-        $this->em->persist($stat);
-        $this->em->flush($stat);
+        if ($stat instanceof NetworkStatistic) {
+            $this->em->persist($stat);
+            $this->em->flush($stat);
+        }
         $io->success(sprintf('All done, now sleeping %s seconds before ending process...', $sleepSecondsAfterFinish));
         sleep($sleepSecondsAfterFinish);
         return Command::SUCCESS;

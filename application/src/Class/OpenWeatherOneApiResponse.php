@@ -36,8 +36,11 @@ class OpenWeatherOneApiResponse
         return $this->rawApiResponse;
     }
 
-    public function __construct(HttpClientInterface $client, WeatherSettings $weatherSettings, SimpleCacheService $simpleCacheService)
-    {
+    public function __construct(
+        HttpClientInterface $client,
+        WeatherSettings $weatherSettings,
+        SimpleCacheService $simpleCacheService
+    ) {
         $this->client = $client;
         $this->latitude = $weatherSettings->getLatitude();
         $this->longitude = $weatherSettings->getLongitude();
@@ -67,18 +70,22 @@ class OpenWeatherOneApiResponse
         }
     }
 
-    public function getHourlyWeatherReadable(): array
+    public function getWeatherReadable(): array
     {
         try {
             $this->ensureWeatherDataFetched();
         } catch (\Exception) {
-            return ['hourly' => []];
+            return [
+                'hourly' => [],
+                'daily' => [],
+            ];
         }
 
         $timeZone = new CarbonTimeZone('Europe/Warsaw');
         $raw = $this->rawApiResponse;
         $readable = [
-            'hourly' => []
+            'hourly' => [],
+            'daily' => [],
         ];
         $now = new Carbon('now');
         foreach ($raw['hourly'] as $hourly) {
@@ -90,6 +97,20 @@ class OpenWeatherOneApiResponse
                     'weather' => $hourly['weather'][0]['description'],
                     'weather_icon' => $hourly['weather'][0]['icon'],
                     'rain' => array_key_exists('rain', $hourly) ? $hourly['rain']['1h'] : 0,
+                ];
+            }
+        }
+        foreach ($raw['daily'] as $daily) {
+            $today = new Carbon('today');
+            $time = (new Carbon($daily['dt']))->setTimezone($timeZone);
+            if ($time > $today) {
+                $timeReadable = $time->format('D d.m');
+                $readable['daily'][] = [
+                    'temperature' => $daily['temp']['min'] . ' - ' . $daily['temp']['max'],
+                    'date' => $timeReadable,
+                    'weather' => $daily['weather'][0]['description'],
+                    'weather_icon' => $daily['weather'][0]['icon'],
+                    'rain' => array_key_exists('rain', $daily) ? $daily['rain'] : 0,
                 ];
             }
         }
