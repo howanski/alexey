@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Class;
 
+use App\Service\SimpleSettingsService;
+
 class WeatherSettings
 {
-    public const DASHBOARD_SHOW = 'SHOW';
-    public const DASHBOARD_HIDE = 'HIDE';
+    private const LATITUDE = 'WEATHER_LAT';
+    private const LONGITUDE = 'WEATHER_LON';
+    private const API_KEY = 'WEATHER_API_KEY';
+    private const SHOW_ON_DASHBOARD = 'WEATHER_SHOW_ON_DASHBOARD';
 
     private string $latitude;
 
@@ -16,6 +20,30 @@ class WeatherSettings
     private string $apiKey;
 
     private string $showOnDashboard;
+
+    public function selfConfigure(SimpleSettingsService $simpleSettingsService): void
+    {
+        $arraySettings = $simpleSettingsService->getSettings([
+            self::LATITUDE,
+            self::LONGITUDE,
+            self::API_KEY,
+            self::SHOW_ON_DASHBOARD,
+        ]);
+        $this->setLatitude(strval($arraySettings[self::LATITUDE]));
+        $this->setLongitude(strval($arraySettings[self::LONGITUDE]));
+        $this->setApiKey(strval($arraySettings[self::API_KEY]));
+        $this->setShowOnDashboard(strval($arraySettings[self::SHOW_ON_DASHBOARD]));
+    }
+
+    public function selfPersist(SimpleSettingsService $simpleSettingsService): void
+    {
+        $simpleSettingsService->saveSettings([
+            self::LATITUDE => $this->getLatitude(),
+            self::LONGITUDE => $this->getLongitude(),
+            self::API_KEY => $this->getApiKey(),
+            self::SHOW_ON_DASHBOARD => $this->getShowOnDashboard(),
+        ]);
+    }
 
     public function getLatitude(): string
     {

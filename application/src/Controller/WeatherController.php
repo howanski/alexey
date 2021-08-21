@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Class\WeatherSettings;
 use App\Form\WeatherSettingsType;
+use App\Service\SimpleSettingsService;
 use App\Service\WeatherService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,9 +26,10 @@ class WeatherController extends AbstractController
     }
 
     #[Route('/settings', name: 'weather_settings')]
-    public function settings(Request $request, WeatherService $weatherService): Response
+    public function settings(Request $request, SimpleSettingsService $simpleSettingsService): Response
     {
-        $settings = $weatherService->getWeatherSettings();
+        $settings = new WeatherSettings();
+        $settings->selfConfigure($simpleSettingsService);
         $form = $this->createForm(
             WeatherSettingsType::class,
             $settings
@@ -34,7 +37,8 @@ class WeatherController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $weatherService->setWeatherSettings($settings);
+            $settings->selfPersist($simpleSettingsService);
+            $this->addFlash('success', 'Saved!');
             return $this->redirectToRoute('weather', [], Response::HTTP_SEE_OTHER);
         }
 

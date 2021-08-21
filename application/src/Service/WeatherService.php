@@ -11,10 +11,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class WeatherService
 {
-    private const LATITUDE = 'WEATHER_LAT';
-    private const LONGITUDE = 'WEATHER_LON';
-    private const API_KEY = 'WEATHER_API_KEY';
-    private const SHOW_ON_DASHBOARD = 'WEATHER_SHOW_ON_DASHBOARD';
 
     private HttpClientInterface $client;
 
@@ -31,37 +27,18 @@ class WeatherService
         return $this->prepareWeatherObject();
     }
 
-    public function setWeatherSettings(WeatherSettings $settings)
-    {
-        $this->simpleSettingsService->saveSettings([
-            self::LATITUDE => $settings->getLatitude(),
-            self::LONGITUDE => $settings->getLongitude(),
-            self::API_KEY => $settings->getApiKey(),
-            self::SHOW_ON_DASHBOARD => $settings->getShowOnDashboard(),
-        ]);
-    }
-
-    public function getWeatherSettings(): WeatherSettings
-    {
-        $arraySettings = $this->simpleSettingsService->getSettings([
-            self::LATITUDE,
-            self::LONGITUDE,
-            self::API_KEY,
-            self::SHOW_ON_DASHBOARD,
-        ]);
-        $settings = new WeatherSettings();
-        $settings->setLatitude(strval($arraySettings[self::LATITUDE]));
-        $settings->setLongitude(strval($arraySettings[self::LONGITUDE]));
-        $settings->setApiKey(strval($arraySettings[self::API_KEY]));
-        $settings->setShowOnDashboard(strval($arraySettings[self::SHOW_ON_DASHBOARD]));
-        return $settings;
-    }
-
     private function prepareWeatherObject(): OpenWeatherOneApiResponse
     {
         $weather = new OpenWeatherOneApiResponse($this->client, $this->getWeatherSettings());
 
         return $weather;
+    }
+
+    private function getWeatherSettings(): WeatherSettings
+    {
+        $settings = new WeatherSettings();
+        $settings->selfConfigure($this->simpleSettingsService);
+        return $settings;
     }
 
     public function getApiDocumentation(): string

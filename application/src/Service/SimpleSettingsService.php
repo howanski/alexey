@@ -27,7 +27,7 @@ class SimpleSettingsService
     {
         $result = [];
         foreach ($settingsKeys as $key) {
-            $result[$key] = null;
+            $result[$key] = '';
         }
         /**
          * @var SimpleSetting $simpleSetting

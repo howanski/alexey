@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Class\WeatherSettings;
+use App\Service\SimpleSettingsService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,8 +22,8 @@ class WeatherSettingsType extends AbstractType
             ->add('apiKey', TextType::class, ['required' => true])
             ->add('showOnDashboard', ChoiceType::class, [
                 'choices' => [
-                    'HIDE' => WeatherSettings::DASHBOARD_HIDE,
-                    'SHOW' => WeatherSettings::DASHBOARD_SHOW
+                    'HIDE' => SimpleSettingsService::UNIVERSAL_FALSE,
+                    'SHOW' => SimpleSettingsService::UNIVERSAL_TRUTH
                 ]
             ]);
     }

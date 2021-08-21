@@ -26,6 +26,11 @@ class OpenWeatherOneApiResponse
         return $this;
     }
 
+    public function getRawApiResponse(): array
+    {
+        return $this->rawApiResponse;
+    }
+
     public function __construct(HttpClientInterface $client, WeatherSettings $weatherSettings)
     {
         $this->client = $client;
