@@ -19,7 +19,7 @@ class SimpleSetting
     private string $settingKey;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $settingValue;
+    private string $settingValue;
 
     public function getId(): int
     {
