@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Class\OpenWeatherOneApiResponse;
 use App\Class\WeatherSettings;
 use App\Form\WeatherSettingsType;
+use App\Service\SimpleCacheService;
 use App\Service\SimpleSettingsService;
 use App\Service\WeatherService;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,8 +28,11 @@ class WeatherController extends AbstractController
     }
 
     #[Route('/settings', name: 'weather_settings')]
-    public function settings(Request $request, SimpleSettingsService $simpleSettingsService): Response
-    {
+    public function settings(
+        Request $request,
+        SimpleSettingsService $simpleSettingsService,
+        SimpleCacheService $simpleCacheService
+    ): Response {
         $settings = new WeatherSettings();
         $settings->selfConfigure($simpleSettingsService);
         $form = $this->createForm(
@@ -38,6 +43,7 @@ class WeatherController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $settings->selfPersist($simpleSettingsService);
+            $simpleCacheService->invalidateCache(OpenWeatherOneApiResponse::WEATHER_CACHE_KEY);
             $this->addFlash('success', 'Saved!');
             return $this->redirectToRoute('weather', [], Response::HTTP_SEE_OTHER);
         }

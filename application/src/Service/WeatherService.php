@@ -11,15 +11,11 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class WeatherService
 {
-
-    private HttpClientInterface $client;
-
-    private SimpleSettingsService $simpleSettingsService;
-
-    public function __construct(HttpClientInterface $client, SimpleSettingsService $simpleSettingsService)
-    {
-        $this->client = $client;
-        $this->simpleSettingsService = $simpleSettingsService;
+    public function __construct(
+        private HttpClientInterface $client,
+        private SimpleSettingsService $simpleSettingsService,
+        private SimpleCacheService $simpleCacheService
+    ) {
     }
 
     public function getCurrentWeather(): OpenWeatherOneApiResponse
@@ -29,7 +25,7 @@ class WeatherService
 
     private function prepareWeatherObject(): OpenWeatherOneApiResponse
     {
-        $weather = new OpenWeatherOneApiResponse($this->client, $this->getWeatherSettings());
+        $weather = new OpenWeatherOneApiResponse($this->client, $this->getWeatherSettings(), $this->simpleCacheService);
 
         return $weather;
     }

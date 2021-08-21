@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace App\Class;
 
+use App\Service\SimpleCacheService;
 use Carbon\Carbon;
 use Carbon\CarbonTimeZone;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class OpenWeatherOneApiResponse
 {
+    public const WEATHER_CACHE_KEY = 'WEATHER';
+
     private array $rawApiResponse;
 
     private HttpClientInterface $client;
+
+    private SimpleCacheService $simpleCacheService;
 
     private string $latitude;
 
@@ -31,28 +36,34 @@ class OpenWeatherOneApiResponse
         return $this->rawApiResponse;
     }
 
-    public function __construct(HttpClientInterface $client, WeatherSettings $weatherSettings)
+    public function __construct(HttpClientInterface $client, WeatherSettings $weatherSettings, SimpleCacheService $simpleCacheService)
     {
         $this->client = $client;
         $this->latitude = $weatherSettings->getLatitude();
         $this->longitude = $weatherSettings->getLongitude();
         $this->apiKey = $weatherSettings->getApiKey();
+        $this->simpleCacheService = $simpleCacheService;
     }
 
     private function ensureWeatherDataFetched(): void
     {
         if (empty($this->rawApiResponse)) {
-            if (empty($this->client)) {
-                throw new \Exception('http client not set');
+            $cachedResponse = $this->simpleCacheService->retrieveDataFromCache(self::WEATHER_CACHE_KEY);
+            if (empty($cachedResponse)) {
+                $response = $this->client->request(
+                    'GET',
+                    'https://api.openweathermap.org/data/2.5/onecall?lat=' . $this->latitude .
+                        '&lon=' . $this->longitude .
+                        '&exclude=minutely&units=metric&lang=en&appid=' . $this->apiKey
+                );
+                $this->rawApiResponse = $response->toArray();
+                $validTo = new \DateTime('now');
+                $interval = new \DateInterval('PT3H');
+                $validTo->add($interval);
+                $this->simpleCacheService->cacheData(self::WEATHER_CACHE_KEY, $this->rawApiResponse, $validTo);
+            } else {
+                $this->rawApiResponse = $cachedResponse;
             }
-            $response = $this->client->request(
-                'GET',
-                'https://api.openweathermap.org/data/2.5/onecall?lat=' . $this->latitude .
-                    '&lon=' . $this->longitude .
-                    '&exclude=minutely&units=metric&lang=en&appid=' . $this->apiKey
-            );
-
-            $this->rawApiResponse = $response->toArray();
         }
     }
 
@@ -60,7 +71,7 @@ class OpenWeatherOneApiResponse
     {
         try {
             $this->ensureWeatherDataFetched();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return ['hourly' => []];
         }
 
@@ -69,14 +80,18 @@ class OpenWeatherOneApiResponse
         $readable = [
             'hourly' => []
         ];
+        $now = new Carbon('now');
         foreach ($raw['hourly'] as $hourly) {
-            $readable['hourly'][] = [
-                'temperature' => $hourly['temp'],
-                'time' => (new Carbon($hourly['dt']))->setTimezone($timeZone),
-                'weather' => $hourly['weather'][0]['description'],
-                'weather_icon' => $hourly['weather'][0]['icon'],
-                'rain' => array_key_exists('rain', $hourly) ? $hourly['rain']['1h'] : 0,
-            ];
+            $time = (new Carbon($hourly['dt']))->setTimezone($timeZone);
+            if ($time > $now) {
+                $readable['hourly'][] = [
+                    'temperature' => $hourly['temp'],
+                    'time' => $time,
+                    'weather' => $hourly['weather'][0]['description'],
+                    'weather_icon' => $hourly['weather'][0]['icon'],
+                    'rain' => array_key_exists('rain', $hourly) ? $hourly['rain']['1h'] : 0,
+                ];
+            }
         }
         return $readable;
     }
