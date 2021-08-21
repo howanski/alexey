@@ -18,9 +18,15 @@ class WeatherService
     ) {
     }
 
-    public function getCurrentWeather(): OpenWeatherOneApiResponse
+    public function getWeather(): OpenWeatherOneApiResponse
     {
         return $this->prepareWeatherObject();
+    }
+
+    public function showWeatherOnDashboard(): bool
+    {
+        $settings = $this->getWeatherSettings();
+        return (SimpleSettingsService::UNIVERSAL_TRUTH == $settings->getShowOnDashboard());
     }
 
     private function prepareWeatherObject(): OpenWeatherOneApiResponse
