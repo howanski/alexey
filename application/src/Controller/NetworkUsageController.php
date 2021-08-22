@@ -19,7 +19,6 @@ class NetworkUsageController extends AbstractController
 {
     #[Route('/info/{chartType}', name: 'network_usage')]
     public function index(
-        NetworkUsageService $networkUsageService,
         RouterInterface $routerInterface,
         string $chartType = NetworkChartType::CHART_TYPE_TODAY
     ): Response {

@@ -3,35 +3,56 @@
 {% block title %}Alexey | Weather
 {% endblock %}
 
+{% block javascripts %}
+	<script>
+		window.chart_data_src = '{{ chart_data_src | raw }}';
+	</script>
+	{{ encore_entry_script_tags('alexey') }}
+	{{ encore_entry_script_tags('weather-chart') }}
+{% endblock %}
+
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-400">Weather |
 			<a href="{{ path('weather_settings') }}" class="fas fa-cog text-info"></a>
 		</h1>
 	</div>
-	<div class="row">
-		{% for weather in weather_data.getWeatherReadable().hourly %}
-			<div class="col-xl-3 col-md-6 mb-4">
-				<div class="card {% if weather.rain > 0  %} border-left-warning {% else %} border-left-success {% endif %} shadow h-100 py-2">
-					<div class="card-body">
-						<div class="row no-gutters align-items-center">
-							<div class="col mr-2">
-								<div class="text-xs font-weight-bold {% if weather.rain > 0  %} text-warning {% else %} text-success {% endif %} text-uppercase mb-1">
-									{{weather.time}} ({{weather.time.diffForHumans}})
-								</div>
-								<div class="h5 mb-0 font-weight-bold text-gray-500">
-									{{weather.weather}}
-									<br>{{weather.temperature}} °C
-									{% if weather.rain > 0  %}<br>Rain: {{weather.rain}} mm{% endif %}
-								</div>
-							</div>
-							<div class="col-auto">
-								<img src="http://openweathermap.org/img/wn/{{ weather.weather_icon }}@2x.png">
-							</div>
-						</div>
+	<div class="card shadow mb-4">
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">Weather - hourly</h6>
+		</div>
+		<div class="card-body">
+			<div class="chart-area">
+				<div class="chartjs-size-monitor">
+					<div class="chartjs-size-monitor-expand">
+						<div class=""></div>
+					</div>
+					<div class="chartjs-size-monitor-shrink">
+						<div class=""></div>
 					</div>
 				</div>
+				<canvas id="weatherHourly" style="display: block; width: 1041px; height: 320px;" class="chartjs-render-monitor" width="1041" height="320"></canvas>
 			</div>
-		{% endfor %}
+			<hr>
+		</div>
+	</div>
+		<div class="card shadow mb-4">
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">Weather - daily</h6>
+		</div>
+		<div class="card-body">
+			<div class="chart-area">
+				<div class="chartjs-size-monitor">
+					<div class="chartjs-size-monitor-expand">
+						<div class=""></div>
+					</div>
+					<div class="chartjs-size-monitor-shrink">
+						<div class=""></div>
+					</div>
+				</div>
+				<canvas id="weatherDaily" style="display: block; width: 1041px; height: 320px;" class="chartjs-render-monitor" width="1041" height="320"></canvas>
+			</div>
+			<hr>
+		</div>
 	</div>
 {% endblock %}

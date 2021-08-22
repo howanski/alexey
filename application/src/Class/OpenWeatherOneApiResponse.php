@@ -13,6 +13,7 @@ class OpenWeatherOneApiResponse
 {
     public const WEATHER_CACHE_KEY = 'WEATHER';
 
+    # https://openweathermap.org/api/one-call-api
     private array $rawApiResponse;
 
     private HttpClientInterface $client;
@@ -93,24 +94,31 @@ class OpenWeatherOneApiResponse
             if ($time > $now) {
                 $readable['hourly'][] = [
                     'temperature' => $hourly['temp'],
+                    'temperature_feels_like' => $hourly['feels_like'],
                     'time' => $time,
                     'weather' => $hourly['weather'][0]['description'],
                     'weather_icon' => $hourly['weather'][0]['icon'],
                     'rain' => array_key_exists('rain', $hourly) ? $hourly['rain']['1h'] : 0,
+                    'snow' => array_key_exists('snow', $hourly) ? $hourly['snow']['1h'] : 0,
+                    'wind_speed' => $hourly['wind_speed'],
                 ];
             }
         }
+        $today = new Carbon('today');
         foreach ($raw['daily'] as $daily) {
-            $today = new Carbon('today');
             $time = (new Carbon($daily['dt']))->setTimezone($timeZone);
             if ($time > $today) {
-                $timeReadable = $time->format('D d.m');
+                $timeReadable = $time->format('D');
                 $readable['daily'][] = [
                     'temperature' => $daily['temp']['min'] . ' - ' . $daily['temp']['max'],
+                    'temperature_detailed' => $daily['temp'],
+                    'temperature_feels_like' => $daily['feels_like'],
                     'date' => $timeReadable,
                     'weather' => $daily['weather'][0]['description'],
                     'weather_icon' => $daily['weather'][0]['icon'],
                     'rain' => array_key_exists('rain', $daily) ? $daily['rain'] : 0,
+                    'snow' => array_key_exists('snow', $daily) ? $daily['snow'] : 0,
+                    'wind_speed' => $daily['wind_speed'],
                 ];
             }
         }
