@@ -57,10 +57,7 @@ class AlexeyNetworkTransmissionTuneCommand extends Command
                 $client = $transmission->getclient();
                 $client->authenticate($this->settings->getUser(), $this->settings->getPassword());
                 $session = $transmission->getSession();
-                $speed = $this->settings->getProposedThrottleSpeed(
-                    speedLeft: $stat->getTransferRateLeft(),
-                    currentSpeed: $stat->getTotalSpeedFromReferencePoint() / 1024
-                );
+                $speed = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft());
                 $io->note('Setting ' . $speed . 'kBps');
                 $session->setDownloadSpeedLimit($speed);
                 $session->setAltSpeedDown($speed);

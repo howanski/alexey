@@ -57,19 +57,13 @@ class TransmissionSettings
         ]);
     }
 
-    public function getProposedThrottleSpeed(int|float $speedLeft, int|float $currentSpeed = 0): int
+    public function getProposedThrottleSpeed(int|float $speedLeft): int
     {
-        if ($currentSpeed > 0) {
-            $proposedSpeed = $this->getProposedThrottleSpeed(speedLeft: $speedLeft, currentSpeed: 0);
-            $drySpeed = $currentSpeed - $proposedSpeed;
-            $speed = $proposedSpeed - $drySpeed;
-        } else {
-            $speedLeftkB = $speedLeft / 1024;
-            $targetSpeed = intval($this->getTargetSpeed());
-            $aggression = intval($this->getAlgorithmAggression());
-            $speed = (($speedLeftkB - $targetSpeed) * $aggression) + $targetSpeed;
-            $speed = intval($speed);
-        }
+        $speedLeftkB = $speedLeft / 1024;
+        $targetSpeed = intval($this->getTargetSpeed());
+        $aggression = intval($this->getAlgorithmAggression());
+        $speed = (($speedLeftkB - $targetSpeed) * $aggression) + $targetSpeed;
+        $speed = intval($speed);
         if ($speed < 5) {
             $speed = 5; // minimum - transmission ignores smaller values
         }
