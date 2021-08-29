@@ -23,6 +23,7 @@ Encore
     .addEntry('alexey', './assets/alexey.js')
     .addEntry('network-usage-chart', './assets/network-usage-chart.js')
     .addEntry('weather-chart', './assets/weather-chart.js')
+    .addEntry('transmission-simulation', './assets/transmission-simulation.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     // .enableStimulusBridge('./assets/controllers.json')

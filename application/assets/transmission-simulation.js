@@ -7,10 +7,7 @@ function createChart(chartConfig, elem) {
     data: {
       labels: chartConfig.labels,
       datasets: [
-        chartConfig.datasets["temperature"],
-        chartConfig.datasets["feels_like"],
-        chartConfig.datasets["rain"],
-        chartConfig.datasets["wind_speed"],
+        chartConfig.datasets[0],
       ],
     },
     options: {
@@ -83,19 +80,19 @@ function updateChartData() {
       // handle success
       let responseData = response.data;
 
-      let chartConfigHourly = {
-        labels: responseData.hourly.labels,
-        datasets: responseData.hourly.datasets,
+      let chartConfigSpeed = {
+        labels: responseData.speed.labels,
+        datasets: responseData.speed.datasets,
       };
-      let chartHourly = document.getElementById("weatherHourly");
-      createChart(chartConfigHourly, chartHourly);
+      let chartSpeed = document.getElementById("speedChart");
+      createChart(chartConfigSpeed, chartSpeed);
 
-      let chartConfigDaily = {
-        labels: responseData.daily.labels,
-        datasets: responseData.daily.datasets,
+      let chartConfigTime = {
+        labels: responseData.time.labels,
+        datasets: responseData.time.datasets,
       };
-      let chartDaily = document.getElementById("weatherDaily");
-      createChart(chartConfigDaily, chartDaily);
+      let chartTime = document.getElementById("timeChart");
+      createChart(chartConfigTime, chartTime);
 
     })
     .catch(function (error) {

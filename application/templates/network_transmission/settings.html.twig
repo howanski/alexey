@@ -3,13 +3,63 @@
 {% block title %}Alexey | Transmission Throttling Settings
 {% endblock %}
 
+{% block javascripts %}
+	<script>
+		window.chart_data_src = '{{ chart_data_src | raw }}';
+	</script>
+	{{ encore_entry_script_tags('alexey') }}
+	{{ encore_entry_script_tags('transmission-simulation') }}
+{% endblock %}
+
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">Network ~> Transmission Throttling Settings </h1>
+		<h1 class="h3 mb-0 text-gray-400">Network ~> Transmission Throttling Settings
+		</h1>
 	</div>
-	    {{ form_start(form) }}
-    	{{ form_widget(form) }}
-    	<button class="btn btn-warning">Save</button>
-		{{ form_end(form) }}
-		Current proposed speed: {{ current }} kB/s
+	{{ form_start(form) }}
+	{{ form_widget(form) }}
+	<button class="btn btn-warning">Save</button>
+	{{ form_end(form) }}
+	Current proposed speed:
+	{{ current }}
+	kB/s
+	<div class="card shadow mb-4">
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">Speed simulation: Changes in time</h6>
+		</div>
+		<div class="card-body">
+			<div class="chart-area">
+				<div class="chartjs-size-monitor">
+					<div class="chartjs-size-monitor-expand">
+						<div class=""></div>
+					</div>
+					<div class="chartjs-size-monitor-shrink">
+						<div class=""></div>
+					</div>
+				</div>
+				<canvas id="timeChart" style="display: block; width: 1041px; height: 320px;" class="chartjs-render-monitor" width="1041" height="320"></canvas>
+			</div>
+			<hr>
+		</div>
+	</div>
+	<div class="card shadow mb-4">
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">Speed simulation: Throttling by current speed left</h6>
+		</div>
+		<div class="card-body">
+			<div class="chart-area">
+				<div class="chartjs-size-monitor">
+					<div class="chartjs-size-monitor-expand">
+						<div class=""></div>
+					</div>
+					<div class="chartjs-size-monitor-shrink">
+						<div class=""></div>
+					</div>
+				</div>
+				<canvas id="speedChart" style="display: block; width: 1041px; height: 320px;" class="chartjs-render-monitor" width="1041" height="320"></canvas>
+			</div>
+			<hr>
+		</div>
+	</div>
+
 {% endblock %}

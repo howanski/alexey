@@ -8,6 +8,9 @@ use App\Service\SimpleSettingsService;
 
 class TransmissionSettings
 {
+    public const TOP_SPEED = 1024;  // 8 Mbit
+    public const BOTTOM_SPEED = 5;  // minimum - transmission ignores smaller values
+
     private const HOST = 'TRANSMISSION_HOST';
     private const USER = 'TRANSMISSION_USER';
     private const PASSWORD = 'TRANSMISSION_PASSWORD';
@@ -64,11 +67,11 @@ class TransmissionSettings
         $aggression = intval($this->getAlgorithmAggression());
         $speed = (($speedLeftkB - $targetSpeed) * $aggression) + $targetSpeed;
         $speed = intval($speed);
-        if ($speed < 5) {
-            $speed = 5; // minimum - transmission ignores smaller values
+        if ($speed < self::BOTTOM_SPEED) {
+            $speed = self::BOTTOM_SPEED;
         }
-        if ($speed > 1024) {
-            $speed = 1024; // 8 Mbit
+        if ($speed > self::TOP_SPEED) {
+            $speed = self::TOP_SPEED;
         }
         return $speed;
     }
