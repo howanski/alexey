@@ -30,8 +30,9 @@ window.location.replace(route);
 		<thead>
 			<tr>
 				<th scope="col">Traffic left</th>
-				<th scope="col">Curent speed</th>
+				<th scope="col">Current speed</th>
 				<th scope="col">Optimal speed</th>
+				<th scope="col">Throttling</th>
 				<th scope="col">Billing window end</th>
 				<th scope="col">Chart type</th>
 			</tr>
@@ -41,6 +42,7 @@ window.location.replace(route);
 				<td id="current_traffic_left"></td>
 				<td id="current_transfer_rate"></td>
 				<td id="current_transfer_rate_left"></td>
+				<td id="current_throttling"></td>
 				<td id="current_billing_frame_end"></td>
 				<td>
 					{{ form_start(chart_selector_form) }}

@@ -14,6 +14,7 @@ use App\Service\SimpleSettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\NetworkStatisticTimeFrame;
 use App\Class\NetworkUsageProviderSettings;
+use App\Class\TransmissionSettings;
 use App\Form\NetworkChartType;
 use App\Repository\NetworkStatisticRepository;
 use App\Repository\NetworkStatisticTimeFrameRepository;
@@ -23,24 +24,12 @@ class NetworkUsageService
     public const NETWORK_USAGE_PROVIDER_HUAWEI = 'HILINK';
     public const NETWORK_USAGE_PROVIDER_NONE = 'NONE';
 
-    private EntityManagerInterface $em;
-
-    private SimpleSettingsService $simpleSettingsService;
-
-    private NetworkStatisticTimeFrameRepository $networkStatisticTimeFrameRepository;
-
-    private NetworkStatisticRepository $networkStatisticRepository;
-
     public function __construct(
-        EntityManagerInterface $em,
-        SimpleSettingsService $simpleSettingsService,
-        NetworkStatisticTimeFrameRepository $networkStatisticTimeFrameRepository,
-        NetworkStatisticRepository $networkStatisticRepository
+        private EntityManagerInterface $em,
+        private SimpleSettingsService $simpleSettingsService,
+        private NetworkStatisticTimeFrameRepository $networkStatisticTimeFrameRepository,
+        private NetworkStatisticRepository $networkStatisticRepository,
     ) {
-        $this->em = $em;
-        $this->simpleSettingsService = $simpleSettingsService;
-        $this->networkStatisticTimeFrameRepository = $networkStatisticTimeFrameRepository;
-        $this->networkStatisticRepository = $networkStatisticRepository;
     }
 
     public function getCurrentStatistic(): ?NetworkStatistic
@@ -80,7 +69,7 @@ class NetworkUsageService
     {
         $chdata = [
             'labels' => [],
-            'datasets' => []
+            'datasets' => [],
         ];
         $today = new DateTime('today');
         $now = new DateTime('now');
@@ -124,10 +113,22 @@ class NetworkUsageService
             ];
         }
 
+        try {
+            $transmissionSettings = new TransmissionSettings();
+            $transmissionSettings->selfConfigure($this->simpleSettingsService);
+            $throttling = $transmissionSettings->getProposedThrottleSpeed(
+                speedLeft: $this->getLatestStatistic()->getTransferRateLeft()
+            );
+            $throttling .= ' kB/s';
+        } catch (\Exception $e) {
+            $throttling = 'N. A.';
+        }
+
         return [
             'labels' => $chdata['labels'],
             'datasets' => $chdata['datasets'],
-            'current' => $current
+            'current' => $current,
+            'throttling' => $throttling,
         ];
     }
 
