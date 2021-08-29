@@ -20,7 +20,7 @@ class NetworkUsageController extends AbstractController
     #[Route('/info/{chartType}', name: 'network_usage')]
     public function index(
         RouterInterface $routerInterface,
-        string $chartType = NetworkChartType::CHART_TYPE_TODAY
+        string $chartType = NetworkChartType::CHART_TYPE_MINUTES_TEN
     ): Response {
         $typeSettings = ['chartType' => $chartType];
         $form = $this->createForm(NetworkChartType::class, $typeSettings);
