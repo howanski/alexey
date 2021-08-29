@@ -11,11 +11,15 @@ class TransmissionSettings
     public const TOP_SPEED = 1024;  // 8 Mbit
     public const BOTTOM_SPEED = 5;  // minimum - transmission ignores smaller values
 
+    private const MAX_AGGRESSION = 90;
+    private const MIN_AGGRESSION = 2;
+
     private const HOST = 'TRANSMISSION_HOST';
     private const USER = 'TRANSMISSION_USER';
     private const PASSWORD = 'TRANSMISSION_PASSWORD';
     private const TARGET_SPEED = 'TRANSMISSION_TARGET_SPEED';
     private const AGGRESSION = 'TRANSMISSION_AGGRESSION';
+    private const AGGRESSION_ADAPT = 'TRANSMISSION_AGGRESSION_ADAPT';
     private const IS_ACTIVE = 'TRANSMISSION_THROTTLE_ACTIVE';
 
     private string $host;
@@ -28,6 +32,8 @@ class TransmissionSettings
 
     private string $algorithmAggression;
 
+    private string $aggressionAdapt;
+
     private string $isActive;
 
     public function selfConfigure(SimpleSettingsService $simpleSettingsService): void
@@ -39,6 +45,7 @@ class TransmissionSettings
             self::PASSWORD,
             self::TARGET_SPEED,
             self::AGGRESSION,
+            self::AGGRESSION_ADAPT,
         ]);
         $this->setIsActive(strval($settingsArray[self::IS_ACTIVE]));
         $this->setHost(strval($settingsArray[self::HOST]));
@@ -46,6 +53,7 @@ class TransmissionSettings
         $this->setPassword(strval($settingsArray[self::PASSWORD]));
         $this->setTargetSpeed(strval($settingsArray[self::TARGET_SPEED]));
         $this->setAlgorithmAggression(strval($settingsArray[self::AGGRESSION]));
+        $this->setAggressionAdapt(strval($settingsArray[self::AGGRESSION_ADAPT]));
     }
 
     public function selfPersist(SimpleSettingsService $simpleSettingsService): void
@@ -57,6 +65,7 @@ class TransmissionSettings
             self::PASSWORD => $this->getPassword(),
             self::TARGET_SPEED => $this->getTargetSpeed(),
             self::AGGRESSION => $this->getAlgorithmAggression(),
+            self::AGGRESSION_ADAPT => $this->getAggressionAdapt(),
         ]);
     }
 
@@ -127,7 +136,14 @@ class TransmissionSettings
 
     public function setAlgorithmAggression(string $algorithmAggression): self
     {
-        $this->algorithmAggression = $algorithmAggression;
+        $int = intval($algorithmAggression);
+        if ($int < self::MIN_AGGRESSION) {
+            $int = self::MIN_AGGRESSION;
+        }
+        if ($int > self::MAX_AGGRESSION) {
+            $int = self::MAX_AGGRESSION;
+        }
+        $this->algorithmAggression = strval($int);
         return $this;
     }
 
@@ -139,6 +155,17 @@ class TransmissionSettings
     public function setIsActive(string $isActive): self
     {
         $this->isActive = $isActive;
+        return $this;
+    }
+
+    public function getAggressionAdapt(): string
+    {
+        return $this->aggressionAdapt;
+    }
+
+    public function setAggressionAdapt(string $aggressionAdapt): self
+    {
+        $this->aggressionAdapt = $aggressionAdapt;
         return $this;
     }
 }

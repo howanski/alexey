@@ -22,17 +22,15 @@ use Transmission\Transmission;
 )]
 class AlexeyNetworkTransmissionTuneCommand extends Command
 {
-    private NetworkUsageService $service;
-
     private TransmissionSettings $settings;
 
-    public function __construct(NetworkUsageService $service, SimpleSettingsService $simpleSettingsService)
-    {
+    public function __construct(
+        private NetworkUsageService $networkUsageService,
+        private SimpleSettingsService $simpleSettingsService
+    ) {
         parent::__construct();
-        $this->service = $service;
         $this->settings = new TransmissionSettings();
-        $this->settings->selfConfigure($simpleSettingsService);
-        $this->settings->selfPersist($simpleSettingsService);
+        $this->settings->selfConfigure($this->simpleSettingsService);
     }
 
     protected function configure(): void
@@ -51,7 +49,7 @@ class AlexeyNetworkTransmissionTuneCommand extends Command
         $sleepSecondsAfterFinish = intval($input->getArgument('sleepSecondsAfterFinish'));
         $io->note('Starting!');
         if ($this->settings->getIsActive() == SimpleSettingsService::UNIVERSAL_TRUTH) {
-            $stat = $this->service->getLatestStatistic();
+            $stat = $this->networkUsageService->getLatestStatistic();
             if ($stat instanceof NetworkStatistic) {
                 $transmission = new Transmission($this->settings->getHost());
                 $client = $transmission->getclient();
@@ -62,6 +60,17 @@ class AlexeyNetworkTransmissionTuneCommand extends Command
                 $session->setDownloadSpeedLimit($speed);
                 $session->setAltSpeedDown($speed);
                 $session->save();
+                if (SimpleSettingsService::UNIVERSAL_TRUTH == $this->settings->getAggressionAdapt()) {
+                    $target = intval($this->settings->getTargetSpeed());
+                    $aggression = intval($this->settings->getAlgorithmAggression());
+                    if ($speed > $target / 2) {
+                        $aggression += 1;
+                    } elseif ($speed < ($target / 4)) {
+                        $aggression -= 1;
+                    }
+                    $this->settings->setAlgorithmAggression(strval($aggression));
+                }
+                $this->settings->selfPersist($this->simpleSettingsService);
             } else {
                 $io->note('No statistics, nothing to do!');
             }

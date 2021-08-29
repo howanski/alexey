@@ -22,6 +22,13 @@ class TransmissionSettingsType extends AbstractType
             ->add('password', TextType::class, ['required' => true])
             ->add('targetSpeed', TextType::class, ['required' => true])
             ->add('algorithmAggression', TextType::class, ['required' => true])
+            ->add('aggressionAdapt', ChoiceType::class, [
+                'choices' => [
+                    'Disabled' => SimpleSettingsService::UNIVERSAL_FALSE,
+                    'Enabled' => SimpleSettingsService::UNIVERSAL_TRUTH
+                ],
+                'label' => 'Auto - adapt aggression'
+            ])
             ->add('isActive', ChoiceType::class, [
                 'choices' => [
                     'Disabled' => SimpleSettingsService::UNIVERSAL_FALSE,
