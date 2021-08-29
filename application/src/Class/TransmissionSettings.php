@@ -11,7 +11,7 @@ class TransmissionSettings
     public const TOP_SPEED = 1024;  // 8 Mbit
     public const BOTTOM_SPEED = 5;  // minimum - transmission ignores smaller values
 
-    private const MAX_AGGRESSION = 90;
+    private const MAX_AGGRESSION = 20;
     private const MIN_AGGRESSION = 2;
 
     private const HOST = 'TRANSMISSION_HOST';
