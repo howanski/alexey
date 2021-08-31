@@ -60,12 +60,15 @@ class AlexeyNetworkTransmissionTuneCommand extends Command
                 $session->setDownloadSpeedLimit($speed);
                 $session->setAltSpeedDown($speed);
                 $session->save();
-                if (SimpleSettingsService::UNIVERSAL_TRUTH == $this->settings->getAggressionAdapt()) {
+                if (SimpleSettingsService::UNIVERSAL_FALSE != $this->settings->getAggressionAdapt()) {
                     $target = intval($this->settings->getTargetSpeed());
                     $aggression = intval($this->settings->getAlgorithmAggression());
                     if ($speed > $target / 2) {
                         $aggression += 1;
-                    } elseif ($speed < ($target / 4)) {
+                    } elseif (
+                        ($speed < ($target / 4)) &&
+                        (TransmissionSettings::ADAPT_TYPE_UP_ONLY != $this->settings->getAggressionAdapt())
+                    ) {
                         $aggression -= 1;
                     }
                     $this->settings->setAlgorithmAggression(strval($aggression));

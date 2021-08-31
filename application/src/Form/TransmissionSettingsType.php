@@ -25,7 +25,8 @@ class TransmissionSettingsType extends AbstractType
             ->add('aggressionAdapt', ChoiceType::class, [
                 'choices' => [
                     'Disabled' => SimpleSettingsService::UNIVERSAL_FALSE,
-                    'Enabled' => SimpleSettingsService::UNIVERSAL_TRUTH
+                    'Enabled' => SimpleSettingsService::UNIVERSAL_TRUTH,
+                    'Increasing only' => TransmissionSettings::ADAPT_TYPE_UP_ONLY,
                 ],
                 'label' => 'Auto - adapt aggression'
             ])
