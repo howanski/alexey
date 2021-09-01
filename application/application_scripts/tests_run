@@ -1,0 +1,6 @@
+#!/bin/bash
+./tests_cleanup
+cd ..
+clear
+php ./vendor/bin/phpunit --verbose --coverage-html tmp/coverage-report --testdox-html tmp/test-result.html --log-junit tmp/junit-output.xml
+php ./vendor/bin/phpmetrics --report-html=tmp/phpmetrics-report --junit=tmp/junit-output.xml .
