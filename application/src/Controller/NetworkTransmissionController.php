@@ -21,6 +21,22 @@ class NetworkTransmissionController extends AbstractController
 {
     #[Route('/', name: 'network_transmission')]
     public function index(
+        SimpleSettingsService $simpleSettingsService,
+        NetworkUsageService $networkUsageService,
+        RouterInterface $routerInterface,
+    ): Response {
+        $settings = new TransmissionSettings();
+        $settings->selfConfigure($simpleSettingsService);
+        return $this->renderForm('network_transmission/index.html.twig', [
+            'current' => $settings->getProposedThrottleSpeed(
+                $networkUsageService->getLatestStatistic()->getTransferRateLeft()
+            ),
+            'chart_data_src' => $routerInterface->generate(name: 'network_transmission_simulation'),
+        ]);
+    }
+
+    #[Route('/settings', name: 'network_transmission_settings')]
+    public function settings(
         Request $request,
         SimpleSettingsService $simpleSettingsService,
         NetworkUsageService $networkUsageService,
@@ -45,7 +61,6 @@ class NetworkTransmissionController extends AbstractController
             'current' => $settings->getProposedThrottleSpeed(
                 $networkUsageService->getLatestStatistic()->getTransferRateLeft()
             ),
-            'chart_data_src' => $routerInterface->generate(name: 'network_transmission_simulation'),
         ]);
     }
 
