@@ -13,7 +13,7 @@ class TransmissionSettings
 
     public const ADAPT_TYPE_UP_ONLY = 'OLNY_UP';
 
-    private const MAX_AGGRESSION = 20;
+    public const MAX_AGGRESSION = 20;
     private const MIN_AGGRESSION = 2;
 
     private const HOST = 'TRANSMISSION_HOST';

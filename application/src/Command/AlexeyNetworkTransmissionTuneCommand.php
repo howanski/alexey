@@ -55,18 +55,28 @@ class AlexeyNetworkTransmissionTuneCommand extends Command
                 $client = $transmission->getclient();
                 $client->authenticate($this->settings->getUser(), $this->settings->getPassword());
                 $session = $transmission->getSession();
-                $speed = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft());
-                $io->note('Setting ' . $speed . 'kBps');
-                $session->setDownloadSpeedLimit($speed);
-                $session->setAltSpeedDown($speed);
+                $proposedSpeed = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft());
+                $io->note('Setting ' . $proposedSpeed . 'kBps');
+                $session->setDownloadSpeedLimit($proposedSpeed);
+                $session->setAltSpeedDown($proposedSpeed);
                 $session->save();
                 if (SimpleSettingsService::UNIVERSAL_FALSE != $this->settings->getAggressionAdapt()) {
-                    $target = intval($this->settings->getTargetSpeed());
+                    $targetSpeed = intval($this->settings->getTargetSpeed());
                     $aggression = intval($this->settings->getAlgorithmAggression());
-                    if ($speed > $target / 2) {
+                    if ($proposedSpeed > $targetSpeed / 2) {
                         $aggression += 1;
+                        if (
+                            ($aggression > TransmissionSettings::MAX_AGGRESSION) &&
+                            ($proposedSpeed > $targetSpeed) &&
+                            (TransmissionSettings::ADAPT_TYPE_UP_ONLY == $this->settings->getAggressionAdapt())
+                        ) {
+                            $increasedTargetSpeed = $targetSpeed + 1;
+                            if ($increasedTargetSpeed < (TransmissionSettings::TOP_SPEED / 2)) {
+                                $this->settings->setTargetSpeed(strval($increasedTargetSpeed));
+                            }
+                        }
                     } elseif (
-                        ($speed < ($target / 4)) &&
+                        ($proposedSpeed < ($targetSpeed / 4)) &&
                         (TransmissionSettings::ADAPT_TYPE_UP_ONLY != $this->settings->getAggressionAdapt())
                     ) {
                         $aggression -= 1;
