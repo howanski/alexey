@@ -30,6 +30,13 @@ class TransmissionSettingsType extends AbstractType
                 ],
                 'label' => 'Auto - adapt aggression'
             ])
+            ->add('allowSpeedBump', ChoiceType::class, [
+                'choices' => [
+                    'Disabled' => SimpleSettingsService::UNIVERSAL_FALSE,
+                    'Enabled' => SimpleSettingsService::UNIVERSAL_TRUTH
+                ],
+                'label' => 'Allow target speed bumping'
+            ])
             ->add('isActive', ChoiceType::class, [
                 'choices' => [
                     'Disabled' => SimpleSettingsService::UNIVERSAL_FALSE,

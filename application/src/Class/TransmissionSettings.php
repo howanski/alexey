@@ -20,6 +20,7 @@ class TransmissionSettings
     private const USER = 'TRANSMISSION_USER';
     private const PASSWORD = 'TRANSMISSION_PASSWORD';
     private const TARGET_SPEED = 'TRANSMISSION_TARGET_SPEED';
+    private const TARGET_SPEED_BUMPING = 'TRANSMISSION_TARGET_SPEED_BUMPING';
     private const AGGRESSION = 'TRANSMISSION_AGGRESSION';
     private const AGGRESSION_ADAPT = 'TRANSMISSION_AGGRESSION_ADAPT';
     private const IS_ACTIVE = 'TRANSMISSION_THROTTLE_ACTIVE';
@@ -36,6 +37,8 @@ class TransmissionSettings
 
     private string $aggressionAdapt;
 
+    private string $allowSpeedBump;
+
     private string $isActive;
 
     public function selfConfigure(SimpleSettingsService $simpleSettingsService): void
@@ -46,6 +49,7 @@ class TransmissionSettings
             self::USER,
             self::PASSWORD,
             self::TARGET_SPEED,
+            self::TARGET_SPEED_BUMPING,
             self::AGGRESSION,
             self::AGGRESSION_ADAPT,
         ]);
@@ -54,6 +58,7 @@ class TransmissionSettings
         $this->setUser(strval($settingsArray[self::USER]));
         $this->setPassword(strval($settingsArray[self::PASSWORD]));
         $this->setTargetSpeed(strval($settingsArray[self::TARGET_SPEED]));
+        $this->setAllowSpeedBump(strval($settingsArray[self::TARGET_SPEED_BUMPING]));
         $this->setAlgorithmAggression(strval($settingsArray[self::AGGRESSION]));
         $this->setAggressionAdapt(strval($settingsArray[self::AGGRESSION_ADAPT]));
     }
@@ -66,6 +71,7 @@ class TransmissionSettings
             self::USER => $this->getUser(),
             self::PASSWORD => $this->getPassword(),
             self::TARGET_SPEED => $this->getTargetSpeed(),
+            self::TARGET_SPEED_BUMPING => $this->getAllowSpeedBump(),
             self::AGGRESSION => $this->getAlgorithmAggression(),
             self::AGGRESSION_ADAPT => $this->getAggressionAdapt(),
         ]);
@@ -168,6 +174,17 @@ class TransmissionSettings
     public function setAggressionAdapt(string $aggressionAdapt): self
     {
         $this->aggressionAdapt = $aggressionAdapt;
+        return $this;
+    }
+
+    public function getAllowSpeedBump(): string
+    {
+        return $this->allowSpeedBump;
+    }
+
+    public function setAllowSpeedBump(string $allowSpeedBump): self
+    {
+        $this->allowSpeedBump = $allowSpeedBump;
         return $this;
     }
 }

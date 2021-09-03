@@ -68,7 +68,7 @@ class AlexeyNetworkTransmissionTuneCommand extends Command
                         if (
                             ($aggression > TransmissionSettings::MAX_AGGRESSION) &&
                             ($proposedSpeed > $targetSpeed) &&
-                            (TransmissionSettings::ADAPT_TYPE_UP_ONLY == $this->settings->getAggressionAdapt())
+                            (SimpleSettingsService::UNIVERSAL_TRUTH == $this->settings->getAllowSpeedBump())
                         ) {
                             $increasedTargetSpeed = $targetSpeed + 1;
                             if ($increasedTargetSpeed < (TransmissionSettings::TOP_SPEED / 2)) {
