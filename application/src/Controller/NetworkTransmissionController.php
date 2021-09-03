@@ -27,10 +27,10 @@ class NetworkTransmissionController extends AbstractController
     ): Response {
         $settings = new TransmissionSettings();
         $settings->selfConfigure($simpleSettingsService);
+        $transferLeft = $networkUsageService->getLatestStatistic()?->getTransferRateLeft();
+        $current = $transferLeft ? $settings->getProposedThrottleSpeed($transferLeft) : 0;
         return $this->renderForm('network_transmission/index.html.twig', [
-            'current' => $settings->getProposedThrottleSpeed(
-                $networkUsageService->getLatestStatistic()->getTransferRateLeft()
-            ),
+            'current' => $current,
             'chart_data_src' => $routerInterface->generate(name: 'network_transmission_simulation'),
         ]);
     }
@@ -55,12 +55,11 @@ class NetworkTransmissionController extends AbstractController
             $this->addFlash('success', 'Saved!');
             return $this->redirectToRoute('network_transmission', [], Response::HTTP_SEE_OTHER);
         }
-
+        $transferLeft = $networkUsageService->getLatestStatistic()?->getTransferRateLeft();
+        $current = $transferLeft ? $settings->getProposedThrottleSpeed($transferLeft) : 0;
         return $this->renderForm('network_transmission/settings.html.twig', [
             'form' => $form,
-            'current' => $settings->getProposedThrottleSpeed(
-                $networkUsageService->getLatestStatistic()->getTransferRateLeft()
-            ),
+            'current' => $current,
         ]);
     }
 

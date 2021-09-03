@@ -62,9 +62,11 @@ class TransmissionService
 
 
         $stat = $this->networkUsageService->getLatestStatistic();
-        $throttled = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft());
+        $throttled = $stat ? $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft()) : 0;
         $mockedProbingTime = new \DateTime('now');
         $window = new \DateInterval('PT1H');
+        $maxChartPoints = 300;
+        $chartPoints = 0;
         if ($throttled < intval($this->settings->getTargetSpeed())) {
             while ($throttled < intval($this->settings->getTargetSpeed())) {
                 $throttled = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft());
@@ -73,6 +75,10 @@ class TransmissionService
                 $mockedProbingTime->add($window);
                 $chartData['time']['datasets'][0]['data'][] = $throttled;
                 $chartData['time']['labels'][] = $mockedProbingTime->format('d.m H:i');
+                $chartPoints++;
+                if ($chartPoints >= $maxChartPoints) {
+                    break;
+                }
             }
         } else {
             while ($throttled > intval($this->settings->getTargetSpeed())) {
@@ -82,6 +88,10 @@ class TransmissionService
                 $mockedProbingTime->add($window);
                 $chartData['time']['datasets'][0]['data'][] = $throttled;
                 $chartData['time']['labels'][] = $mockedProbingTime->format('d.m H:i');
+                $chartPoints++;
+                if ($chartPoints >= $maxChartPoints) {
+                    break;
+                }
             }
         }
 

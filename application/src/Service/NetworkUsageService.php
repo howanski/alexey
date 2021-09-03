@@ -6,7 +6,6 @@ namespace App\Service;
 
 use DateTime;
 use DateInterval;
-use SimpleXMLElement;
 use DateTimeInterface;
 use App\Entity\NetworkStatistic;
 use if0xx\HuaweiHilinkApi\Router;
@@ -47,7 +46,7 @@ class NetworkUsageService
         return $stat;
     }
 
-    public function getLatestStatistic(): NetworkStatistic
+    public function getLatestStatistic(): ?NetworkStatistic
     {
         $latest = $this->networkStatisticRepository->getLatestOne();
         return $latest;
@@ -116,9 +115,10 @@ class NetworkUsageService
         try {
             $transmissionSettings = new TransmissionSettings();
             $transmissionSettings->selfConfigure($this->simpleSettingsService);
-            $throttling = $transmissionSettings->getProposedThrottleSpeed(
+            $stat = $this->getLatestStatistic();
+            $throttling = $stat ? $transmissionSettings->getProposedThrottleSpeed(
                 speedLeft: $this->getLatestStatistic()->getTransferRateLeft()
-            );
+            ) : 0;
             $throttling .= ' kB/s';
         } catch (\Exception $e) {
             $throttling = 'N. A.';
