@@ -88,4 +88,34 @@ final class NetworkUsageServiceTest extends TestCase
             actual: $actualSettings->getShowOnDashboard(),
         );
     }
+
+    public function testGetCurrentStatistic(): void
+    {
+        $em = $this->createMock(originalClassName: EntityManagerInterface::class);
+        $simpleSettingsService = $this->createMock(originalClassName: SimpleSettingsService::class);
+        $networkStatisticTimeFrameRepository =
+            $this->createMock(originalClassName: NetworkStatisticTimeFrameRepository::class);
+        $networkStatisticRepository = $this->createMock(originalClassName: NetworkStatisticRepository::class);
+
+        $settingsArray = [
+            'NETWORK_USAGE_PROVIDER_TYPE' => 'HILINK',
+            'NETWORK_USAGE_PROVIDER_ADDRESS' => '0.0.0.0',
+            'NETWORK_USAGE_PROVIDER_PASSWORD' => 'XXXX',
+            'NETWORK_USAGE_SHOW_ON_DASHBOARD' => 'XXXXX',
+        ];
+
+        $simpleSettingsService->method('getSettings')->willReturn($settingsArray);
+
+        $service = new NetworkUsageService(
+            em: $em,
+            simpleSettingsService: $simpleSettingsService,
+            networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
+            networkStatisticRepository: $networkStatisticRepository,
+        );
+
+        $this->assertNotNull(
+            actual: $service->getCurrentStatistic(),
+            message: 'HiLink statistics not retrieved',
+        );
+    }
 }

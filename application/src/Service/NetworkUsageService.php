@@ -208,32 +208,36 @@ final class NetworkUsageService
         return $networkStatistics;
     }
 
-    private function getCurrentStatisticFromHuawei(NetworkUsageProviderSettings $connectionSettings): NetworkStatistic
+    private function getCurrentStatisticFromHuawei(NetworkUsageProviderSettings $connectionSettings): ?NetworkStatistic
     {
-        $huaweiRouter = new Router();
-        $huaweiRouter->setAddress($connectionSettings->getAddress());
-        $huaweiRouter->login('admin', $connectionSettings->getPassword());
+        try {
+            $huaweiRouter = new Router();
+            $huaweiRouter->setAddress($connectionSettings->getAddress());
+            $huaweiRouter->login('admin', $connectionSettings->getPassword());
 
-        $monthStats = $huaweiRouter->getMonthStats();
+            $monthStats = $huaweiRouter->getMonthStats();
 
-        $startDate = $huaweiRouter->generalizedGet('api/monitoring/start_date');
+            $startDate = $huaweiRouter->generalizedGet('api/monitoring/start_date');
 
-        $currentMonthDownload = (int)$monthStats->CurrentMonthDownload;
-        $currentMonthUpload = (int)$monthStats->CurrentMonthUpload;
-        $monthLastClearTime = (string)$monthStats->MonthLastClearTime;
-        $trafficMaxLimit = (int)$startDate->trafficmaxlimit;
-        $monthStart = new DateTime($monthLastClearTime);
-        $monthEnd = clone $monthStart;
-        $monthEnd->add(new DateInterval('P1M'));
-        $monthEnd->sub(new DateInterval('PT1S'));
+            $currentMonthDownload = (int)$monthStats->CurrentMonthDownload;
+            $currentMonthUpload = (int)$monthStats->CurrentMonthUpload;
+            $monthLastClearTime = (string)$monthStats->MonthLastClearTime;
+            $trafficMaxLimit = (int)$startDate->trafficmaxlimit;
+            $monthStart = new DateTime($monthLastClearTime);
+            $monthEnd = clone $monthStart;
+            $monthEnd->add(new DateInterval('P1M'));
+            $monthEnd->sub(new DateInterval('PT1S'));
 
-        $stat = new NetworkStatistic();
-        $stat->setDataDownloadedInFrame($currentMonthDownload);
-        $stat->setDataUploadedInFrame($currentMonthUpload);
-        $timeFrame = $this->getTimeFrame($monthStart, $monthEnd, $trafficMaxLimit);
-        $stat->setTimeFrame($timeFrame);
+            $stat = new NetworkStatistic();
+            $stat->setDataDownloadedInFrame($currentMonthDownload);
+            $stat->setDataUploadedInFrame($currentMonthUpload);
+            $timeFrame = $this->getTimeFrame($monthStart, $monthEnd, $trafficMaxLimit);
+            $stat->setTimeFrame($timeFrame);
 
-        return $stat;
+            return $stat;
+        } catch (\Exception) {
+            return null;
+        }
     }
 
     private function getTimeFrame(
