@@ -1,8 +1,5 @@
 #!/bin/bash
 clear
-rm -rf ../tmp/coverage-report
-rm -rf ../tmp/phpmetrics-report
-rm -f ../tmp/junit-output.xml
-rm -f ../tmp/test-result.html
+rm -rf ../var/qa-results/*
 echo "Test result directory clean"
 echo ""

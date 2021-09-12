@@ -23,6 +23,9 @@
     "doctrine/common": {
         "version": "3.1.2"
     },
+    "doctrine/data-fixtures": {
+        "version": "1.5.0"
+    },
     "doctrine/dbal": {
         "version": "2.13.2"
     },
@@ -43,6 +46,18 @@
             "config/packages/test/doctrine.yaml",
             "src/Entity/.gitignore",
             "src/Repository/.gitignore"
+        ]
+    },
+    "doctrine/doctrine-fixtures-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "e5b542d4ef47d8a003c91beb35650c76907f7e53"
+        },
+        "files": [
+            "src/DataFixtures/AppFixtures.php"
         ]
     },
     "doctrine/doctrine-migrations-bundle": {
@@ -88,6 +103,9 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
+    "friendsoftwig/twigcs": {
+        "version": "v5.0.0"
+    },
     "geerlingguy/ping": {
         "version": "1.2.1"
     },
@@ -108,6 +126,9 @@
     },
     "laminas/laminas-code": {
         "version": "4.4.2"
+    },
+    "league/climate": {
+        "version": "3.7.0"
     },
     "monolog/monolog": {
         "version": "2.3.1"
@@ -163,6 +184,9 @@
     "phpspec/prophecy": {
         "version": "1.13.0"
     },
+    "phpstan/phpstan": {
+        "version": "0.12.98"
+    },
     "phpunit/php-code-coverage": {
         "version": "9.2.6"
     },
@@ -216,6 +240,9 @@
     "psr/log": {
         "version": "1.1.4"
     },
+    "rskuipers/php-assumptions": {
+        "version": "0.8.0"
+    },
     "sebastian/cli-parser": {
         "version": "1.0.1"
     },
@@ -264,6 +291,9 @@
     "sebastian/version": {
         "version": "3.0.2"
     },
+    "seld/cli-prompt": {
+        "version": "1.0.4"
+    },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
         "recipe": {
@@ -274,6 +304,18 @@
         },
         "files": [
             "config/packages/sensio_framework_extra.yaml"
+        ]
+    },
+    "squizlabs/php_codesniffer": {
+        "version": "3.6",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.6",
+            "ref": "1019e5c08d4821cb9b77f4891f8e9c31ff20ac6f"
+        },
+        "files": [
+            "phpcs.xml.dist"
         ]
     },
     "symfony/asset": {

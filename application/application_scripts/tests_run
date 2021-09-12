@@ -1,6 +1,54 @@
 #!/bin/bash
 ./tests_cleanup
 cd ..
+mkdir -p var/qa-results
 clear
-php ./vendor/bin/phpunit --verbose --coverage-html tmp/coverage-report --testdox-html tmp/test-result.html --log-junit tmp/junit-output.xml
-php ./vendor/bin/phpmetrics --report-html=tmp/phpmetrics-report --junit=tmp/junit-output.xml .
+echo "---------------------------------------"
+echo "------------ ALEXEY  TESTS ------------"
+echo "---------------------------------------"
+sleep 1
+clear
+echo "---------------------------------------"
+echo "--------PREPARE DB... :"
+echo "---------------------------------------"
+XDEBUG_MODE=off php bin/console doctrine:database:create --env=test > /dev/null
+XDEBUG_MODE=off php bin/console doctrine:migrations:migrate --no-interaction --env=test > /dev/null
+XDEBUG_MODE=off php bin/console doctrine:fixtures:load --env=test --no-interaction
+sleep 1
+clear
+echo "---------------------------------------"
+echo "--------PHPSTAN:"
+echo "---------------------------------------"
+XDEBUG_MODE=off /var/www/html/vendor/bin/phpstan --level=1 --memory-limit=2048M analyse src
+read -rsp $'Press any key to continue...\n' -n1 key
+clear
+echo "---------------------------------------"
+echo "-------------PHPCS (PSR12):"
+echo "---------------------------------------"
+XDEBUG_MODE=off /var/www/html/vendor/bin/phpcs --standard=PSR12 src
+read -rsp $'Press any key to continue...\n' -n1 key
+clear
+echo "---------------------------------------"
+echo "-------------WEAK ASSUPTIONS:"
+echo "---------------------------------------"
+XDEBUG_MODE=off /var/www/html/vendor/bin/phpa src
+read -rsp $'Press any key to continue...\n' -n1 key
+clear
+echo "---------------------------------------"
+echo "-------------TWIG CHECKSTYLE:"
+echo "---------------------------------------"
+XDEBUG_MODE=off /var/www/html/vendor/bin/twigcs templates/ --severity error --display blocking
+read -rsp $'Press any key to continue...\n' -n1 key
+clear
+echo "---------------------------------------"
+echo "-------------PHPUNIT:"
+echo "---------------------------------------"
+XDEBUG_MODE=coverage /var/www/html/vendor/bin/phpunit --verbose --coverage-html var/qa-results/phpunit/test-coverage-report --testdox-html var/qa-results/phpunit/test-result.html --log-junit var/qa-results/phpunit/junit-output.xml
+chown -R 1000:1000 var/qa-results/ >/dev/null
+read -rsp $'Press any key to RUN PHPMETRICS...\n' -n1 key
+echo "---------------------------------------"
+echo "--------PHPMETRICS (-> var/qa-results)"
+echo "---------------------------------------"
+XDEBUG_MODE=off ./vendor/bin/phpmetrics --report-html=var/qa-results/phpmetrics-report --junit=var/qa-results/phpunit/junit-output.xml .
+chown -R 1000:1000 var/qa-results/ >/dev/null
+echo "----------------- DONE ----------------"
