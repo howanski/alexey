@@ -71,7 +71,8 @@ class WeatherService
             foreach ($timeLayout as $layout) {
                 $chartData['daily']['labels'][] = $day['date'] . ' ' . $layout['name'];
                 $chartData['daily']['datasets']['temperature']['data'][] = $day['temperature_detailed'][$layout['key']];
-                $chartData['daily']['datasets']['feels_like']['data'][] = $day['temperature_feels_like'][$layout['key']];
+                $chartData['daily']['datasets']['feels_like']['data'][] =
+                    $day['temperature_feels_like'][$layout['key']];
                 $chartData['daily']['datasets']['rain']['data'][] = $day['rain'] + $day['snow'];
                 $chartData['daily']['datasets']['wind_speed']['data'][] = $this->toKph($day['wind_speed']);
             }
@@ -108,14 +109,20 @@ class WeatherService
             $result[$conf['key']] = [
                 'label' => $conf['label'],
                 'lineTension' => 0.3,
-                'backgroundColor' => 'rgba(' . $conf['color'][0] . ', ' . $conf['color'][1] . ', ' . $conf['color'][2] . ', 0.05)',
-                'borderColor' => 'rgba(' . $conf['color'][0] . ', ' . $conf['color'][1] . ', ' . $conf['color'][2] . ', 1)',
+                'backgroundColor' => 'rgba(' . $conf['color'][0] . ', ' . $conf['color'][1] . ', '
+                    . $conf['color'][2] . ', 0.05)',
+                'borderColor' => 'rgba(' . $conf['color'][0] . ', ' . $conf['color'][1] . ', '
+                    . $conf['color'][2] . ', 1)',
                 'pointRadius' => 3,
-                'pointBackgroundColor' => 'rgba(' . $conf['color'][0] . ', ' . $conf['color'][1] . ', ' . $conf['color'][2] . ', 1)',
-                'pointBorderColor' => 'rgba(' . $conf['color'][0] . ', ' . $conf['color'][1] . ', ' . $conf['color'][2] . ', 1)',
+                'pointBackgroundColor' => 'rgba(' . $conf['color'][0] . ', ' . $conf['color'][1] . ', ' .
+                    $conf['color'][2] . ', 1)',
+                'pointBorderColor' => 'rgba(' . $conf['color'][0] . ', ' . $conf['color'][1] . ', ' .
+                    $conf['color'][2] . ', 1)',
                 'pointHoverRadius' => 3,
-                'pointHoverBackgroundColor' => 'rgba(' . $conf['color'][0] . ', ' . $conf['color'][1] . ', ' . $conf['color'][2] . ', 1)',
-                'pointHoverBorderColor' => 'rgba(' . $conf['color'][0] . ', ' . $conf['color'][1] . ', ' . $conf['color'][2] . ', 1)',
+                'pointHoverBackgroundColor' => 'rgba(' . $conf['color'][0] . ', ' . $conf['color'][1] . ', ' .
+                    $conf['color'][2] . ', 1)',
+                'pointHoverBorderColor' => 'rgba(' . $conf['color'][0] . ', ' . $conf['color'][1] . ', ' .
+                    $conf['color'][2] . ', 1)',
                 'pointHitRadius' => 10,
                 'pointBorderWidth' => 2,
                 'data' => [],
