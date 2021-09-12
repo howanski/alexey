@@ -118,4 +118,35 @@ final class NetworkUsageServiceTest extends TestCase
             message: 'HiLink statistics not retrieved',
         );
     }
+
+    public function testGetDataForChart(): void
+    {
+        $em = $this->createMock(originalClassName: EntityManagerInterface::class);
+        $simpleSettingsService = $this->createMock(originalClassName: SimpleSettingsService::class);
+        $networkStatisticTimeFrameRepository =
+            $this->createMock(originalClassName: NetworkStatisticTimeFrameRepository::class);
+        $networkStatisticRepository = $this->createMock(originalClassName: NetworkStatisticRepository::class);
+
+        $service = new NetworkUsageService(
+            em: $em,
+            simpleSettingsService: $simpleSettingsService,
+            networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
+            networkStatisticRepository: $networkStatisticRepository,
+        );
+
+        $this->assertEquals(
+            expected: [
+                'labels' => [],
+                'datasets' => [],
+                'current' => [
+                    'current_traffic_left' => 0,
+                    'current_transfer_rate_left' => 0,
+                    'current_transfer_rate' => 0,
+                    'current_billing_frame_end' => 0,
+                ],
+                'throttling' => 'N. A.',
+            ],
+            actual: $service->getDataForChart('eee'),
+        );
+    }
 }
