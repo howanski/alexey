@@ -18,7 +18,7 @@ use App\Form\NetworkChartType;
 use App\Repository\NetworkStatisticRepository;
 use App\Repository\NetworkStatisticTimeFrameRepository;
 
-class NetworkUsageService
+final class NetworkUsageService
 {
     public const NETWORK_USAGE_PROVIDER_HUAWEI = 'HILINK';
     public const NETWORK_USAGE_PROVIDER_NONE = 'NONE';

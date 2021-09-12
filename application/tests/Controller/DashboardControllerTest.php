@@ -1,12 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests;
 
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DashboardControllerTest extends WebTestCase
+/**
+ * @covers App\Controller\DashboardController
+ */
+final class DashboardControllerTest extends WebTestCase
 {
+
     public function testSecurityEnabled(): void
     {
         $client = static::createClient();
@@ -14,7 +20,7 @@ class DashboardControllerTest extends WebTestCase
         $this->assertResponseRedirects('/login');
     }
 
-    public function testDashboardOpens()
+    public function testDashboard()
     {
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);

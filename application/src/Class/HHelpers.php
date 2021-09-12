@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Class;
 
 // Howanski's Helpers
-class HHelpers
+final class HHelpers
 {
     public static function formatBytes(int|float $bytes, int $precision = 2, bool $asPowerOfTens = false): string
     {

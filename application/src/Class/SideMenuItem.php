@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Class;
 
-class SideMenuItem
+final class SideMenuItem
 {
 
     private string $icon;

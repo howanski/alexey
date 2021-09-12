@@ -6,7 +6,7 @@ namespace App\Class;
 
 use App\Service\SimpleSettingsService;
 
-class NetworkUsageProviderSettings
+final class NetworkUsageProviderSettings
 {
     private const PROVIDER_TYPE = 'NETWORK_USAGE_PROVIDER_TYPE';
     private const PROVIDER_ADDRESS = 'NETWORK_USAGE_PROVIDER_ADDRESS';

@@ -9,7 +9,7 @@ use Carbon\Carbon;
 use Carbon\CarbonTimeZone;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class OpenWeatherOneApiResponse
+final class OpenWeatherOneApiResponse
 {
     public const WEATHER_CACHE_KEY = 'WEATHER';
 
