@@ -5,7 +5,7 @@
 
 {% block javascripts %}
 	<script>
-		window.chart_data_src = '{{ chart_data_src | raw }}';
+		window.chart_data_src = '{{ chart_data_src|raw }}';
 	</script>
 	{{ encore_entry_script_tags('alexey') }}
 	{{ encore_entry_script_tags('transmission-simulation') }}

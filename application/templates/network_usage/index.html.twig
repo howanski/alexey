@@ -5,12 +5,12 @@
 
 {% block javascripts %}
 	<script>
-		window.chart_data_src = '{{ chart_data_src | raw }}';
+		window.chart_data_src = '{{ chart_data_src|raw }}';
 	</script>
 	{{ encore_entry_script_tags('alexey') }}
 	{{ encore_entry_script_tags('network-usage-chart') }}
 	<script>
-		let chartRoutes = {{ chart_routes | json_encode | raw }};
+		let chartRoutes = {{ chart_routes|json_encode|raw }};
 let chartChanger = document.getElementById('network_chart_chartType');
 chartChanger.addEventListener('change', (event) => {
 let elemVal = event.target.value;
