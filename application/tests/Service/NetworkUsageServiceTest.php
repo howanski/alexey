@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-use App\Entity\NetworkStatistic;
 use PHPUnit\Framework\TestCase;
+use App\Entity\NetworkStatistic;
 use App\Service\NetworkUsageService;
 use App\Service\SimpleSettingsService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,6 +39,53 @@ final class NetworkUsageServiceTest extends TestCase
             expected: $returnObj,
             actual: $service->getLatestStatistic(),
             message: 'Wrong entity provided',
+        );
+    }
+
+    public function testGetConnectionSettings(): void
+    {
+        $em = $this->createMock(originalClassName: EntityManagerInterface::class);
+        $simpleSettingsService = $this->createMock(originalClassName: SimpleSettingsService::class);
+        $networkStatisticTimeFrameRepository =
+            $this->createMock(originalClassName: NetworkStatisticTimeFrameRepository::class);
+        $networkStatisticRepository = $this->createMock(originalClassName: NetworkStatisticRepository::class);
+
+        $returnObj = [
+            'NETWORK_USAGE_PROVIDER_TYPE' => 'XX',
+            'NETWORK_USAGE_PROVIDER_ADDRESS' => 'XXX',
+            'NETWORK_USAGE_PROVIDER_PASSWORD' => 'XXXX',
+            'NETWORK_USAGE_SHOW_ON_DASHBOARD' => 'XXXXX',
+        ];
+
+        $simpleSettingsService->method('getSettings')->willReturn($returnObj);
+
+        $service = new NetworkUsageService(
+            em: $em,
+            simpleSettingsService: $simpleSettingsService,
+            networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
+            networkStatisticRepository: $networkStatisticRepository,
+        );
+
+        $actualSettings = $service->getConnectionSettings();
+
+        $this->assertEquals(
+            expected: 'XX',
+            actual: $actualSettings->getProviderType(),
+        );
+
+        $this->assertEquals(
+            expected: 'XXX',
+            actual: $actualSettings->getAddress(),
+        );
+
+        $this->assertEquals(
+            expected: 'XXXX',
+            actual: $actualSettings->getPassword(),
+        );
+
+        $this->assertEquals(
+            expected: 'XXXXX',
+            actual: $actualSettings->getShowOnDashboard(),
         );
     }
 }

@@ -7,14 +7,14 @@ namespace App\Service;
 use DateTime;
 use DateInterval;
 use DateTimeInterface;
+use App\Form\NetworkChartType;
 use App\Entity\NetworkStatistic;
 use if0xx\HuaweiHilinkApi\Router;
+use App\Class\TransmissionSettings;
 use App\Service\SimpleSettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\NetworkStatisticTimeFrame;
 use App\Class\NetworkUsageProviderSettings;
-use App\Class\TransmissionSettings;
-use App\Form\NetworkChartType;
 use App\Repository\NetworkStatisticRepository;
 use App\Repository\NetworkStatisticTimeFrameRepository;
 

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Class\HHelpers;
-use App\Repository\NetworkStatisticRepository;
 use DateTime;
-use DateTimeInterface;
+use App\Class\HHelpers;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\NetworkStatisticRepository;
 
 #[ORM\Entity(repositoryClass: NetworkStatisticRepository::class)]
-class NetworkStatistic
+final class NetworkStatistic
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
