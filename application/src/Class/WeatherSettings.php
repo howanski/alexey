@@ -6,7 +6,7 @@ namespace App\Class;
 
 use App\Service\SimpleSettingsService;
 
-final class WeatherSettings
+class WeatherSettings
 {
     private const LATITUDE = 'WEATHER_LAT';
     private const LONGITUDE = 'WEATHER_LON';
