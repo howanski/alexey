@@ -119,7 +119,10 @@ final class NetworkUsageServiceTest extends TestCase
         );
     }
 
-    public function testGetDataForChart(): void
+    /**
+     * @dataProvider chartTypeProvider
+     */
+    public function testGetDataForChart(string $chartDataType, array $expectedValue): void
     {
         $em = $this->createMock(originalClassName: EntityManagerInterface::class);
         $simpleSettingsService = $this->createMock(originalClassName: SimpleSettingsService::class);
@@ -135,7 +138,15 @@ final class NetworkUsageServiceTest extends TestCase
         );
 
         $this->assertEquals(
-            expected: [
+            expected: $expectedValue,
+            actual: $service->getDataForChart($chartDataType),
+        );
+    }
+
+    public function chartTypeProvider(): array
+    {
+        return [
+            ['randomString', [
                 'labels' => [],
                 'datasets' => [],
                 'current' => [
@@ -145,8 +156,259 @@ final class NetworkUsageServiceTest extends TestCase
                     'current_billing_frame_end' => 0,
                 ],
                 'throttling' => 'N. A.',
-            ],
-            actual: $service->getDataForChart('eee'),
-        );
+            ]],
+            ['today', [
+                'labels' => [],
+                'datasets' => [
+                    'speed_relative' => [
+                        'label' => 'Traffic rate (kB/s)',
+                        'lineTension' => 0.3,
+                        'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
+                        'borderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointRadius' => 3,
+                        'pointBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverRadius' => 3,
+                        'pointHoverBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHitRadius' => 10,
+                        'pointBorderWidth' => 2,
+                        'data' => [],
+                    ],
+                    'speed_left' => [
+                        'label' => 'Traffic left (kB/s)',
+                        'lineTension' => 0.3,
+                        'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
+                        'borderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointRadius' => 3,
+                        'pointBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                        'pointBorderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHoverRadius' => 3,
+                        'pointHoverBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHoverBorderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHitRadius' => 10,
+                        'pointBorderWidth' => 2,
+                        'data' => [],
+                    ],
+                ],
+                'current' => [
+                    'current_traffic_left' => 0,
+                    'current_transfer_rate_left' => 0,
+                    'current_transfer_rate' => 0,
+                    'current_billing_frame_end' => 0,
+                ],
+                'throttling' => 'N. A.',
+            ]],
+            ['week', [
+                'labels' => [],
+                'datasets' => [
+                    'speed_relative' => [
+                        'label' => 'Traffic rate (kB/s)',
+                        'lineTension' => 0.3,
+                        'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
+                        'borderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointRadius' => 3,
+                        'pointBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverRadius' => 3,
+                        'pointHoverBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHitRadius' => 10,
+                        'pointBorderWidth' => 2,
+                        'data' => [],
+                    ],
+                    'speed_left' => [
+                        'label' => 'Traffic left (kB/s)',
+                        'lineTension' => 0.3,
+                        'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
+                        'borderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointRadius' => 3,
+                        'pointBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                        'pointBorderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHoverRadius' => 3,
+                        'pointHoverBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHoverBorderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHitRadius' => 10,
+                        'pointBorderWidth' => 2,
+                        'data' => [],
+                    ],
+                ],
+                'current' => [
+                    'current_traffic_left' => 0,
+                    'current_transfer_rate_left' => 0,
+                    'current_transfer_rate' => 0,
+                    'current_billing_frame_end' => 0,
+                ],
+                'throttling' => 'N. A.',
+            ]],
+            ['month', [
+                'labels' => [],
+                'datasets' => [
+                    'speed_relative' => [
+                        'label' => 'Traffic rate (kB/s)',
+                        'lineTension' => 0.3,
+                        'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
+                        'borderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointRadius' => 3,
+                        'pointBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverRadius' => 3,
+                        'pointHoverBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHitRadius' => 10,
+                        'pointBorderWidth' => 2,
+                        'data' => [],
+                    ],
+                    'speed_left' => [
+                        'label' => 'Traffic left (kB/s)',
+                        'lineTension' => 0.3,
+                        'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
+                        'borderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointRadius' => 3,
+                        'pointBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                        'pointBorderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHoverRadius' => 3,
+                        'pointHoverBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHoverBorderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHitRadius' => 10,
+                        'pointBorderWidth' => 2,
+                        'data' => [],
+                    ],
+                ],
+                'current' => [
+                    'current_traffic_left' => 0,
+                    'current_transfer_rate_left' => 0,
+                    'current_transfer_rate' => 0,
+                    'current_billing_frame_end' => 0,
+                ],
+                'throttling' => 'N. A.',
+            ]],
+            ['currentFrame', [
+                'labels' => [],
+                'datasets' => [
+                    'speed_relative' => [
+                        'label' => 'Traffic rate (kB/s)',
+                        'lineTension' => 0.3,
+                        'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
+                        'borderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointRadius' => 3,
+                        'pointBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverRadius' => 3,
+                        'pointHoverBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHitRadius' => 10,
+                        'pointBorderWidth' => 2,
+                        'data' => [],
+                    ],
+                    'speed_left' => [
+                        'label' => 'Traffic left (kB/s)',
+                        'lineTension' => 0.3,
+                        'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
+                        'borderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointRadius' => 3,
+                        'pointBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                        'pointBorderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHoverRadius' => 3,
+                        'pointHoverBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHoverBorderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHitRadius' => 10,
+                        'pointBorderWidth' => 2,
+                        'data' => [],
+                    ],
+                ],
+                'current' => [
+                    'current_traffic_left' => 0,
+                    'current_transfer_rate_left' => 0,
+                    'current_transfer_rate' => 0,
+                    'current_billing_frame_end' => 0,
+                ],
+                'throttling' => 'N. A.',
+            ]],
+            ['twoHours', [
+                'labels' => [],
+                'datasets' => [
+                    'speed_relative' => [
+                        'label' => 'Traffic rate (kB/s)',
+                        'lineTension' => 0.3,
+                        'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
+                        'borderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointRadius' => 3,
+                        'pointBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverRadius' => 3,
+                        'pointHoverBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHitRadius' => 10,
+                        'pointBorderWidth' => 2,
+                        'data' => [],
+                    ],
+                    'speed_left' => [
+                        'label' => 'Traffic left (kB/s)',
+                        'lineTension' => 0.3,
+                        'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
+                        'borderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointRadius' => 3,
+                        'pointBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                        'pointBorderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHoverRadius' => 3,
+                        'pointHoverBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHoverBorderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHitRadius' => 10,
+                        'pointBorderWidth' => 2,
+                        'data' => [],
+                    ],
+                ],
+                'current' => [
+                    'current_traffic_left' => 0,
+                    'current_transfer_rate_left' => 0,
+                    'current_transfer_rate' => 0,
+                    'current_billing_frame_end' => 0,
+                ],
+                'throttling' => 'N. A.',
+            ]],
+            ['tenMinutes', [
+                'labels' => [],
+                'datasets' => [
+                    'speed_relative' => [
+                        'label' => 'Traffic rate (kB/s)',
+                        'lineTension' => 0.3,
+                        'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
+                        'borderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointRadius' => 3,
+                        'pointBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverRadius' => 3,
+                        'pointHoverBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHitRadius' => 10,
+                        'pointBorderWidth' => 2,
+                        'data' => [],
+                    ],
+                    'speed_left' => [
+                        'label' => 'Traffic left (kB/s)',
+                        'lineTension' => 0.3,
+                        'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
+                        'borderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointRadius' => 3,
+                        'pointBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                        'pointBorderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHoverRadius' => 3,
+                        'pointHoverBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHoverBorderColor' => 'rgba(78, 222, 223, 1)',
+                        'pointHitRadius' => 10,
+                        'pointBorderWidth' => 2,
+                        'data' => [],
+                    ],
+                ],
+                'current' => [
+                    'current_traffic_left' => 0,
+                    'current_transfer_rate_left' => 0,
+                    'current_transfer_rate' => 0,
+                    'current_billing_frame_end' => 0,
+                ],
+                'throttling' => 'N. A.',
+            ]],
+        ];
     }
 }
