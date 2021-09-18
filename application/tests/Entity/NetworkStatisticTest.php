@@ -95,7 +95,7 @@ final class NetworkStatisticTest extends TestCase
         );
     }
 
-    public function testGetTimePassedFromReferencePoint()
+    public function testGetTimePassedFromReferencePoint(): void
     {
         $probingTime = new \DateTime('now');
         $olderProbingTime = new \DateTime('now');
@@ -113,6 +113,44 @@ final class NetworkStatisticTest extends TestCase
             expected: 13,
             actual: $stat->getTimePassedFromReferencePoint(),
             message: 'Wrongly measured time passed',
+        );
+    }
+
+    public function testDataConsumptionFromReferencePoint(): void
+    {
+        $probingTime = new \DateTime('now');
+        $olderProbingTime = new \DateTime('now');
+        $interval = new \DateInterval('PT13S');
+        $olderProbingTime->sub($interval);
+
+        $stat = new NetworkStatistic();
+        $stat->setProbingTime($probingTime);
+        $stat->setDataDownloadedInFrame(200);
+        $stat->setDataUploadedInFrame(300);
+
+        $olderStat = new NetworkStatistic();
+        $olderStat->setProbingTime($olderProbingTime);
+        $olderStat->setDataDownloadedInFrame(100);
+        $olderStat->setDataUploadedInFrame(100);
+
+        $stat->setReferencePoint($olderStat);
+
+        $this->assertEquals(
+            expected: 100,
+            actual: $stat->getDataDownloadedFromReferencePoint(),
+            message: 'Wrongly measured data consumption',
+        );
+
+        $this->assertEquals(
+            expected: 200,
+            actual: $stat->getDataUploadedFromReferencePoint(),
+            message: 'Wrongly measured data consumption',
+        );
+
+        $this->assertEquals(
+            expected: 300,
+            actual: $stat->getTotalTrafficFromReferencePoint(),
+            message: 'Wrongly measured data consumption',
         );
     }
 }
