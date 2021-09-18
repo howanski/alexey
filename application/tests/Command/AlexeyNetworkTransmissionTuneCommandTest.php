@@ -8,6 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * @covers App\Command\AlexeyNetworkTransmissionTuneCommand
+ */
 final class AlexeyNetworkTransmissionTuneCommandTest extends KernelTestCase
 {
     public function testExecute()
