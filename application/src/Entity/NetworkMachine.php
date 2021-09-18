@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\NetworkMachineRepository;
 
 #[ORM\Entity(repositoryClass: NetworkMachineRepository::class)]
-class NetworkMachine
+final class NetworkMachine
 {
     public const STATUS_UNKNOWN = 0;
     public const STATUS_UNREACHABLE = 1;

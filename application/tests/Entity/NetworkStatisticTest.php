@@ -94,4 +94,25 @@ final class NetworkStatisticTest extends TestCase
             actual: $stat->getTimeLeftTillFrameEnd(),
         );
     }
+
+    public function testGetTimePassedFromReferencePoint()
+    {
+        $probingTime = new \DateTime('now');
+        $olderProbingTime = new \DateTime('now');
+        $interval = new \DateInterval('PT13S');
+        $olderProbingTime->sub($interval);
+
+        $stat = new NetworkStatistic();
+        $stat->setProbingTime($probingTime);
+
+        $olderStat = new NetworkStatistic();
+        $olderStat->setProbingTime($olderProbingTime);
+        $stat->setReferencePoint($olderStat);
+
+        $this->assertEquals(
+            expected: 13,
+            actual: $stat->getTimePassedFromReferencePoint(),
+            message: 'Wrongly measured time passed',
+        );
+    }
 }
