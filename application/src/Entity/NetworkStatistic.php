@@ -8,6 +8,7 @@ use DateTime;
 use App\Class\HHelpers;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\NetworkStatisticRepository;
+use DivisionByZeroError;
 
 #[ORM\Entity(repositoryClass: NetworkStatisticRepository::class)]
 final class NetworkStatistic
@@ -195,7 +196,11 @@ final class NetworkStatistic
 
     public function getTransferRateLeft(): float
     {
-        return ($this->getTrafficLeft() / $this->getTimeLeftTillFrameEnd());
+        try {
+            return ($this->getTrafficLeft() / $this->getTimeLeftTillFrameEnd());
+        } catch (DivisionByZeroError) {
+            return 0;
+        }
     }
 
     public function getTransferRateLeftReadable(int $precision = 2): string
