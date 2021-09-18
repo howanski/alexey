@@ -9,6 +9,7 @@ use App\Entity\NetworkStatistic;
 use App\Service\NetworkUsageService;
 use App\Service\SimpleSettingsService;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\NetworkStatisticTimeFrame;
 use App\Repository\NetworkStatisticRepository;
 use App\Repository\NetworkStatisticTimeFrameRepository;
 
@@ -130,6 +131,26 @@ final class NetworkUsageServiceTest extends TestCase
             $this->createMock(originalClassName: NetworkStatisticTimeFrameRepository::class);
         $networkStatisticRepository = $this->createMock(originalClassName: NetworkStatisticRepository::class);
 
+        $sixHours = new \DateInterval('PT6H');
+
+        $sixHoursAgo = new \DateTime('now');
+        $sixHoursAgo->sub($sixHours);
+
+        $inSixHours = new \DateTime('now');
+        $inSixHours->Add($sixHours);
+
+        $timeFrame = new NetworkStatisticTimeFrame();
+        $timeFrame->setBillingFrameStart($sixHoursAgo);
+        $timeFrame->setBillingFrameEnd($inSixHours);
+
+        $networkStatisticOld = new NetworkStatistic();
+        $networkStatisticOld->setProbingTime($sixHoursAgo);
+
+        $networkStatistic = new NetworkStatistic();
+        $networkStatistic->setTimeFrame($timeFrame);
+        $networkStatistic->setReferencePoint($networkStatisticOld);
+
+        $networkStatisticRepository->method('getLatestOne')->willReturn($networkStatistic);
         $service = new NetworkUsageService(
             em: $em,
             simpleSettingsService: $simpleSettingsService,
@@ -150,10 +171,10 @@ final class NetworkUsageServiceTest extends TestCase
                 'labels' => [],
                 'datasets' => [],
                 'current' => [
-                    'current_traffic_left' => 0,
-                    'current_transfer_rate_left' => 0,
-                    'current_transfer_rate' => 0,
-                    'current_billing_frame_end' => 0,
+                    'current_traffic_left' => '0 B',
+                    'current_transfer_rate_left' => '0 B/s',
+                    'current_transfer_rate' => '0 B/s',
+                    'current_billing_frame_end' => '5 hours from now',
                 ],
                 'throttling' => 'N. A.',
             ]],
@@ -192,10 +213,10 @@ final class NetworkUsageServiceTest extends TestCase
                     ],
                 ],
                 'current' => [
-                    'current_traffic_left' => 0,
-                    'current_transfer_rate_left' => 0,
-                    'current_transfer_rate' => 0,
-                    'current_billing_frame_end' => 0,
+                    'current_traffic_left' => '0 B',
+                    'current_transfer_rate_left' => '0 B/s',
+                    'current_transfer_rate' => '0 B/s',
+                    'current_billing_frame_end' => '5 hours from now',
                 ],
                 'throttling' => 'N. A.',
             ]],
@@ -234,10 +255,10 @@ final class NetworkUsageServiceTest extends TestCase
                     ],
                 ],
                 'current' => [
-                    'current_traffic_left' => 0,
-                    'current_transfer_rate_left' => 0,
-                    'current_transfer_rate' => 0,
-                    'current_billing_frame_end' => 0,
+                    'current_traffic_left' => '0 B',
+                    'current_transfer_rate_left' => '0 B/s',
+                    'current_transfer_rate' => '0 B/s',
+                    'current_billing_frame_end' => '5 hours from now',
                 ],
                 'throttling' => 'N. A.',
             ]],
@@ -276,10 +297,10 @@ final class NetworkUsageServiceTest extends TestCase
                     ],
                 ],
                 'current' => [
-                    'current_traffic_left' => 0,
-                    'current_transfer_rate_left' => 0,
-                    'current_transfer_rate' => 0,
-                    'current_billing_frame_end' => 0,
+                    'current_traffic_left' => '0 B',
+                    'current_transfer_rate_left' => '0 B/s',
+                    'current_transfer_rate' => '0 B/s',
+                    'current_billing_frame_end' => '5 hours from now',
                 ],
                 'throttling' => 'N. A.',
             ]],
@@ -318,10 +339,10 @@ final class NetworkUsageServiceTest extends TestCase
                     ],
                 ],
                 'current' => [
-                    'current_traffic_left' => 0,
-                    'current_transfer_rate_left' => 0,
-                    'current_transfer_rate' => 0,
-                    'current_billing_frame_end' => 0,
+                    'current_traffic_left' => '0 B',
+                    'current_transfer_rate_left' => '0 B/s',
+                    'current_transfer_rate' => '0 B/s',
+                    'current_billing_frame_end' => '5 hours from now',
                 ],
                 'throttling' => 'N. A.',
             ]],
@@ -360,10 +381,10 @@ final class NetworkUsageServiceTest extends TestCase
                     ],
                 ],
                 'current' => [
-                    'current_traffic_left' => 0,
-                    'current_transfer_rate_left' => 0,
-                    'current_transfer_rate' => 0,
-                    'current_billing_frame_end' => 0,
+                    'current_traffic_left' => '0 B',
+                    'current_transfer_rate_left' => '0 B/s',
+                    'current_transfer_rate' => '0 B/s',
+                    'current_billing_frame_end' => '5 hours from now',
                 ],
                 'throttling' => 'N. A.',
             ]],
@@ -402,10 +423,10 @@ final class NetworkUsageServiceTest extends TestCase
                     ],
                 ],
                 'current' => [
-                    'current_traffic_left' => 0,
-                    'current_transfer_rate_left' => 0,
-                    'current_transfer_rate' => 0,
-                    'current_billing_frame_end' => 0,
+                    'current_traffic_left' => '0 B',
+                    'current_transfer_rate_left' => '0 B/s',
+                    'current_transfer_rate' => '0 B/s',
+                    'current_billing_frame_end' => '5 hours from now',
                 ],
                 'throttling' => 'N. A.',
             ]],
