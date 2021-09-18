@@ -13,36 +13,38 @@
 	<!-- Divider -->
 	<hr	class="sidebar-divider my-0">
 	<!-- Navigation links -->
-	{% for  topMenuKey, menuItem in alexeySideMenu() %}
-		{% if menuItem.haveChildren %}
-			<li class="nav-item{% if menuItem.isActive %} active {% endif %}">
-				<a class="nav-link{% if not menuItem.isActive %} collapsed{% endif %}" href="#" data-toggle="collapse" data-target="#collapseTopMenu{{topMenuKey}}" aria-expanded="{% if menuItem.isActive %}true{% else %}false{% endif %}" aria-controls="collapseTopMenu{{topMenuKey}}">
-					<i class="fas fa-fw {{menuItem.icon}}"></i>
-					<span>{{menuItem.name}}</span>
+	{% for top_menu_key, menu_item in alexeySideMenu() %}
+		{% if menu_item.haveChildren %}
+			<li class="nav-item{% if menu_item.isActive %} active {% endif %}">
+				<a class="nav-link{% if not menu_item.isActive %} collapsed{% endif %}" href="#" data-toggle="collapse"
+				 data-target="#collapseTopMenu{{ top_menu_key }}" aria-expanded="{% if menu_item.isActive %}true{% else %}false{% endif %}"
+				  aria-controls="collapseTopMenu{{ top_menu_key }}">
+					<i class="fas fa-fw {{ menu_item.icon }}"></i>
+					<span>{{ menu_item.name }}</span>
 				</a>
-				<div id="collapseTopMenu{{topMenuKey}}" class="collapse{% if menuItem.isActive %} show{% endif %}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+				<div id="collapseTopMenu{{ top_menu_key }}" class="collapse{% if menu_item.isActive %} show{% endif %}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
-						{% for childMenuItem in menuItem.children%}
-							{% if childMenuItem.isHeading %}
-								<h6 class="collapse-header">{{childMenuItem.name}}</h6>
-							{% elseif childMenuItem.isDivider %}
+						{% for childmenu_item in menu_item.children %}
+							{% if childmenu_item.isHeading %}
+								<h6 class="collapse-header">{{ childmenu_item.name }}</h6>
+							{% elseif childmenu_item.isDivider %}
 								<div class="collapse-divider"></div>
 							{% else %}
-								<a class="collapse-item" href="{{childMenuItem.destination}}">{{childMenuItem.name}}</a>
+								<a class="collapse-item" href="{{ childmenu_item.destination }}">{{ childmenu_item.name }}</a>
 							{% endif %}
 						{% endfor %}
 					</div>
 				</div>
 			</li>
-		{% elseif menuItem.isHeading %}
-			<div class="sidebar-heading">{{menuItem.name}}</div>
-		{% elseif menuItem.isDivider %}
+		{% elseif menu_item.isHeading %}
+			<div class="sidebar-heading">{{ menu_item.name }}</div>
+		{% elseif menu_item.isDivider %}
 			<hr class="sidebar-divider">
 		{% else %}
-			<li class="nav-item{% if menuItem.isActive %} active {% endif %}">
-				<a class="nav-link" href="{{menuItem.destination}}">
-					<i class="fas fa-fw {{menuItem.icon}}"></i>
-					<span>{{menuItem.name}}</span>
+			<li class="nav-item{% if menu_item.isActive %} active {% endif %}">
+				<a class="nav-link" href="{{ menu_item.destination }}">
+					<i class="fas fa-fw {{ menu_item.icon }}"></i>
+					<span>{{ menu_item.name }}</span>
 				</a>
 			</li>
 		{% endif %}

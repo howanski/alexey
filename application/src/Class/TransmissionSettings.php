@@ -6,7 +6,7 @@ namespace App\Class;
 
 use App\Service\SimpleSettingsService;
 
-class TransmissionSettings
+final class TransmissionSettings
 {
     public const TOP_SPEED = 1024;  // 8 Mbit
     public const BOTTOM_SPEED = 5;  // minimum - transmission ignores smaller values

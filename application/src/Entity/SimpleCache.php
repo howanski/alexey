@@ -6,7 +6,7 @@ use App\Repository\SimpleCacheRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SimpleCacheRepository::class)]
-class SimpleCache
+final class SimpleCache
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
