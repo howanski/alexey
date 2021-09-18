@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Class;
 
 use App\Class\WeatherSettings;
@@ -12,7 +14,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 /**
  * @covers App\Class\OpenWeatherOneApiResponse
  */
-class OpenWeatherOneApiResponseTest extends TestCase
+final class OpenWeatherOneApiResponseTest extends TestCase
 {
     public function testGetWeatherReadable(): void
     {
