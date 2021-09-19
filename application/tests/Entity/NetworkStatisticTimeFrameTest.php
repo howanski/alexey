@@ -24,4 +24,14 @@ final class NetworkStatisticTimeFrameTest extends TestCase
             actual: $entity->getBillingFrameEndReadable(),
         );
     }
+
+    public function testGetBillingFrameDataLimitReadable(): void
+    {
+        $entity = new NetworkStatisticTimeFrame();
+        $entity->setBillingFrameDataLimit(intval(1024 * 1024 * 1024 * 2.5));
+        $this->assertEquals(
+            expected: '2.5 GB',
+            actual: $entity->getBillingFrameDataLimitReadable(),
+        );
+    }
 }
