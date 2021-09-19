@@ -11,7 +11,7 @@ use App\Repository\NetworkStatisticRepository;
 use DivisionByZeroError;
 
 #[ORM\Entity(repositoryClass: NetworkStatisticRepository::class)]
-final class NetworkStatistic
+class NetworkStatistic
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

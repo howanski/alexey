@@ -8,7 +8,7 @@ use App\Repository\SimpleSettingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SimpleSettingRepository::class)]
-final class SimpleSetting
+class SimpleSetting
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

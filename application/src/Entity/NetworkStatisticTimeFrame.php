@@ -13,7 +13,7 @@ use App\Repository\NetworkStatisticTimeFrameRepository;
 use Carbon\Carbon;
 
 #[ORM\Entity(repositoryClass: NetworkStatisticTimeFrameRepository::class)]
-final class NetworkStatisticTimeFrame
+class NetworkStatisticTimeFrame
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
