@@ -20,7 +20,7 @@ final class NetworkStatisticTest extends TestCase
         $this->assertEquals(
             expected: DateTime::class,
             actual: get_class($stat->getProbingTime()),
-            message: 'Probing time not set on empty object',
+            message: '---!---> Probing time not set on empty object',
         );
 
         $probingTime = new DateTime('now');
@@ -29,7 +29,7 @@ final class NetworkStatisticTest extends TestCase
         $this->assertEquals(
             expected: $probingTime,
             actual: $stat->getProbingTime(),
-            message: 'Probing time changed after set',
+            message: '---!---> Probing time changed after set',
         );
     }
 
@@ -42,7 +42,7 @@ final class NetworkStatisticTest extends TestCase
         $this->assertEquals(
             expected: $integer,
             actual: $stat->getDataUploadedInFrame(),
-            message: 'DataUploadedInFrame changed after set',
+            message: '---!---> DataUploadedInFrame changed after set',
         );
     }
 
@@ -55,7 +55,7 @@ final class NetworkStatisticTest extends TestCase
         $this->assertEquals(
             expected: $integer,
             actual: $stat->getDataDownloadedInFrame(),
-            message: 'DataDownloadedInFrame changed after set',
+            message: '---!---> DataDownloadedInFrame changed after set',
         );
     }
 
@@ -68,7 +68,7 @@ final class NetworkStatisticTest extends TestCase
         $this->assertEquals(
             expected: $timeFrame,
             actual: $stat->getTimeFrame(),
-            message: 'TimeFrame changed after set',
+            message: '---!---> TimeFrame changed after set',
         );
     }
 
@@ -112,7 +112,7 @@ final class NetworkStatisticTest extends TestCase
         $this->assertEquals(
             expected: 13,
             actual: $stat->getTimePassedFromReferencePoint(),
-            message: 'Wrongly measured time passed',
+            message: '---!---> Wrongly measured time passed',
         );
     }
 
@@ -138,19 +138,37 @@ final class NetworkStatisticTest extends TestCase
         $this->assertEquals(
             expected: 100,
             actual: $stat->getDataDownloadedFromReferencePoint(),
-            message: 'Wrongly measured data consumption',
+            message: '---!---> Wrongly measured data consumption',
         );
 
         $this->assertEquals(
             expected: 200,
             actual: $stat->getDataUploadedFromReferencePoint(),
-            message: 'Wrongly measured data consumption',
+            message: '---!---> Wrongly measured data consumption',
         );
 
         $this->assertEquals(
             expected: 300,
             actual: $stat->getTotalTrafficFromReferencePoint(),
-            message: 'Wrongly measured data consumption',
+            message: '---!---> Wrongly measured data consumption',
+        );
+
+        $this->assertEquals(
+            expected: 7.6923,
+            actual: round(num: $stat->getDownloadSpeedFromReferencePoint(), precision: 4),
+            message: '---!---> Wrongly measured speed',
+        );
+
+        $this->assertEquals(
+            expected: 15.3846,
+            actual: round(num: $stat->getUploadSpeedFromReferencePoint(), precision: 4),
+            message: '---!---> Wrongly measured speed',
+        );
+
+        $this->assertEquals(
+            expected: 23.0769,
+            actual: round(num: $stat->getTotalSpeedFromReferencePoint(), precision: 4),
+            message: '---!---> Wrongly measured speed',
         );
     }
 }
