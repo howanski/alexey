@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-use App\Class\OpenWeatherOneApiResponse;
 use App\Service\WeatherService;
 use PHPUnit\Framework\TestCase;
 use App\Service\SimpleCacheService;
 use App\Service\SimpleSettingsService;
+use App\Class\OpenWeatherOneApiResponse;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -42,6 +43,173 @@ final class WeatherServiceTest extends TestCase
             expected: OpenWeatherOneApiResponse::class,
             actual: get_class($weather),
             message: 'Wrong weather format',
+        );
+    }
+
+    public function testGetChartData(): void
+    {
+        $client = $this->createMock(originalClassName: HttpClientInterface::class);
+        $simpleSettingsService = $this->createMock(originalClassName: SimpleSettingsService::class);
+        $simpleCacheService = $this->createMock(originalClassName: SimpleCacheService::class);
+
+        $settingsArray = [
+            'WEATHER_LAT' => 'a',
+            'WEATHER_LON' => 'b',
+            'WEATHER_API_KEY' => 'c',
+            'WEATHER_SHOW_ON_DASHBOARD' => 'd',
+        ];
+        $simpleSettingsService->method('getSettings')->willReturn($settingsArray);
+
+
+        $weatherMock = [
+            'hourly' => [],
+            'daily' => [],
+        ];
+        $weatherResponse = $this->createMock(originalClassName: ResponseInterface::class);
+        $weatherResponse->method('toArray')->willReturn($weatherMock);
+        $client->method('request')->willReturn($weatherResponse);
+
+        $service = new WeatherService(
+            client: $client,
+            simpleSettingsService: $simpleSettingsService,
+            simpleCacheService: $simpleCacheService,
+        );
+
+        $this->assertEquals(
+            expected: [
+                'hourly' => [
+                    'labels' => [],
+                    'datasets' => [
+                        'temperature' => [
+                            'label' => 'Temperature (°C)',
+                            'lineTension' => 0.3,
+                            'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
+                            'borderColor' => 'rgba(78, 115, 223, 1)',
+                            'pointRadius' => 3,
+                            'pointBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                            'pointBorderColor' => 'rgba(78, 115, 223, 1)',
+                            'pointHoverRadius' => 3,
+                            'pointHoverBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                            'pointHoverBorderColor' => 'rgba(78, 115, 223, 1)',
+                            'pointHitRadius' => 10,
+                            'pointBorderWidth' => 2,
+                            'data' => [],
+                        ],
+                        'feels_like' => [
+                            'label' => 'Feels like (°C)',
+                            'lineTension' => 0.3,
+                            'backgroundColor' => 'rgba(140, 115, 223, 0.05)',
+                            'borderColor' => 'rgba(140, 115, 223, 1)',
+                            'pointRadius' => 3,
+                            'pointBackgroundColor' => 'rgba(140, 115, 223, 1)',
+                            'pointBorderColor' => 'rgba(140, 115, 223, 1)',
+                            'pointHoverRadius' => 3,
+                            'pointHoverBackgroundColor' => 'rgba(140, 115, 223, 1)',
+                            'pointHoverBorderColor' => 'rgba(140, 115, 223, 1)',
+                            'pointHitRadius' => 10,
+                            'pointBorderWidth' => 2,
+                            'data' => [],
+                        ],
+                        'wind_speed' => [
+                            'label' => 'Wind speed (km/h)',
+                            'lineTension' => 0.3,
+                            'backgroundColor' => 'rgba(140, 115, 100, 0.05)',
+                            'borderColor' => 'rgba(140, 115, 100, 1)',
+                            'pointRadius' => 3,
+                            'pointBackgroundColor' => 'rgba(140, 115, 100, 1)',
+                            'pointBorderColor' => 'rgba(140, 115, 100, 1)',
+                            'pointHoverRadius' => 3,
+                            'pointHoverBackgroundColor' => 'rgba(140, 115, 100, 1)',
+                            'pointHoverBorderColor' => 'rgba(140, 115, 100, 1)',
+                            'pointHitRadius' => 10,
+                            'pointBorderWidth' => 2,
+                            'data' => [],
+                        ],
+                        'rain' => [
+                            'label' => 'Rain / Snow (mm)',
+                            'lineTension' => 0.3,
+                            'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
+                            'borderColor' => 'rgba(78, 222, 223, 1)',
+                            'pointRadius' => 3,
+                            'pointBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                            'pointBorderColor' => 'rgba(78, 222, 223, 1)',
+                            'pointHoverRadius' => 3,
+                            'pointHoverBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                            'pointHoverBorderColor' => 'rgba(78, 222, 223, 1)',
+                            'pointHitRadius' => 10,
+                            'pointBorderWidth' => 2,
+                            'data' => [],
+                        ],
+                    ],
+                ],
+                'daily' => [
+                    'labels' => [],
+                    'datasets' => [
+                        'temperature' => [
+                            'label' => 'Temperature (°C)',
+                            'lineTension' => 0.3,
+                            'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
+                            'borderColor' => 'rgba(78, 115, 223, 1)',
+                            'pointRadius' => 3,
+                            'pointBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                            'pointBorderColor' => 'rgba(78, 115, 223, 1)',
+                            'pointHoverRadius' => 3,
+                            'pointHoverBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                            'pointHoverBorderColor' => 'rgba(78, 115, 223, 1)',
+                            'pointHitRadius' => 10,
+                            'pointBorderWidth' => 2,
+                            'data' => [],
+                        ],
+                        'feels_like' => [
+                            'label' => 'Feels like (°C)',
+                            'lineTension' => 0.3,
+                            'backgroundColor' => 'rgba(140, 115, 223, 0.05)',
+                            'borderColor' => 'rgba(140, 115, 223, 1)',
+                            'pointRadius' => 3,
+                            'pointBackgroundColor' => 'rgba(140, 115, 223, 1)',
+                            'pointBorderColor' => 'rgba(140, 115, 223, 1)',
+                            'pointHoverRadius' => 3,
+                            'pointHoverBackgroundColor' => 'rgba(140, 115, 223, 1)',
+                            'pointHoverBorderColor' => 'rgba(140, 115, 223, 1)',
+                            'pointHitRadius' => 10,
+                            'pointBorderWidth' => 2,
+                            'data' => [],
+                        ],
+                        'wind_speed' => [
+                            'label' => 'Wind speed (km/h)',
+                            'lineTension' => 0.3,
+                            'backgroundColor' => 'rgba(140, 115, 100, 0.05)',
+                            'borderColor' => 'rgba(140, 115, 100, 1)',
+                            'pointRadius' => 3,
+                            'pointBackgroundColor' => 'rgba(140, 115, 100, 1)',
+                            'pointBorderColor' => 'rgba(140, 115, 100, 1)',
+                            'pointHoverRadius' => 3,
+                            'pointHoverBackgroundColor' => 'rgba(140, 115, 100, 1)',
+                            'pointHoverBorderColor' => 'rgba(140, 115, 100, 1)',
+                            'pointHitRadius' => 10,
+                            'pointBorderWidth' => 2,
+                            'data' => [],
+                        ],
+                        'rain' => [
+                            'label' => 'Rain / Snow (mm)',
+                            'lineTension' => 0.3,
+                            'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
+                            'borderColor' => 'rgba(78, 222, 223, 1)',
+                            'pointRadius' => 3,
+                            'pointBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                            'pointBorderColor' => 'rgba(78, 222, 223, 1)',
+                            'pointHoverRadius' => 3,
+                            'pointHoverBackgroundColor' => 'rgba(78, 222, 223, 1)',
+                            'pointHoverBorderColor' => 'rgba(78, 222, 223, 1)',
+                            'pointHitRadius' => 10,
+                            'pointBorderWidth' => 2,
+                            'data' => [],
+                        ],
+                    ],
+                ],
+            ],
+            actual: $service->getChartData(),
+            message: '---!---> Weather chart data wrongly formed.',
         );
     }
 }
