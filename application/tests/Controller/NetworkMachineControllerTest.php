@@ -5,12 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-/**
- * @covers App\Controller\NetworkMachineController
- */
 final class NetworkMachineControllerTest extends WebTestCase
 {
 

@@ -185,6 +185,7 @@ class NetworkUsageService
 
     private function getPreparedEntitiesForChart(DateTime $dateFrom, DateTime $dateTo, int $maxRecords = 50): array
     {
+        // TODO: Get grouped by networkStatisticTimeFrame and drop older frames
         $networkStatistics = $this->networkStatisticRepository->getOrderedFromTimeRange($dateFrom, $dateTo);
         $count = count($networkStatistics);
         if ($count > $maxRecords) {
