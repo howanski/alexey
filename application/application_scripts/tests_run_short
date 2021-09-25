@@ -1,5 +1,4 @@
 #!/bin/bash
-./tests_cleanup
 cd ..
 mkdir -p var/qa-results
 clear
