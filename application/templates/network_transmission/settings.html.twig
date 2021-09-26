@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Alexey | Transmission | Settings
+{% block title %}Alexey | Transmission | {{ 'app.settings'|trans }}
 {% endblock %}
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-400">
-			Network ~> <a href="{{ path('network_transmission') }}" class="text-info">Transmission</a> ~> Settings
+			{{ 'app.network'|trans }} ~> <a href="{{ path('network_transmission') }}" class="text-info">Transmission</a> ~> {{ 'app.settings'|trans }}
 		</h1>
 	</div>
 	{{ form_start(form) }}

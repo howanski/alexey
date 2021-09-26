@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Alexey | Network Usage
+{% block title %}Alexey | {{ 'app.network_usage'|trans }}
 {% endblock %}
 
 {% block javascripts %}
@@ -22,7 +22,7 @@ window.location.replace(route);
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">Network ~> Usage |
+		<h1 class="h3 mb-0 text-gray-400">{{ 'app.network'|trans }} ~> Usage |
 			<a href="{{ path('network_usage_settings') }}" class="fas fa-cog text-info"></a>
 		</h1>
 	</div>

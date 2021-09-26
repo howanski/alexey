@@ -54,7 +54,7 @@ window.location.reload(false);
 	{# TODO: refactor cards #}
 	{% if dashboard_data.network_statistic is defined and dashboard_data.network_statistic is not null %}
 		<div class="row">
-			<h5 class="text-gray-400">Network Usage</h1>
+			<h5 class="text-gray-400">{{ 'app.network_usage'|trans }}</h1>
 		</div>
 		<div class="row">
 			<div class="col-xl-3 col-md-6 mb-4">

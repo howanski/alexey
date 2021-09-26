@@ -7,7 +7,7 @@
     <body>
       <trans-unit id="KGc0u2D" resname="app.dashboard">
         <source>app.dashboard</source>
-        <target>Dashboard</target>
+        <target>Sterownia</target>
       </trans-unit>
       <trans-unit id="1djbNJJ" resname="app.network_machines">
         <source>app.network_machines</source>
@@ -24,6 +24,30 @@
       <trans-unit id="i7uRRJt" resname="app.weather.daily">
         <source>app.weather.daily</source>
         <target>Pogoda dzienna</target>
+      </trans-unit>
+      <trans-unit id="ERF1X6A" resname="app.network">
+        <source>app.network</source>
+        <target>Sieć</target>
+      </trans-unit>
+      <trans-unit id="2NW22gI" resname="app.network_usage">
+        <source>app.network_usage</source>
+        <target>Zużycie</target>
+      </trans-unit>
+      <trans-unit id="Qrx3gXS" resname="app.network_transmission">
+        <source>app.network_transmission</source>
+        <target>Transmission</target>
+      </trans-unit>
+      <trans-unit id="w.2Ep2J" resname="app.settings">
+        <source>app.settings</source>
+        <target>Ustawienia</target>
+      </trans-unit>
+      <trans-unit id="O708Jxf" resname="app.logout">
+        <source>app.logout</source>
+        <target>Wyloguj</target>
+      </trans-unit>
+      <trans-unit id="foQyyUD" resname="app.network_machines.status">
+        <source>app.network_machines.status</source>
+        <target>Status</target>
       </trans-unit>
     </body>
   </file>

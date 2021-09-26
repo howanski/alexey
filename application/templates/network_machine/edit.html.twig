@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Alexey | Machines | {{ network_machine.name }}{% endblock %}
+{% block title %}Alexey | {{ 'app.network_machines'|trans }} | {{ network_machine.name }}{% endblock %}
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">Network ~> <a href="{{ path('network_machine_index') }}" class="text-info">Machines</a> ~> #{{ network_machine.id }} - {{ network_machine.name }}</h1>
+		<h1 class="h3 mb-0 text-gray-400">{{ 'app.network'|trans }} ~> <a href="{{ path('network_machine_index') }}" class="text-info">{{ 'app.network_machines'|trans }}</a> ~> #{{ network_machine.id }} - {{ network_machine.name }}</h1>
 	</div>
     {{ include('network_machine/_form.html.twig', {'button_label': 'Update'}) }}
     <div class="row">

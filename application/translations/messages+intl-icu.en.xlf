@@ -25,6 +25,30 @@
         <source>app.weather.daily</source>
         <target>Daily weather</target>
       </trans-unit>
+      <trans-unit id="ERF1X6A" resname="app.network">
+        <source>app.network</source>
+        <target>Network</target>
+      </trans-unit>
+      <trans-unit id="2NW22gI" resname="app.network_usage">
+        <source>app.network_usage</source>
+        <target>Network usage</target>
+      </trans-unit>
+      <trans-unit id="Qrx3gXS" resname="app.network_transmission">
+        <source>app.network_transmission</source>
+        <target>Transmission</target>
+      </trans-unit>
+      <trans-unit id="w.2Ep2J" resname="app.settings">
+        <source>app.settings</source>
+        <target>Settings</target>
+      </trans-unit>
+      <trans-unit id="O708Jxf" resname="app.logout">
+        <source>app.logout</source>
+        <target>Logout</target>
+      </trans-unit>
+      <trans-unit id="foQyyUD" resname="app.network_machines.status">
+        <source>app.network_machines.status</source>
+        <target>Status</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

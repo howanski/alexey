@@ -41,7 +41,7 @@ final class NetworkMachineControllerTest extends ControllerTestStub
         $response = $client->getResponse()->getContent();
 
         $this->assertStringContainsString(
-            needle: '<h6 class="m-0 font-weight-bold text-primary">Machines status</h6>',
+            needle: '<h6 class="m-0 font-weight-bold text-primary">Status</h6>',
             haystack: $response,
             message: '---!---> Can\'t find table header after new machine creation.',
         );
@@ -86,7 +86,7 @@ final class NetworkMachineControllerTest extends ControllerTestStub
         $response = $client->getResponse()->getContent();
 
         $this->assertStringContainsString(
-            needle: '<h6 class="m-0 font-weight-bold text-primary">Machines status</h6>',
+            needle: '<h6 class="m-0 font-weight-bold text-primary">Status</h6>',
             haystack: $response,
             message: '---!---> Can\'t find table header after new machine creation.',
         );
