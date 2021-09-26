@@ -17,6 +17,7 @@ use App\Entity\NetworkStatisticTimeFrame;
 use App\Class\NetworkUsageProviderSettings;
 use App\Repository\NetworkStatisticRepository;
 use App\Repository\NetworkStatisticTimeFrameRepository;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class NetworkUsageService
 {
@@ -28,6 +29,7 @@ class NetworkUsageService
         private SimpleSettingsService $simpleSettingsService,
         private NetworkStatisticTimeFrameRepository $networkStatisticTimeFrameRepository,
         private NetworkStatisticRepository $networkStatisticRepository,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -138,7 +140,7 @@ class NetworkUsageService
         $labels = [];
         $datasets = [];
         $datasets['speed_relative'] = [
-            'label' => 'Traffic rate (kB/s)',
+            'label' => $this->translator->trans('app.network.network_usage.current_speed') . ' (kB/s)',
             'lineTension' => 0.3,
             'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
             'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -153,7 +155,7 @@ class NetworkUsageService
             'data' => [],
         ];
         $datasets['speed_left'] = [
-            'label' => 'Traffic left (kB/s)',
+            'label' => $this->translator->trans('app.network.network_usage.optimal_speed') . ' (kB/s)',
             'lineTension' => 0.3,
             'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
             'borderColor' => 'rgba(78, 222, 223, 1)',

@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\NetworkStatisticTimeFrame;
 use App\Repository\NetworkStatisticRepository;
 use App\Repository\NetworkStatisticTimeFrameRepository;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @covers App\Service\NetworkUsageService
@@ -25,6 +26,11 @@ final class NetworkUsageServiceTest extends TestCase
         $networkStatisticTimeFrameRepository =
             $this->createMock(originalClassName: NetworkStatisticTimeFrameRepository::class);
         $networkStatisticRepository = $this->createMock(originalClassName: NetworkStatisticRepository::class);
+        $translator = $this->createMock(originalClassName: TranslatorInterface::class);
+        $translatorFunc = function (string $string) {
+            return 'translated_' . $string;
+        };
+        $translator->method('trans')->willReturnCallback($translatorFunc);
 
         $returnObj = new NetworkStatistic();
         $networkStatisticRepository->method('getLatestOne')->willReturn($returnObj);
@@ -34,6 +40,7 @@ final class NetworkUsageServiceTest extends TestCase
             simpleSettingsService: $simpleSettingsService,
             networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
             networkStatisticRepository: $networkStatisticRepository,
+            translator: $translator,
         );
 
         $this->assertEquals(
@@ -50,6 +57,11 @@ final class NetworkUsageServiceTest extends TestCase
         $networkStatisticTimeFrameRepository =
             $this->createMock(originalClassName: NetworkStatisticTimeFrameRepository::class);
         $networkStatisticRepository = $this->createMock(originalClassName: NetworkStatisticRepository::class);
+        $translator = $this->createMock(originalClassName: TranslatorInterface::class);
+        $translatorFunc = function (string $string) {
+            return 'translated_' . $string;
+        };
+        $translator->method('trans')->willReturnCallback($translatorFunc);
 
         $returnObj = [
             'NETWORK_USAGE_PROVIDER_TYPE' => 'XX',
@@ -65,6 +77,7 @@ final class NetworkUsageServiceTest extends TestCase
             simpleSettingsService: $simpleSettingsService,
             networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
             networkStatisticRepository: $networkStatisticRepository,
+            translator: $translator,
         );
 
         $actualSettings = $service->getConnectionSettings();
@@ -97,6 +110,11 @@ final class NetworkUsageServiceTest extends TestCase
         $networkStatisticTimeFrameRepository =
             $this->createMock(originalClassName: NetworkStatisticTimeFrameRepository::class);
         $networkStatisticRepository = $this->createMock(originalClassName: NetworkStatisticRepository::class);
+        $translator = $this->createMock(originalClassName: TranslatorInterface::class);
+        $translatorFunc = function (string $string) {
+            return 'translated_' . $string;
+        };
+        $translator->method('trans')->willReturnCallback($translatorFunc);
 
         $settingsArray = [
             'NETWORK_USAGE_PROVIDER_TYPE' => 'HILINK',
@@ -112,6 +130,7 @@ final class NetworkUsageServiceTest extends TestCase
             simpleSettingsService: $simpleSettingsService,
             networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
             networkStatisticRepository: $networkStatisticRepository,
+            translator: $translator,
         );
 
         $this->assertNotNull(
@@ -130,6 +149,11 @@ final class NetworkUsageServiceTest extends TestCase
         $networkStatisticTimeFrameRepository =
             $this->createMock(originalClassName: NetworkStatisticTimeFrameRepository::class);
         $networkStatisticRepository = $this->createMock(originalClassName: NetworkStatisticRepository::class);
+        $translator = $this->createMock(originalClassName: TranslatorInterface::class);
+        $translatorFunc = function (string $string) {
+            return 'translated_' . $string;
+        };
+        $translator->method('trans')->willReturnCallback($translatorFunc);
 
         $sixHours = new \DateInterval('PT6H');
 
@@ -156,6 +180,7 @@ final class NetworkUsageServiceTest extends TestCase
             simpleSettingsService: $simpleSettingsService,
             networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
             networkStatisticRepository: $networkStatisticRepository,
+            translator: $translator,
         );
 
         $this->assertEquals(
@@ -182,7 +207,7 @@ final class NetworkUsageServiceTest extends TestCase
                 'labels' => [],
                 'datasets' => [
                     'speed_relative' => [
-                        'label' => 'Traffic rate (kB/s)',
+                        'label' => 'translated_app.network.network_usage.current_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                         'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -197,7 +222,7 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                     'speed_left' => [
-                        'label' => 'Traffic left (kB/s)',
+                        'label' => 'translated_app.network.network_usage.optimal_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
                         'borderColor' => 'rgba(78, 222, 223, 1)',
@@ -224,7 +249,7 @@ final class NetworkUsageServiceTest extends TestCase
                 'labels' => [],
                 'datasets' => [
                     'speed_relative' => [
-                        'label' => 'Traffic rate (kB/s)',
+                        'label' => 'translated_app.network.network_usage.current_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                         'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -239,7 +264,7 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                     'speed_left' => [
-                        'label' => 'Traffic left (kB/s)',
+                        'label' => 'translated_app.network.network_usage.optimal_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
                         'borderColor' => 'rgba(78, 222, 223, 1)',
@@ -266,7 +291,7 @@ final class NetworkUsageServiceTest extends TestCase
                 'labels' => [],
                 'datasets' => [
                     'speed_relative' => [
-                        'label' => 'Traffic rate (kB/s)',
+                        'label' => 'translated_app.network.network_usage.current_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                         'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -281,7 +306,7 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                     'speed_left' => [
-                        'label' => 'Traffic left (kB/s)',
+                        'label' => 'translated_app.network.network_usage.optimal_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
                         'borderColor' => 'rgba(78, 222, 223, 1)',
@@ -308,7 +333,7 @@ final class NetworkUsageServiceTest extends TestCase
                 'labels' => [],
                 'datasets' => [
                     'speed_relative' => [
-                        'label' => 'Traffic rate (kB/s)',
+                        'label' => 'translated_app.network.network_usage.current_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                         'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -323,7 +348,7 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                     'speed_left' => [
-                        'label' => 'Traffic left (kB/s)',
+                        'label' => 'translated_app.network.network_usage.optimal_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
                         'borderColor' => 'rgba(78, 222, 223, 1)',
@@ -350,7 +375,7 @@ final class NetworkUsageServiceTest extends TestCase
                 'labels' => [],
                 'datasets' => [
                     'speed_relative' => [
-                        'label' => 'Traffic rate (kB/s)',
+                        'label' => 'translated_app.network.network_usage.current_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                         'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -365,7 +390,7 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                     'speed_left' => [
-                        'label' => 'Traffic left (kB/s)',
+                        'label' => 'translated_app.network.network_usage.optimal_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
                         'borderColor' => 'rgba(78, 222, 223, 1)',
@@ -392,7 +417,7 @@ final class NetworkUsageServiceTest extends TestCase
                 'labels' => [],
                 'datasets' => [
                     'speed_relative' => [
-                        'label' => 'Traffic rate (kB/s)',
+                        'label' => 'translated_app.network.network_usage.current_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                         'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -407,7 +432,7 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                     'speed_left' => [
-                        'label' => 'Traffic left (kB/s)',
+                        'label' => 'translated_app.network.network_usage.optimal_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
                         'borderColor' => 'rgba(78, 222, 223, 1)',
