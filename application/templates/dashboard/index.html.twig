@@ -28,10 +28,10 @@ window.location.reload(false);
 							<div class="row no-gutters align-items-center">
 								<div class="col mr-2">
 									<div class="text-xs font-weight-bold {% if machine.isReachable %} text-success {% elseif machine.lastSeen %} text-warning {% else %} text-danger {% endif %} text-uppercase mb-1">
-										{{ 'app.network_machines.machine' }}:
+										{{ 'app.network_machines.machine'|trans }}:
 										{{ machine.name }}</div>
 									{% if machine.lastSeen %}
-										<div class="h5 mb-0 font-weight-bold text-gray-800">Last seen
+										<div class="h5 mb-0 font-weight-bold text-gray-800">{{ 'app.network_machines.last_seen'|trans }}
 											{{ machine.lastSeenReadable }}</div>
 									{% endif %}
 								</div>
@@ -63,7 +63,7 @@ window.location.reload(false);
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
-									Optimal transfer:
+									{{ 'app.network.network_usage.optimal_speed'|trans }}:
 								</div>
 								<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.getTransferRateLeftReadable(4) }}</div>
 							</div>

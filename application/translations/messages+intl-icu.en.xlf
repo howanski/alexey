@@ -129,6 +129,62 @@
         <source>app.network.transmission.throttling_by_optimal_speed</source>
         <target>Throttling by optimal speed</target>
       </trans-unit>
+      <trans-unit id="6_7leA0" resname="app.network_machines.machine">
+        <source>app.network_machines.machine</source>
+        <target>Machine</target>
+      </trans-unit>
+      <trans-unit id="zwItunW" resname="app.network_machines.last_seen">
+        <source>app.network_machines.last_seen</source>
+        <target>Last seen</target>
+      </trans-unit>
+      <trans-unit id="cRxJeYK" resname="app.id">
+        <source>app.id</source>
+        <target>ID</target>
+      </trans-unit>
+      <trans-unit id="12Ts7aU" resname="app.network_machines.name">
+        <source>app.network_machines.name</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="vHr19qf" resname="app.ip_or_url">
+        <source>app.ip_or_url</source>
+        <target>IP/URL</target>
+      </trans-unit>
+      <trans-unit id="q8qJRDN" resname="app.mac_addres">
+        <source>app.mac_addres</source>
+        <target>MAC Address</target>
+      </trans-unit>
+      <trans-unit id="Dm0OdEj" resname="app.status">
+        <source>app.status</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="GC62d.j" resname="app.actions">
+        <source>app.actions</source>
+        <target>Actions</target>
+      </trans-unit>
+      <trans-unit id="UuvPOp8" resname="app.network_machines.never_seen">
+        <source>app.network_machines.never_seen</source>
+        <target>Never seen</target>
+      </trans-unit>
+      <trans-unit id="XqgNJSm" resname="app.actions.wake">
+        <source>app.actions.wake</source>
+        <target>Wake</target>
+      </trans-unit>
+      <trans-unit id="V5i7F3f" resname="app.actions.show">
+        <source>app.actions.show</source>
+        <target>Show</target>
+      </trans-unit>
+      <trans-unit id="KqD3lSp" resname="app.actions.edit">
+        <source>app.actions.edit</source>
+        <target>Edit</target>
+      </trans-unit>
+      <trans-unit id="G6Q6G.V" resname="app.tables.no_records_found">
+        <source>app.tables.no_records_found</source>
+        <target>Nothing found</target>
+      </trans-unit>
+      <trans-unit id="OeMRZXJ" resname="app.network_machines.add">
+        <source>app.network_machines.add</source>
+        <target>Add</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
