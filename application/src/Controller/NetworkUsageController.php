@@ -63,9 +63,12 @@ class NetworkUsageController extends AbstractController
     }
 
     #[Route('/chart-data/{chartType}', name: 'network_usage_chart_data')]
-    public function ajaxChartData(string $chartType, NetworkUsageService $service): Response
+    public function ajaxChartData(string $chartType, NetworkUsageService $service, Request $request): Response
     {
-        $data = $service->getDataForChart($chartType);
+        $data = $service->getDataForChart(
+            chartDataType: $chartType,
+            locale: $request->getLocale(),
+        );
         return new JsonResponse($data);
     }
 }

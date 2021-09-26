@@ -149,10 +149,11 @@ class NetworkMachine
         return $this;
     }
 
-    public function getLastSeenReadable(): string
+    public function getLastSeenReadable(string $locale = 'en'): string
     {
         $conventionalTime = $this->getLastSeen();
         $carbonised = new Carbon($conventionalTime);
+        $carbonised->setLocale($locale);
         return $carbonised->diffForHumans();
     }
 }

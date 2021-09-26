@@ -34,7 +34,7 @@
 									<td>{{ network_machine.uri }}</td>
 									<td>{{ network_machine.macAddress }}</td>
 									<td>{{ network_machine.statusReadable }}</td>
-									<td>{% if network_machine.lastSeen %} {{ network_machine.lastSeenReadable }} {% else %} {{ 'app.network_machines.never_seen'|trans }} {% endif %}</td>
+									<td>{% if network_machine.lastSeen %} {{ network_machine.getLastSeenReadable(app.request.locale) }} {% else %} {{ 'app.network_machines.never_seen'|trans }} {% endif %}</td>
 									<td>
 										{% if network_machine.canBeWoken %}
 											<a href="{{ path('network_machine_wake', {'id': network_machine.id, 'backRoute': 'network_machine_index'}) }}" class="btn btn-sm btn-success">{{ 'app.actions.wake'|trans }}</a>

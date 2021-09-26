@@ -32,7 +32,7 @@ window.location.reload(false);
 										{{ machine.name }}</div>
 									{% if machine.lastSeen %}
 										<div class="h5 mb-0 font-weight-bold text-gray-800">{{ 'app.network_machines.last_seen'|trans }}
-											{{ machine.lastSeenReadable }}</div>
+											{{ machine.getLastSeenReadable(app.request.locale) }}</div>
 									{% endif %}
 								</div>
 								<div class="col-auto">
@@ -103,7 +103,7 @@ window.location.reload(false);
 								<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
 									{{ 'app.network.network_usage.billing_window_end'|trans }}:
 								</div>
-								<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.timeFrame.billingFrameEndReadable }}</div>
+								<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.timeFrame.getBillingFrameEndReadable(app.request.locale) }}</div>
 							</div>
 							<div class="col-auto">
 								<a href="{{ path('network_usage') }}">

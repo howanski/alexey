@@ -107,10 +107,11 @@ class NetworkStatisticTimeFrame
         return $this;
     }
 
-    public function getBillingFrameEndReadable(): string
+    public function getBillingFrameEndReadable(string $locale = 'en'): string
     {
         $conventionalTime = $this->getBillingFrameEnd();
         $carbonised = new Carbon($conventionalTime);
+        $carbonised->setLocale($locale);
         return $carbonised->diffForHumans();
     }
 }
