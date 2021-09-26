@@ -26,6 +26,9 @@ class AlexeySideMenuProvider extends AbstractExtension
         $this->requestStack = $requestStack;
         $this->currentRequest = $this->requestStack->getCurrentRequest();
         $this->currentRoute = $this?->currentRequest?->getRequestUri();
+        if (is_null($this->currentRoute)) {
+            $this->currentRoute = '/';
+        }
         $this->router = $router;
     }
 
