@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\Entity\NetworkMachine;
+use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 final class NetworkMachineControllerTest extends ControllerTestStub
 {
@@ -109,18 +110,39 @@ final class NetworkMachineControllerTest extends ControllerTestStub
     /**
      * @depends testEdit
      */
-    public function testDelete(int $machineId)
+    public function testWake(int $machineId): int
+    {
+        $client = $this->getClientWithLoggedInUser();
+        $client->request('GET', '/network/machines/' . $machineId . '/wake/and-back-to/network_machine_index');
+        $this->assertResponseRedirects('/network/machines/');
+        return $machineId;
+    }
+
+    /**
+     * @depends testWake
+     */
+    public function testDelete(int $machineId): void
     {
         $client = $this->getClientWithLoggedInUser();
         $client->followRedirects(true);
-        $crawler = $client->request('POST', '/network/machines/' . $machineId);
+        /**
+         * @var CsrfTokenManager
+         */
+        $tokenManager = $this->getContainer()->get('security.csrf.token_manager');
+        $token = $tokenManager->getToken('delete' . $machineId);
+        $client->request(
+            method: 'POST',
+            uri: '/network/machines/' . $machineId,
+            parameters: [
+                '_token' => $token,
+            ],
+        );
         $this->assertResponseIsSuccessful();
 
         $em = $this->getEntityManager();
         $machines = $em->getRepository(entityName: NetworkMachine::class)->findAll();
-        // FIXME: add token so it will delete
         $this->assertCount(
-            expectedCount: 1,
+            expectedCount: 0,
             haystack: $machines,
             message: 'Was machine deleted ?',
         );
