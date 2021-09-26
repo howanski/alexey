@@ -69,6 +69,66 @@
         <source>app.flashes.saved</source>
         <target>Successfully saved</target>
       </trans-unit>
+      <trans-unit id="VgI.4VA" resname="app.network.network_usage.traffic_left">
+        <source>app.network.network_usage.traffic_left</source>
+        <target>Traffic left</target>
+      </trans-unit>
+      <trans-unit id="Nn5nh5p" resname="app.network.network_usage.billing_window_end">
+        <source>app.network.network_usage.billing_window_end</source>
+        <target>Billing window end</target>
+      </trans-unit>
+      <trans-unit id="N4KVRyR" resname="app.network.network_usage.current_speed">
+        <source>app.network.network_usage.current_speed</source>
+        <target>Current speed</target>
+      </trans-unit>
+      <trans-unit id=".rc7EQq" resname="app.network.network_usage.optimal_speed">
+        <source>app.network.network_usage.optimal_speed</source>
+        <target>Optimal speed</target>
+      </trans-unit>
+      <trans-unit id="et8rERY" resname="app.network.network_usage.throttling">
+        <source>app.network.network_usage.throttling</source>
+        <target>Throttling</target>
+      </trans-unit>
+      <trans-unit id="gI9Mzi9" resname="app.network.network_usage.chart_type">
+        <source>app.network.network_usage.chart_type</source>
+        <target>Chart type</target>
+      </trans-unit>
+      <trans-unit id="ykPS4iH" resname="app.network.chart.type.today">
+        <source>app.network.chart.type.today</source>
+        <target>Today</target>
+      </trans-unit>
+      <trans-unit id="FiV2MdY" resname="app.network.chart.type.last_week">
+        <source>app.network.chart.type.last_week</source>
+        <target>Last week</target>
+      </trans-unit>
+      <trans-unit id="XJTtggv" resname="app.network.chart.type.last_month">
+        <source>app.network.chart.type.last_month</source>
+        <target>Last month</target>
+      </trans-unit>
+      <trans-unit id="lRlUMnU" resname="app.network.chart.type.current_billing_frame">
+        <source>app.network.chart.type.current_billing_frame</source>
+        <target>Current billing frame</target>
+      </trans-unit>
+      <trans-unit id="BiJOx_c" resname="app.network.chart.type.last_2_hours">
+        <source>app.network.chart.type.last_2_hours</source>
+        <target>Last 2 hours</target>
+      </trans-unit>
+      <trans-unit id="Bq_eeJ_" resname="app.network.chart.type.last_10_minutes">
+        <source>app.network.chart.type.last_10_minutes</source>
+        <target>Last 10 minutes</target>
+      </trans-unit>
+      <trans-unit id="HXSNgw1" resname="app.simulation">
+        <source>app.simulation</source>
+        <target>Simulation</target>
+      </trans-unit>
+      <trans-unit id="hMIaTRd" resname="app.network.transmission.changes_in_time">
+        <source>app.network.transmission.changes_in_time</source>
+        <target>Changes in time</target>
+      </trans-unit>
+      <trans-unit id="xdACwz4" resname="app.network.transmission.throttling_by_optimal_speed">
+        <source>app.network.transmission.throttling_by_optimal_speed</source>
+        <target>Throttling by optimal speed</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

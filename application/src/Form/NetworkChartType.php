@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class NetworkChartType extends AbstractType
 {
@@ -27,17 +28,23 @@ class NetworkChartType extends AbstractType
         self::CHART_TYPE_MINUTES_TEN,
     ];
 
+    public function __construct(
+        private TranslatorInterface $translator,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('chartType', ChoiceType::class, [
                 'choices' => [
-                    'Today' => self::CHART_TYPE_TODAY,
-                    'Last week' => self::CHART_TYPE_WEEK,
-                    'Last month' => self::CHART_TYPE_MONTH,
-                    'Current billing frame' => self::CHART_TYPE_BILLING_FRAME,
-                    'Last 2 hours' => self::CHART_TYPE_HOURS_TWO,
-                    'Last 10 minutes' => self::CHART_TYPE_MINUTES_TEN,
+                    $this->translator->trans('app.network.chart.type.today') => self::CHART_TYPE_TODAY,
+                    $this->translator->trans('app.network.chart.type.last_week') => self::CHART_TYPE_WEEK,
+                    $this->translator->trans('app.network.chart.type.last_month') => self::CHART_TYPE_MONTH,
+                    $this->translator->trans('app.network.chart.type.current_billing_frame') =>
+                    self::CHART_TYPE_BILLING_FRAME,
+                    $this->translator->trans('app.network.chart.type.last_2_hours') => self::CHART_TYPE_HOURS_TWO,
+                    $this->translator->trans('app.network.chart.type.last_10_minutes') => self::CHART_TYPE_MINUTES_TEN,
                 ], 'label' => false
             ]);
     }

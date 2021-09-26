@@ -28,7 +28,7 @@ window.location.reload(false);
 							<div class="row no-gutters align-items-center">
 								<div class="col mr-2">
 									<div class="text-xs font-weight-bold {% if machine.isReachable %} text-success {% elseif machine.lastSeen %} text-warning {% else %} text-danger {% endif %} text-uppercase mb-1">
-										Machine:
+										{{ 'app.network_machines.machine' }}:
 										{{ machine.name }}</div>
 									{% if machine.lastSeen %}
 										<div class="h5 mb-0 font-weight-bold text-gray-800">Last seen
@@ -82,7 +82,7 @@ window.location.reload(false);
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
-									Traffic left:
+									{{ 'app.network.network_usage.traffic_left'|trans }}:
 								</div>
 								<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.getTrafficLeftReadable(4) }}</div>
 							</div>
@@ -101,7 +101,7 @@ window.location.reload(false);
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
-									Billing window end:
+									{{ 'app.network.network_usage.billing_window_end'|trans }}:
 								</div>
 								<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.timeFrame.billingFrameEndReadable }}</div>
 							</div>
@@ -118,7 +118,7 @@ window.location.reload(false);
 	{% endif %}
 	{% if dashboard_data.weather is defined and dashboard_data.weather is not null %}
 		<div class="row">
-			<h5 class="text-gray-400">Weather</h1>
+			<h5 class="text-gray-400">{{ 'app.weather'|trans }}</h1>
 		</div>
 		<div class="row">
 			{% for weather in dashboard_data.weather.getWeatherReadable().daily|slice(0, 4) %}
