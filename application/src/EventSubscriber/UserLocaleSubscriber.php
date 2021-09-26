@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class UserLocaleSubscriber implements EventSubscriberInterface
 {
-    private const USER_LOCALE = 'alexey_user_locale';
+    public const USER_LOCALE = 'alexey_user_locale';
 
     public function __construct(
         private RequestStack $requestStack,

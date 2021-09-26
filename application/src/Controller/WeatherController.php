@@ -54,7 +54,7 @@ class WeatherController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $settings->selfPersist($simpleSettingsService);
             $simpleCacheService->invalidateCache(OpenWeatherOneApiResponse::WEATHER_CACHE_KEY);
-            $this->addFlash('success', 'Saved!');
+            $this->addFlash('success', 'app.flashes.saved');
             return $this->redirectToRoute('weather', [], Response::HTTP_SEE_OTHER);
         }
 

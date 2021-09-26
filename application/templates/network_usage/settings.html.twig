@@ -5,10 +5,10 @@
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'app.network'|trans }} ~> <a href="{{ path('network_usage') }}" class="text-info">Usage</a> ~> {{ 'app.settings'|trans }} </h1>
+		<h1 class="h3 mb-0 text-gray-400">{{ 'app.network'|trans }} ~> <a href="{{ path('network_usage') }}" class="text-info">{{ 'app.network_usage'|trans }}</a> ~> {{ 'app.settings'|trans }} </h1>
 	</div>
 	    {{ form_start(form) }}
     	{{ form_widget(form) }}
-    	<button class="btn btn-warning">Save</button>
+    	<button class="btn btn-warning">{{ 'app.forms.labels.save'|trans }}</button>
 		{{ form_end(form) }}
 {% endblock %}

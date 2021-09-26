@@ -49,6 +49,26 @@
         <source>app.network_machines.status</source>
         <target>Status</target>
       </trans-unit>
+      <trans-unit id="aw2V6Rt" resname="app.forms.labels.save">
+        <source>app.forms.labels.save</source>
+        <target>Save</target>
+      </trans-unit>
+      <trans-unit id="J_jDB6M" resname="app.forms.labels.locale">
+        <source>app.forms.labels.locale</source>
+        <target>Locale</target>
+      </trans-unit>
+      <trans-unit id="K33NzqZ" resname="app.forms.values.locale.english">
+        <source>app.forms.values.locale.english</source>
+        <target>English</target>
+      </trans-unit>
+      <trans-unit id="z_ETQDA" resname="app.forms.values.locale.polish">
+        <source>app.forms.values.locale.polish</source>
+        <target>Polish</target>
+      </trans-unit>
+      <trans-unit id="QHkKyUu" resname="app.flashes.saved">
+        <source>app.flashes.saved</source>
+        <target>Successfully saved</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
