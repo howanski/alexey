@@ -29,7 +29,7 @@ class WeatherService
         return (SimpleSettingsService::UNIVERSAL_TRUTH == $settings->getShowOnDashboard());
     }
 
-    public function getChartData(): array
+    public function getChartData(string $locale = 'en'): array
     {
         $chartData = [
             'hourly' => [
@@ -41,7 +41,7 @@ class WeatherService
                 'datasets' => $this->getEmptyDatasetsForChart(),
             ],
         ];
-        $sourceData = $this->getWeather()->getWeatherReadable();
+        $sourceData = $this->getWeather()->getWeatherReadable(locale: $locale);
         foreach ($sourceData['hourly'] as $hour) {
             $chartData['hourly']['labels'][] = $hour['time']->format('D H:i');
             $chartData['hourly']['datasets']['temperature']['data'][] = $hour['temperature'];

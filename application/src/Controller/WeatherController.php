@@ -31,9 +31,9 @@ class WeatherController extends AbstractController
     }
 
     #[Route('/chart-data', name: 'weather_chart_data')]
-    public function chartData(WeatherService $weatherService): Response
+    public function chartData(WeatherService $weatherService, Request $request): Response
     {
-        $data = $weatherService->getChartData();
+        $data = $weatherService->getChartData(locale: $request->getLocale());
         return new JsonResponse($data);
     }
 

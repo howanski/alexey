@@ -49,7 +49,7 @@ final class OpenWeatherOneApiResponse
         $this->simpleCacheService = $simpleCacheService;
     }
 
-    private function ensureWeatherDataFetched(): void
+    private function ensureWeatherDataFetched($locale = 'en'): void
     {
         if (empty($this->rawApiResponse)) {
             $cachedResponse = $this->simpleCacheService->retrieveDataFromCache(self::WEATHER_CACHE_KEY);
@@ -58,7 +58,7 @@ final class OpenWeatherOneApiResponse
                     'GET',
                     'https://api.openweathermap.org/data/2.5/onecall?lat=' . $this->latitude .
                         '&lon=' . $this->longitude .
-                        '&exclude=minutely&units=metric&lang=en&appid=' . $this->apiKey
+                        '&exclude=minutely&units=metric&lang=' . $locale . '&appid=' . $this->apiKey
                 );
                 $this->rawApiResponse = $response->toArray();
                 $validTo = new \DateTime('now');
@@ -71,10 +71,10 @@ final class OpenWeatherOneApiResponse
         }
     }
 
-    public function getWeatherReadable(): array
+    public function getWeatherReadable($locale = 'en'): array
     {
         try {
-            $this->ensureWeatherDataFetched();
+            $this->ensureWeatherDataFetched(locale: $locale);
         } catch (\Exception) {
             return [
                 'hourly' => [],

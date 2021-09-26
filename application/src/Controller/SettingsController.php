@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\EventSubscriber\UserLocaleSubscriber;
 use App\Form\UserSettingsType;
+use App\Service\SimpleCacheService;
+use App\Class\OpenWeatherOneApiResponse;
+use App\EventSubscriber\UserLocaleSubscriber;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SettingsController extends AbstractController
 {
     #[Route('/settings', name: 'settings')]
-    public function settings(Request $request, TranslatorInterface $translator): Response
+    public function settings(Request $request, TranslatorInterface $translator, SimpleCacheService $cacheService): Response
     {
         $user = $this->getUser();
         $settings = [
@@ -33,6 +35,7 @@ class SettingsController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+            $cacheService->invalidateCache(OpenWeatherOneApiResponse::WEATHER_CACHE_KEY);
             $request->getSession()->set(UserLocaleSubscriber::USER_LOCALE, $user->getLocale());
             $this->addFlash('success', $translator->trans('app.flashes.saved'));
             return $this->redirectToRoute('settings', [], Response::HTTP_SEE_OTHER);
