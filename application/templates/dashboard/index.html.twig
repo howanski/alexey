@@ -14,11 +14,11 @@ window.location.reload(false);
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">Dashboard</h1>
+		<h1 class="h3 mb-0 text-gray-400">{{ 'app.dashboard'|trans }}</h1>
 	</div>
 	{% if dashboard_data.machines|length > 0 %}
 		<div class="row">
-			<h5 class="text-gray-400">Network Machines</h1>
+			<h5 class="text-gray-400">{{ 'app.network_machines'|trans }}</h1>
 		</div>
 		<div class="row">
 			{% for machine in dashboard_data.machines %}

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Alexey | Weather
+{% block title %}Alexey | {{ 'app.weather'|trans }}
 {% endblock %}
 
 {% block javascripts %}
@@ -13,13 +13,13 @@
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">Weather |
+		<h1 class="h3 mb-0 text-gray-400">{{ 'app.weather'|trans }} |
 			<a href="{{ path('weather_settings') }}" class="fas fa-cog text-info"></a>
 		</h1>
 	</div>
 	<div class="card shadow mb-4">
 		<div class="card-header py-3">
-			<h6 class="m-0 font-weight-bold text-primary">Weather - hourly</h6>
+			<h6 class="m-0 font-weight-bold text-primary">{{ 'app.weather.hourly'|trans }}</h6>
 		</div>
 		<div class="card-body">
 			<div class="chart-area">
@@ -38,7 +38,7 @@
 	</div>
 		<div class="card shadow mb-4">
 		<div class="card-header py-3">
-			<h6 class="m-0 font-weight-bold text-primary">Weather - daily</h6>
+			<h6 class="m-0 font-weight-bold text-primary">{{ 'app.weather.daily'|trans }}</h6>
 		</div>
 		<div class="card-body">
 			<div class="chart-area">

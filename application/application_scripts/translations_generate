@@ -1,0 +1,5 @@
+#!/bin/bash
+clear
+cd ..
+php bin/console translation:update --force en
+php bin/console translation:update --force pl

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="KGc0u2D" resname="app.dashboard">
+        <source>app.dashboard</source>
+        <target>Dashboard</target>
+      </trans-unit>
+      <trans-unit id="1djbNJJ" resname="app.network_machines">
+        <source>app.network_machines</source>
+        <target>Network machines</target>
+      </trans-unit>
+      <trans-unit id="O4zWk3e" resname="app.weather">
+        <source>app.weather</source>
+        <target>Weather</target>
+      </trans-unit>
+      <trans-unit id="PscJlKg" resname="app.weather.hourly">
+        <source>app.weather.hourly</source>
+        <target>Hourly weather</target>
+      </trans-unit>
+      <trans-unit id="i7uRRJt" resname="app.weather.daily">
+        <source>app.weather.daily</source>
+        <target>Daily weather</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
