@@ -4,25 +4,16 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
-final class DashboardControllerTest extends WebTestCase
+final class DashboardControllerTest extends ControllerTestStub
 {
-
-    public function testSecurityEnabled(): void
+    public function testAccess(): void
     {
-        $client = static::createClient();
-        $client->request('GET', '/');
-        $this->assertResponseRedirects('/login');
+        $this->testSecurityEnabled(path: '/');
     }
 
     public function testDashboard()
     {
-        $client = static::createClient();
-        $userRepository = static::getContainer()->get(UserRepository::class);
-        $testUser = $userRepository->findOneByUsername('test_user');
-        $client->loginUser($testUser);
+        $client = $this->getClientWithLoggedInUser();
         $client->request('GET', '/');
         $this->assertResponseIsSuccessful();
     }

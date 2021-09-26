@@ -5,37 +5,26 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\Entity\NetworkMachine;
-use Doctrine\ORM\EntityManager;
-use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-final class NetworkMachineControllerTest extends WebTestCase
+final class NetworkMachineControllerTest extends ControllerTestStub
 {
 
-    public function testSecurityEnabled(): void
+    public function testAccess(): void
     {
-        $client = static::createClient();
-        $client->request('GET', '/network/machines/');
-        $this->assertResponseRedirects('/login');
+        $this->testSecurityEnabled(path: '/network/machines/');
     }
 
     public function testIndex(): void
     {
-        $client = static::createClient();
-        $userRepository = static::getContainer()->get(UserRepository::class);
-        $testUser = $userRepository->findOneByUsername('test_user');
-        $client->loginUser($testUser);
+        $client = $this->getClientWithLoggedInUser();
         $client->request('GET', '/network/machines/');
         $this->assertResponseIsSuccessful();
     }
 
     public function testNew(): int
     {
-        $client = static::createClient();
+        $client = $this->getClientWithLoggedInUser();
         $client->followRedirects(true);
-        $userRepository = static::getContainer()->get(UserRepository::class);
-        $testUser = $userRepository->findOneByUsername('test_user');
-        $client->loginUser($testUser);
         $crawler = $client->request('GET', '/network/machines/new');
         $this->assertResponseIsSuccessful();
 
@@ -71,12 +60,8 @@ final class NetworkMachineControllerTest extends WebTestCase
      */
     public function testShow(int $machineId): int
     {
-        $client = static::createClient();
-        $client->followRedirects(true);
-        $userRepository = static::getContainer()->get(UserRepository::class);
-        $testUser = $userRepository->findOneByUsername('test_user');
-        $client->loginUser($testUser);
-        $crawler = $client->request('GET', '/network/machines/' . $machineId);
+        $client = $this->getClientWithLoggedInUser();
+        $client->request('GET', '/network/machines/' . $machineId);
         $this->assertResponseIsSuccessful();
         return $machineId;
     }
@@ -87,11 +72,8 @@ final class NetworkMachineControllerTest extends WebTestCase
      */
     public function testEdit(int $machineId): int
     {
-        $client = static::createClient();
+        $client = $this->getClientWithLoggedInUser();
         $client->followRedirects(true);
-        $userRepository = static::getContainer()->get(UserRepository::class);
-        $testUser = $userRepository->findOneByUsername('test_user');
-        $client->loginUser($testUser);
         $crawler = $client->request('GET', '/network/machines/' . $machineId . '/edit');
         $this->assertResponseIsSuccessful();
 
@@ -129,11 +111,8 @@ final class NetworkMachineControllerTest extends WebTestCase
      */
     public function testDelete(int $machineId)
     {
-        $client = static::createClient();
+        $client = $this->getClientWithLoggedInUser();
         $client->followRedirects(true);
-        $userRepository = static::getContainer()->get(UserRepository::class);
-        $testUser = $userRepository->findOneByUsername('test_user');
-        $client->loginUser($testUser);
         $crawler = $client->request('POST', '/network/machines/' . $machineId);
         $this->assertResponseIsSuccessful();
 
@@ -145,12 +124,5 @@ final class NetworkMachineControllerTest extends WebTestCase
             haystack: $machines,
             message: 'Was machine deleted ?',
         );
-    }
-
-    private function getEntityManager(): EntityManager
-    {
-        $container = static::getContainer();
-        $em = $container->get('doctrine.orm.default_entity_manager');
-        return $em;
     }
 }
