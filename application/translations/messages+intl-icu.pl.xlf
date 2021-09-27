@@ -185,6 +185,10 @@
         <source>app.network_machines.add</source>
         <target>Dodaj</target>
       </trans-unit>
+      <trans-unit id="ztvZypq" resname="app.network.network_usage.outside_traffic">
+        <source>app.network.network_usage.outside_traffic</source>
+        <target>Ruch zewnętrzny</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

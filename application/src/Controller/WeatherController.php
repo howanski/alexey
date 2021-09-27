@@ -16,6 +16,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/weather')]
 class WeatherController extends AbstractController
@@ -41,7 +42,8 @@ class WeatherController extends AbstractController
     public function settings(
         Request $request,
         SimpleSettingsService $simpleSettingsService,
-        SimpleCacheService $simpleCacheService
+        SimpleCacheService $simpleCacheService,
+        TranslatorInterface $translator,
     ): Response {
         $settings = new WeatherSettings();
         $settings->selfConfigure($simpleSettingsService);
@@ -54,7 +56,7 @@ class WeatherController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $settings->selfPersist($simpleSettingsService);
             $simpleCacheService->invalidateCache(OpenWeatherOneApiResponse::WEATHER_CACHE_KEY);
-            $this->addFlash('success', 'app.flashes.saved');
+            $this->addFlash(type: 'success', message: $translator->trans('app.flashes.saved'));
             return $this->redirectToRoute('weather', [], Response::HTTP_SEE_OTHER);
         }
 
