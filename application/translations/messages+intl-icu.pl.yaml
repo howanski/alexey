@@ -4,10 +4,21 @@ app.actions.show: Pokaż
 app.actions.wake: Obudź
 app.dashboard: Sterownia
 app.flashes.saved: 'Pomyślnie zapisano'
+app.forms.labels.address: Adres
 app.forms.labels.locale: Język
+app.forms.labels.mac_address: 'Adres MAC'
+app.forms.labels.name: Nazwa
+app.forms.labels.network_usage.provider_type: 'Dostawca informacji o sieci'
+app.forms.labels.password: Hasło
 app.forms.labels.save: Zapisz
+app.forms.labels.show_on_dashboard: 'Pokaż w sterowni'
+app.forms.labels.uri: 'Adres URI/IP'
+app.forms.labels.wake_destination: 'Adres rozgłoszeniowy'
+app.forms.values.hide: Ukryj
 app.forms.values.locale.english: Angielski
 app.forms.values.locale.polish: Polski
+app.forms.values.off: Wyłączony
+app.forms.values.show: Pokaż
 app.id: ID
 app.ip_or_url: IP/URL
 app.logout: Wyloguj

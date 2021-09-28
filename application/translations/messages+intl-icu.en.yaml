@@ -4,10 +4,21 @@ app.actions.show: Show
 app.actions.wake: Wake
 app.dashboard: Dashboard
 app.flashes.saved: 'Successfully saved'
+app.forms.labels.address: Address
 app.forms.labels.locale: Locale
+app.forms.labels.mac_address: 'Mac Address'
+app.forms.labels.name: Name
+app.forms.labels.network_usage.provider_type: 'Provider type'
+app.forms.labels.password: Password
 app.forms.labels.save: Save
+app.forms.labels.show_on_dashboard: 'Show on Dashboard'
+app.forms.labels.uri: 'URI / IP'
+app.forms.labels.wake_destination: 'Wake Destination'
+app.forms.values.hide: Hide
 app.forms.values.locale.english: English
 app.forms.values.locale.polish: Polish
+app.forms.values.off: Off
+app.forms.values.show: Show
 app.id: ID
 app.ip_or_url: IP/URL
 app.logout: Logout
