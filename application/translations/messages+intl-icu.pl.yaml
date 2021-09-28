@@ -1,0 +1,50 @@
+app.actions: Akcje
+app.actions.edit: Edytuj
+app.actions.show: Pokaż
+app.actions.wake: Obudź
+app.dashboard: Sterownia
+app.flashes.saved: 'Pomyślnie zapisano'
+app.forms.labels.locale: Język
+app.forms.labels.save: Zapisz
+app.forms.values.locale.english: Angielski
+app.forms.values.locale.polish: Polski
+app.id: ID
+app.ip_or_url: IP/URL
+app.logout: Wyloguj
+app.mac_addres: 'Adres MAC'
+app.network_machines: 'Urządzenia sieciowe'
+app.network_machines.add: Dodaj
+app.network_machines.last_seen: 'Ostatnio widziane'
+app.network_machines.machine: Urządzenie
+app.network_machines.name: Nazwa
+app.network_machines.never_seen: 'Nigdy nie widziana'
+app.network_machines.status: Status
+app.network_transmission: Transmission
+app.network_usage: Zużycie
+app.network: Sieć
+app.network.chart.type.current_billing_frame: 'Obecny okres taryfowy'
+app.network.chart.type.last_10_minutes: 'Ostatnie 10 minut'
+app.network.chart.type.last_2_hours: 'Ostatnie 2 godziny'
+app.network.chart.type.last_month: 'Ostatni miesiąc'
+app.network.chart.type.last_week: 'Ostatni tydzień'
+app.network.chart.type.today: Dzisiaj
+app.network.network_usage.billing_window_end: 'Koniec okresu taryfowego'
+app.network.network_usage.chart_type: 'Typ wykresu'
+app.network.network_usage.current_speed: 'Bieżąca prędkość'
+app.network.network_usage.optimal_speed: 'Optymalna prędkość'
+app.network.network_usage.outside_traffic: 'Ruch zewnętrzny'
+app.network.network_usage.throttling: Dławienie
+app.network.network_usage.traffic_left: 'Pozostały transfer'
+app.network.transmission.changes_in_time: 'Zmiany w czasie'
+app.network.transmission.throttling_by_optimal_speed: 'Dławiene wg. optymalnej prędkości'
+app.settings: Ustawienia
+app.simulation: Symulacja
+app.status: Status
+app.tables.no_records_found: 'Brak wpisów'
+app.weather: Pogoda
+app.weather.daily: 'Pogoda dzienna'
+app.weather.feels_like: Odczuwalna
+app.weather.hourly: 'Pogoda godzinowa'
+app.weather.rain_or_snow: 'Deszcz / Śnieg'
+app.weather.temperature: Temperatura
+app.weather.wind_speed: Wiatr

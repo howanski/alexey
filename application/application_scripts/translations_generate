@@ -1,5 +1,7 @@
 #!/bin/bash
 clear
 cd ..
-XDEBUG_MODE=off php bin/console translation:update --force en
-XDEBUG_MODE=off php bin/console translation:update --force pl
+XDEBUG_MODE=off php bin/console cache:clear
+clear
+XDEBUG_MODE=off php bin/console translation:update --format=yaml --force en
+XDEBUG_MODE=off php bin/console translation:update --format=yaml --force pl

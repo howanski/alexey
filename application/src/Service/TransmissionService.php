@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Class\TransmissionSettings;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TransmissionService
 {
@@ -12,7 +13,8 @@ class TransmissionService
 
     public function __construct(
         private NetworkUsageService $networkUsageService,
-        SimpleSettingsService $simpleSettingsService
+        private TranslatorInterface $translator,
+        SimpleSettingsService $simpleSettingsService,
     ) {
         $this->settings = new TransmissionSettings();
         $this->settings->selfConfigure($simpleSettingsService);
@@ -31,7 +33,7 @@ class TransmissionService
             ],
         ];
         $datasetStub = [
-            'label' => 'Throttling (kB/s)',
+            'label' => $this->translator->trans('app.network.network_usage.throttling') . ' (kB/s)',
             'lineTension' => 0.3,
             'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
             'borderColor' => 'rgba(78, 115, 223, 1)',

@@ -10,6 +10,7 @@ use App\Service\NetworkUsageService;
 use App\Service\TransmissionService;
 use App\Service\SimpleSettingsService;
 use App\Entity\NetworkStatisticTimeFrame;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @covers App\Service\TransmissionService
@@ -44,9 +45,16 @@ final class TransmissionServiceTest extends TestCase
         ];
         $simpleSettingsService->method('getSettings')->willReturn($settings);
 
+        $translator = $this->createMock(originalClassName: TranslatorInterface::class);
+        $transCallback = function (string $string) {
+            return 'trans_' . $string;
+        };
+        $translator->method('trans')->willReturnCallback($transCallback);
+
         $service = new TransmissionService(
             networkUsageService: $networkUsageService,
             simpleSettingsService: $simpleSettingsService,
+            translator: $translator
         );
 
         $result = $service->getSimulationChartData();
@@ -60,7 +68,7 @@ final class TransmissionServiceTest extends TestCase
                 'speed' => [
                     'datasets' => [
                         [
-                            'label' => 'Throttling (kB/s)',
+                            'label' => 'trans_app.network.network_usage.throttling (kB/s)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                             'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -78,7 +86,7 @@ final class TransmissionServiceTest extends TestCase
                 'time' => [
                     'datasets' => [
                         [
-                            'label' => 'Throttling (kB/s)',
+                            'label' => 'trans_app.network.network_usage.throttling (kB/s)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                             'borderColor' => 'rgba(78, 115, 223, 1)',

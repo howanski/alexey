@@ -1,0 +1,50 @@
+app.actions: Actions
+app.actions.edit: Edit
+app.actions.show: Show
+app.actions.wake: Wake
+app.dashboard: Dashboard
+app.flashes.saved: 'Successfully saved'
+app.forms.labels.locale: Locale
+app.forms.labels.save: Save
+app.forms.values.locale.english: English
+app.forms.values.locale.polish: Polish
+app.id: ID
+app.ip_or_url: IP/URL
+app.logout: Logout
+app.mac_addres: 'MAC Address'
+app.network_machines: 'Network machines'
+app.network_machines.add: Add
+app.network_machines.last_seen: 'Last seen'
+app.network_machines.machine: Machine
+app.network_machines.name: Name
+app.network_machines.never_seen: 'Never seen'
+app.network_machines.status: Status
+app.network_transmission: Transmission
+app.network_usage: 'Network usage'
+app.network: Network
+app.network.chart.type.current_billing_frame: 'Current billing frame'
+app.network.chart.type.last_10_minutes: 'Last 10 minutes'
+app.network.chart.type.last_2_hours: 'Last 2 hours'
+app.network.chart.type.last_month: 'Last month'
+app.network.chart.type.last_week: 'Last week'
+app.network.chart.type.today: Today
+app.network.network_usage.billing_window_end: 'Billing window end'
+app.network.network_usage.chart_type: 'Chart type'
+app.network.network_usage.current_speed: 'Current speed'
+app.network.network_usage.optimal_speed: 'Optimal speed'
+app.network.network_usage.outside_traffic: 'Outside traffic'
+app.network.network_usage.throttling: Throttling
+app.network.network_usage.traffic_left: 'Traffic left'
+app.network.transmission.changes_in_time: 'Changes in time'
+app.network.transmission.throttling_by_optimal_speed: 'Throttling by optimal speed'
+app.settings: Settings
+app.simulation: Simulation
+app.status: Status
+app.tables.no_records_found: 'Nothing found'
+app.weather: Weather
+app.weather.daily: 'Daily weather'
+app.weather.feels_like: 'Feels like'
+app.weather.hourly: 'Hourly weather'
+app.weather.rain_or_snow: 'Rain / Snow'
+app.weather.temperature: Temperature
+app.weather.wind_speed: 'Wind speed'
