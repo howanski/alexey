@@ -217,7 +217,7 @@ final class WeatherServiceTest extends TestCase
                     ],
                 ],
             ],
-            actual: $service->getChartData(),
+            actual: $service->getChartData('en'),
             message: '---!---> Weather chart data wrongly formed.',
         );
     }

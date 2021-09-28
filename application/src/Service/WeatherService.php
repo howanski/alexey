@@ -31,7 +31,7 @@ class WeatherService
         return (SimpleSettingsService::UNIVERSAL_TRUTH == $settings->getShowOnDashboard());
     }
 
-    public function getChartData(string $locale = 'en'): array
+    public function getChartData($locale): array
     {
         $chartData = [
             'hourly' => [
@@ -46,10 +46,11 @@ class WeatherService
         $sourceData = $this->getWeather()->getWeatherReadable(locale: $locale);
         foreach ($sourceData['hourly'] as $hour) {
             $chartData['hourly']['labels'][] = $hour['time']->format('D H:i');
-            $chartData['hourly']['datasets']['temperature']['data'][] = $hour['temperature'];
-            $chartData['hourly']['datasets']['feels_like']['data'][] = $hour['temperature_feels_like'];
-            $chartData['hourly']['datasets']['rain']['data'][] = $hour['rain'] + $hour['snow'];
-            $chartData['hourly']['datasets']['wind_speed']['data'][] = $this->toKph($hour['wind_speed']);
+            $chartData['hourly']['datasets']['temperature']['data'][] = round($hour['temperature']);
+            $chartData['hourly']['datasets']['feels_like']['data'][] = round($hour['temperature_feels_like']);
+            $chartData['hourly']['datasets']['rain']['data'][] = round($hour['rain'] + $hour['snow']);
+            $chartData['hourly']['datasets']['wind_speed']['data'][] =
+                round($this->metersPerSecondToKpH($hour['wind_speed']));
         }
         $timeLayout = [
             [
@@ -72,11 +73,13 @@ class WeatherService
         foreach ($sourceData['daily'] as $day) {
             foreach ($timeLayout as $layout) {
                 $chartData['daily']['labels'][] = $day['date'] . ' ' . $layout['name'];
-                $chartData['daily']['datasets']['temperature']['data'][] = $day['temperature_detailed'][$layout['key']];
+                $chartData['daily']['datasets']['temperature']['data'][] =
+                    round($day['temperature_detailed'][$layout['key']]);
                 $chartData['daily']['datasets']['feels_like']['data'][] =
-                    $day['temperature_feels_like'][$layout['key']];
-                $chartData['daily']['datasets']['rain']['data'][] = $day['rain'] + $day['snow'];
-                $chartData['daily']['datasets']['wind_speed']['data'][] = $this->toKph($day['wind_speed']);
+                    round($day['temperature_feels_like'][$layout['key']]);
+                $chartData['daily']['datasets']['rain']['data'][] = round($day['rain'] + $day['snow']);
+                $chartData['daily']['datasets']['wind_speed']['data'][] =
+                    round($this->metersPerSecondToKpH($day['wind_speed']));
             }
         }
         return $chartData;
@@ -147,7 +150,7 @@ class WeatherService
         return $settings;
     }
 
-    private function toKph(int|float $metersPerSecond): float
+    private function metersPerSecondToKpH(int|float $metersPerSecond): float
     {
         $kph = $metersPerSecond * 3.6;
         return round($kph);

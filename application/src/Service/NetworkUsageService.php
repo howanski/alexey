@@ -66,7 +66,7 @@ class NetworkUsageService
         $settings->selfPersist($this->simpleSettingsService);
     }
 
-    public function getDataForChart(string $chartDataType, string $locale = 'en'): array
+    public function getDataForChart(string $chartDataType, string $locale): array
     {
         $chdata = [
             'labels' => [],

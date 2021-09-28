@@ -185,7 +185,7 @@ final class NetworkUsageServiceTest extends TestCase
 
         $this->assertEquals(
             expected: $expectedValue,
-            actual: $service->getDataForChart($chartDataType),
+            actual: $service->getDataForChart(chartDataType: $chartDataType, locale: 'en'),
         );
     }
 

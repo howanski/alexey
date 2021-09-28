@@ -21,7 +21,7 @@ final class NetworkStatisticTimeFrameTest extends TestCase
         $entity->setBillingFrameEnd($twoHoursAgo);
         $this->assertEquals(
             expected: '2 hours ago',
-            actual: $entity->getBillingFrameEndReadable(),
+            actual: $entity->getBillingFrameEndReadable('en'),
         );
     }
 

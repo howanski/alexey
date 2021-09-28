@@ -38,7 +38,7 @@ final class OpenWeatherOneApiResponse
         $this->simpleCacheService = $simpleCacheService;
     }
 
-    private function ensureWeatherDataFetched($locale = 'en'): void
+    private function ensureWeatherDataFetched($locale): void
     {
         if (empty($this->rawApiResponse)) {
             $cachedResponse = $this->simpleCacheService->retrieveDataFromCache(self::WEATHER_CACHE_KEY);
@@ -60,7 +60,7 @@ final class OpenWeatherOneApiResponse
         }
     }
 
-    public function getWeatherReadable($locale = 'en'): array
+    public function getWeatherReadable($locale): array
     {
         try {
             $this->ensureWeatherDataFetched(locale: $locale);

@@ -49,7 +49,7 @@ final class OpenWeatherOneApiResponseTest extends TestCase
             weatherSettings: $weatherSettings,
             simpleCacheService: $simpleCacheService,
         );
-        $readable = $testedClass->getWeatherReadable();
+        $readable = $testedClass->getWeatherReadable('en');
         $this->assertEquals(
             expected: [
                 'hourly' => [],

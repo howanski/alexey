@@ -149,7 +149,7 @@ class NetworkMachine
         return $this;
     }
 
-    public function getLastSeenReadable(string $locale = 'en'): string
+    public function getLastSeenReadable(string $locale): string
     {
         $conventionalTime = $this->getLastSeen();
         $carbonised = new Carbon($conventionalTime);
