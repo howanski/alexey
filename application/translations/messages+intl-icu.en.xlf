@@ -189,6 +189,22 @@
         <source>app.network.network_usage.outside_traffic</source>
         <target>Outside traffic</target>
       </trans-unit>
+      <trans-unit id="zOOt5n1" resname="app.weather.temperature">
+        <source>app.weather.temperature</source>
+        <target>Temperature</target>
+      </trans-unit>
+      <trans-unit id="ITzYsIr" resname="app.weather.feels_like">
+        <source>app.weather.feels_like</source>
+        <target>Feels like</target>
+      </trans-unit>
+      <trans-unit id="6tGI5a7" resname="app.weather.wind_speed">
+        <source>app.weather.wind_speed</source>
+        <target>Wind speed</target>
+      </trans-unit>
+      <trans-unit id="ropnr9r" resname="app.weather.rain_or_snow">
+        <source>app.weather.rain_or_snow</source>
+        <target>Rain / Snow</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

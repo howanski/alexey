@@ -11,6 +11,7 @@ use App\Service\SimpleSettingsService;
 use App\Class\OpenWeatherOneApiResponse;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @covers App\Service\WeatherService
@@ -29,11 +30,13 @@ final class WeatherServiceTest extends TestCase
         ];
         $simpleSettingsService->method('getSettings')->willReturn($settingsArray);
         $simpleCacheService = $this->createMock(originalClassName: SimpleCacheService::class);
+        $translator = $this->createMock(originalClassName: TranslatorInterface::class);
 
         $service = new WeatherService(
             client: $client,
             simpleSettingsService: $simpleSettingsService,
             simpleCacheService: $simpleCacheService,
+            translator: $translator,
         );
 
         $weather = $service->getWeather();
@@ -68,11 +71,17 @@ final class WeatherServiceTest extends TestCase
         $weatherResponse = $this->createMock(originalClassName: ResponseInterface::class);
         $weatherResponse->method('toArray')->willReturn($weatherMock);
         $client->method('request')->willReturn($weatherResponse);
+        $translator = $this->createMock(originalClassName: TranslatorInterface::class);
+        $transCallback = function (string $string) {
+            return 'trans_' . $string;
+        };
+        $translator->method('trans')->willReturnCallback($transCallback);
 
         $service = new WeatherService(
             client: $client,
             simpleSettingsService: $simpleSettingsService,
             simpleCacheService: $simpleCacheService,
+            translator: $translator,
         );
 
         $this->assertEquals(
@@ -81,7 +90,7 @@ final class WeatherServiceTest extends TestCase
                     'labels' => [],
                     'datasets' => [
                         'temperature' => [
-                            'label' => 'Temperature (°C)',
+                            'label' => 'trans_app.weather.temperature (°C)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                             'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -96,7 +105,7 @@ final class WeatherServiceTest extends TestCase
                             'data' => [],
                         ],
                         'feels_like' => [
-                            'label' => 'Feels like (°C)',
+                            'label' => 'trans_app.weather.feels_like (°C)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(140, 115, 223, 0.05)',
                             'borderColor' => 'rgba(140, 115, 223, 1)',
@@ -111,7 +120,7 @@ final class WeatherServiceTest extends TestCase
                             'data' => [],
                         ],
                         'wind_speed' => [
-                            'label' => 'Wind speed (km/h)',
+                            'label' => 'trans_app.weather.wind_speed (km/h)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(140, 115, 100, 0.05)',
                             'borderColor' => 'rgba(140, 115, 100, 1)',
@@ -126,7 +135,7 @@ final class WeatherServiceTest extends TestCase
                             'data' => [],
                         ],
                         'rain' => [
-                            'label' => 'Rain / Snow (mm)',
+                            'label' => 'trans_app.weather.rain_or_snow (mm)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
                             'borderColor' => 'rgba(78, 222, 223, 1)',
@@ -146,7 +155,7 @@ final class WeatherServiceTest extends TestCase
                     'labels' => [],
                     'datasets' => [
                         'temperature' => [
-                            'label' => 'Temperature (°C)',
+                            'label' => 'trans_app.weather.temperature (°C)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                             'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -161,7 +170,7 @@ final class WeatherServiceTest extends TestCase
                             'data' => [],
                         ],
                         'feels_like' => [
-                            'label' => 'Feels like (°C)',
+                            'label' => 'trans_app.weather.feels_like (°C)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(140, 115, 223, 0.05)',
                             'borderColor' => 'rgba(140, 115, 223, 1)',
@@ -176,7 +185,7 @@ final class WeatherServiceTest extends TestCase
                             'data' => [],
                         ],
                         'wind_speed' => [
-                            'label' => 'Wind speed (km/h)',
+                            'label' => 'trans_app.weather.wind_speed (km/h)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(140, 115, 100, 0.05)',
                             'borderColor' => 'rgba(140, 115, 100, 1)',
@@ -191,7 +200,7 @@ final class WeatherServiceTest extends TestCase
                             'data' => [],
                         ],
                         'rain' => [
-                            'label' => 'Rain / Snow (mm)',
+                            'label' => 'trans_app.weather.rain_or_snow (mm)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
                             'borderColor' => 'rgba(78, 222, 223, 1)',

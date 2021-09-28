@@ -8,13 +8,15 @@ use App\Service\SimpleSettingsService;
 use App\Class\OpenWeatherOneApiResponse;
 use App\Class\WeatherSettings;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WeatherService
 {
     public function __construct(
         private HttpClientInterface $client,
         private SimpleSettingsService $simpleSettingsService,
-        private SimpleCacheService $simpleCacheService
+        private SimpleCacheService $simpleCacheService,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -86,22 +88,22 @@ class WeatherService
         $chartConfs = [
             [
                 'key' => 'temperature',
-                'label' => 'Temperature (°C)',
+                'label' => $this->translator->trans('app.weather.temperature') . ' (°C)',
                 'color' => [78, 115, 223],
             ],
             [
                 'key' => 'feels_like',
-                'label' => 'Feels like (°C)',
+                'label' => $this->translator->trans('app.weather.feels_like') . ' (°C)',
                 'color' => [140, 115, 223],
             ],
             [
                 'key' => 'wind_speed',
-                'label' => 'Wind speed (km/h)',
+                'label' => $this->translator->trans('app.weather.wind_speed') . ' (km/h)',
                 'color' => [140, 115, 100],
             ],
             [
                 'key' => 'rain',
-                'label' => 'Rain / Snow (mm)',
+                'label' => $this->translator->trans('app.weather.rain_or_snow') . ' (mm)',
                 'color' => [78, 222, 223],
             ],
         ];
