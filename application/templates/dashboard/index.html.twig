@@ -121,7 +121,7 @@ window.location.reload(false);
 			<h5 class="text-gray-400">{{ 'app.weather'|trans }}</h1>
 		</div>
 		<div class="row">
-			{% for weather in dashboard_data.weather.getWeatherReadable().daily|slice(0, 4) %}
+			{% for weather in dashboard_data.weather.getWeatherReadable(app.request.locale).daily|slice(0, 4) %}
 				<div class="col-xl-3 col-md-6 mb-4">
 					<div class="card {% if weather.rain > 20  %} border-left-danger {% elseif weather.rain > 0  %} border-left-warning {% else %} border-left-success {% endif %} shadow h-100 py-2">
 						<div class="card-body">

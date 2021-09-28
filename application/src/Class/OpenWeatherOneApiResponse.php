@@ -26,17 +26,6 @@ final class OpenWeatherOneApiResponse
 
     private string $apiKey;
 
-    public function setRawApiResponse(array $rawApiResponse): self
-    {
-        $this->rawApiResponse = $rawApiResponse;
-        return $this;
-    }
-
-    public function getRawApiResponse(): array
-    {
-        return $this->rawApiResponse;
-    }
-
     public function __construct(
         HttpClientInterface $client,
         WeatherSettings $weatherSettings,
