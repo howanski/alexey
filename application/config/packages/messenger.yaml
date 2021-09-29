@@ -1,0 +1,10 @@
+framework:
+    messenger:
+        transports:
+            async_queue:
+                dsn: "%env(MESSENGER_TRANSPORT_DSN)%"
+                options:
+                    queue_name: queue_async
+
+        routing:
+            'App\Message\AsyncJob': async_queue
