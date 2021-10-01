@@ -19,3 +19,9 @@ setfacl -dR -m u:www-data:rwX /var/www/html
 setfacl -R -m u:www-data:rwX /var/www/html
 
 nohup supervisord
+
+echo "----------------------------------"
+echo "----------------------------------"
+echo "------ [ STARTUP FINISHED ] ------"
+echo "----------------------------------"
+echo "----------------------------------"
