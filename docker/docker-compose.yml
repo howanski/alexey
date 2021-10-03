@@ -31,8 +31,6 @@ services:
         build:
             context: ./entrails/php-fpm
             dockerfile: Dockerfile
-            args:
-                PHP_VERSION: 8.0
         container_name: "alexey-php"
         ports:
             - 127.0.0.1:9009:9000
