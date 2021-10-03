@@ -65,6 +65,17 @@ app.settings: Settings
 app.simulation: Simulation
 app.status: Status
 app.tables.no_records_found: 'Nothing found'
+app.time.day_short.friday: Fri
+app.time.day_short.monday: Mon
+app.time.day_short.saturday: Sat
+app.time.day_short.sunday: Sun
+app.time.day_short.thursday: Thu
+app.time.day_short.tuesday: Tue
+app.time.day_short.wednesday: Wed
+app.time.of_day.day: Mid-day
+app.time.of_day.evening: Evening
+app.time.of_day.morning: Morning
+app.time.of_day.night: Night
 app.weather: Weather
 app.weather.daily: 'Daily weather'
 app.weather.feels_like: 'Feels like'

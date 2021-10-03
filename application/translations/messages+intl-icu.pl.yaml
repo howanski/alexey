@@ -65,6 +65,17 @@ app.settings: Ustawienia
 app.simulation: Symulacja
 app.status: Status
 app.tables.no_records_found: 'Brak wpisów'
+app.time.day_short.friday: Pt
+app.time.day_short.monday: Pon
+app.time.day_short.saturday: Sob
+app.time.day_short.sunday: Nd
+app.time.day_short.thursday: Czw
+app.time.day_short.tuesday: Wt
+app.time.day_short.wednesday: Śr
+app.time.of_day.day: Poł.
+app.time.of_day.evening: Pop.
+app.time.of_day.morning: Rano
+app.time.of_day.night: Noc
 app.weather: Pogoda
 app.weather.daily: 'Pogoda dzienna'
 app.weather.feels_like: Odczuwalna
