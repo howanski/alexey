@@ -9,22 +9,42 @@ use App\Service\SimpleSettingsService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class WeatherSettingsType extends AbstractType
 {
+    public function __construct(
+        private TranslatorInterface $translator,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('latitude', TextType::class, ['required' => true])
-            ->add('longitude', TextType::class, ['required' => true])
-            ->add('apiKey', TextType::class, ['required' => true])
-            ->add('showOnDashboard', ChoiceType::class, [
+            ->add(child: 'latitude', type: TextType::class, options: [
+                'label' => $this->translator->trans('app.forms.labels.latitude'),
+                'priority' => 0,
+                'required' => true,
+            ])
+            ->add(child: 'longitude', type: TextType::class, options: [
+                'label' => $this->translator->trans('app.forms.labels.longitude'),
+                'priority' => -1,
+                'required' => true,
+            ])
+            ->add(child: 'apiKey', type: TextType::class, options: [
+                'label' => $this->translator->trans('app.forms.labels.api_key'),
+                'priority' => -2,
+                'required' => true,
+            ])
+            ->add(child: 'showOnDashboard', type: ChoiceType::class, options: [
+                'label' => $this->translator->trans('app.forms.labels.show_on_dashboard'),
                 'choices' => [
-                    'HIDE' => SimpleSettingsService::UNIVERSAL_FALSE,
-                    'SHOW' => SimpleSettingsService::UNIVERSAL_TRUTH
-                ]
+                    $this->translator->trans('app.forms.values.hide') => SimpleSettingsService::UNIVERSAL_FALSE,
+                    $this->translator->trans('app.forms.values.show') => SimpleSettingsService::UNIVERSAL_TRUTH,
+                ],
+                'priority' => -3,
             ]);
     }
 

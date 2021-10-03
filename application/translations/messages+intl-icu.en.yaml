@@ -8,8 +8,11 @@ app.forms.labels.address: Address
 app.forms.labels.algorithm_aggression_auto_adapt: 'Algorithm aggression auto adapt'
 app.forms.labels.algorithm_aggression: 'Algorithm Aggression'
 app.forms.labels.allow_target_speed_bumping: 'Allow target speed bumping'
+app.forms.labels.api_key: 'API key'
 app.forms.labels.host: Host
+app.forms.labels.latitude: Latitude
 app.forms.labels.locale: Locale
+app.forms.labels.longitude: Longitude
 app.forms.labels.mac_address: 'Mac Address'
 app.forms.labels.name: Name
 app.forms.labels.network_usage.provider_type: 'Provider type'
