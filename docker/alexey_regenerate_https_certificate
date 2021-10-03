@@ -1,4 +1,0 @@
-#!/bin/bash
-rm -f entrails/nginx/ssl/alexey.key
-rm -f entrails/nginx/ssl/alexey.crt
-openssl req -x509 -newkey rsa:4096 -keyout entrails/nginx/ssl/alexey.key -out entrails/nginx/ssl/alexey.crt -days 365 -nodes

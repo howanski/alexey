@@ -27,13 +27,13 @@ First of all - if you want Wake On LAN to work, you must configure network OUTSI
 And then it's a childsplay:
 ```bash
 # go to docker catalogue
-cd docker
+cd scripts
 # run self-building application script
 #(this one will run for a loooong time and will stick to your terminal so you'll see logs - open new terminal tab and continue typing commands after you'll see that logs stabilised)
 #(I'm sure you'll feel it :-) )
-./alexey_install
+./install
 # get inside worker-container
-./alexey_console_php
+./console_php
 #create user
 php bin/console alexey:user:new
 # and now open your browser on localhost and accept suspicious key ;-)
@@ -43,7 +43,7 @@ Above scenario should work out-of-the-box if there are no port conflicts with yo
 ## Deinstallation
 ```bash
 cd docker
-./alexey_uninstall
+./uninstall
 # That's all :-) Well, if you want to be sure there's really nothing left, you can prune leftovers shared by all Docker Containers:
 docker image prune
 docker volume prune

@@ -1,9 +1,10 @@
 #!/bin/bash
 clear
+cd ../backups
 echo "Stopping PHP container..."
 docker stop alexey-php
 echo "Restoring backup..."
-docker exec -i alexey-mysql sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD"' < backups/backup_all_databases_current.sql
+docker exec -i alexey-mysql sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD"' < backup_all_databases_current.sql
 echo "Starting PHP container..."
 docker start alexey-php
 echo "Backup restored"
