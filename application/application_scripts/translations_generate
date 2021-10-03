@@ -4,4 +4,8 @@ cd ..
 XDEBUG_MODE=off php bin/console cache:clear
 clear
 XDEBUG_MODE=off php bin/console translation:update --format=yaml --force en
+rm translations/security.en.yaml
+rm translations/validators.en.yaml
 XDEBUG_MODE=off php bin/console translation:update --format=yaml --force pl
+rm translations/security.pl.yaml
+rm translations/validators.pl.yaml
