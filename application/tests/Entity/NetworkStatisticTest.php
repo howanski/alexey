@@ -123,10 +123,19 @@ final class NetworkStatisticTest extends TestCase
         $interval = new \DateInterval('PT13S');
         $olderProbingTime->sub($interval);
 
+        $oneDay = new \DateInterval('P1D');
+        $tomorrow = new \DateTime('now');
+        $tomorrow->add($oneDay);
+
+        $timeFrame = new NetworkStatisticTimeFrame();
+        $timeFrame->setBillingFrameDataLimit(15001);
+        $timeFrame->setBillingFrameEnd($tomorrow);
+
         $stat = new NetworkStatistic();
         $stat->setProbingTime($probingTime);
         $stat->setDataDownloadedInFrame(200);
         $stat->setDataUploadedInFrame(300);
+        $stat->setTimeFrame($timeFrame);
 
         $olderStat = new NetworkStatistic();
         $olderStat->setProbingTime($olderProbingTime);
@@ -169,6 +178,55 @@ final class NetworkStatisticTest extends TestCase
             expected: 23.0769,
             actual: round(num: $stat->getTotalSpeedFromReferencePoint(), precision: 4),
             message: '---!---> Wrongly measured speed',
+        );
+
+        $this->assertEquals(
+            expected: 14501,
+            actual: $stat->getTrafficLeft(),
+            message: '---!---> Wrongly measured traffic left',
+        );
+
+        $this->assertEquals(
+            expected: 0.1678,
+            actual: round(num: $stat->getTransferRateLeft(), precision: 4),
+            message: '---!---> Wrongly measured traffic left',
+        );
+
+        // Humanisation
+        $this->assertEquals(
+            expected: '23.08 B/s',
+            actual: $stat->getTotalSpeedFromReferencePointReadable(),
+            message: '---!---> Problem with human-readable conversion',
+        );
+
+        $this->assertEquals(
+            expected: '14.16 kB',
+            actual: $stat->getTrafficLeftReadable(),
+            message: '---!---> Problem with human-readable conversion',
+        );
+
+        $this->assertEquals(
+            expected: '7 B/s',
+            actual: $stat->getDownloadSpeedFromReferencePointReadable(),
+            message: '---!---> Problem with human-readable conversion',
+        );
+
+        $this->assertEquals(
+            expected: '15 B/s',
+            actual: $stat->getUploadSpeedFromReferencePointReadable(),
+            message: '---!---> Problem with human-readable conversion',
+        );
+
+        $this->assertEquals(
+            expected: '300 B',
+            actual: $stat->getTotalTrafficFromReferencePointReadable(),
+            message: '---!---> Problem with human-readable conversion',
+        );
+
+        $this->assertEquals(
+            expected: '0 B/s',
+            actual: $stat->getTransferRateLeftReadable(),
+            message: '---!---> Problem with human-readable conversion',
         );
     }
 }
