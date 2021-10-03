@@ -4,8 +4,8 @@ echo "Stopping containers..."
 docker stop alexey-php
 docker stop alexey-phpmyadmin
 docker stop alexey-nginx
-docker stop alexey-mysql
 ./database_backup
+docker stop alexey-mysql
 echo "Stashing local changes..."
 git stash -u
 echo "Updating codebase..."
