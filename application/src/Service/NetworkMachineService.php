@@ -28,7 +28,7 @@ class NetworkMachineService
             $uri = $networkMachine->getUri();
             $ping = new Ping(host: $uri, ttl: 255, timeout: 2);
             $latency = $ping->ping();
-            if ($latency !== false) {
+            if (is_float($latency)) {
                 $networkMachine->setStatus(NetworkMachine::STATUS_REACHABLE);
                 $now = new \DateTime();
                 $networkMachine->setLastSeen($now);

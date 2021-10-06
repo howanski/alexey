@@ -100,10 +100,10 @@ class AlexeySideMenuProvider extends AbstractExtension
 
     private function isActiveRoute(string $route): bool
     {
-        if ($route == $this->currentRoute) {
+        if ($route === $this->currentRoute) {
             return true;
         }
-        if ($this->currentRoute == '/' || $route == '/') {
+        if ($this->currentRoute === '/' || $route === '/') {
             return false;
         }
         $strpos = strpos($this->currentRoute, $route);

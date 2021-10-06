@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use Transmission\Transmission;
+use App\Entity\NetworkStatistic;
 use App\Class\TransmissionSettings;
+use App\Service\SimpleSettingsService;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+// TODO: REFACTORISATION!!!
 class TransmissionService
 {
     private TransmissionSettings $settings;
@@ -14,7 +18,7 @@ class TransmissionService
     public function __construct(
         private NetworkUsageService $networkUsageService,
         private TranslatorInterface $translator,
-        SimpleSettingsService $simpleSettingsService,
+        private SimpleSettingsService $simpleSettingsService,
     ) {
         $this->settings = new TransmissionSettings();
         $this->settings->selfConfigure($simpleSettingsService);
@@ -98,5 +102,46 @@ class TransmissionService
         }
 
         return $chartData;
+    }
+
+    public function adjustSpeed(): void
+    {
+        if ($this->settings->getIsActive() === SimpleSettingsService::UNIVERSAL_TRUTH) {
+            $stat = $this->networkUsageService->getLatestStatistic();
+            if ($stat instanceof NetworkStatistic) {
+                $transmission = new Transmission($this->settings->getHost());
+                $client = $transmission->getclient();
+                $client->authenticate($this->settings->getUser(), $this->settings->getPassword());
+                $session = $transmission->getSession();
+                $proposedSpeed = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft());
+                $session->setDownloadSpeedLimit($proposedSpeed);
+                $session->setAltSpeedDown($proposedSpeed);
+                $session->save();
+                if (SimpleSettingsService::UNIVERSAL_FALSE !== $this->settings->getAggressionAdapt()) {
+                    $targetSpeed = intval($this->settings->getTargetSpeed());
+                    $aggression = intval($this->settings->getAlgorithmAggression());
+                    if ($proposedSpeed > $targetSpeed / 2) {
+                        $aggression += 1;
+                        if (
+                            ($aggression > TransmissionSettings::MAX_AGGRESSION) &&
+                            ($proposedSpeed > $targetSpeed) &&
+                            (SimpleSettingsService::UNIVERSAL_TRUTH === $this->settings->getAllowSpeedBump())
+                        ) {
+                            $increasedTargetSpeed = $targetSpeed + 1;
+                            if ($increasedTargetSpeed < (TransmissionSettings::TOP_SPEED / 2)) {
+                                $this->settings->setTargetSpeed(strval($increasedTargetSpeed));
+                            }
+                        }
+                    } elseif (
+                        ($proposedSpeed < ($targetSpeed / 4)) &&
+                        (TransmissionSettings::ADAPT_TYPE_UP_ONLY !== $this->settings->getAggressionAdapt())
+                    ) {
+                        $aggression -= 1;
+                    }
+                    $this->settings->setAlgorithmAggression(strval($aggression));
+                }
+                $this->settings->selfPersist($this->simpleSettingsService);
+            }
+        }
     }
 }

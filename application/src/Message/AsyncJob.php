@@ -8,6 +8,7 @@ final class AsyncJob
 {
     public const TYPE_PING = 'ping';
     public const TYPE_UPDATE_NETWORK_STATS = 'update_network_stats';
+    public const TYPE_TRANSMISSION_SPEED_ADJUST = 'transmission_speed_adjust';
 
     public function __construct(
         private string $jobType,

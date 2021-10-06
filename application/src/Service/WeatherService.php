@@ -39,7 +39,7 @@ class WeatherService
     public function showWeatherOnDashboard(): bool
     {
         $settings = $this->getWeatherSettings();
-        return (SimpleSettingsService::UNIVERSAL_TRUTH == $settings->getShowOnDashboard());
+        return (SimpleSettingsService::UNIVERSAL_TRUTH === $settings->getShowOnDashboard());
     }
 
     public function getChartData($locale): array

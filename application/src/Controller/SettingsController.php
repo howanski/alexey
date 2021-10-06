@@ -17,8 +17,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class SettingsController extends AbstractController
 {
     #[Route('/settings', name: 'settings')]
-    public function settings(Request $request, TranslatorInterface $translator, SimpleCacheService $cacheService): Response
-    {
+    public function settings(
+        Request $request,
+        TranslatorInterface $translator,
+        SimpleCacheService $cacheService,
+    ): Response {
         $user = $this->getUser();
         $settings = [
             'locale' => $user->getLocale(),

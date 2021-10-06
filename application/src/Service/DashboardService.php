@@ -32,7 +32,7 @@ class DashboardService
         $networkUsageSettings = $this->networkUsageService->getConnectionSettings();
         $showNetworkUsageOnDashboard =
             ($networkUsageSettings->getShowOnDashboard() === SimpleSettingsService::UNIVERSAL_TRUTH);
-        if ($showNetworkUsageOnDashboard) {
+        if (true === $showNetworkUsageOnDashboard) {
             $dashboardData['network_statistic'] = $this->networkUsageService->getLatestStatistic();
         }
 

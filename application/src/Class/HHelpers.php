@@ -12,10 +12,10 @@ final class HHelpers
         $units = array('B', 'kB', 'MB', 'GB', 'TB', 'PB');
 
         $bytes = max($bytes, 0);
-        $power = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $power = floor((($bytes > 0) ? log($bytes) : 0) / log(1024));
         $power = min($power, count($units) - 1);
 
-        if ($asPowerOfTens) {
+        if (true === $asPowerOfTens) {
             $bytes /= (1 << (10 * $power));
         } else {
             $bytes /= pow(1024, $power);

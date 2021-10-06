@@ -23,6 +23,7 @@ class AlexeyCronCommand extends Command
     private const DEFAULT_JOBS = [
         AsyncJob::TYPE_PING => 30,
         AsyncJob::TYPE_UPDATE_NETWORK_STATS => 30,
+        AsyncJob::TYPE_TRANSMISSION_SPEED_ADJUST => 50,
     ];
 
     public function __construct(
@@ -75,7 +76,7 @@ class AlexeyCronCommand extends Command
                 $nextRun =  (new Carbon($lastRun))->addSeconds($runEvery);
                 $readyToRun =  ($nextRun <= $now);
             }
-            if ($readyToRun) {
+            if (true === $readyToRun) {
                 $message = new AsyncJob($cronJob->getJobType());
                 $this->bus->dispatch($message);
                 $cronJob->setLastRun($now);

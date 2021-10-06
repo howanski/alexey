@@ -83,25 +83,25 @@ class NetworkUsageService
         ];
         $today = new DateTime('today');
         $now = new DateTime('now');
-        if ($chartDataType == NetworkChartType::CHART_TYPE_TODAY) {
+        if ($chartDataType === NetworkChartType::CHART_TYPE_TODAY) {
             $chdata = $this->prepareDataForChart($today);
-        } elseif ($chartDataType == NetworkChartType::CHART_TYPE_WEEK) {
+        } elseif ($chartDataType === NetworkChartType::CHART_TYPE_WEEK) {
             $shift = new DateInterval('P1W');
             $today->sub($shift);
             $chdata = $this->prepareDataForChart($today);
-        } elseif ($chartDataType == NetworkChartType::CHART_TYPE_MONTH) {
+        } elseif ($chartDataType === NetworkChartType::CHART_TYPE_MONTH) {
             $shift = new DateInterval('P1M');
             $today->sub($shift);
             $chdata = $this->prepareDataForChart($today);
-        } elseif ($chartDataType == NetworkChartType::CHART_TYPE_HOURS_TWO) {
+        } elseif ($chartDataType === NetworkChartType::CHART_TYPE_HOURS_TWO) {
             $shift = new DateInterval('PT2H');
             $now->sub($shift);
             $chdata = $this->prepareDataForChart($now);
-        } elseif ($chartDataType == NetworkChartType::CHART_TYPE_MINUTES_TEN) {
+        } elseif ($chartDataType === NetworkChartType::CHART_TYPE_MINUTES_TEN) {
             $shift = new DateInterval('PT10M');
             $now->sub($shift);
             $chdata = $this->prepareDataForChart($now);
-        } elseif ($chartDataType == NetworkChartType::CHART_TYPE_BILLING_FRAME) {
+        } elseif ($chartDataType === NetworkChartType::CHART_TYPE_BILLING_FRAME) {
             $currentStat = $this->getLatestStatistic();
             $billingStart = $currentStat->getTimeFrame()->getBillingFrameStart();
             $chdata = $this->prepareDataForChart($billingStart);
@@ -127,7 +127,7 @@ class NetworkUsageService
             $transmissionSettings = new TransmissionSettings();
             $transmissionSettings->selfConfigure($this->simpleSettingsService);
             $stat = $this->getLatestStatistic();
-            $throttling = $stat ? $transmissionSettings->getProposedThrottleSpeed(
+            $throttling = ($stat instanceof NetworkStatistic) ? $transmissionSettings->getProposedThrottleSpeed(
                 speedLeft: $this->getLatestStatistic()->getTransferRateLeft()
             ) : 0;
             $throttling .= ' kB/s';
@@ -211,7 +211,7 @@ class NetworkUsageService
         }
         foreach ($networkStatistics as $key => $stat) {
             if (isset($networkStatistics[$key + 1])) {
-                if ($stat->getTimeFrame() == $networkStatistics[$key + 1]->getTimeFrame()) {
+                if ($stat->getTimeFrame() === $networkStatistics[$key + 1]->getTimeFrame()) {
                     $networkStatistics[$key + 1]->setReferencePoint($stat);
                 }
             }
