@@ -106,6 +106,7 @@ class TransmissionService
 
     public function adjustSpeed(): void
     {
+        $this->settings->selfConfigure($this->simpleSettingsService);
         if ($this->settings->getIsActive() === SimpleSettingsService::UNIVERSAL_TRUTH) {
             $stat = $this->networkUsageService->getLatestStatistic();
             if ($stat instanceof NetworkStatistic) {
