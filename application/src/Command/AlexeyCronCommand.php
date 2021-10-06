@@ -22,6 +22,7 @@ class AlexeyCronCommand extends Command
 {
     private const DEFAULT_JOBS = [
         AsyncJob::TYPE_PING => 30,
+        AsyncJob::TYPE_UPDATE_NETWORK_STATS => 30,
     ];
 
     public function __construct(

@@ -7,6 +7,7 @@ namespace App\Message;
 final class AsyncJob
 {
     public const TYPE_PING = 'ping';
+    public const TYPE_UPDATE_NETWORK_STATS = 'update_network_stats';
 
     public function __construct(
         private string $jobType,

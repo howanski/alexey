@@ -33,6 +33,15 @@ class NetworkUsageService
     ) {
     }
 
+    public function updateStats(): void
+    {
+        $stat = $this->getCurrentStatistic();
+        if ($stat instanceof NetworkStatistic) {
+            $this->em->persist($stat);
+            $this->em->flush($stat);
+        }
+    }
+
     public function getCurrentStatistic(): ?NetworkStatistic
     {
         $connectionSettings = $this->getConnectionSettings();
