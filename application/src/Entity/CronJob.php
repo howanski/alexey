@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Carbon\Carbon;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -16,7 +15,7 @@ class CronJob
     private int $id;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?Carbon $lastRun = null;
+    private ?\DateTimeInterface $lastRun = null;
 
     #[ORM\Column(type: 'integer')]
     private int $runEvery; //seconds
@@ -32,12 +31,12 @@ class CronJob
         return $this->id;
     }
 
-    public function getLastRun(): ?Carbon
+    public function getLastRun(): ?\DateTimeInterface
     {
         return $this->lastRun;
     }
 
-    public function setLastRun(Carbon $lastRun): self
+    public function setLastRun(\DateTimeInterface $lastRun): self
     {
         $this->lastRun = $lastRun;
         return $this;

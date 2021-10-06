@@ -12,6 +12,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WeatherService
 {
+    private $dayTranslations = [];
+
     public function __construct(
         private HttpClientInterface $client,
         private SimpleSettingsService $simpleSettingsService,
