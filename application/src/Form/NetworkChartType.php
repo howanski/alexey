@@ -14,7 +14,6 @@ class NetworkChartType extends AbstractType
 {
     public const CHART_TYPE_TODAY = 'today';
     public const CHART_TYPE_WEEK = 'week';
-    public const CHART_TYPE_MONTH = 'month';
     public const CHART_TYPE_BILLING_FRAME = 'currentFrame';
     public const CHART_TYPE_HOURS_TWO = 'twoHours';
     public const CHART_TYPE_MINUTES_TEN = 'tenMinutes';
@@ -22,7 +21,6 @@ class NetworkChartType extends AbstractType
     public const CHART_TYPES = [
         self::CHART_TYPE_TODAY,
         self::CHART_TYPE_WEEK,
-        self::CHART_TYPE_MONTH,
         self::CHART_TYPE_BILLING_FRAME,
         self::CHART_TYPE_HOURS_TWO,
         self::CHART_TYPE_MINUTES_TEN,
@@ -40,7 +38,6 @@ class NetworkChartType extends AbstractType
                 'choices' => [
                     $this->translator->trans('app.network.chart.type.today') => self::CHART_TYPE_TODAY,
                     $this->translator->trans('app.network.chart.type.last_week') => self::CHART_TYPE_WEEK,
-                    $this->translator->trans('app.network.chart.type.last_month') => self::CHART_TYPE_MONTH,
                     $this->translator->trans('app.network.chart.type.current_billing_frame') =>
                     self::CHART_TYPE_BILLING_FRAME,
                     $this->translator->trans('app.network.chart.type.last_2_hours') => self::CHART_TYPE_HOURS_TWO,

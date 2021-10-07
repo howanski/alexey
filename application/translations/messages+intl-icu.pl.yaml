@@ -49,7 +49,6 @@ app.network: Sieć
 app.network.chart.type.current_billing_frame: 'Obecny okres taryfowy'
 app.network.chart.type.last_10_minutes: 'Ostatnie 10 minut'
 app.network.chart.type.last_2_hours: 'Ostatnie 2 godziny'
-app.network.chart.type.last_month: 'Ostatni miesiąc'
 app.network.chart.type.last_week: 'Ostatni tydzień'
 app.network.chart.type.today: Dzisiaj
 app.network.network_usage.billing_window_end: 'Koniec okresu taryfowego'

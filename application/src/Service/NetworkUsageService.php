@@ -42,6 +42,15 @@ class NetworkUsageService
         }
     }
 
+    public function cleanUpStats(): void
+    {
+        $obsoleteStats = $this->networkStatisticRepository->findObsolete();
+        foreach ($obsoleteStats as $stat) {
+            $this->em->remove($stat);
+        }
+        $this->em->flush();
+    }
+
     public function getCurrentStatistic(): ?NetworkStatistic
     {
         $connectionSettings = $this->getConnectionSettings();
@@ -87,10 +96,6 @@ class NetworkUsageService
             $chdata = $this->prepareDataForChart($today);
         } elseif ($chartDataType === NetworkChartType::CHART_TYPE_WEEK) {
             $shift = new DateInterval('P1W');
-            $today->sub($shift);
-            $chdata = $this->prepareDataForChart($today);
-        } elseif ($chartDataType === NetworkChartType::CHART_TYPE_MONTH) {
-            $shift = new DateInterval('P1M');
             $today->sub($shift);
             $chdata = $this->prepareDataForChart($today);
         } elseif ($chartDataType === NetworkChartType::CHART_TYPE_HOURS_TWO) {

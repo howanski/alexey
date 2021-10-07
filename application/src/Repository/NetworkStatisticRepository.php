@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\NetworkStatistic;
 use DateTime;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Carbon\Carbon;
+use App\Entity\NetworkStatistic;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method NetworkStatistic|null find($id, $lockMode = null, $lockVersion = null)
@@ -58,5 +59,15 @@ class NetworkStatisticRepository extends ServiceEntityRepository
         } else {
             return null;
         }
+    }
+
+    public function findObsolete(): array
+    {
+        $monthAgo = new Carbon('now');
+        $monthAgo->subMonths(1);
+        $qb = $this->createQueryBuilder('ns')
+            ->andWhere('ns.probingTime < :monthAgo')
+            ->setParameter('monthAgo', $monthAgo);
+        return $qb->getQuery()->getResult();
     }
 }

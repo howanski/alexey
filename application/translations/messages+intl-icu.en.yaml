@@ -49,7 +49,6 @@ app.network: Network
 app.network.chart.type.current_billing_frame: 'Current billing frame'
 app.network.chart.type.last_10_minutes: 'Last 10 minutes'
 app.network.chart.type.last_2_hours: 'Last 2 hours'
-app.network.chart.type.last_month: 'Last month'
 app.network.chart.type.last_week: 'Last week'
 app.network.chart.type.today: Today
 app.network.network_usage.billing_window_end: 'Billing window end'

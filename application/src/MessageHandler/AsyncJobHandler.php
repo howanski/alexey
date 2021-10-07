@@ -27,6 +27,8 @@ final class AsyncJobHandler implements MessageHandlerInterface
             $this->networkUsageService->updateStats();
         } elseif (AsyncJob::TYPE_TRANSMISSION_SPEED_ADJUST === $message->getJobType()) {
             $this->transmissionService->adjustSpeed();
+        } elseif (AsyncJob::TYPE_CLEANUP_NETWORK_STATS === $message->getJobType()) {
+            $this->networkUsageService->cleanUpStats();
         }
     }
 }
