@@ -1,6 +1,9 @@
 app.actions: Akcje
+app.actions.back: Wstecz
+app.actions.delete: Usuń
 app.actions.edit: Edytuj
 app.actions.show: Pokaż
+app.actions.update: Aktualizuj
 app.actions.wake: Obudź
 app.dashboard: Sterownia
 app.flashes.saved: 'Pomyślnie zapisano'
@@ -60,6 +63,7 @@ app.network.network_usage.throttling: Dławienie
 app.network.network_usage.traffic_left: 'Pozostały transfer'
 app.network.transmission.changes_in_time: 'Zmiany w czasie'
 app.network.transmission.throttling_by_optimal_speed: 'Dławiene wg. optymalnej prędkości'
+app.questions.sure.delete: 'Na pewno chcesz to usunąć?'
 app.settings: Ustawienia
 app.simulation: Symulacja
 app.status: Status

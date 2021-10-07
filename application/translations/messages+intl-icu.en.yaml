@@ -1,6 +1,9 @@
 app.actions: Actions
+app.actions.back: Back
+app.actions.delete: Delete
 app.actions.edit: Edit
 app.actions.show: Show
+app.actions.update: Update
 app.actions.wake: Wake
 app.dashboard: Dashboard
 app.flashes.saved: 'Successfully saved'
@@ -60,6 +63,7 @@ app.network.network_usage.throttling: Throttling
 app.network.network_usage.traffic_left: 'Traffic left'
 app.network.transmission.changes_in_time: 'Changes in time'
 app.network.transmission.throttling_by_optimal_speed: 'Throttling by optimal speed'
+app.questions.sure.delete: 'Are you sure you wan to delete this item?'
 app.settings: Settings
 app.simulation: Simulation
 app.status: Status

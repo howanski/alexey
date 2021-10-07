@@ -29,8 +29,8 @@
     </table>
 
     <div class="row">
-        <a href="{{ path('network_machine_index') }}" class="btn btn-success">Back to list</a>
-        <a href="{{ path('network_machine_edit', {'id': network_machine.id}) }}" class="btn btn-warning">Edit</a>
+        <a href="{{ path('network_machine_index') }}" class="btn btn-success">{{ 'app.actions.back'|trans }}</a>
+        <a href="{{ path('network_machine_edit', {'id': network_machine.id}) }}" class="btn btn-warning">{{ 'app.actions.edit'|trans }}</a>
         {{ include('network_machine/_delete_form.html.twig') }}
     </div>
 {% endblock %}
