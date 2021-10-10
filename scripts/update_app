@@ -12,5 +12,6 @@ echo "Updating codebase..."
 git pull
 echo "Reapplying stash..."
 git stash pop
+git stash clear
 echo "Starting containers..."
 ./install_detach
