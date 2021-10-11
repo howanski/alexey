@@ -39,4 +39,11 @@ class NetworkMachineService
             $this->em->flush($networkMachine);
         }
     }
+
+    public function wakeOnLan(string $wakeDestination, string $macAddress)
+    {
+        exec('wakeonlan -i ' . $wakeDestination . ' ' . $macAddress);
+        exec('wakeonlan -i ' . $wakeDestination . ' ' . $macAddress);
+        exec('wakeonlan -i ' . $wakeDestination . ' ' . $macAddress);
+    }
 }

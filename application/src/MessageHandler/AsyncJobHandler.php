@@ -32,6 +32,12 @@ final class AsyncJobHandler implements MessageHandlerInterface
             $this->transmissionService->adjustSpeed();
         } elseif (AsyncJob::TYPE_CLEANUP_NETWORK_STATS === $message->getJobType()) {
             $this->networkUsageService->cleanUpStats();
+        } elseif (AsyncJob::TYPE_WAKE_ON_LAN === $message->getJobType()) {
+            $payload = $message->getPayload();
+            $this->networkMachineService->wakeOnLan(
+                wakeDestination: $payload['wakeDestination'],
+                macAddress: $payload['macAddress'],
+            );
         }
     }
 }

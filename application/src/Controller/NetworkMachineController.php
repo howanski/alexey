@@ -6,11 +6,13 @@ namespace App\Controller;
 
 use App\Entity\NetworkMachine;
 use App\Form\NetworkMachineType;
+use App\Message\AsyncJob;
 use App\Repository\NetworkMachineRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/network/machines')]
 class NetworkMachineController extends AbstractController
@@ -83,9 +85,17 @@ class NetworkMachineController extends AbstractController
     }
 
     #[Route('/{id}/wake/and-back-to/{backRoute}', name: 'network_machine_wake', methods: ['GET'])]
-    public function wake(NetworkMachine $networkMachine, string $backRoute, Request $request): Response
+    public function wake(NetworkMachine $networkMachine, string $backRoute, MessageBusInterface $bus): Response
     {
-        exec('wakeonlan -i ' . $networkMachine->getWakeDestination() . ' ' . $networkMachine->getMacAddress());
+        $payload = [
+            'wakeDestination' => $networkMachine->getWakeDestination(),
+            'macAddress' => $networkMachine->getMacAddress(),
+        ];
+        $message = new AsyncJob(
+            jobType: AsyncJob::TYPE_WAKE_ON_LAN,
+            payload: $payload,
+        );
+        $bus->dispatch($message);
         return $this->redirectToRoute($backRoute, [], Response::HTTP_SEE_OTHER);
     }
 }
