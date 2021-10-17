@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MoneyNodeRepository;
@@ -38,6 +40,18 @@ class MoneyNode
 
     #[ORM\Column(type: 'smallint', nullable: false)]
     private int $nodeType;
+
+    #[ORM\OneToMany(mappedBy: 'targetNode', targetEntity: MoneyTransfer::class)]
+    private $incomingTransfers;
+
+    #[ORM\OneToMany(mappedBy: 'sourceNode', targetEntity: MoneyTransfer::class)]
+    private $outgoingTransfers;
+
+    public function __construct()
+    {
+        $this->incomingTransfers = new ArrayCollection();
+        $this->outgoingTransfers = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -78,5 +92,33 @@ class MoneyNode
     {
         $this->user = $user;
         return $this;
+    }
+
+    /**
+     * @return Collection|MoneyTransfer[]
+     */
+    public function getIncomingTransfers(): Collection
+    {
+        return $this->incomingTransfers;
+    }
+
+    /**
+     * @return Collection|MoneyTransfer[]
+     */
+    public function getOutgoingTransfers(): Collection
+    {
+        return $this->outgoingTransfers;
+    }
+
+    public function getBalance(): float
+    {
+        $balance = 0.0;
+        foreach ($this->getIncomingTransfers() as $incomingTransfer) {
+            $balance = $balance + $incomingTransfer->getExchangedAmount();
+        }
+        foreach ($this->getOutgoingTransfers() as $outgoingTransfer) {
+            $balance = $balance - $outgoingTransfer->getAmount();
+        }
+        return $balance;
     }
 }
