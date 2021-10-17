@@ -57,6 +57,8 @@ services:
           options:
               max-size: "5m"
               max-file: "2"
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
     nginx:
         env_file:
             - .env
