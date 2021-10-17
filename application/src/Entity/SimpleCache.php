@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\SimpleCacheRepository;
+use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\SimpleCacheRepository;
 
 #[ORM\Entity(repositoryClass: SimpleCacheRepository::class)]
 class SimpleCache
@@ -21,6 +22,10 @@ class SimpleCache
 
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $validTo;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'caches')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
+    private ?User $user;
 
     public function getId(): ?int
     {
@@ -57,6 +62,17 @@ class SimpleCache
     public function setValidTo(\DateTimeInterface $validTo): self
     {
         $this->validTo = $validTo;
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user = null): self
+    {
+        $this->user = $user;
         return $this;
     }
 }

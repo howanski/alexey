@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\SimpleSettingRepository;
+use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\SimpleSettingRepository;
 
 #[ORM\Entity(repositoryClass: SimpleSettingRepository::class)]
 class SimpleSetting
@@ -20,6 +21,10 @@ class SimpleSetting
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $settingValue;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'settings')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
+    private ?User $user;
 
     public function getId(): int
     {
@@ -45,6 +50,17 @@ class SimpleSetting
     public function setSettingValue(string $settingValue): self
     {
         $this->settingValue = $settingValue;
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user = null): self
+    {
+        $this->user = $user;
         return $this;
     }
 }

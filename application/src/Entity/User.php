@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
+use App\Entity\SimpleSetting;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -28,6 +30,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 2, options: ['default' => 'en'])]
     private string $locale = 'en';
+
+    #[ORM\OneToMany(targetEntity: SimpleSetting::class, mappedBy: 'user', orphanRemoval: true)]
+    private $settings;
+
+    #[ORM\OneToMany(targetEntity: SimpleCache::class, mappedBy: 'user', orphanRemoval: true)]
+    private $caches;
+
+    public function __construct()
+    {
+        $this->settings = new ArrayCollection();
+        $this->caches = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -117,6 +131,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLocale(string $locale): self
     {
         $this->locale = $locale;
+        return $this;
+    }
+
+    public function getSettings(): ArrayCollection|array
+    {
+        return $this->settings;
+    }
+
+    public function setSettings(array|ArrayCollection $settings): self
+    {
+        $this->settings = $settings;
+        return $this;
+    }
+
+    public function getCaches()
+    {
+        return $this->caches;
+    }
+
+    public function setCaches(array|ArrayCollection $caches): self
+    {
+        $this->caches = $caches;
         return $this;
     }
 }
