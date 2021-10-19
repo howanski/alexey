@@ -112,7 +112,7 @@ class AlexeySideMenuProvider extends AbstractExtension
 
         $route = $this->router->generate('network_transmission');
         $networkTransmission = new SideMenuItem(
-            name: $this->translator->trans('app.modules.network_transmission.menu_record'),
+            name: $this->translator->trans('app.modules.network_usage.menu_record_transmission'),
             destination: $route,
             isActive: $this->isActiveRoute($route),
         );

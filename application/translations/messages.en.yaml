@@ -1,11 +1,10 @@
-app.flashes.saved: 'Successfully saved'
+app.modules.common.flashes.saved: 'Successfully saved'
 app.modules.common.forms.labels.password: Password
 app.modules.common.forms.labels.save: Save
 app.modules.common.forms.labels.show_on_dashboard: 'Show on Dashboard'
 app.modules.common.forms.values.hide: Hide
 app.modules.common.forms.values.show: Show
 app.modules.dashboard.menu_record: Dashboard
-app.modules.network_machine.status: Status
 app.modules.network_machines.actions: Actions
 app.modules.network_machines.actions.back: Back
 app.modules.network_machines.actions.delete: Delete
@@ -27,7 +26,6 @@ app.modules.network_machines.menu_record: 'Network machines'
 app.modules.network_machines.name: Name
 app.modules.network_machines.never_seen: 'Never seen'
 app.modules.network_machines.status: Status
-app.modules.network_transmission.menu_record: Transmission
 app.modules.network_usage.billing_window_end: 'Billing window end'
 app.modules.network_usage.changes_in_time: 'Changes in time'
 app.modules.network_usage.chart_type: 'Chart type'
@@ -50,6 +48,7 @@ app.modules.network_usage.forms.values.disabled: Disabled
 app.modules.network_usage.forms.values.enabled: Enabled
 app.modules.network_usage.forms.values.increasing: Increasing
 app.modules.network_usage.forms.values.off: 'Off'
+app.modules.network_usage.menu_record_transmission: Transmission
 app.modules.network_usage.menu_record: 'Network usage'
 app.modules.network_usage.optimal_speed: 'Optimal speed'
 app.modules.network_usage.outside_traffic: 'Outside traffic'

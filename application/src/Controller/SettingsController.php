@@ -40,7 +40,7 @@ class SettingsController extends AbstractController
             $em->flush();
             $cacheService->invalidateCache(OpenWeatherOneApiResponse::WEATHER_CACHE_KEY);
             $request->getSession()->set(UserLocaleSubscriber::USER_LOCALE, $user->getLocale());
-            $this->addFlash(type: 'success', message: $translator->trans('app.flashes.saved'));
+            $this->addFlash(type: 'success', message: $translator->trans('app.modules.common.flashes.saved'));
             return $this->redirectToRoute('settings', [], Response::HTTP_SEE_OTHER);
         }
 

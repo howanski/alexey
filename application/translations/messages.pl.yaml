@@ -1,11 +1,10 @@
-app.flashes.saved: 'Pomyślnie zapisano'
+app.modules.common.flashes.saved: 'Pomyślnie zapisano'
 app.modules.common.forms.labels.password: Hasło
 app.modules.common.forms.labels.save: Zapisz
 app.modules.common.forms.labels.show_on_dashboard: 'Pokaż w sterowni'
 app.modules.common.forms.values.hide: Ukryj
 app.modules.common.forms.values.show: Pokaż
 app.modules.dashboard.menu_record: Sterownia
-app.modules.network_machine.status: Status
 app.modules.network_machines.actions: Akcje
 app.modules.network_machines.actions.back: Wstecz
 app.modules.network_machines.actions.delete: Usuń
@@ -27,7 +26,6 @@ app.modules.network_machines.menu_record: 'Urządzenia sieciowe'
 app.modules.network_machines.name: Nazwa
 app.modules.network_machines.never_seen: 'Nigdy nie widziana'
 app.modules.network_machines.status: Status
-app.modules.network_transmission.menu_record: Transmission
 app.modules.network_usage.billing_window_end: 'Koniec okresu taryfowego'
 app.modules.network_usage.changes_in_time: 'Zmiany w czasie'
 app.modules.network_usage.chart_type: 'Typ wykresu'
@@ -50,6 +48,7 @@ app.modules.network_usage.forms.values.disabled: Wyłączone
 app.modules.network_usage.forms.values.enabled: Włączone
 app.modules.network_usage.forms.values.increasing: Wzrastające
 app.modules.network_usage.forms.values.off: Wyłączony
+app.modules.network_usage.menu_record_transmission: Transmission
 app.modules.network_usage.menu_record: Zużycie
 app.modules.network_usage.optimal_speed: 'Optymalna prędkość'
 app.modules.network_usage.outside_traffic: 'Ruch zewnętrzny'
