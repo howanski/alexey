@@ -245,7 +245,7 @@ final class NetworkUsageServiceTest extends TestCase
                 ],
                 'throttling' => 'N. A.',
             ]],
-            ['week', [
+            ['last_week', [
                 'labels' => [],
                 'datasets' => [
                     'speed_relative' => [
@@ -287,7 +287,7 @@ final class NetworkUsageServiceTest extends TestCase
                 ],
                 'throttling' => 'N. A.',
             ]],
-            ['currentFrame', [
+            ['current_billing_frame', [
                 'labels' => [],
                 'datasets' => [
                     'speed_relative' => [
@@ -329,7 +329,7 @@ final class NetworkUsageServiceTest extends TestCase
                 ],
                 'throttling' => 'N. A.',
             ]],
-            ['twoHours', [
+            ['last_2_hours', [
                 'labels' => [],
                 'datasets' => [
                     'speed_relative' => [
@@ -371,7 +371,7 @@ final class NetworkUsageServiceTest extends TestCase
                 ],
                 'throttling' => 'N. A.',
             ]],
-            ['tenMinutes', [
+            ['last_10_minutes', [
                 'labels' => [],
                 'datasets' => [
                     'speed_relative' => [
