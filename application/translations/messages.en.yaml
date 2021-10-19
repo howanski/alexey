@@ -2,8 +2,8 @@ app.modules.common.flashes.saved: 'Successfully saved'
 app.modules.common.forms.labels.password: Password
 app.modules.common.forms.labels.save: Save
 app.modules.common.forms.labels.show_on_dashboard: 'Show on Dashboard'
-app.modules.common.forms.values.hide: Hide
-app.modules.common.forms.values.show: Show
+app.modules.common.forms.values.show_on_dashboard.hide: Hide
+app.modules.common.forms.values.show_on_dashboard.show: Show
 app.modules.dashboard.menu_record: Dashboard
 app.modules.network_machines.actions: Actions
 app.modules.network_machines.actions.back: Back
@@ -47,7 +47,8 @@ app.modules.network_usage.forms.values.chart_type.today: Today
 app.modules.network_usage.forms.values.disabled: Disabled
 app.modules.network_usage.forms.values.enabled: Enabled
 app.modules.network_usage.forms.values.increasing: Increasing
-app.modules.network_usage.forms.values.off: 'Off'
+app.modules.network_usage.forms.values.provider_type.off: 'Off'
+app.modules.network_usage.forms.values.provider_type.hilink: 'Huawei (HiLink)'
 app.modules.network_usage.menu_record_transmission: Transmission
 app.modules.network_usage.menu_record: 'Network usage'
 app.modules.network_usage.optimal_speed: 'Optimal speed'

@@ -6,49 +6,50 @@ namespace App\Form;
 
 use App\Service\NetworkUsageService;
 use App\Service\SimpleSettingsService;
-use Symfony\Component\Form\AbstractType;
 use App\Class\NetworkUsageProviderSettings;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class NetworkUsageProviderSettingsType extends AbstractType
+class NetworkUsageProviderSettingsType extends CommonFormType
 {
-    public function __construct(
-        private TranslatorInterface $translator,
-    ) {
+    protected function init(): void
+    {
+        $this->setTranslationModule(moduleName: 'network_usage');
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add(child: 'providerType', type: ChoiceType::class, options: [
-                'label' => $this->translator->trans('app.modules.network_usage.forms.labels.provider_type'),
+                'label' => $this->getLabelTrans(label: 'provider_type'),
                 'priority' => 0,
                 'choices' => [
-                    $this->translator->trans('app.modules.network_usage.forms.values.off') =>
+                    $this->getValueTrans(field: 'provider_type', value: 'off') =>
                     NetworkUsageService::NETWORK_USAGE_PROVIDER_NONE,
-                    'Huawei (HiLink)' => NetworkUsageService::NETWORK_USAGE_PROVIDER_HUAWEI
+                    $this->getValueTrans(field: 'provider_type', value: 'hilink') =>
+                    NetworkUsageService::NETWORK_USAGE_PROVIDER_HUAWEI
                 ]
             ])
             ->add(child: 'address', type: TextType::class, options: [
-                'label' => $this->translator->trans('app.modules.network_usage.forms.labels.address'),
+                'label' => $this->getLabelTrans(label: 'address'),
                 'priority' => -1,
                 'required' => true,
             ])
             ->add(child: 'password', type: TextType::class, options: [
-                'label' => $this->translator->trans('app.modules.common.forms.labels.password'),
+                'label' => $this->getLabelTrans(label: 'password'),
                 'priority' => -2,
                 'required' => true,
             ])
             ->add(child: 'showOnDashboard', type: ChoiceType::class, options: [
-                'label' => $this->translator->trans('app.modules.common.forms.labels.show_on_dashboard'),
+                'label' => $this->getLabelTrans(label: 'show_on_dashboard'),
                 'priority' => -3,
                 'choices' => [
-                    $this->translator->trans('app.modules.common.forms.values.hide') => SimpleSettingsService::UNIVERSAL_FALSE,
-                    $this->translator->trans('app.modules.common.forms.values.show') => SimpleSettingsService::UNIVERSAL_TRUTH
+                    $this->getValueTrans(field: 'show_on_dashboard', value: 'hide')
+                    => SimpleSettingsService::UNIVERSAL_FALSE,
+                    $this->getValueTrans(field: 'show_on_dashboard', value: 'show')
+                    => SimpleSettingsService::UNIVERSAL_TRUTH,
                 ]
             ]);
     }
