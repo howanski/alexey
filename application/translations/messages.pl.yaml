@@ -1,0 +1,88 @@
+app.flashes.saved: 'Pomyślnie zapisano'
+app.forms.labels.host: Host
+app.forms.labels.mac_address: 'Adres MAC'
+app.forms.labels.name: Nazwa
+app.forms.labels.network_usage.provider_type: 'Dostawca informacji o sieci'
+app.forms.labels.password: Hasło
+app.forms.labels.save: Zapisz
+app.forms.labels.show_on_dashboard: 'Pokaż w sterowni'
+app.forms.labels.target_speed: 'Docelowa prędkość'
+app.forms.labels.throttling_enabled: 'Dławienie włączone'
+app.forms.labels.uri: 'Adres URI/IP'
+app.forms.labels.user: Użytkownik
+app.forms.labels.wake_destination: 'Adres rozgłoszeniowy'
+app.forms.values.disabled: Wyłączone
+app.forms.values.enabled: Włączone
+app.forms.values.hide: Ukryj
+app.forms.values.increasing: Wzrastające
+app.forms.values.locale.english: Angielski
+app.forms.values.locale.polish: Polski
+app.forms.values.off: Wyłączony
+app.forms.values.show: Pokaż
+app.modules.dashboard.menu_record: Sterownia
+app.modules.network_machine.status: Status
+app.modules.network_machines.actions: Akcje
+app.modules.network_machines.actions.back: Wstecz
+app.modules.network_machines.actions.delete: Usuń
+app.modules.network_machines.actions.edit: Edytuj
+app.modules.network_machines.actions.show: Pokaż
+app.modules.network_machines.actions.update: Aktualizuj
+app.modules.network_machines.actions.wake: Obudź
+app.modules.network_machines.add: Dodaj
+app.modules.network_machines.id: ID
+app.modules.network_machines.ip_or_url: IP/URL
+app.modules.network_machines.last_seen: 'Ostatnio widziane'
+app.modules.network_machines.mac_address: 'Adres MAC'
+app.modules.network_machines.machine: Urządzenie
+app.modules.network_machines.menu_record: 'Urządzenia sieciowe'
+app.modules.network_machines.name: Nazwa
+app.modules.network_machines.never_seen: 'Nigdy nie widziana'
+app.modules.network_machines.status: Status
+app.modules.network_transmission.menu_record: Transmission
+app.modules.network_usage.billing_window_end: 'Koniec okresu taryfowego'
+app.modules.network_usage.changes_in_time: 'Zmiany w czasie'
+app.modules.network_usage.chart_type: 'Typ wykresu'
+app.modules.network_usage.current_speed: 'Bieżąca prędkość'
+app.modules.network_usage.forms.labels.address: Adres
+app.modules.network_usage.forms.labels.algorithm_aggression_auto_adapt: 'Autoadaptacja agresji'
+app.modules.network_usage.forms.labels.algorithm_aggression: 'Agresja algorytmu'
+app.modules.network_usage.forms.labels.allow_target_speed_bumping: 'Zezwól na pobijanie prędkości'
+app.modules.network_usage.forms.values.chart_type.current_billing_frame: 'Obecny okres taryfowy'
+app.modules.network_usage.forms.values.chart_type.last_10_minutes: 'Ostatnie 10 minut'
+app.modules.network_usage.forms.values.chart_type.last_2_hours: 'Ostatnie 2 godziny'
+app.modules.network_usage.forms.values.chart_type.last_week: 'Ostatni tydzień'
+app.modules.network_usage.forms.values.chart_type.today: Dzisiaj
+app.modules.network_usage.menu_record: Zużycie
+app.modules.network_usage.optimal_speed: 'Optymalna prędkość'
+app.modules.network_usage.outside_traffic: 'Ruch zewnętrzny'
+app.modules.network_usage.simulation: Symulacja
+app.modules.network_usage.throttling_by_optimal_speed: 'Dławiene wg. optymalnej prędkości'
+app.modules.network_usage.throttling: Dławienie
+app.modules.network_usage.traffic_left: 'Pozostały transfer'
+app.modules.network.menu_record: Sieć
+app.modules.security.logout: Wyloguj
+app.modules.settings.forms.labels.locale: Język
+app.modules.settings.menu_record: Ustawienia
+app.modules.weather.daily: 'Pogoda dzienna'
+app.modules.weather.feels_like: Odczuwalna
+app.modules.weather.forms.labels.api_key: 'Klucz API'
+app.modules.weather.forms.labels.latitude: 'Szerokość geograficzna'
+app.modules.weather.forms.labels.longitude: 'Długość geograficzna'
+app.modules.weather.hourly: 'Pogoda godzinowa'
+app.modules.weather.menu_record: Pogoda
+app.modules.weather.rain_or_snow: 'Deszcz / Śnieg'
+app.modules.weather.temperature: Temperatura
+app.modules.weather.wind_speed: Wiatr
+app.strings.you_sure_delete: 'Na pewno chcesz to usunąć?'
+app.tables.no_records_found: 'Brak wpisów'
+app.time.day_short.friday: Pt
+app.time.day_short.monday: Pon
+app.time.day_short.saturday: Sob
+app.time.day_short.sunday: Nd
+app.time.day_short.thursday: Czw
+app.time.day_short.tuesday: Wt
+app.time.day_short.wednesday: Śr
+app.time.of_day.day: Poł.
+app.time.of_day.evening: Pop.
+app.time.of_day.morning: Rano
+app.time.of_day.night: Noc

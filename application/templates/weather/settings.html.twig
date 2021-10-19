@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Alexey | {{ 'app.weather'|trans }}
+{% block title %}Alexey | {{ 'app.modules.weather.menu_record'|trans }}
 {% endblock %}
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'app.weather'|trans }} ~> {{ 'app.settings'|trans }}</h1>
+		<h1 class="h3 mb-0 text-gray-400">{{ 'app.modules.weather.menu_record'|trans }} ~> {{ 'app.modules.settings.menu_record'|trans }}</h1>
 	</div>
 	    {{ form_start(form) }}
     	{{ form_widget(form) }}

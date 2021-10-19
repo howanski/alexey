@@ -1,19 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Alexey | Transmission | {{ 'app.settings'|trans }}
+{% block title %}Alexey | Transmission | {{ 'app.modules.settings.menu_record'|trans }}
 {% endblock %}
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-400">
-			{{ 'app.network'|trans }} ~> <a href="{{ path('network_transmission') }}" class="text-info">Transmission</a> ~> {{ 'app.settings'|trans }}
+			{{ 'app.modules.network.menu_record'|trans }} ~> <a href="{{ path('network_transmission') }}" class="text-info">Transmission</a> ~> {{ 'app.modules.settings.menu_record'|trans }}
 		</h1>
 	</div>
 	{{ form_start(form) }}
 	{{ form_widget(form) }}
 	<button class="btn btn-warning">{{ 'app.forms.labels.save'|trans }}</button>
 	{{ form_end(form) }}
-	{{ 'app.network.network_usage.throttling'|trans }}:
+	{{ 'app.modules.network_usage.throttling'|trans }}:
 	{{ current }}
 	kB/s
 {% endblock %}

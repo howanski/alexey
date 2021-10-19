@@ -48,7 +48,7 @@ class AlexeySideMenuProvider extends AbstractExtension
 
         $route = $this->router->generate('dashboard');
         $sideMenu[] = new SideMenuItem(
-            name: $this->translator->trans('app.dashboard'),
+            name: $this->translator->trans('app.modules.dashboard.menu_record'),
             destination: $route,
             icon: 'fa-tachometer-alt',
             isActive: $this->isActiveRoute($route),
@@ -57,44 +57,14 @@ class AlexeySideMenuProvider extends AbstractExtension
 
         $route = $this->router->generate('weather');
         $sideMenu[] = new SideMenuItem(
-            name: $this->translator->trans('app.weather'),
+            name: $this->translator->trans('app.modules.weather.menu_record'),
             destination: $route,
             icon: 'fa-cloud-sun',
             isActive: $this->isActiveRoute($route),
         );
 
+        $sideMenu = $this->addNetworkMenuRecords($sideMenu);
 
-        $route = '/network';
-        $menuItem = new SideMenuItem(
-            name: $this->translator->trans('app.network'),
-            destination: $route,
-            icon: 'fa-wifi',
-            isActive: $this->isActiveRoute($route),
-        );
-
-        $route = $this->router->generate('network_machine_index');
-        $networkMachines = new SideMenuItem(
-            name: $this->translator->trans('app.network_machines'),
-            destination: $route,
-            isActive: $this->isActiveRoute($route),
-        );
-
-        $route = $this->router->generate('network_usage');
-        $networkUsage = new SideMenuItem(
-            name: $this->translator->trans('app.network_usage'),
-            destination: $route,
-            isActive: $this->isActiveRoute($route),
-        );
-
-        $route = $this->router->generate('network_transmission');
-        $networkTransmission = new SideMenuItem(
-            name: $this->translator->trans('app.network_transmission'),
-            destination: $route,
-            isActive: $this->isActiveRoute($route),
-        );
-
-        $menuItem->setChildren([$networkMachines, $networkUsage, $networkTransmission]);
-        $sideMenu[] = $menuItem;
         return $sideMenu;
     }
 
@@ -114,5 +84,42 @@ class AlexeySideMenuProvider extends AbstractExtension
             return true;
         }
         return false;
+    }
+
+    private function addNetworkMenuRecords(array $sideMenu): array
+    {
+        $route = '/network';
+        $menuItem = new SideMenuItem(
+            name: $this->translator->trans('app.modules.network.menu_record'),
+            destination: $route,
+            icon: 'fa-wifi',
+            isActive: $this->isActiveRoute($route),
+        );
+
+        $route = $this->router->generate('network_machine_index');
+        $networkMachines = new SideMenuItem(
+            name: $this->translator->trans('app.modules.network_machines.menu_record'),
+            destination: $route,
+            isActive: $this->isActiveRoute($route),
+        );
+
+        $route = $this->router->generate('network_usage');
+        $networkUsage = new SideMenuItem(
+            name: $this->translator->trans('app.modules.network_usage.menu_record'),
+            destination: $route,
+            isActive: $this->isActiveRoute($route),
+        );
+
+        $route = $this->router->generate('network_transmission');
+        $networkTransmission = new SideMenuItem(
+            name: $this->translator->trans('app.modules.network_transmission.menu_record'),
+            destination: $route,
+            isActive: $this->isActiveRoute($route),
+        );
+
+        $menuItem->setChildren([$networkMachines, $networkUsage, $networkTransmission]);
+        $sideMenu[] = $menuItem;
+
+        return $sideMenu;
     }
 }

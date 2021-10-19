@@ -114,22 +114,22 @@ class WeatherService
         $chartConfs = [
             [
                 'key' => 'temperature',
-                'label' => $this->translator->trans('app.weather.temperature') . ' (°C)',
+                'label' => $this->translator->trans('app.modules.weather.temperature') . ' (°C)',
                 'color' => [78, 115, 223],
             ],
             [
                 'key' => 'feels_like',
-                'label' => $this->translator->trans('app.weather.feels_like') . ' (°C)',
+                'label' => $this->translator->trans('app.modules.weather.feels_like') . ' (°C)',
                 'color' => [140, 115, 223],
             ],
             [
                 'key' => 'wind_speed',
-                'label' => $this->translator->trans('app.weather.wind_speed') . ' (km/h)',
+                'label' => $this->translator->trans('app.modules.weather.wind_speed') . ' (km/h)',
                 'color' => [140, 115, 100],
             ],
             [
                 'key' => 'rain',
-                'label' => $this->translator->trans('app.weather.rain_or_snow') . ' (mm)',
+                'label' => $this->translator->trans('app.modules.weather.rain_or_snow') . ' (mm)',
                 'color' => [78, 222, 223],
             ],
         ];

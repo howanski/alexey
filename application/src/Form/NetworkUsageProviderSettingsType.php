@@ -34,7 +34,7 @@ class NetworkUsageProviderSettingsType extends AbstractType
                 ]
             ])
             ->add(child: 'address', type: TextType::class, options: [
-                'label' => $this->translator->trans('app.forms.labels.address'),
+                'label' => $this->translator->trans('app.modules.network_usage.forms.labels.address'),
                 'priority' => -1,
                 'required' => true,
             ])

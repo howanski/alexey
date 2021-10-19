@@ -24,17 +24,17 @@ class WeatherSettingsType extends AbstractType
     {
         $builder
             ->add(child: 'latitude', type: TextType::class, options: [
-                'label' => $this->translator->trans('app.forms.labels.latitude'),
+                'label' => $this->translator->trans('app.modules.weather.forms.labels.latitude'),
                 'priority' => 0,
                 'required' => true,
             ])
             ->add(child: 'longitude', type: TextType::class, options: [
-                'label' => $this->translator->trans('app.forms.labels.longitude'),
+                'label' => $this->translator->trans('app.modules.weather.forms.labels.longitude'),
                 'priority' => -1,
                 'required' => true,
             ])
             ->add(child: 'apiKey', type: TextType::class, options: [
-                'label' => $this->translator->trans('app.forms.labels.api_key'),
+                'label' => $this->translator->trans('app.modules.weather.forms.labels.api_key'),
                 'priority' => -2,
                 'required' => true,
             ])

@@ -90,7 +90,7 @@ final class WeatherServiceTest extends TestCase
                     'labels' => [],
                     'datasets' => [
                         'temperature' => [
-                            'label' => 'trans_app.weather.temperature (°C)',
+                            'label' => 'trans_app.modules.weather.temperature (°C)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                             'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -105,7 +105,7 @@ final class WeatherServiceTest extends TestCase
                             'data' => [],
                         ],
                         'feels_like' => [
-                            'label' => 'trans_app.weather.feels_like (°C)',
+                            'label' => 'trans_app.modules.weather.feels_like (°C)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(140, 115, 223, 0.05)',
                             'borderColor' => 'rgba(140, 115, 223, 1)',
@@ -120,7 +120,7 @@ final class WeatherServiceTest extends TestCase
                             'data' => [],
                         ],
                         'wind_speed' => [
-                            'label' => 'trans_app.weather.wind_speed (km/h)',
+                            'label' => 'trans_app.modules.weather.wind_speed (km/h)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(140, 115, 100, 0.05)',
                             'borderColor' => 'rgba(140, 115, 100, 1)',
@@ -135,7 +135,7 @@ final class WeatherServiceTest extends TestCase
                             'data' => [],
                         ],
                         'rain' => [
-                            'label' => 'trans_app.weather.rain_or_snow (mm)',
+                            'label' => 'trans_app.modules.weather.rain_or_snow (mm)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
                             'borderColor' => 'rgba(78, 222, 223, 1)',
@@ -155,7 +155,7 @@ final class WeatherServiceTest extends TestCase
                     'labels' => [],
                     'datasets' => [
                         'temperature' => [
-                            'label' => 'trans_app.weather.temperature (°C)',
+                            'label' => 'trans_app.modules.weather.temperature (°C)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                             'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -170,7 +170,7 @@ final class WeatherServiceTest extends TestCase
                             'data' => [],
                         ],
                         'feels_like' => [
-                            'label' => 'trans_app.weather.feels_like (°C)',
+                            'label' => 'trans_app.modules.weather.feels_like (°C)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(140, 115, 223, 0.05)',
                             'borderColor' => 'rgba(140, 115, 223, 1)',
@@ -185,7 +185,7 @@ final class WeatherServiceTest extends TestCase
                             'data' => [],
                         ],
                         'wind_speed' => [
-                            'label' => 'trans_app.weather.wind_speed (km/h)',
+                            'label' => 'trans_app.modules.weather.wind_speed (km/h)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(140, 115, 100, 0.05)',
                             'borderColor' => 'rgba(140, 115, 100, 1)',
@@ -200,7 +200,7 @@ final class WeatherServiceTest extends TestCase
                             'data' => [],
                         ],
                         'rain' => [
-                            'label' => 'trans_app.weather.rain_or_snow (mm)',
+                            'label' => 'trans_app.modules.weather.rain_or_snow (mm)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
                             'borderColor' => 'rgba(78, 222, 223, 1)',

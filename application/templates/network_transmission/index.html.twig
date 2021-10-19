@@ -13,16 +13,16 @@
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'app.network'|trans }} ~> Transmission |
+		<h1 class="h3 mb-0 text-gray-400">{{ 'app.modules.network.menu_record'|trans }} ~> Transmission |
 			<a href="{{ path('network_transmission_settings') }}" class="fas fa-cog text-info"></a>
 		</h1>
 	</div>
-	{{ 'app.network.network_usage.throttling'|trans }}:
+	{{ 'app.modules.network_usage.throttling'|trans }}:
 	{{ current }}
 	kB/s
 	<div class="card shadow mb-4">
 		<div class="card-header py-3">
-			<h6 class="m-0 font-weight-bold text-primary">{{ 'app.simulation'|trans }}: {{ 'app.network.transmission.changes_in_time'|trans }}</h6>
+			<h6 class="m-0 font-weight-bold text-primary">{{ 'app.modules.network_usage.simulation'|trans }}: {{ 'app.modules.network_usage.changes_in_time'|trans }}</h6>
 		</div>
 		<div class="card-body">
 			<div class="chart-area">
@@ -41,7 +41,7 @@
 	</div>
 	<div class="card shadow mb-4">
 		<div class="card-header py-3">
-			<h6 class="m-0 font-weight-bold text-primary">{{ 'app.simulation'|trans }}: {{ 'app.network.transmission.throttling_by_optimal_speed'|trans }}</h6>
+			<h6 class="m-0 font-weight-bold text-primary">{{ 'app.modules.network_usage.simulation'|trans }}: {{ 'app.modules.network_usage.throttling_by_optimal_speed'|trans }}</h6>
 		</div>
 		<div class="card-body">
 			<div class="chart-area">

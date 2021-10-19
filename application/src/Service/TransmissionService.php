@@ -37,7 +37,7 @@ class TransmissionService
             ],
         ];
         $datasetStub = [
-            'label' => $this->translator->trans('app.network.network_usage.throttling') . ' (kB/s)',
+            'label' => $this->translator->trans('app.modules.network_usage.throttling') . ' (kB/s)',
             'lineTension' => 0.3,
             'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
             'borderColor' => 'rgba(78, 115, 223, 1)',

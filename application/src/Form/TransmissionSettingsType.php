@@ -44,7 +44,7 @@ class TransmissionSettingsType extends AbstractType
                 'required' => true,
             ])
             ->add(child: 'algorithmAggression', type: TextType::class, options: [
-                'label' => $this->translator->trans('app.forms.labels.algorithm_aggression'),
+                'label' => $this->translator->trans('app.modules.network_usage.forms.labels.algorithm_aggression'),
                 'priority' => -4,
                 'required' => true,
             ])
@@ -54,7 +54,7 @@ class TransmissionSettingsType extends AbstractType
                     $this->translator->trans('app.forms.values.enabled') => SimpleSettingsService::UNIVERSAL_TRUTH,
                     $this->translator->trans('app.forms.values.increasing') => TransmissionSettings::ADAPT_TYPE_UP_ONLY,
                 ],
-                'label' => $this->translator->trans('app.forms.labels.algorithm_aggression_auto_adapt'),
+                'label' => $this->translator->trans('app.modules.network_usage.forms.labels.algorithm_aggression_auto_adapt'),
                 'priority' => -5,
                 'required' => true,
             ])
@@ -63,7 +63,7 @@ class TransmissionSettingsType extends AbstractType
                     $this->translator->trans('app.forms.values.disabled') => SimpleSettingsService::UNIVERSAL_FALSE,
                     $this->translator->trans('app.forms.values.enabled') => SimpleSettingsService::UNIVERSAL_TRUTH
                 ],
-                'label' => $this->translator->trans('app.forms.labels.allow_target_speed_bumping'),
+                'label' => $this->translator->trans('app.modules.network_usage.forms.labels.allow_target_speed_bumping'),
                 'priority' => -6,
             ])
             ->add('isActive', ChoiceType::class, [

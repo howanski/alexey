@@ -1,29 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Alexey | {{ 'app.network_machines'|trans }}
+{% block title %}Alexey | {{ 'app.modules.network_machines.menu_record'|trans }}
 {% endblock %}
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'app.network'|trans }} ~> {{ 'app.network_machines'|trans }}</h1>
+		<h1 class="h3 mb-0 text-gray-400">{{ 'app.modules.network.menu_record'|trans }} ~> {{ 'app.modules.network_machines.menu_record'|trans }}</h1>
 	</div>
 	<div class="row">
 		<div class="col-xl-12 col-lg-12">
 			<div class="card shadow bg-dark mb-4">
 				<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-					<h6 class="m-0 font-weight-bold text-primary">{{ 'app.network_machines.status'|trans }}</h6>
+					<h6 class="m-0 font-weight-bold text-primary">{{ 'app.modules.network_machines.status'|trans }}</h6>
 				</div>
 				<div class="card-body">
 					<table class="table">
 						<thead>
 							<tr>
-								<th>{{ 'app.id'|trans }}</th>
-								<th>{{ 'app.network_machines.name'|trans }}</th>
-								<th>{{ 'app.ip_or_url'|trans }}</th>
-								<th>{{ 'app.mac_addres'|trans }}</th>
-								<th>{{ 'app.status'|trans }}</th>
-								<th>{{ 'app.network_machines.last_seen'|trans }}</th>
-								<th>{{ 'app.actions'|trans }}</th>
+								<th>{{ 'app.modules.network_machines.id'|trans }}</th>
+								<th>{{ 'app.modules.network_machines.name'|trans }}</th>
+								<th>{{ 'app.modules.network_machines.ip_or_url'|trans }}</th>
+								<th>{{ 'app.modules.network_machines.mac_address'|trans }}</th>
+								<th>{{ 'app.modules.network_machine.status'|trans }}</th>
+								<th>{{ 'app.modules.network_machines.last_seen'|trans }}</th>
+								<th>{{ 'app.modules.network_machines.actions'|trans }}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -34,13 +34,13 @@
 									<td>{{ network_machine.uri }}</td>
 									<td>{{ network_machine.macAddress }}</td>
 									<td>{{ network_machine.statusReadable }}</td>
-									<td>{% if network_machine.lastSeen %} {{ network_machine.getLastSeenReadable(app.request.locale) }} {% else %} {{ 'app.network_machines.never_seen'|trans }} {% endif %}</td>
+									<td>{% if network_machine.lastSeen %} {{ network_machine.getLastSeenReadable(app.request.locale) }} {% else %} {{ 'app.modules.network_machines.never_seen'|trans }} {% endif %}</td>
 									<td>
 										{% if network_machine.canBeWoken %}
-											<a href="{{ path('network_machine_wake', {'id': network_machine.id, 'backRoute': 'network_machine_index'}) }}" class="btn btn-sm btn-success">{{ 'app.actions.wake'|trans }}</a>
+											<a href="{{ path('network_machine_wake', {'id': network_machine.id, 'backRoute': 'network_machine_index'}) }}" class="btn btn-sm btn-success">{{ 'app.modules.network_machines.actions.wake'|trans }}</a>
 										{% endif %}
-										<a href="{{ path('network_machine_show', {'id': network_machine.id}) }}" class="btn btn-sm btn-success">{{ 'app.actions.show'|trans }}</a>
-										<a href="{{ path('network_machine_edit', {'id': network_machine.id}) }}" class="btn btn-sm btn-warning">{{ 'app.actions.edit'|trans }}</a>
+										<a href="{{ path('network_machine_show', {'id': network_machine.id}) }}" class="btn btn-sm btn-success">{{ 'app.modules.network_machines.actions.show'|trans }}</a>
+										<a href="{{ path('network_machine_edit', {'id': network_machine.id}) }}" class="btn btn-sm btn-warning">{{ 'app.modules.network_machines.actions.edit'|trans }}</a>
 									</td>
 								</tr>
 							{% else %}
@@ -51,7 +51,7 @@
 						</tbody>
 					</table>
 
-					<a class="btn btn-success" href="{{ path('network_machine_new') }}">{{ 'app.network_machines.add'|trans }}</a>
+					<a class="btn btn-success" href="{{ path('network_machine_new') }}">{{ 'app.modules.network_machines.add'|trans }}</a>
 				</div>
 			</div>
 		</div>

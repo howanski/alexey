@@ -36,12 +36,12 @@ class NetworkChartType extends AbstractType
         $builder
             ->add('chartType', ChoiceType::class, [
                 'choices' => [
-                    $this->translator->trans('app.network.chart.type.today') => self::CHART_TYPE_TODAY,
-                    $this->translator->trans('app.network.chart.type.last_week') => self::CHART_TYPE_WEEK,
-                    $this->translator->trans('app.network.chart.type.current_billing_frame') =>
+                    $this->translator->trans('app.modules.network_usage.forms.values.chart_type.today') => self::CHART_TYPE_TODAY,
+                    $this->translator->trans('app.modules.network_usage.forms.values.chart_type.last_week') => self::CHART_TYPE_WEEK,
+                    $this->translator->trans('app.modules.network_usage.forms.values.chart_type.current_billing_frame') =>
                     self::CHART_TYPE_BILLING_FRAME,
-                    $this->translator->trans('app.network.chart.type.last_2_hours') => self::CHART_TYPE_HOURS_TWO,
-                    $this->translator->trans('app.network.chart.type.last_10_minutes') => self::CHART_TYPE_MINUTES_TEN,
+                    $this->translator->trans('app.modules.network_usage.forms.values.chart_type.last_2_hours') => self::CHART_TYPE_HOURS_TWO,
+                    $this->translator->trans('app.modules.network_usage.forms.values.chart_type.last_10_minutes') => self::CHART_TYPE_MINUTES_TEN,
                 ], 'label' => false
             ]);
     }

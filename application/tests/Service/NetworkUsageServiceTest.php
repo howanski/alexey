@@ -207,7 +207,7 @@ final class NetworkUsageServiceTest extends TestCase
                 'labels' => [],
                 'datasets' => [
                     'speed_relative' => [
-                        'label' => 'translated_app.network.network_usage.current_speed (kB/s)',
+                        'label' => 'translated_app.modules.network_usage.current_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                         'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -222,7 +222,7 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                     'speed_left' => [
-                        'label' => 'translated_app.network.network_usage.optimal_speed (kB/s)',
+                        'label' => 'translated_app.modules.network_usage.optimal_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
                         'borderColor' => 'rgba(78, 222, 223, 1)',
@@ -249,7 +249,7 @@ final class NetworkUsageServiceTest extends TestCase
                 'labels' => [],
                 'datasets' => [
                     'speed_relative' => [
-                        'label' => 'translated_app.network.network_usage.current_speed (kB/s)',
+                        'label' => 'translated_app.modules.network_usage.current_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                         'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -264,7 +264,7 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                     'speed_left' => [
-                        'label' => 'translated_app.network.network_usage.optimal_speed (kB/s)',
+                        'label' => 'translated_app.modules.network_usage.optimal_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
                         'borderColor' => 'rgba(78, 222, 223, 1)',
@@ -291,7 +291,7 @@ final class NetworkUsageServiceTest extends TestCase
                 'labels' => [],
                 'datasets' => [
                     'speed_relative' => [
-                        'label' => 'translated_app.network.network_usage.current_speed (kB/s)',
+                        'label' => 'translated_app.modules.network_usage.current_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                         'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -306,7 +306,7 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                     'speed_left' => [
-                        'label' => 'translated_app.network.network_usage.optimal_speed (kB/s)',
+                        'label' => 'translated_app.modules.network_usage.optimal_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
                         'borderColor' => 'rgba(78, 222, 223, 1)',
@@ -333,7 +333,7 @@ final class NetworkUsageServiceTest extends TestCase
                 'labels' => [],
                 'datasets' => [
                     'speed_relative' => [
-                        'label' => 'translated_app.network.network_usage.current_speed (kB/s)',
+                        'label' => 'translated_app.modules.network_usage.current_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                         'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -348,7 +348,7 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                     'speed_left' => [
-                        'label' => 'translated_app.network.network_usage.optimal_speed (kB/s)',
+                        'label' => 'translated_app.modules.network_usage.optimal_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
                         'borderColor' => 'rgba(78, 222, 223, 1)',
@@ -375,7 +375,7 @@ final class NetworkUsageServiceTest extends TestCase
                 'labels' => [],
                 'datasets' => [
                     'speed_relative' => [
-                        'label' => 'translated_app.network.network_usage.current_speed (kB/s)',
+                        'label' => 'translated_app.modules.network_usage.current_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                         'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -390,7 +390,7 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                     'speed_left' => [
-                        'label' => 'translated_app.network.network_usage.optimal_speed (kB/s)',
+                        'label' => 'translated_app.modules.network_usage.optimal_speed (kB/s)',
                         'lineTension' => 0.3,
                         'backgroundColor' => 'rgba(78, 222, 223, 0.05)',
                         'borderColor' => 'rgba(78, 222, 223, 1)',

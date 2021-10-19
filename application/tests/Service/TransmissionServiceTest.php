@@ -68,7 +68,7 @@ final class TransmissionServiceTest extends TestCase
                 'speed' => [
                     'datasets' => [
                         [
-                            'label' => 'trans_app.network.network_usage.throttling (kB/s)',
+                            'label' => 'trans_app.modules.network_usage.throttling (kB/s)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                             'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -86,7 +86,7 @@ final class TransmissionServiceTest extends TestCase
                 'time' => [
                     'datasets' => [
                         [
-                            'label' => 'trans_app.network.network_usage.throttling (kB/s)',
+                            'label' => 'trans_app.modules.network_usage.throttling (kB/s)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                             'borderColor' => 'rgba(78, 115, 223, 1)',

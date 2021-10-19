@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Alexey | {{ 'app.network_machines'|trans }} | New{% endblock %}
+{% block title %}Alexey | {{ 'app.modules.network_machines.menu_record'|trans }} | New{% endblock %}
 
 {% block pageContent %}
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'app.network'|trans }} ~> <a href="{{ path('network_machine_index') }}" class="text-info">{{ 'app.network_machines'|trans }}</a> ~> New Machine</h1>
+		<h1 class="h3 mb-0 text-gray-400">{{ 'app.modules.network.menu_record'|trans }} ~> <a href="{{ path('network_machine_index') }}" class="text-info">{{ 'app.modules.network_machines.menu_record'|trans }}</a> ~> New Machine</h1>
 	</div>
     {{ include('network_machine/_form.html.twig') }}
     <a href="{{ path('network_machine_index') }}" class="btn btn-success">Back to list</a>

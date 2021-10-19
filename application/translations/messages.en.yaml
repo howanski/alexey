@@ -1,0 +1,88 @@
+app.flashes.saved: 'Successfully saved'
+app.forms.labels.host: Host
+app.forms.labels.mac_address: 'Mac Address'
+app.forms.labels.name: Name
+app.forms.labels.network_usage.provider_type: 'Provider type'
+app.forms.labels.password: Password
+app.forms.labels.save: Save
+app.forms.labels.show_on_dashboard: 'Show on Dashboard'
+app.forms.labels.target_speed: 'Target speed'
+app.forms.labels.throttling_enabled: 'Throttling enabled'
+app.forms.labels.uri: 'URI / IP'
+app.forms.labels.user: User
+app.forms.labels.wake_destination: 'Wake Destination'
+app.forms.values.disabled: Disabled
+app.forms.values.enabled: Enabled
+app.forms.values.hide: Hide
+app.forms.values.increasing: Increasing
+app.forms.values.locale.english: English
+app.forms.values.locale.polish: Polish
+app.forms.values.off: 'Off'
+app.forms.values.show: Show
+app.modules.dashboard.menu_record: Dashboard
+app.modules.network_machine.status: Status
+app.modules.network_machines.actions: Actions
+app.modules.network_machines.actions.back: Back
+app.modules.network_machines.actions.delete: Delete
+app.modules.network_machines.actions.edit: Edit
+app.modules.network_machines.actions.show: Show
+app.modules.network_machines.actions.update: Update
+app.modules.network_machines.actions.wake: Wake
+app.modules.network_machines.add: Add
+app.modules.network_machines.id: ID
+app.modules.network_machines.ip_or_url: IP/URL
+app.modules.network_machines.last_seen: 'Last seen'
+app.modules.network_machines.mac_address: 'MAC Address'
+app.modules.network_machines.machine: Machine
+app.modules.network_machines.menu_record: 'Network machines'
+app.modules.network_machines.name: Name
+app.modules.network_machines.never_seen: 'Never seen'
+app.modules.network_machines.status: Status
+app.modules.network_transmission.menu_record: Transmission
+app.modules.network_usage.billing_window_end: 'Billing window end'
+app.modules.network_usage.changes_in_time: 'Changes in time'
+app.modules.network_usage.chart_type: 'Chart type'
+app.modules.network_usage.current_speed: 'Current speed'
+app.modules.network_usage.forms.labels.address: Address
+app.modules.network_usage.forms.labels.algorithm_aggression_auto_adapt: 'Algorithm aggression auto adapt'
+app.modules.network_usage.forms.labels.algorithm_aggression: 'Algorithm Aggression'
+app.modules.network_usage.forms.labels.allow_target_speed_bumping: 'Allow target speed bumping'
+app.modules.network_usage.forms.values.chart_type.current_billing_frame: 'Current billing frame'
+app.modules.network_usage.forms.values.chart_type.last_10_minutes: 'Last 10 minutes'
+app.modules.network_usage.forms.values.chart_type.last_2_hours: 'Last 2 hours'
+app.modules.network_usage.forms.values.chart_type.last_week: 'Last week'
+app.modules.network_usage.forms.values.chart_type.today: Today
+app.modules.network_usage.menu_record: 'Network usage'
+app.modules.network_usage.optimal_speed: 'Optimal speed'
+app.modules.network_usage.outside_traffic: 'Outside traffic'
+app.modules.network_usage.simulation: Simulation
+app.modules.network_usage.throttling_by_optimal_speed: 'Throttling by optimal speed'
+app.modules.network_usage.throttling: Throttling
+app.modules.network_usage.traffic_left: 'Traffic left'
+app.modules.network.menu_record: Network
+app.modules.security.logout: Logout
+app.modules.settings.forms.labels.locale: Locale
+app.modules.settings.menu_record: Settings
+app.modules.weather.daily: 'Daily weather'
+app.modules.weather.feels_like: 'Feels like'
+app.modules.weather.forms.labels.api_key: 'API key'
+app.modules.weather.forms.labels.latitude: Latitude
+app.modules.weather.forms.labels.longitude: Longitude
+app.modules.weather.hourly: 'Hourly weather'
+app.modules.weather.menu_record: Weather
+app.modules.weather.rain_or_snow: 'Rain / Snow'
+app.modules.weather.temperature: Temperature
+app.modules.weather.wind_speed: 'Wind speed'
+app.strings.you_sure_delete: 'Are you sure you wan to delete this item?'
+app.tables.no_records_found: 'Nothing found'
+app.time.day_short.friday: Fri
+app.time.day_short.monday: Mon
+app.time.day_short.saturday: Sat
+app.time.day_short.sunday: Sun
+app.time.day_short.thursday: Thu
+app.time.day_short.tuesday: Tue
+app.time.day_short.wednesday: Wed
+app.time.of_day.day: Mid-day
+app.time.of_day.evening: Evening
+app.time.of_day.morning: Morning
+app.time.of_day.night: Night

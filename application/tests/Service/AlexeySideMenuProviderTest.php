@@ -57,7 +57,7 @@ final class AlexeySideMenuProviderTest extends TestCase
             [
                 'icon' => 'fa-tachometer-alt',
                 'isActive' => false,
-                'name' => 'trans_app.dashboard',
+                'name' => 'trans_app.modules.dashboard.menu_record',
                 'destination' => '/dashboard',
                 'children' => [],
                 'isHeading' => false,
@@ -66,7 +66,7 @@ final class AlexeySideMenuProviderTest extends TestCase
             [
                 'icon' => 'fa-cloud-sun',
                 'isActive' => false,
-                'name' => 'trans_app.weather',
+                'name' => 'trans_app.modules.weather.menu_record',
                 'destination' => '/weather',
                 'children' => [],
                 'isHeading' => false,
@@ -75,7 +75,7 @@ final class AlexeySideMenuProviderTest extends TestCase
             [
                 'icon' => 'fa-wifi',
                 'isActive' => false,
-                'name' => 'trans_app.network',
+                'name' => 'trans_app.modules.network.menu_record',
                 'destination' => '/network',
                 'children' => [
                     [], //TODO: deeper

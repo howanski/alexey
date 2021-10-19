@@ -28,7 +28,7 @@ class UserSettingsType extends AbstractType
                         $this->translator->trans('app.forms.values.locale.english') => 'en',
                         $this->translator->trans('app.forms.values.locale.polish') => 'pl',
                     ],
-                    'label' => $this->translator->trans('app.forms.labels.locale'),
+                    'label' => $this->translator->trans('app.modules.settings.forms.labels.locale'),
                 ],
             );
     }
