@@ -24,22 +24,22 @@ class TransmissionSettingsType extends AbstractType
     {
         $builder
             ->add(child: 'host', type: TextType::class, options: [
-                'label' => $this->translator->trans('app.forms.labels.host'),
+                'label' => $this->translator->trans('app.modules.network_usage.forms.labels.host'),
                 'priority' => 0,
                 'required' => true,
             ])
             ->add(child: 'user', type: TextType::class, options: [
-                'label' => $this->translator->trans('app.forms.labels.user'),
+                'label' => $this->translator->trans('app.modules.network_usage.forms.labels.transmission_user'),
                 'priority' => -1,
                 'required' => true,
             ])
             ->add(child: 'password', type: TextType::class, options: [
-                'label' => $this->translator->trans('app.forms.labels.password'),
+                'label' => $this->translator->trans('app.modules.common.forms.labels.password'),
                 'priority' => -2,
                 'required' => true,
             ])
             ->add(child: 'targetSpeed', type: TextType::class, options: [
-                'label' => $this->translator->trans('app.forms.labels.target_speed'),
+                'label' => $this->translator->trans('app.modules.network_usage.forms.labels.target_speed'),
                 'priority' => -3,
                 'required' => true,
             ])
@@ -50,9 +50,9 @@ class TransmissionSettingsType extends AbstractType
             ])
             ->add(child: 'aggressionAdapt', type: ChoiceType::class, options: [
                 'choices' => [
-                    $this->translator->trans('app.forms.values.disabled') => SimpleSettingsService::UNIVERSAL_FALSE,
-                    $this->translator->trans('app.forms.values.enabled') => SimpleSettingsService::UNIVERSAL_TRUTH,
-                    $this->translator->trans('app.forms.values.increasing') => TransmissionSettings::ADAPT_TYPE_UP_ONLY,
+                    $this->translator->trans('app.modules.network_usage.forms.values.disabled') => SimpleSettingsService::UNIVERSAL_FALSE,
+                    $this->translator->trans('app.modules.network_usage.forms.values.enabled') => SimpleSettingsService::UNIVERSAL_TRUTH,
+                    $this->translator->trans('app.modules.network_usage.forms.values.increasing') => TransmissionSettings::ADAPT_TYPE_UP_ONLY,
                 ],
                 'label' => $this->translator->trans('app.modules.network_usage.forms.labels.algorithm_aggression_auto_adapt'),
                 'priority' => -5,
@@ -60,18 +60,18 @@ class TransmissionSettingsType extends AbstractType
             ])
             ->add(child: 'allowSpeedBump', type: ChoiceType::class, options: [
                 'choices' => [
-                    $this->translator->trans('app.forms.values.disabled') => SimpleSettingsService::UNIVERSAL_FALSE,
-                    $this->translator->trans('app.forms.values.enabled') => SimpleSettingsService::UNIVERSAL_TRUTH
+                    $this->translator->trans('app.modules.network_usage.forms.values.disabled') => SimpleSettingsService::UNIVERSAL_FALSE,
+                    $this->translator->trans('app.modules.network_usage.forms.values.enabled') => SimpleSettingsService::UNIVERSAL_TRUTH
                 ],
                 'label' => $this->translator->trans('app.modules.network_usage.forms.labels.allow_target_speed_bumping'),
                 'priority' => -6,
             ])
             ->add('isActive', ChoiceType::class, [
                 'choices' => [
-                    $this->translator->trans('app.forms.values.disabled') => SimpleSettingsService::UNIVERSAL_FALSE,
-                    $this->translator->trans('app.forms.values.enabled') => SimpleSettingsService::UNIVERSAL_TRUTH
+                    $this->translator->trans('app.modules.network_usage.forms.values.disabled') => SimpleSettingsService::UNIVERSAL_FALSE,
+                    $this->translator->trans('app.modules.network_usage.forms.values.enabled') => SimpleSettingsService::UNIVERSAL_TRUTH
                 ],
-                'label' => $this->translator->trans('app.forms.labels.throttling_enabled'),
+                'label' => $this->translator->trans('app.modules.network_usage.forms.labels.throttling_enabled'),
                 'priority' => -7,
             ]);
     }

@@ -25,10 +25,10 @@ class NetworkUsageProviderSettingsType extends AbstractType
     {
         $builder
             ->add(child: 'providerType', type: ChoiceType::class, options: [
-                'label' => $this->translator->trans('app.forms.labels.network_usage.provider_type'),
+                'label' => $this->translator->trans('app.modules.network_usage.forms.labels.provider_type'),
                 'priority' => 0,
                 'choices' => [
-                    $this->translator->trans('app.forms.values.off') =>
+                    $this->translator->trans('app.modules.network_usage.forms.values.off') =>
                     NetworkUsageService::NETWORK_USAGE_PROVIDER_NONE,
                     'Huawei (HiLink)' => NetworkUsageService::NETWORK_USAGE_PROVIDER_HUAWEI
                 ]
@@ -39,16 +39,16 @@ class NetworkUsageProviderSettingsType extends AbstractType
                 'required' => true,
             ])
             ->add(child: 'password', type: TextType::class, options: [
-                'label' => $this->translator->trans('app.forms.labels.password'),
+                'label' => $this->translator->trans('app.modules.common.forms.labels.password'),
                 'priority' => -2,
                 'required' => true,
             ])
             ->add(child: 'showOnDashboard', type: ChoiceType::class, options: [
-                'label' => $this->translator->trans('app.forms.labels.show_on_dashboard'),
+                'label' => $this->translator->trans('app.modules.common.forms.labels.show_on_dashboard'),
                 'priority' => -3,
                 'choices' => [
-                    $this->translator->trans('app.forms.values.hide') => SimpleSettingsService::UNIVERSAL_FALSE,
-                    $this->translator->trans('app.forms.values.show') => SimpleSettingsService::UNIVERSAL_TRUTH
+                    $this->translator->trans('app.modules.common.forms.values.hide') => SimpleSettingsService::UNIVERSAL_FALSE,
+                    $this->translator->trans('app.modules.common.forms.values.show') => SimpleSettingsService::UNIVERSAL_TRUTH
                 ]
             ]);
     }

@@ -39,10 +39,10 @@ class WeatherSettingsType extends AbstractType
                 'required' => true,
             ])
             ->add(child: 'showOnDashboard', type: ChoiceType::class, options: [
-                'label' => $this->translator->trans('app.forms.labels.show_on_dashboard'),
+                'label' => $this->translator->trans('app.modules.common.forms.labels.show_on_dashboard'),
                 'choices' => [
-                    $this->translator->trans('app.forms.values.hide') => SimpleSettingsService::UNIVERSAL_FALSE,
-                    $this->translator->trans('app.forms.values.show') => SimpleSettingsService::UNIVERSAL_TRUTH,
+                    $this->translator->trans('app.modules.common.forms.values.hide') => SimpleSettingsService::UNIVERSAL_FALSE,
+                    $this->translator->trans('app.modules.common.forms.values.show') => SimpleSettingsService::UNIVERSAL_TRUTH,
                 ],
                 'priority' => -3,
             ]);

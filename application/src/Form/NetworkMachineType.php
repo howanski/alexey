@@ -21,25 +21,25 @@ class NetworkMachineType extends AbstractType
     {
         $builder
             ->add(child: 'uri', options: [
-                'label' => $this->translator->trans('app.forms.labels.uri'),
+                'label' => $this->translator->trans('app.modules.network_machines.forms.labels.uri'),
                 'priority' => 0,
             ])
             ->add(child: 'name', options: [
-                'label' => $this->translator->trans('app.forms.labels.name'),
+                'label' => $this->translator->trans('app.modules.network_machines.forms.labels.name'),
                 'priority' => -1,
 
             ])
             ->add(child: 'macAddress', options: [
-                'label' => $this->translator->trans('app.forms.labels.mac_address'),
+                'label' => $this->translator->trans('app.modules.network_machines.forms.labels.mac_address'),
                 'priority' => -2,
 
             ])
             ->add(child: 'wakeDestination', options: [
-                'label' => $this->translator->trans('app.forms.labels.wake_destination'),
+                'label' => $this->translator->trans('app.modules.network_machines.forms.labels.wake_destination'),
                 'priority' => -3,
             ])
             ->add(child: 'showOnDashboard', options: [
-                'label' => $this->translator->trans('app.forms.labels.show_on_dashboard'),
+                'label' => $this->translator->trans('app.modules.common.forms.labels.show_on_dashboard'),
                 'priority' => -4,
             ]);
     }

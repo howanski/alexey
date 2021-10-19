@@ -1,24 +1,9 @@
 app.flashes.saved: 'Successfully saved'
-app.forms.labels.host: Host
-app.forms.labels.mac_address: 'Mac Address'
-app.forms.labels.name: Name
-app.forms.labels.network_usage.provider_type: 'Provider type'
-app.forms.labels.password: Password
-app.forms.labels.save: Save
-app.forms.labels.show_on_dashboard: 'Show on Dashboard'
-app.forms.labels.target_speed: 'Target speed'
-app.forms.labels.throttling_enabled: 'Throttling enabled'
-app.forms.labels.uri: 'URI / IP'
-app.forms.labels.user: User
-app.forms.labels.wake_destination: 'Wake Destination'
-app.forms.values.disabled: Disabled
-app.forms.values.enabled: Enabled
-app.forms.values.hide: Hide
-app.forms.values.increasing: Increasing
-app.forms.values.locale.english: English
-app.forms.values.locale.polish: Polish
-app.forms.values.off: 'Off'
-app.forms.values.show: Show
+app.modules.common.forms.labels.password: Password
+app.modules.common.forms.labels.save: Save
+app.modules.common.forms.labels.show_on_dashboard: 'Show on Dashboard'
+app.modules.common.forms.values.hide: Hide
+app.modules.common.forms.values.show: Show
 app.modules.dashboard.menu_record: Dashboard
 app.modules.network_machine.status: Status
 app.modules.network_machines.actions: Actions
@@ -29,6 +14,10 @@ app.modules.network_machines.actions.show: Show
 app.modules.network_machines.actions.update: Update
 app.modules.network_machines.actions.wake: Wake
 app.modules.network_machines.add: Add
+app.modules.network_machines.forms.labels.mac_address: 'Mac Address'
+app.modules.network_machines.forms.labels.name: Name
+app.modules.network_machines.forms.labels.uri: 'URI / IP'
+app.modules.network_machines.forms.labels.wake_destination: 'Wake Destination'
 app.modules.network_machines.id: ID
 app.modules.network_machines.ip_or_url: IP/URL
 app.modules.network_machines.last_seen: 'Last seen'
@@ -47,11 +36,20 @@ app.modules.network_usage.forms.labels.address: Address
 app.modules.network_usage.forms.labels.algorithm_aggression_auto_adapt: 'Algorithm aggression auto adapt'
 app.modules.network_usage.forms.labels.algorithm_aggression: 'Algorithm Aggression'
 app.modules.network_usage.forms.labels.allow_target_speed_bumping: 'Allow target speed bumping'
+app.modules.network_usage.forms.labels.host: Host
+app.modules.network_usage.forms.labels.provider_type: 'Provider type'
+app.modules.network_usage.forms.labels.target_speed: 'Target speed'
+app.modules.network_usage.forms.labels.throttling_enabled: 'Throttling enabled'
+app.modules.network_usage.forms.labels.transmission_user: User
 app.modules.network_usage.forms.values.chart_type.current_billing_frame: 'Current billing frame'
 app.modules.network_usage.forms.values.chart_type.last_10_minutes: 'Last 10 minutes'
 app.modules.network_usage.forms.values.chart_type.last_2_hours: 'Last 2 hours'
 app.modules.network_usage.forms.values.chart_type.last_week: 'Last week'
 app.modules.network_usage.forms.values.chart_type.today: Today
+app.modules.network_usage.forms.values.disabled: Disabled
+app.modules.network_usage.forms.values.enabled: Enabled
+app.modules.network_usage.forms.values.increasing: Increasing
+app.modules.network_usage.forms.values.off: 'Off'
 app.modules.network_usage.menu_record: 'Network usage'
 app.modules.network_usage.optimal_speed: 'Optimal speed'
 app.modules.network_usage.outside_traffic: 'Outside traffic'
@@ -62,6 +60,8 @@ app.modules.network_usage.traffic_left: 'Traffic left'
 app.modules.network.menu_record: Network
 app.modules.security.logout: Logout
 app.modules.settings.forms.labels.locale: Locale
+app.modules.settings.forms.values.locale.english: English
+app.modules.settings.forms.values.locale.polish: Polish
 app.modules.settings.menu_record: Settings
 app.modules.weather.daily: 'Daily weather'
 app.modules.weather.feels_like: 'Feels like'

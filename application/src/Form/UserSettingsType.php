@@ -25,8 +25,8 @@ class UserSettingsType extends AbstractType
                 options: [
                     'required' => true,
                     'choices' => [
-                        $this->translator->trans('app.forms.values.locale.english') => 'en',
-                        $this->translator->trans('app.forms.values.locale.polish') => 'pl',
+                        $this->translator->trans('app.modules.settings.forms.values.locale.english') => 'en',
+                        $this->translator->trans('app.modules.settings.forms.values.locale.polish') => 'pl',
                     ],
                     'label' => $this->translator->trans('app.modules.settings.forms.labels.locale'),
                 ],

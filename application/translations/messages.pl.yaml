@@ -1,24 +1,9 @@
 app.flashes.saved: 'Pomyślnie zapisano'
-app.forms.labels.host: Host
-app.forms.labels.mac_address: 'Adres MAC'
-app.forms.labels.name: Nazwa
-app.forms.labels.network_usage.provider_type: 'Dostawca informacji o sieci'
-app.forms.labels.password: Hasło
-app.forms.labels.save: Zapisz
-app.forms.labels.show_on_dashboard: 'Pokaż w sterowni'
-app.forms.labels.target_speed: 'Docelowa prędkość'
-app.forms.labels.throttling_enabled: 'Dławienie włączone'
-app.forms.labels.uri: 'Adres URI/IP'
-app.forms.labels.user: Użytkownik
-app.forms.labels.wake_destination: 'Adres rozgłoszeniowy'
-app.forms.values.disabled: Wyłączone
-app.forms.values.enabled: Włączone
-app.forms.values.hide: Ukryj
-app.forms.values.increasing: Wzrastające
-app.forms.values.locale.english: Angielski
-app.forms.values.locale.polish: Polski
-app.forms.values.off: Wyłączony
-app.forms.values.show: Pokaż
+app.modules.common.forms.labels.password: Hasło
+app.modules.common.forms.labels.save: Zapisz
+app.modules.common.forms.labels.show_on_dashboard: 'Pokaż w sterowni'
+app.modules.common.forms.values.hide: Ukryj
+app.modules.common.forms.values.show: Pokaż
 app.modules.dashboard.menu_record: Sterownia
 app.modules.network_machine.status: Status
 app.modules.network_machines.actions: Akcje
@@ -29,6 +14,10 @@ app.modules.network_machines.actions.show: Pokaż
 app.modules.network_machines.actions.update: Aktualizuj
 app.modules.network_machines.actions.wake: Obudź
 app.modules.network_machines.add: Dodaj
+app.modules.network_machines.forms.labels.mac_address: 'Adres MAC'
+app.modules.network_machines.forms.labels.name: Nazwa
+app.modules.network_machines.forms.labels.uri: 'Adres URI/IP'
+app.modules.network_machines.forms.labels.wake_destination: 'Adres rozgłoszeniowy'
 app.modules.network_machines.id: ID
 app.modules.network_machines.ip_or_url: IP/URL
 app.modules.network_machines.last_seen: 'Ostatnio widziane'
@@ -47,11 +36,20 @@ app.modules.network_usage.forms.labels.address: Adres
 app.modules.network_usage.forms.labels.algorithm_aggression_auto_adapt: 'Autoadaptacja agresji'
 app.modules.network_usage.forms.labels.algorithm_aggression: 'Agresja algorytmu'
 app.modules.network_usage.forms.labels.allow_target_speed_bumping: 'Zezwól na pobijanie prędkości'
+app.modules.network_usage.forms.labels.host: Host
+app.modules.network_usage.forms.labels.provider_type: 'Dostawca informacji o sieci'
+app.modules.network_usage.forms.labels.target_speed: 'Docelowa prędkość'
+app.modules.network_usage.forms.labels.throttling_enabled: 'Dławienie włączone'
+app.modules.network_usage.forms.labels.transmission_user: Użytkownik
 app.modules.network_usage.forms.values.chart_type.current_billing_frame: 'Obecny okres taryfowy'
 app.modules.network_usage.forms.values.chart_type.last_10_minutes: 'Ostatnie 10 minut'
 app.modules.network_usage.forms.values.chart_type.last_2_hours: 'Ostatnie 2 godziny'
 app.modules.network_usage.forms.values.chart_type.last_week: 'Ostatni tydzień'
 app.modules.network_usage.forms.values.chart_type.today: Dzisiaj
+app.modules.network_usage.forms.values.disabled: Wyłączone
+app.modules.network_usage.forms.values.enabled: Włączone
+app.modules.network_usage.forms.values.increasing: Wzrastające
+app.modules.network_usage.forms.values.off: Wyłączony
 app.modules.network_usage.menu_record: Zużycie
 app.modules.network_usage.optimal_speed: 'Optymalna prędkość'
 app.modules.network_usage.outside_traffic: 'Ruch zewnętrzny'
@@ -62,6 +60,8 @@ app.modules.network_usage.traffic_left: 'Pozostały transfer'
 app.modules.network.menu_record: Sieć
 app.modules.security.logout: Wyloguj
 app.modules.settings.forms.labels.locale: Język
+app.modules.settings.forms.values.locale.english: Angielski
+app.modules.settings.forms.values.locale.polish: Polski
 app.modules.settings.menu_record: Ustawienia
 app.modules.weather.daily: 'Pogoda dzienna'
 app.modules.weather.feels_like: Odczuwalna
