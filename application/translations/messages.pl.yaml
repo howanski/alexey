@@ -67,8 +67,8 @@ app.modules.network_usage.traffic_left: 'Pozostały transfer'
 app.modules.network.menu_record: Sieć
 app.modules.security.logout: Wyloguj
 app.modules.settings.forms.labels.locale: Język
-app.modules.settings.forms.values.locale.english: Angielski
-app.modules.settings.forms.values.locale.polish: Polski
+app.modules.settings.forms.values.locale.en: Angielski
+app.modules.settings.forms.values.locale.pl: Polski
 app.modules.settings.menu_record: Ustawienia
 app.modules.weather.daily: 'Pogoda dzienna'
 app.modules.weather.feels_like: Odczuwalna

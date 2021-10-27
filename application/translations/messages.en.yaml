@@ -67,8 +67,8 @@ app.modules.network_usage.traffic_left: 'Traffic left'
 app.modules.network.menu_record: Network
 app.modules.security.logout: Logout
 app.modules.settings.forms.labels.locale: Locale
-app.modules.settings.forms.values.locale.english: English
-app.modules.settings.forms.values.locale.polish: Polish
+app.modules.settings.forms.values.locale.en: English
+app.modules.settings.forms.values.locale.pl: Polish
 app.modules.settings.menu_record: Settings
 app.modules.weather.daily: 'Daily weather'
 app.modules.weather.feels_like: 'Feels like'

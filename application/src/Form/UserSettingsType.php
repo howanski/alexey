@@ -9,26 +9,32 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class UserSettingsType extends AbstractType
+class UserSettingsType extends CommonFormType
 {
-    public function __construct(
-        private TranslatorInterface $translator,
-    ) {
+    public const LOCALES = [
+        'en',
+        'pl'
+    ];
+
+    protected function init(): void
+    {
+        $this->setTranslationModule(moduleName: 'settings');
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $langChoices = [];
+        foreach (self::LOCALES as $val) {
+            $langChoices[$this->getValueTrans(field: 'locale', value: $val)] = $val;
+        }
         $builder
             ->add(
                 child: 'locale',
                 type: ChoiceType::class,
                 options: [
                     'required' => true,
-                    'choices' => [
-                        $this->translator->trans('app.modules.settings.forms.values.locale.english') => 'en',
-                        $this->translator->trans('app.modules.settings.forms.values.locale.polish') => 'pl',
-                    ],
-                    'label' => $this->translator->trans('app.modules.settings.forms.labels.locale'),
+                    'choices' => $langChoices,
+                    'label' => $this->getLabelTrans(label: 'locale'),
                 ],
             );
     }
