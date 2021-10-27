@@ -1,4 +1,4 @@
-<form method="post" action="{{ path('network_machine_delete', {'id': network_machine.id}) }}" onsubmit="return confirm('{{ 'app.strings.you_sure_delete'|trans }}');">
+<form method="post" action="{{ path('network_machine_delete', {'id': network_machine.id}) }}" onsubmit="return confirm('{{ 'app.modules.common.strings.you_sure_delete'|trans }}');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ network_machine.id) }}">
     <button class="btn btn-danger">{{ 'app.modules.network_machines.actions.delete'|trans }}</button>
 </form>

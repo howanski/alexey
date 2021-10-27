@@ -12,6 +12,10 @@ app:
           show_on_dashboard:
             hide: Ukryj
             show: Pokaż
+      strings:
+        you_sure_delete: "Na pewno chcesz to usunąć?"
+      tables:
+        no_records_found: "Brak wpisów"
     dashboard:
       menu_record: Sterownia
     network_machines:
@@ -109,10 +113,6 @@ app:
       rain_or_snow: "Deszcz / Śnieg"
       temperature: Temperatura
       wind_speed: Wiatr
-  strings:
-    you_sure_delete: "Na pewno chcesz to usunąć?"
-  tables:
-    no_records_found: "Brak wpisów"
   time:
     day_short:
       friday: Pt

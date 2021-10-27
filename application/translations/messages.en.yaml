@@ -12,6 +12,10 @@ app:
           show_on_dashboard:
             hide: Hide
             show: Show
+      strings:
+        you_sure_delete: "Are you sure you want to delete this item?"
+      tables:
+        no_records_found: "Nothing found"
     dashboard:
       menu_record: Dashboard
     network_machines:
@@ -109,10 +113,6 @@ app:
       rain_or_snow: "Rain / Snow"
       temperature: Temperature
       wind_speed: "Wind speed"
-  strings:
-    you_sure_delete: "Are you sure you wan to delete this item?"
-  tables:
-    no_records_found: "Nothing found"
   time:
     day_short:
       friday: Fri
