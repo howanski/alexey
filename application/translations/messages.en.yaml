@@ -39,6 +39,11 @@ app.modules.network_usage.forms.labels.provider_type: 'Provider type'
 app.modules.network_usage.forms.labels.target_speed: 'Target speed'
 app.modules.network_usage.forms.labels.throttling_enabled: 'Throttling enabled'
 app.modules.network_usage.forms.labels.transmission_user: User
+app.modules.network_usage.forms.values.aggression_adapt.bool_false: Off
+app.modules.network_usage.forms.values.aggression_adapt.bool_true: On
+app.modules.network_usage.forms.values.aggression_adapt.up_only: 'Increasing only'
+app.modules.network_usage.forms.values.allow_speed_bump.bool_false: No
+app.modules.network_usage.forms.values.allow_speed_bump.bool_true: Yes
 app.modules.network_usage.forms.values.chart_type.current_billing_frame: 'Current billing frame'
 app.modules.network_usage.forms.values.chart_type.last_10_minutes: 'Last 10 minutes'
 app.modules.network_usage.forms.values.chart_type.last_2_hours: 'Last 2 hours'
@@ -47,8 +52,10 @@ app.modules.network_usage.forms.values.chart_type.today: Today
 app.modules.network_usage.forms.values.disabled: Disabled
 app.modules.network_usage.forms.values.enabled: Enabled
 app.modules.network_usage.forms.values.increasing: Increasing
-app.modules.network_usage.forms.values.provider_type.off: 'Off'
+app.modules.network_usage.forms.values.is_active.bool_false: No
+app.modules.network_usage.forms.values.is_active.bool_true: Yes
 app.modules.network_usage.forms.values.provider_type.hilink: 'Huawei (HiLink)'
+app.modules.network_usage.forms.values.provider_type.off: 'Off'
 app.modules.network_usage.menu_record_transmission: Transmission
 app.modules.network_usage.menu_record: 'Network usage'
 app.modules.network_usage.optimal_speed: 'Optimal speed'

@@ -31,19 +31,19 @@ class CommonFormType extends AbstractType
             throw new BadMethodCallException('setTranslationModule function not called!');
         }
 
-        $translationId = 'app.modules.'
+        $translationId = strtolower('app.modules.'
             . $this->translationModule
             . '.forms.labels.'
-            . $label;
+            . $label);
 
         if ($this->isTranslated($translationId)) {
             return $this->trans($translationId);
         }
 
-        $translationCommonId = 'app.modules.'
+        $translationCommonId = strtolower('app.modules.'
             . $this->translationCommonModule
             . '.forms.labels.'
-            . $label;
+            . $label);
 
         if ($this->isTranslated($translationCommonId)) {
             return $this->trans($translationCommonId);
@@ -53,7 +53,10 @@ class CommonFormType extends AbstractType
             dump($translationCommonId);
             die('Both translations not found');
         }
-        throw new MissingResourceException('Label ' . $label . ' not translated!');
+        throw new MissingResourceException(
+            'Label ' . $label . ' not translated in module '
+                . $this->translationModule . ' !'
+        );
     }
 
     protected function getValueTrans(string $field, string $value): string
@@ -62,19 +65,19 @@ class CommonFormType extends AbstractType
             throw new BadMethodCallException('setTranslationModule function not called!');
         }
 
-        $translationId = 'app.modules.'
+        $translationId = strtolower('app.modules.'
             . $this->translationModule
             . '.forms.values.' . $field . '.'
-            . $value;
+            . $value);
 
         if ($this->isTranslated($translationId)) {
             return $this->trans($translationId);
         }
 
-        $translationCommonId = 'app.modules.'
+        $translationCommonId = strtolower('app.modules.'
             . $this->translationCommonModule
             . '.forms.values.' . $field . '.'
-            . $value;
+            . $value);
 
 
         if ($this->isTranslated($translationCommonId)) {
@@ -86,7 +89,8 @@ class CommonFormType extends AbstractType
             die('Both translations not found');
         }
         throw new MissingResourceException(
-            message: 'Value ' . $value . ' for field ' . $field . ' not translated!',
+            message: 'Value ' . $value . ' for field ' . $field
+                . ' not translated in module ' . $this->translationModule . ' !',
         );
     }
 
