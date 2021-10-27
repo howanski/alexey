@@ -1,95 +1,129 @@
-app.modules.common.flashes.saved: 'Successfully saved'
-app.modules.common.forms.labels.password: Password
-app.modules.common.forms.labels.save: Save
-app.modules.common.forms.labels.show_on_dashboard: 'Show on Dashboard'
-app.modules.common.forms.values.show_on_dashboard.hide: Hide
-app.modules.common.forms.values.show_on_dashboard.show: Show
-app.modules.dashboard.menu_record: Dashboard
-app.modules.network_machines.actions: Actions
-app.modules.network_machines.actions.back: Back
-app.modules.network_machines.actions.delete: Delete
-app.modules.network_machines.actions.edit: Edit
-app.modules.network_machines.actions.show: Show
-app.modules.network_machines.actions.update: Update
-app.modules.network_machines.actions.wake: Wake
-app.modules.network_machines.add: Add
-app.modules.network_machines.forms.labels.mac_address: 'Mac Address'
-app.modules.network_machines.forms.labels.name: Name
-app.modules.network_machines.forms.labels.uri: 'URI / IP'
-app.modules.network_machines.forms.labels.wake_destination: 'Wake Destination'
-app.modules.network_machines.id: ID
-app.modules.network_machines.ip_or_url: IP/URL
-app.modules.network_machines.last_seen: 'Last seen'
-app.modules.network_machines.mac_address: 'MAC Address'
-app.modules.network_machines.machine: Machine
-app.modules.network_machines.menu_record: 'Network machines'
-app.modules.network_machines.name: Name
-app.modules.network_machines.never_seen: 'Never seen'
-app.modules.network_machines.status: Status
-app.modules.network_usage.billing_window_end: 'Billing window end'
-app.modules.network_usage.changes_in_time: 'Changes in time'
-app.modules.network_usage.chart_type: 'Chart type'
-app.modules.network_usage.current_speed: 'Current speed'
-app.modules.network_usage.forms.labels.address: Address
-app.modules.network_usage.forms.labels.algorithm_aggression_auto_adapt: 'Algorithm aggression auto adapt'
-app.modules.network_usage.forms.labels.algorithm_aggression: 'Algorithm Aggression'
-app.modules.network_usage.forms.labels.allow_target_speed_bumping: 'Allow target speed bumping'
-app.modules.network_usage.forms.labels.host: Host
-app.modules.network_usage.forms.labels.provider_type: 'Provider type'
-app.modules.network_usage.forms.labels.target_speed: 'Target speed'
-app.modules.network_usage.forms.labels.throttling_enabled: 'Throttling enabled'
-app.modules.network_usage.forms.labels.transmission_user: User
-app.modules.network_usage.forms.values.aggression_adapt.bool_false: Off
-app.modules.network_usage.forms.values.aggression_adapt.bool_true: On
-app.modules.network_usage.forms.values.aggression_adapt.up_only: 'Increasing only'
-app.modules.network_usage.forms.values.allow_speed_bump.bool_false: No
-app.modules.network_usage.forms.values.allow_speed_bump.bool_true: Yes
-app.modules.network_usage.forms.values.chart_type.current_billing_frame: 'Current billing frame'
-app.modules.network_usage.forms.values.chart_type.last_10_minutes: 'Last 10 minutes'
-app.modules.network_usage.forms.values.chart_type.last_2_hours: 'Last 2 hours'
-app.modules.network_usage.forms.values.chart_type.last_week: 'Last week'
-app.modules.network_usage.forms.values.chart_type.today: Today
-app.modules.network_usage.forms.values.disabled: Disabled
-app.modules.network_usage.forms.values.enabled: Enabled
-app.modules.network_usage.forms.values.increasing: Increasing
-app.modules.network_usage.forms.values.is_active.bool_false: No
-app.modules.network_usage.forms.values.is_active.bool_true: Yes
-app.modules.network_usage.forms.values.provider_type.hilink: 'Huawei (HiLink)'
-app.modules.network_usage.forms.values.provider_type.off: 'Off'
-app.modules.network_usage.menu_record_transmission: Transmission
-app.modules.network_usage.menu_record: 'Network usage'
-app.modules.network_usage.optimal_speed: 'Optimal speed'
-app.modules.network_usage.outside_traffic: 'Outside traffic'
-app.modules.network_usage.simulation: Simulation
-app.modules.network_usage.throttling_by_optimal_speed: 'Throttling by optimal speed'
-app.modules.network_usage.throttling: Throttling
-app.modules.network_usage.traffic_left: 'Traffic left'
-app.modules.network.menu_record: Network
-app.modules.security.logout: Logout
-app.modules.settings.forms.labels.locale: Locale
-app.modules.settings.forms.values.locale.en: English
-app.modules.settings.forms.values.locale.pl: Polish
-app.modules.settings.menu_record: Settings
-app.modules.weather.daily: 'Daily weather'
-app.modules.weather.feels_like: 'Feels like'
-app.modules.weather.forms.labels.api_key: 'API key'
-app.modules.weather.forms.labels.latitude: Latitude
-app.modules.weather.forms.labels.longitude: Longitude
-app.modules.weather.hourly: 'Hourly weather'
-app.modules.weather.menu_record: Weather
-app.modules.weather.rain_or_snow: 'Rain / Snow'
-app.modules.weather.temperature: Temperature
-app.modules.weather.wind_speed: 'Wind speed'
-app.strings.you_sure_delete: 'Are you sure you wan to delete this item?'
-app.tables.no_records_found: 'Nothing found'
-app.time.day_short.friday: Fri
-app.time.day_short.monday: Mon
-app.time.day_short.saturday: Sat
-app.time.day_short.sunday: Sun
-app.time.day_short.thursday: Thu
-app.time.day_short.tuesday: Tue
-app.time.day_short.wednesday: Wed
-app.time.of_day.day: Mid-day
-app.time.of_day.evening: Evening
-app.time.of_day.morning: Morning
-app.time.of_day.night: Night
+app:
+  modules:
+    common:
+      flashes:
+        saved: "Successfully saved"
+      forms:
+        labels:
+          password: Password
+          save: Save
+          show_on_dashboard: "Show on Dashboard"
+        values:
+          show_on_dashboard:
+            hide: Hide
+            show: Show
+    dashboard:
+      menu_record: Dashboard
+    network_machines:
+      actions:
+        actions: Actions
+        back: Back
+        delete: Delete
+        edit: Edit
+        show: Show
+        update: Update
+        wake: Wake
+      add: Add
+      forms:
+        labels:
+          mac_address: "Mac Address"
+          name: Name
+          uri: "URI / IP"
+          wake_destination: "Wake Destination"
+      id: ID
+      ip_or_url: IP/URL
+      last_seen: "Last seen"
+      mac_address: "MAC Address"
+      machine: Machine
+      menu_record: "Network machines"
+      name: Name
+      never_seen: "Never seen"
+      status: Status
+    network_usage:
+      billing_window_end: "Billing window end"
+      changes_in_time: "Changes in time"
+      chart_type: "Chart type"
+      current_speed: "Current speed"
+      forms:
+        labels:
+          address: Address
+          algorithm_aggression_auto_adapt: "Algorithm aggression auto adapt"
+          algorithm_aggression: "Algorithm Aggression"
+          allow_target_speed_bumping: "Allow target speed bumping"
+          host: Host
+          provider_type: "Provider type"
+          target_speed: "Target speed"
+          throttling_enabled: "Throttling enabled"
+          transmission_user: User
+        values:
+          aggression_adapt:
+            bool_false: Off
+            bool_true: On
+            up_only: "Increasing only"
+          allow_speed_bump:
+            bool_false: No
+            bool_true: Yes
+          chart_type:
+            current_billing_frame: "Current billing frame"
+            last_10_minutes: "Last 10 minutes"
+            last_2_hours: "Last 2 hours"
+            last_week: "Last week"
+            today: Today
+          is_active:
+            bool_false: No
+            bool_true: Yes
+          provider_type:
+            hilink: "Huawei (HiLink)"
+            off: "Off"
+      menu_record_transmission: Transmission
+      menu_record: "Network usage"
+      optimal_speed: "Optimal speed"
+      outside_traffic: "Outside traffic"
+      simulation: Simulation
+      throttling_by_optimal_speed: "Throttling by optimal speed"
+      throttling: Throttling
+      traffic_left: "Traffic left"
+    network:
+      menu_record: Network
+    security:
+      logout: Logout
+    settings:
+      forms:
+        labels:
+          locale: Locale
+        values:
+          locale:
+            en: English
+            pl: Polish
+      menu_record: Settings
+    weather:
+      daily: "Daily weather"
+      feels_like: "Feels like"
+      forms:
+        labels:
+          api_key: "API key"
+          latitude: Latitude
+          longitude: Longitude
+      hourly: "Hourly weather"
+      menu_record: Weather
+      rain_or_snow: "Rain / Snow"
+      temperature: Temperature
+      wind_speed: "Wind speed"
+  strings:
+    you_sure_delete: "Are you sure you wan to delete this item?"
+  tables:
+    no_records_found: "Nothing found"
+  time:
+    day_short:
+      friday: Fri
+      monday: Mon
+      saturday: Sat
+      sunday: Sun
+      thursday: Thu
+      tuesday: Tue
+      wednesday: Wed
+    of_day:
+      day: Mid-day
+      evening: Evening
+      morning: Morning
+      night: Night
