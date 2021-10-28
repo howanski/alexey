@@ -14,6 +14,7 @@ app:
             show: Pokaż
       strings:
         you_sure_delete: "Na pewno chcesz to usunąć?"
+        logout: Wyloguj
       tables:
         no_records_found: "Brak wpisów"
     dashboard:
@@ -89,8 +90,7 @@ app:
       traffic_left: "Pozostały transfer"
     network:
       menu_record: Sieć
-    security:
-      logout: Wyloguj
+
     settings:
       forms:
         labels:
@@ -99,7 +99,8 @@ app:
           locale:
             en: Angielski
             pl: Polski
-      menu_record: Ustawienia
+      strings:
+        menu_record: Ustawienia
     weather:
       daily: "Pogoda dzienna"
       feels_like: Odczuwalna

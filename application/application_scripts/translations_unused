@@ -1,7 +1,0 @@
-#!/bin/bash
-clear
-cd ..
-XDEBUG_MODE=off php bin/console cache:clear
-clear
-XDEBUG_MODE=off php bin/console debug:translation en --only-unused --domain messages
-XDEBUG_MODE=off php bin/console debug:translation pl --only-unused --domain messages

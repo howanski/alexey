@@ -5,7 +5,7 @@
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'app.modules.network.menu_record'|trans }} ~> <a href="{{ path('network_usage') }}" class="text-info">{{ 'app.modules.network_usage.menu_record'|trans }}</a> ~> {{ 'app.modules.settings.menu_record'|trans }} </h1>
+		<h1 class="h3 mb-0 text-gray-400">{{ 'app.modules.network.menu_record'|trans }} ~> <a href="{{ path('network_usage') }}" class="text-info">{{ 'app.modules.network_usage.menu_record'|trans }}</a> ~> {{ 'menu_record'|localised('settings') }} </h1>
 	</div>
 	    {{ form_start(form) }}
     	{{ form_widget(form) }}

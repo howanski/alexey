@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use BadMethodCallException;
+use App\Service\AlexeyTranslator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Intl\Exception\MissingResourceException;
@@ -12,7 +13,6 @@ use Symfony\Component\Intl\Exception\MissingResourceException;
 class CommonFormType extends AbstractType
 {
     private $translationModule = null;
-    private $translationCommonModule = 'common';
     private $debugMode = false;
 
     public function __construct(
@@ -41,7 +41,7 @@ class CommonFormType extends AbstractType
         }
 
         $translationCommonId = strtolower('app.modules.'
-            . $this->translationCommonModule
+            . AlexeyTranslator::DEFAULT_TRANSLATION_MODULE
             . '.forms.labels.'
             . $label);
 
@@ -75,7 +75,7 @@ class CommonFormType extends AbstractType
         }
 
         $translationCommonId = strtolower('app.modules.'
-            . $this->translationCommonModule
+            . AlexeyTranslator::DEFAULT_TRANSLATION_MODULE
             . '.forms.values.' . $field . '.'
             . $value);
 

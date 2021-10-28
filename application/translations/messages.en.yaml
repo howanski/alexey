@@ -14,6 +14,7 @@ app:
             show: Show
       strings:
         you_sure_delete: "Are you sure you want to delete this item?"
+        logout: Logout
       tables:
         no_records_found: "Nothing found"
     dashboard:
@@ -89,8 +90,6 @@ app:
       traffic_left: "Traffic left"
     network:
       menu_record: Network
-    security:
-      logout: Logout
     settings:
       forms:
         labels:
@@ -99,7 +98,8 @@ app:
           locale:
             en: English
             pl: Polish
-      menu_record: Settings
+      strings:
+        menu_record: Settings
     weather:
       daily: "Daily weather"
       feels_like: "Feels like"
