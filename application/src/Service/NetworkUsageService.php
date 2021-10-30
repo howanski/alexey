@@ -98,8 +98,12 @@ class NetworkUsageService
             $shift = new DateInterval('P1W');
             $today->sub($shift);
             $chdata = $this->prepareDataForChart($today);
-        } elseif ($chartDataType === NetworkChartType::CHART_TYPE_HOURS_TWO) {
+        } elseif ($chartDataType === NetworkChartType::CHART_TYPE_HOURS_2) {
             $shift = new DateInterval('PT2H');
+            $now->sub($shift);
+            $chdata = $this->prepareDataForChart($now);
+        } elseif ($chartDataType === NetworkChartType::CHART_TYPE_HOURS_48) {
+            $shift = new DateInterval('PT48H');
             $now->sub($shift);
             $chdata = $this->prepareDataForChart($now);
         } elseif ($chartDataType === NetworkChartType::CHART_TYPE_MINUTES_TEN) {

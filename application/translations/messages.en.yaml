@@ -72,6 +72,7 @@ app:
             current_billing_frame: "Current billing frame"
             last_10_minutes: "Last 10 minutes"
             last_2_hours: "Last 2 hours"
+            last_48_hours: "Last 48 hours"
             last_week: "Last week"
             today: Today
           is_active:

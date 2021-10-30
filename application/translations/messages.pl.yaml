@@ -72,6 +72,7 @@ app:
             current_billing_frame: "Obecny okres taryfowy"
             last_10_minutes: "Ostatnie 10 minut"
             last_2_hours: "Ostatnie 2 godziny"
+            last_48_hours: "Ostatnie 48 godzin"
             last_week: "Ostatni tydzień"
             today: Dzisiaj
           is_active:
@@ -90,7 +91,6 @@ app:
       traffic_left: "Pozostały transfer"
     network:
       menu_record: Sieć
-
     settings:
       forms:
         labels:
