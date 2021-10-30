@@ -13,42 +13,40 @@ app:
             hide: Ukryj
             show: Pokaż
       strings:
-        you_sure_delete: "Na pewno chcesz to usunąć?"
-        logout: Wyloguj
-      tables:
-        no_records_found: "Brak wpisów"
-    dashboard:
-      menu_record: Sterownia
-    network_machines:
-      actions:
         actions: Akcje
+        add: Dodaj
         back: Wstecz
+        chart_type: "Typ wykresu"
         delete: Usuń
         edit: Edytuj
+        empty_data: "Brak wpisów"
+        id: ID
+        ip_or_url: IP/URL
+        logout: Wyloguj
+        mac_address: "Adres MAC"
+        name: Nazwa
+        save: Zapisz
         show: Pokaż
-        update: Aktualizuj
+        simulation: Symulacja
+        status: Status
         wake: Obudź
-      add: Dodaj
+        you_sure_delete: "Na pewno chcesz to usunąć?"
+    dashboard:
+      strings:
+        menu_record: Sterownia
+    network_machines:
       forms:
         labels:
           mac_address: "Adres MAC"
           name: Nazwa
           uri: "Adres URI/IP"
           wake_destination: "Adres rozgłoszeniowy"
-      id: ID
-      ip_or_url: IP/URL
-      last_seen: "Ostatnio widziane"
-      mac_address: "Adres MAC"
-      machine: Urządzenie
-      menu_record: "Urządzenia sieciowe"
-      name: Nazwa
-      never_seen: "Nigdy nie widziana"
-      status: Status
+      strings:
+        menu_record: "Urządzenia sieciowe"
+        last_seen: "Ostatnio widziane"
+        machine: Urządzenie
+        never_seen: "Nigdy nie widziana"
     network_usage:
-      billing_window_end: "Koniec okresu taryfowego"
-      changes_in_time: "Zmiany w czasie"
-      chart_type: "Typ wykresu"
-      current_speed: "Bieżąca prędkość"
       forms:
         labels:
           address: Adres
@@ -81,16 +79,20 @@ app:
           provider_type:
             hilink: "Huawei (HiLink)"
             off: Wyłączony
-      menu_record_transmission: Transmission
-      menu_record: Zużycie
-      optimal_speed: "Optymalna prędkość"
-      outside_traffic: "Ruch zewnętrzny"
-      simulation: Symulacja
-      throttling_by_optimal_speed: "Dławiene wg. optymalnej prędkości"
-      throttling: Dławienie
-      traffic_left: "Pozostały transfer"
+      strings:
+        billing_window_end: "Koniec okresu taryfowego"
+        changes_in_time: "Zmiany w czasie"
+        current_speed: "Bieżąca prędkość"
+        menu_record_transmission: Transmission
+        menu_record: Zużycie
+        optimal_speed: "Optymalna prędkość"
+        outside_traffic: "Ruch zewnętrzny"
+        throttling_by_optimal_speed: "Dławiene wg. optymalnej prędkości"
+        throttling: Dławienie
+        traffic_left: "Pozostały transfer"
     network:
-      menu_record: Sieć
+      strings:
+        menu_record: Sieć
     settings:
       forms:
         labels:
@@ -102,18 +104,19 @@ app:
       strings:
         menu_record: Ustawienia
     weather:
-      daily: "Pogoda dzienna"
-      feels_like: Odczuwalna
       forms:
         labels:
           api_key: "Klucz API"
           latitude: "Szerokość geograficzna"
           longitude: "Długość geograficzna"
-      hourly: "Pogoda godzinowa"
-      menu_record: Pogoda
-      rain_or_snow: "Deszcz / Śnieg"
-      temperature: Temperatura
-      wind_speed: Wiatr
+      strings:
+        daily: "Pogoda dzienna"
+        feels_like: Odczuwalna
+        menu_record: Pogoda
+        hourly: "Pogoda godzinowa"
+        rain_or_snow: "Deszcz / Śnieg"
+        temperature: Temperatura
+        wind_speed: Wiatr
   time:
     day_short:
       friday: Pt

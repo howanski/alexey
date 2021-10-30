@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Alexey | {{ 'app.modules.network_machines.menu_record'|trans }} | {{ network_machine.name }}{% endblock %}
+{% block title %}Alexey | {{ 'menu_record'|localised('network_machines') }} | {{ network_machine.name }}{% endblock %}
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'app.modules.network.menu_record'|trans }} ~> <a href="{{ path('network_machine_index') }}" class="text-info">{{ 'app.modules.network_machines.menu_record'|trans }}</a> ~> #{{ network_machine.id }} - {{ network_machine.name }}</h1>
+		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('network') }} ~> <a href="{{ path('network_machine_index') }}" class="text-info">{{ 'menu_record'|localised('network_machines') }}</a> ~> #{{ network_machine.id }} - {{ network_machine.name }}</h1>
 	</div>
-    {{ include('network_machine/_form.html.twig', {'button_label': 'app.modules.network_machines.actions.update'|trans}) }}
+    {{ include('network_machine/_form.html.twig') }}
     <div class="row">
-        <a href="{{ path('network_machine_index') }}" class="btn btn-success">{{ 'app.modules.network_machines.actions.back'|trans }}</a>
+        <a href="{{ path('network_machine_index') }}" class="btn btn-success">{{ 'back'|localised }}</a>
         {{ include('network_machine/_delete_form.html.twig') }}
     </div>
 {% endblock %}

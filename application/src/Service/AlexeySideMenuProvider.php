@@ -6,11 +6,11 @@ namespace App\Service;
 
 use Twig\TwigFunction;
 use App\Class\SideMenuItem;
+use App\Service\AlexeyTranslator;
 use Twig\Extension\AbstractExtension;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AlexeySideMenuProvider extends AbstractExtension
 {
@@ -22,7 +22,7 @@ class AlexeySideMenuProvider extends AbstractExtension
     public function __construct(
         private RequestStack $requestStack,
         private RouterInterface $router,
-        private TranslatorInterface $translator,
+        private AlexeyTranslator $translator,
     ) {
         $this->currentRequest = $this->requestStack->getCurrentRequest();
         $this->currentRoute = $this?->currentRequest?->getRequestUri();
@@ -48,7 +48,10 @@ class AlexeySideMenuProvider extends AbstractExtension
 
         $route = $this->router->generate('dashboard');
         $sideMenu[] = new SideMenuItem(
-            name: $this->translator->trans('app.modules.dashboard.menu_record'),
+            name: $this->translator->translateString(
+                translationId: 'menu_record',
+                module: 'dashboard'
+            ),
             destination: $route,
             icon: 'fa-tachometer-alt',
             isActive: $this->isActiveRoute($route),
@@ -57,7 +60,10 @@ class AlexeySideMenuProvider extends AbstractExtension
 
         $route = $this->router->generate('weather');
         $sideMenu[] = new SideMenuItem(
-            name: $this->translator->trans('app.modules.weather.menu_record'),
+            name: $this->translator->translateString(
+                translationId: 'menu_record',
+                module: 'weather'
+            ),
             destination: $route,
             icon: 'fa-cloud-sun',
             isActive: $this->isActiveRoute($route),
@@ -90,7 +96,10 @@ class AlexeySideMenuProvider extends AbstractExtension
     {
         $route = '/network';
         $menuItem = new SideMenuItem(
-            name: $this->translator->trans('app.modules.network.menu_record'),
+            name: $this->translator->translateString(
+                translationId: 'menu_record',
+                module: 'network'
+            ),
             destination: $route,
             icon: 'fa-wifi',
             isActive: $this->isActiveRoute($route),
@@ -98,21 +107,30 @@ class AlexeySideMenuProvider extends AbstractExtension
 
         $route = $this->router->generate('network_machine_index');
         $networkMachines = new SideMenuItem(
-            name: $this->translator->trans('app.modules.network_machines.menu_record'),
+            name: $this->translator->translateString(
+                translationId: 'menu_record',
+                module: 'network_machines'
+            ),
             destination: $route,
             isActive: $this->isActiveRoute($route),
         );
 
         $route = $this->router->generate('network_usage');
         $networkUsage = new SideMenuItem(
-            name: $this->translator->trans('app.modules.network_usage.menu_record'),
+            name: $this->translator->translateString(
+                translationId: 'menu_record',
+                module: 'network_usage'
+            ),
             destination: $route,
             isActive: $this->isActiveRoute($route),
         );
 
         $route = $this->router->generate('network_transmission');
         $networkTransmission = new SideMenuItem(
-            name: $this->translator->trans('app.modules.network_usage.menu_record_transmission'),
+            name: $this->translator->translateString(
+                translationId: 'menu_record_transmission',
+                module: 'network_usage'
+            ),
             destination: $route,
             isActive: $this->isActiveRoute($route),
         );

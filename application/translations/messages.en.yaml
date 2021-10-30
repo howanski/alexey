@@ -13,42 +13,40 @@ app:
             hide: Hide
             show: Show
       strings:
-        you_sure_delete: "Are you sure you want to delete this item?"
-        logout: Logout
-      tables:
-        no_records_found: "Nothing found"
-    dashboard:
-      menu_record: Dashboard
-    network_machines:
-      actions:
         actions: Actions
+        add: Add
         back: Back
+        chart_type: "Chart type"
         delete: Delete
         edit: Edit
+        empty_data: "Nothing found"
+        id: ID
+        ip_or_url: IP/URL
+        logout: Logout
+        mac_address: "MAC Address"
+        name: Name
+        save: Save
         show: Show
-        update: Update
+        simulation: Simulation
+        status: Status
         wake: Wake
-      add: Add
+        you_sure_delete: "Are you sure you want to delete this item?"
+    dashboard:
+      strings:
+        menu_record: Dashboard
+    network_machines:
       forms:
         labels:
           mac_address: "Mac Address"
           name: Name
           uri: "URI / IP"
           wake_destination: "Wake Destination"
-      id: ID
-      ip_or_url: IP/URL
-      last_seen: "Last seen"
-      mac_address: "MAC Address"
-      machine: Machine
-      menu_record: "Network machines"
-      name: Name
-      never_seen: "Never seen"
-      status: Status
+      strings:
+        menu_record: "Network machines"
+        last_seen: "Last seen"
+        machine: Machine
+        never_seen: "Never seen"
     network_usage:
-      billing_window_end: "Billing window end"
-      changes_in_time: "Changes in time"
-      chart_type: "Chart type"
-      current_speed: "Current speed"
       forms:
         labels:
           address: Address
@@ -81,16 +79,20 @@ app:
           provider_type:
             hilink: "Huawei (HiLink)"
             off: "Off"
-      menu_record_transmission: Transmission
-      menu_record: "Network usage"
-      optimal_speed: "Optimal speed"
-      outside_traffic: "Outside traffic"
-      simulation: Simulation
-      throttling_by_optimal_speed: "Throttling by optimal speed"
-      throttling: Throttling
-      traffic_left: "Traffic left"
+      strings:
+        billing_window_end: "Billing window end"
+        changes_in_time: "Changes in time"
+        current_speed: "Current speed"
+        menu_record_transmission: Transmission
+        menu_record: "Network usage"
+        optimal_speed: "Optimal speed"
+        outside_traffic: "Outside traffic"
+        throttling_by_optimal_speed: "Throttling by optimal speed"
+        throttling: Throttling
+        traffic_left: "Traffic left"
     network:
-      menu_record: Network
+      strings:
+        menu_record: Network
     settings:
       forms:
         labels:
@@ -102,18 +104,19 @@ app:
       strings:
         menu_record: Settings
     weather:
-      daily: "Daily weather"
-      feels_like: "Feels like"
       forms:
         labels:
           api_key: "API key"
           latitude: Latitude
           longitude: Longitude
-      hourly: "Hourly weather"
-      menu_record: Weather
-      rain_or_snow: "Rain / Snow"
-      temperature: Temperature
-      wind_speed: "Wind speed"
+      strings:
+        daily: "Daily weather"
+        feels_like: "Feels like"
+        menu_record: Weather
+        hourly: "Hourly weather"
+        rain_or_snow: "Rain / Snow"
+        temperature: Temperature
+        wind_speed: "Wind speed"
   time:
     day_short:
       friday: Fri

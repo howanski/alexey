@@ -6,14 +6,14 @@
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-400">
-			{{ 'app.modules.network.menu_record'|trans }} ~> <a href="{{ path('network_transmission') }}" class="text-info">Transmission</a> ~> {{ 'menu_record'|localised('settings') }}
+			{{ 'menu_record'|localised('network') }} ~> <a href="{{ path('network_transmission') }}" class="text-info">Transmission</a> ~> {{ 'menu_record'|localised('settings') }}
 		</h1>
 	</div>
 	{{ form_start(form) }}
 	{{ form_widget(form) }}
-	<button class="btn btn-warning">{{ 'app.modules.common.forms.labels.save'|trans }}</button>
+	<button class="btn btn-warning">{{ 'save'|localised }}</button>
 	{{ form_end(form) }}
-	{{ 'app.modules.network_usage.throttling'|trans }}:
+	{{ 'throttling'|localised('network_usage') }}:
 	{{ current }}
 	kB/s
 {% endblock %}

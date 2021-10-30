@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Alexey | {{ 'app.modules.network_usage.menu_record'|trans }}
+{% block title %}Alexey | {{ 'menu_record'|localised('network_usage') }}
 {% endblock %}
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'app.modules.network.menu_record'|trans }} ~> <a href="{{ path('network_usage') }}" class="text-info">{{ 'app.modules.network_usage.menu_record'|trans }}</a> ~> {{ 'menu_record'|localised('settings') }} </h1>
+		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('network') }} ~> <a href="{{ path('network_usage') }}" class="text-info">{{ 'menu_record'|localised('network_usage') }}</a> ~> {{ 'menu_record'|localised('settings') }} </h1>
 	</div>
 	    {{ form_start(form) }}
     	{{ form_widget(form) }}
-    	<button class="btn btn-warning">{{ 'app.modules.common.forms.labels.save'|trans }}</button>
+    	<button class="btn btn-warning">{{ 'save'|localised }}</button>
 		{{ form_end(form) }}
 {% endblock %}

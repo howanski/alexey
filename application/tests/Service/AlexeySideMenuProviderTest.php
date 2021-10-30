@@ -7,9 +7,9 @@ namespace App\Tests\Service;
 use App\Class\SideMenuItem;
 use PHPUnit\Framework\TestCase;
 use App\Service\AlexeySideMenuProvider;
+use App\Service\AlexeyTranslator;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @covers App\Service\AlexeySideMenuProvider
@@ -20,7 +20,7 @@ final class AlexeySideMenuProviderTest extends TestCase
     {
         $requestStack = $this->createMock(originalClassName: RequestStack::class);
         $router = $this->createMock(originalClassName: RouterInterface::class);
-        $translator = $this->createMock(originalClassName: TranslatorInterface::class);
+        $translator = $this->createMock(originalClassName: AlexeyTranslator::class);
 
         $routerCallback = function (string $path) {
             return '/' . $path;
@@ -32,7 +32,7 @@ final class AlexeySideMenuProviderTest extends TestCase
             return 'trans_' . $string;
         };
 
-        $translator->method('trans')->willReturnCallback($transCallback);
+        $translator->method('translateString')->willReturnCallback($transCallback);
 
 
         $service = new AlexeySideMenuProvider(
@@ -57,7 +57,7 @@ final class AlexeySideMenuProviderTest extends TestCase
             [
                 'icon' => 'fa-tachometer-alt',
                 'isActive' => false,
-                'name' => 'trans_app.modules.dashboard.menu_record',
+                'name' => 'trans_menu_record',
                 'destination' => '/dashboard',
                 'children' => [],
                 'isHeading' => false,
@@ -66,7 +66,7 @@ final class AlexeySideMenuProviderTest extends TestCase
             [
                 'icon' => 'fa-cloud-sun',
                 'isActive' => false,
-                'name' => 'trans_app.modules.weather.menu_record',
+                'name' => 'trans_menu_record',
                 'destination' => '/weather',
                 'children' => [],
                 'isHeading' => false,
@@ -75,7 +75,7 @@ final class AlexeySideMenuProviderTest extends TestCase
             [
                 'icon' => 'fa-wifi',
                 'isActive' => false,
-                'name' => 'trans_app.modules.network.menu_record',
+                'name' => 'trans_menu_record',
                 'destination' => '/network',
                 'children' => [
                     [], //TODO: deeper

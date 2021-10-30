@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Alexey | {{ 'app.modules.dashboard.menu_record'|trans }}
+{% block title %}Alexey | {{ 'menu_record'|localised('dashboard') }}
 {% endblock %}
 
 {% block javascripts %}
@@ -14,11 +14,11 @@ window.location.reload(false);
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'app.modules.dashboard.menu_record'|trans }}</h1>
+		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('dashboard') }}</h1>
 	</div>
 	{% if dashboard_data.machines|length > 0 %}
 		<div class="row">
-			<h5 class="text-gray-400">{{ 'app.modules.network_machines.menu_record'|trans }}</h1>
+			<h5 class="text-gray-400">{{ 'menu_record'|localised('network_machines') }}</h1>
 		</div>
 		<div class="row">
 			{% for machine in dashboard_data.machines %}
@@ -28,10 +28,10 @@ window.location.reload(false);
 							<div class="row no-gutters align-items-center">
 								<div class="col mr-2">
 									<div class="text-xs font-weight-bold {% if machine.isReachable %} text-success {% elseif machine.lastSeen %} text-warning {% else %} text-danger {% endif %} text-uppercase mb-1">
-										{{ 'app.modules.network_machines.machine'|trans }}:
+										{{ 'machine'|localised('network_machines') }}:
 										{{ machine.name }}</div>
 									{% if machine.lastSeen %}
-										<div class="h5 mb-0 font-weight-bold text-gray-800">{{ 'app.modules.network_machines.last_seen'|trans }}
+										<div class="h5 mb-0 font-weight-bold text-gray-800">{{ 'last_seen'|localised('network_machines') }}
 											{{ machine.getLastSeenReadable(app.request.locale) }}</div>
 									{% endif %}
 								</div>
@@ -54,7 +54,7 @@ window.location.reload(false);
 	{# TODO: refactor cards #}
 	{% if dashboard_data.network_statistic is defined and dashboard_data.network_statistic is not null %}
 		<div class="row">
-			<h5 class="text-gray-400">{{ 'app.modules.network_usage.menu_record'|trans }}</h1>
+			<h5 class="text-gray-400">{{ 'menu_record'|localised('network_usage') }}</h1>
 		</div>
 		<div class="row">
 			<div class="col-xl-3 col-md-6 mb-4">
@@ -63,7 +63,7 @@ window.location.reload(false);
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
-									{{ 'app.modules.network_usage.optimal_speed'|trans }}:
+									{{ 'optimal_speed'|localised('network_usage') }}:
 								</div>
 								<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.getTransferRateLeftReadable(4) }}</div>
 							</div>
@@ -82,7 +82,7 @@ window.location.reload(false);
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
-									{{ 'app.modules.network_usage.traffic_left'|trans }}:
+									{{ 'traffic_left'|localised('network_usage') }}:
 								</div>
 								<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.getTrafficLeftReadable(4) }}</div>
 							</div>
@@ -101,7 +101,7 @@ window.location.reload(false);
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
-									{{ 'app.modules.network_usage.billing_window_end'|trans }}:
+									{{ 'billing_window_end'|localised('network_usage') }}:
 								</div>
 								<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.timeFrame.getBillingFrameEndReadable(app.request.locale) }}</div>
 							</div>
@@ -118,7 +118,7 @@ window.location.reload(false);
 	{% endif %}
 	{% if dashboard_data.weather is defined and dashboard_data.weather is not null %}
 		<div class="row">
-			<h5 class="text-gray-400">{{ 'app.modules.weather.menu_record'|trans }}</h1>
+			<h5 class="text-gray-400">{{ 'menu_record'|localised('weather') }}</h1>
 		</div>
 		<div class="row">
 			{% for weather in dashboard_data.weather.getWeatherReadable(app.request.locale).daily|slice(0, 4) %}

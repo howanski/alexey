@@ -78,7 +78,7 @@ final class NetworkMachineControllerTest extends ControllerTestStub
         $crawler = $client->request('GET', '/network/machines/' . $machineId . '/edit');
         $this->assertResponseIsSuccessful();
 
-        $form = $crawler->selectButton('Update')->form();
+        $form = $crawler->selectButton('Save')->form();
         $form['network_machine']['macAddress']->setValue('AA:BB:CC:DD:FF');
 
         $client->submit($form);
