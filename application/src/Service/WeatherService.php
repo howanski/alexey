@@ -8,7 +8,6 @@ use App\Service\SimpleSettingsService;
 use App\Class\OpenWeatherOneApiResponse;
 use App\Class\WeatherSettings;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WeatherService
 {
@@ -18,9 +17,9 @@ class WeatherService
         private HttpClientInterface $client,
         private SimpleSettingsService $simpleSettingsService,
         private SimpleCacheService $simpleCacheService,
-        private TranslatorInterface $translator,
+        private AlexeyTranslator $translator,
     ) {
-        $this->dayTranslations = [ // let translation debugger see this
+        $this->dayTranslations = [
             'Mon' => $translator->trans('app.time.day_short.monday'),
             'Tue' => $translator->trans('app.time.day_short.tuesday'),
             'Wed' => $translator->trans('app.time.day_short.wednesday'),
@@ -114,22 +113,34 @@ class WeatherService
         $chartConfs = [
             [
                 'key' => 'temperature',
-                'label' => $this->translator->trans('app.modules.weather.temperature') . ' (°C)',
+                'label' => $this->translator->translateString(
+                    translationId: 'temperature',
+                    module: 'weather',
+                ) . ' (°C)',
                 'color' => [78, 115, 223],
             ],
             [
                 'key' => 'feels_like',
-                'label' => $this->translator->trans('app.modules.weather.feels_like') . ' (°C)',
+                'label' => $this->translator->translateString(
+                    translationId: 'feels_like',
+                    module: 'weather',
+                ) . ' (°C)',
                 'color' => [140, 115, 223],
             ],
             [
                 'key' => 'wind_speed',
-                'label' => $this->translator->trans('app.modules.weather.wind_speed') . ' (km/h)',
+                'label' => $this->translator->translateString(
+                    translationId: 'wind_speed',
+                    module: 'weather',
+                ) . ' (km/h)',
                 'color' => [140, 115, 100],
             ],
             [
                 'key' => 'rain',
-                'label' => $this->translator->trans('app.modules.weather.rain_or_snow') . ' (mm)',
+                'label' => $this->translator->translateString(
+                    translationId: 'rain_or_snow',
+                    module: 'weather',
+                ) . ' (mm)',
                 'color' => [78, 222, 223],
             ],
         ];

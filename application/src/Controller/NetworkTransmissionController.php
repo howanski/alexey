@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Class\TransmissionSettings;
 use App\Service\NetworkUsageService;
 use App\Form\TransmissionSettingsType;
+use App\Service\AlexeyTranslator;
 use App\Service\SimpleSettingsService;
 use App\Service\TransmissionService;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/network/transmission')]
 class NetworkTransmissionController extends AbstractController
@@ -41,7 +41,7 @@ class NetworkTransmissionController extends AbstractController
         Request $request,
         SimpleSettingsService $simpleSettingsService,
         NetworkUsageService $networkUsageService,
-        TranslatorInterface $translator,
+        AlexeyTranslator $translator,
     ): Response {
         $settings = new TransmissionSettings();
         $settings->selfConfigure($simpleSettingsService);
@@ -53,7 +53,7 @@ class NetworkTransmissionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $settings->selfPersist($simpleSettingsService);
-            $this->addFlash(type: 'success', message: $translator->trans('app.modules.common.flashes.saved'));
+            $this->addFlash(type: 'success', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute('network_transmission', [], Response::HTTP_SEE_OTHER);
         }
         $transferLeft = $networkUsageService->getLatestStatistic()?->getTransferRateLeft();

@@ -8,7 +8,6 @@ use Transmission\Transmission;
 use App\Entity\NetworkStatistic;
 use App\Class\TransmissionSettings;
 use App\Service\SimpleSettingsService;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 // TODO: REFACTORISATION!!!
 class TransmissionService
@@ -17,7 +16,7 @@ class TransmissionService
 
     public function __construct(
         private NetworkUsageService $networkUsageService,
-        private TranslatorInterface $translator,
+        private AlexeyTranslator $translator,
         private SimpleSettingsService $simpleSettingsService,
     ) {
         $this->settings = new TransmissionSettings();
@@ -37,7 +36,10 @@ class TransmissionService
             ],
         ];
         $datasetStub = [
-            'label' => $this->translator->trans('app.modules.network_usage.throttling') . ' (kB/s)',
+            'label' => $this->translator->translateString(
+                translationId: 'throttling',
+                module: 'network_usage'
+            ) . ' (kB/s)',
             'lineTension' => 0.3,
             'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
             'borderColor' => 'rgba(78, 115, 223, 1)',

@@ -26,6 +26,32 @@ class AlexeyTranslator extends AbstractExtension
         ];
     }
 
+    /**
+     * @deprecated
+     * Legacy method
+     */
+    public function trans(string $id): string
+    {
+        return $this->translator->trans($id);
+    }
+
+    public function translateFlash(string $translationId, string $module = self::DEFAULT_TRANSLATION_MODULE): string
+    {
+        // TODO: refactor to common methods
+        $fullId = 'app.modules.' . $module . '.flashes.' . $translationId;
+        if ($this->isTranslated($fullId)) {
+            return $this->translator->trans($fullId);
+        }
+        $commonId = 'app.modules.' . self::DEFAULT_TRANSLATION_MODULE . '.flashes.' . $translationId;
+        if ($this->isTranslated($commonId)) {
+            return $this->translator->trans($commonId);
+        }
+        throw new MissingResourceException(
+            message: 'Flash ' . $translationId
+                . ' not translated in module ' . $module . ' !',
+        );
+    }
+
     public function translateString(string $translationId, string $module = self::DEFAULT_TRANSLATION_MODULE): string
     {
         $fullId = 'app.modules.' . $module . '.strings.' . $translationId;

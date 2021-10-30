@@ -6,11 +6,11 @@ namespace App\Tests\Service;
 
 use PHPUnit\Framework\TestCase;
 use App\Entity\NetworkStatistic;
+use App\Service\AlexeyTranslator;
 use App\Service\NetworkUsageService;
 use App\Service\TransmissionService;
 use App\Service\SimpleSettingsService;
 use App\Entity\NetworkStatisticTimeFrame;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @covers App\Service\TransmissionService
@@ -45,11 +45,11 @@ final class TransmissionServiceTest extends TestCase
         ];
         $simpleSettingsService->method('getSettings')->willReturn($settings);
 
-        $translator = $this->createMock(originalClassName: TranslatorInterface::class);
+        $translator = $this->createMock(originalClassName: AlexeyTranslator::class);
         $transCallback = function (string $string) {
             return 'trans_' . $string;
         };
-        $translator->method('trans')->willReturnCallback($transCallback);
+        $translator->method('translateString')->willReturnCallback($transCallback);
 
         $service = new TransmissionService(
             networkUsageService: $networkUsageService,
@@ -68,7 +68,7 @@ final class TransmissionServiceTest extends TestCase
                 'speed' => [
                     'datasets' => [
                         [
-                            'label' => 'trans_app.modules.network_usage.throttling (kB/s)',
+                            'label' => 'trans_throttling (kB/s)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                             'borderColor' => 'rgba(78, 115, 223, 1)',
@@ -86,7 +86,7 @@ final class TransmissionServiceTest extends TestCase
                 'time' => [
                     'datasets' => [
                         [
-                            'label' => 'trans_app.modules.network_usage.throttling (kB/s)',
+                            'label' => 'trans_throttling (kB/s)',
                             'lineTension' => 0.3,
                             'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
                             'borderColor' => 'rgba(78, 115, 223, 1)',
