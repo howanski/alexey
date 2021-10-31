@@ -128,7 +128,7 @@ window.location.reload(false);
 							<div class="row no-gutters align-items-center">
 								<div class="col mr-2">
 									<div class="text-xs font-weight-bold {% if weather.rain > 20  %} text-danger {% elseif weather.rain > 0  %} text-warning {% else %} text-success {% endif %} text-uppercase mb-1">
-										{{ weather.date }}
+										{{ weather.date|localisedTime('day', 'long') }}
 									</div>
 									<div class="h5 mb-0 font-weight-bold text-gray-500">
 										{{ weather.weather }}

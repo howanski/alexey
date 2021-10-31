@@ -106,7 +106,7 @@ app:
     weather:
       forms:
         labels:
-          api_key: "Klucz API"
+          api_key: "Klucz API OpenWeather"
           latitude: "Szerokość geograficzna"
           longitude: "Długość geograficzna"
       strings:
@@ -134,6 +134,21 @@ app:
         tuesday: Wt
         wed: Śr
         wednesday: Śr
+      long:
+        fri: Piątek
+        friday: Piątek
+        mon: Poniedziałek
+        monday: Poniedziałek
+        sat: Sobota
+        saturday: Sobota
+        sun: Niedziela
+        sunday: Niedziela
+        thu: Czwartek
+        thursday: Czwartek
+        tue: Wtorek
+        tuesday: Wtorek
+        wed: Środa
+        wednesday: Środa
     day_part:
       default:
         day: Poł.

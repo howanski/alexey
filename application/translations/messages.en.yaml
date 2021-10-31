@@ -106,7 +106,7 @@ app:
     weather:
       forms:
         labels:
-          api_key: "API key"
+          api_key: "OpenWeather API key"
           latitude: Latitude
           longitude: Longitude
       strings:
@@ -134,6 +134,21 @@ app:
         tuesday: Tue
         wed: Wed
         wednesday: Wed
+      long:
+        fri: Friday
+        friday: Friday
+        mon: Monday
+        monday: Monday
+        sat: Saturday
+        saturday: Saturday
+        sun: Sunday
+        sunday: Sunday
+        thu: Thursday
+        thursday: Thursday
+        tue: Tuesday
+        tuesday: Tuesday
+        wed: Wednesday
+        wednesday: Wednesday
     day_part:
       default:
         day: Mid-day

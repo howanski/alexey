@@ -23,12 +23,13 @@ class AlexeyTranslator extends AbstractExtension
     {
         return [
             new TwigFilter('localised', [$this, 'translateString']),
+            new TwigFilter('localisedTime', [$this, 'translateTime']),
         ];
     }
 
     public function translateTime(
-        string $timeUnit,
         string $value,
+        string $timeUnit,
         string $type = 'default',
     ): string {
         $translationId = strtolower('app.time.' . $timeUnit . '.' . $type . '.' . $value);
