@@ -1,27 +1,34 @@
 #!/bin/bash
 clear
-echo "Stopping containers..."
-docker stop alexey-php
-docker stop alexey-phpmyadmin
-docker stop alexey-nginx
-docker stop alexey-mysql
-clear
-echo "Removing containers..."
-docker rm alexey-php
-docker rm alexey-phpmyadmin
-docker rm alexey-nginx
-docker rm alexey-mysql
-clear
-echo "Removing images..."
-docker rmi alexey_php
-#docker image prune
-clear
-echo "Removing data volumes..."
-docker volume rm alexey_database_volume
-#docker volume prune
-echo "Removing networks..."
-docker network rm alexey_network
-clear
-echo "------------------------------------"
-echo "------ [ ALEXEY UNINSTALLED ] ------"
-echo "------------------------------------"
+read -p "Are you sure you want to uninstall alexey? <y/N> " prompt
+if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
+then
+    clear
+    echo "Stopping containers..."
+    docker stop alexey-php
+    docker stop alexey-phpmyadmin
+    docker stop alexey-nginx
+    docker stop alexey-mysql
+    clear
+    echo "Removing containers..."
+    docker rm alexey-php
+    docker rm alexey-phpmyadmin
+    docker rm alexey-nginx
+    docker rm alexey-mysql
+    clear
+    echo "Removing images..."
+    docker rmi alexey_php
+    #docker image prune
+    clear
+    echo "Removing data volumes..."
+    docker volume rm alexey_database_volume
+    #docker volume prune
+    echo "Removing networks..."
+    docker network rm alexey_network
+    clear
+    echo "------------------------------------"
+    echo "------ [ ALEXEY UNINSTALLED ] ------"
+    echo "------------------------------------"
+else
+    exit 0
+fi
