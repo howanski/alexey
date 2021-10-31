@@ -24,6 +24,8 @@ class AlexeyTranslator extends AbstractExtension
         return [
             new TwigFilter('localised', [$this, 'translateString']),
             new TwigFilter('localisedTime', [$this, 'translateTime']),
+            new TwigFilter('localisedFormLabel', [$this, 'translateFormLabel']),
+            new TwigFilter('localisedFormValue', [$this, 'translateFormValue']),
         ];
     }
 
@@ -70,6 +72,59 @@ class AlexeyTranslator extends AbstractExtension
         }
         throw new MissingResourceException(
             message: 'String ' . $translationId
+                . ' not translated in module ' . $module . ' !',
+        );
+    }
+
+    public function translateFormLabel(string $label, string $module): string
+    {
+
+        $translationId = strtolower('app.modules.'
+            . $module
+            . '.forms.labels.'
+            . $label);
+
+        if ($this->isTranslated($translationId)) {
+            return $this->translator->trans($translationId);
+        }
+
+        $translationCommonId = strtolower('app.modules.'
+            . self::DEFAULT_TRANSLATION_MODULE
+            . '.forms.labels.'
+            . $label);
+
+        if ($this->isTranslated($translationCommonId)) {
+            return $this->translator->trans($translationCommonId);
+        }
+
+        throw new MissingResourceException(
+            'Label ' . $label . ' not translated in module '
+                . $module . ' !'
+        );
+    }
+
+    public function translateFormValue(string $value, string $field, string $module): string
+    {
+        $translationId = strtolower('app.modules.'
+            . $module
+            . '.forms.values.' . $field . '.'
+            . $value);
+
+        if ($this->isTranslated($translationId)) {
+            return $this->translator->trans($translationId);
+        }
+
+        $translationCommonId = strtolower('app.modules.'
+            . self::DEFAULT_TRANSLATION_MODULE
+            . '.forms.values.' . $field . '.'
+            . $value);
+
+
+        if ($this->isTranslated($translationCommonId)) {
+            return $this->translator->trans($translationCommonId);
+        }
+        throw new MissingResourceException(
+            message: 'Value ' . $value . ' for field ' . $field
                 . ' not translated in module ' . $module . ' !',
         );
     }

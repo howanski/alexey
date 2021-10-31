@@ -71,6 +71,8 @@ class AlexeySideMenuProvider extends AbstractExtension
 
         $sideMenu = $this->addNetworkMenuRecords($sideMenu);
 
+        $sideMenu = $this->addMoneyMenuRecords($sideMenu);
+
         return $sideMenu;
     }
 
@@ -136,6 +138,35 @@ class AlexeySideMenuProvider extends AbstractExtension
         );
 
         $menuItem->setChildren([$networkMachines, $networkUsage, $networkTransmission]);
+        $sideMenu[] = $menuItem;
+
+        return $sideMenu;
+    }
+
+    private function addMoneyMenuRecords(array $sideMenu): array
+    {
+        $route = '/money';
+        $menuItem = new SideMenuItem(
+            name: $this->translator->translateString(
+                translationId: 'menu_record',
+                module: 'money'
+            ),
+            destination: $route,
+            icon: 'fas fa-search-dollar',
+            isActive: $this->isActiveRoute($route),
+        );
+
+        $route = $this->router->generate('money_node_index');
+        $moneyNodes = new SideMenuItem(
+            name: $this->translator->translateString(
+                translationId: 'menu_record_nodes',
+                module: 'money'
+            ),
+            destination: $route,
+            isActive: $this->isActiveRoute($route),
+        );
+
+        $menuItem->setChildren([$moneyNodes]);
         $sideMenu[] = $menuItem;
 
         return $sideMenu;

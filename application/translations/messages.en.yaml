@@ -3,6 +3,7 @@ app:
     common:
       flashes:
         saved: "Successfully saved"
+        deleted: "Successfully deleted"
       forms:
         labels:
           password: Password
@@ -25,6 +26,7 @@ app:
         logout: Logout
         mac_address: "MAC Address"
         name: Name
+        new: New
         save: Save
         show: Show
         simulation: Simulation
@@ -90,6 +92,24 @@ app:
         throttling_by_optimal_speed: "Throttling by optimal speed"
         throttling: Throttling
         traffic_left: "Traffic left"
+    money:
+      strings:
+        balance: Balance
+        menu_record_nodes: Nodes
+        menu_record: Money
+      forms:
+        labels:
+          name: Name
+          node_type: "Node type"
+          notes: "Notes"
+        values:
+          node_type:
+            bank_account: "Bank account"
+            income_source: "Income source"
+            outcome: Outcome
+            cash_stash: Cash
+            service: Service
+            black_hole: Black hole
     network:
       strings:
         menu_record: Network

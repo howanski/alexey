@@ -21,13 +21,22 @@ class MoneyNode
     public const NODE_TYPE_SERVICE = 4;
     public const NODE_TYPE_BLACK_HOLE = 5;
 
-    private const NODE_TYPES = [
+    public const NODE_TYPES = [
         self::NODE_TYPE_BANK_ACCOUNT,
         self::NODE_TYPE_INCOME_SOURCE,
         self::NODE_TYPE_OUTCOME,
         self::NODE_TYPE_CASH_STASH,
         self::NODE_TYPE_SERVICE,
         self::NODE_TYPE_BLACK_HOLE,
+    ];
+
+    public const NODE_TYPE_CODES = [
+        self::NODE_TYPE_BANK_ACCOUNT => 'bank_account',
+        self::NODE_TYPE_INCOME_SOURCE => 'income_source',
+        self::NODE_TYPE_OUTCOME => 'outcome',
+        self::NODE_TYPE_CASH_STASH => 'cash_stash',
+        self::NODE_TYPE_SERVICE => 'service',
+        self::NODE_TYPE_BLACK_HOLE => 'black_hole',
     ];
 
     #[ORM\Id]
@@ -45,14 +54,18 @@ class MoneyNode
     #[ORM\Column(type: 'smallint', nullable: false)]
     private int $nodeType;
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    private string $notes;
+
     #[ORM\OneToMany(mappedBy: 'targetNode', targetEntity: MoneyTransfer::class)]
     private $incomingTransfers;
 
     #[ORM\OneToMany(mappedBy: 'sourceNode', targetEntity: MoneyTransfer::class)]
     private $outgoingTransfers;
 
-    public function __construct()
+    public function __construct(User $user)
     {
+        $this->user = $user;
         $this->incomingTransfers = new ArrayCollection();
         $this->outgoingTransfers = new ArrayCollection();
     }
@@ -92,12 +105,6 @@ class MoneyNode
         return $this->user;
     }
 
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-        return $this;
-    }
-
     /**
      * @return Collection|MoneyTransfer[]
      */
@@ -117,12 +124,34 @@ class MoneyNode
     public function getBalance(): float
     {
         $balance = 0.0;
+        /**
+         * @var MoneyTransfer
+         */
         foreach ($this->getIncomingTransfers() as $incomingTransfer) {
             $balance = $balance + $incomingTransfer->getExchangedAmount();
         }
+        /**
+         * @var MoneyTransfer
+         */
         foreach ($this->getOutgoingTransfers() as $outgoingTransfer) {
             $balance = $balance - $outgoingTransfer->getAmount();
         }
         return $balance;
+    }
+
+    public function getTypeCode(): string
+    {
+        return self::NODE_TYPE_CODES[$this->getNodeType()];
+    }
+
+    public function getNotes(): string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(string $notes): self
+    {
+        $this->notes = $notes;
+        return $this;
     }
 }

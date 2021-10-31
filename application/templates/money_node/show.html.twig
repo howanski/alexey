@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alexey | {{ 'menu_record_nodes'|localised('money') }} | {{ money_node.name }}{% endblock %}
+
+{% block pageContent %}
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('money') }} ~> <a href="{{ path('money_node_index') }}" class="text-info">{{ 'menu_record_nodes'|localised('money') }}</a> ~> #{{ money_node.id }} - {{ money_node.name }}</h1>
+	</div>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ money_node.id }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'name'|localisedFormLabel('money') }}</th>
+                <td>{{ money_node.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'node_type'|localisedFormLabel('money') }}</th>
+                <td>
+                    {{ money_node.typeCode|localisedFormValue('node_type', 'money') }}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'balance'|localised('money') }}</th>
+                <td>{{ money_node.balance }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'notes'|localisedFormLabel('money') }}</th>
+                <td>{{ money_node.notes }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('money_node_index') }}"  class="btn btn-success">{{ 'back'|localised }}</a>
+    <a href="{{ path('money_node_edit', {'id': money_node.id}) }}"  class="btn btn-warning">{{ 'edit'|localised }}</a>
+    {{ include('money_node/_delete_form.html.twig') }}
+{% endblock %}

@@ -3,6 +3,7 @@ app:
     common:
       flashes:
         saved: "Pomyślnie zapisano"
+        deleted: "Pomyślnie usunięto"
       forms:
         labels:
           password: Hasło
@@ -25,6 +26,7 @@ app:
         logout: Wyloguj
         mac_address: "Adres MAC"
         name: Nazwa
+        new: Nowy
         save: Zapisz
         show: Pokaż
         simulation: Symulacja
@@ -90,6 +92,24 @@ app:
         throttling_by_optimal_speed: "Dławiene wg. optymalnej prędkości"
         throttling: Dławienie
         traffic_left: "Pozostały transfer"
+    money:
+      strings:
+        balance: Saldo
+        menu_record_nodes: Węzły
+        menu_record: Finanse
+      forms:
+        labels:
+          name: Nazwa
+          node_type: "Typ węzła"
+          notes: "Notatki"
+        values:
+          node_type:
+            bank_account: "Konto bankowe"
+            income_source: "Źródło dochodu"
+            outcome: Wydatki
+            cash_stash: Gotówka
+            service: Usługa
+            black_hole: Czarna dziura
     network:
       strings:
         menu_record: Sieć
