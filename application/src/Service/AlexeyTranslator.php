@@ -26,13 +26,18 @@ class AlexeyTranslator extends AbstractExtension
         ];
     }
 
-    /**
-     * @deprecated
-     * Legacy method
-     */
-    public function trans(string $id): string
-    {
-        return $this->translator->trans($id);
+    public function translateTime(
+        string $timeUnit,
+        string $value,
+        string $type = 'default',
+    ): string {
+        $translationId = strtolower('app.time.' . $timeUnit . '.' . $type . '.' . $value);
+        if ($this->isTranslated($translationId)) {
+            return $this->translator->trans($translationId);
+        }
+        throw new MissingResourceException(
+            message: 'Time translation ' . $translationId . ' not found!',
+        );
     }
 
     public function translateFlash(string $translationId, string $module = self::DEFAULT_TRANSLATION_MODULE): string

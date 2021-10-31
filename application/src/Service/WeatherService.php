@@ -11,23 +11,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class WeatherService
 {
-    private $dayTranslations = [];
-
     public function __construct(
         private HttpClientInterface $client,
         private SimpleSettingsService $simpleSettingsService,
         private SimpleCacheService $simpleCacheService,
         private AlexeyTranslator $translator,
     ) {
-        $this->dayTranslations = [
-            'Mon' => $translator->trans('app.time.day_short.monday'),
-            'Tue' => $translator->trans('app.time.day_short.tuesday'),
-            'Wed' => $translator->trans('app.time.day_short.wednesday'),
-            'Thu' => $translator->trans('app.time.day_short.thursday'),
-            'Fri' => $translator->trans('app.time.day_short.friday'),
-            'Sat' => $translator->trans('app.time.day_short.saturday'),
-            'Sun' => $translator->trans('app.time.day_short.sunday'),
-        ];
     }
 
     public function getWeather(): OpenWeatherOneApiResponse
@@ -55,56 +44,51 @@ class WeatherService
         ];
         $sourceData = $this->getWeather()->getWeatherReadable(locale: $locale);
         foreach ($sourceData['hourly'] as $hour) {
-            $chartData['hourly']['labels'][] = $this->dayTrans($hour['time']->format('D H:i'));
+            /**
+             * @var Carbon $time
+             */
+            $time = $hour['time'];
+            $hourString = $time->format('H:i');
+            $day = $time->format('l');
+            $label = $this->translator->translateTime(
+                timeUnit: 'day',
+                type: 'short',
+                value: $day,
+            );
+            $label .= ' ' . $hourString;
+            $chartData['hourly']['labels'][] = $label;
             $chartData['hourly']['datasets']['temperature']['data'][] = round($hour['temperature']);
             $chartData['hourly']['datasets']['feels_like']['data'][] = round($hour['temperature_feels_like']);
             $chartData['hourly']['datasets']['rain']['data'][] = round($hour['rain'] + $hour['snow']);
             $chartData['hourly']['datasets']['wind_speed']['data'][] =
                 round($this->metersPerSecondToKpH($hour['wind_speed']));
         }
-        $timeLayout = [
-            [
-                'key' => 'morn',
-                'name' => $this->translator->trans('app.time.of_day.morning'),
-            ],
-            [
-                'key' => 'day',
-                'name' => $this->translator->trans('app.time.of_day.day')
-            ],
-            [
-                'key' => 'eve',
-                'name' => $this->translator->trans('app.time.of_day.evening')
-            ],
-            [
-                'key' => 'night',
-                'name' => $this->translator->trans('app.time.of_day.night')
-            ],
-        ];
+
+        $dayPartsCodes = ['morn', 'day', 'eve', 'night'];
+
         foreach ($sourceData['daily'] as $day) {
-            foreach ($timeLayout as $layout) {
-                $chartData['daily']['labels'][] = $this->dayTrans($day['date']) . ' ' . $layout['name'];
+            foreach ($dayPartsCodes as $dayPart) {
+                $label = $this->translator->translateTime(
+                    timeUnit: 'day',
+                    type: 'short',
+                    value: $day['date'],
+                );
+                $label .= ' ';
+                $label .= $this->translator->translateTime(
+                    timeUnit: 'day_part',
+                    value: $dayPart,
+                );
+                $chartData['daily']['labels'][] = $label;
                 $chartData['daily']['datasets']['temperature']['data'][] =
-                    round($day['temperature_detailed'][$layout['key']]);
+                    round($day['temperature_detailed'][$dayPart]);
                 $chartData['daily']['datasets']['feels_like']['data'][] =
-                    round($day['temperature_feels_like'][$layout['key']]);
+                    round($day['temperature_feels_like'][$dayPart]);
                 $chartData['daily']['datasets']['rain']['data'][] = round($day['rain'] + $day['snow']);
                 $chartData['daily']['datasets']['wind_speed']['data'][] =
                     round($this->metersPerSecondToKpH($day['wind_speed']));
             }
         }
         return $chartData;
-    }
-
-    private function dayTrans(string $poorlyFormattedDate): string
-    {
-        foreach ($this->dayTranslations as $key => $val) {
-            $poorlyFormattedDate = str_replace(
-                search: $key,
-                replace: $val,
-                subject: $poorlyFormattedDate,
-            );
-        }
-        return $poorlyFormattedDate;
     }
 
     private function getEmptyDatasetsForChart(): array

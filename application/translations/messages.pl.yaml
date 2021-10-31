@@ -118,16 +118,27 @@ app:
         temperature: Temperatura
         wind_speed: Wiatr
   time:
-    day_short:
-      friday: Pt
-      monday: Pon
-      saturday: Sob
-      sunday: Nd
-      thursday: Czw
-      tuesday: Wt
-      wednesday: Śr
-    of_day:
-      day: Poł.
-      evening: Pop.
-      morning: Rano
-      night: Noc
+    day:
+      short:
+        fri: Pt
+        friday: Pt
+        mon: Pon
+        monday: Pon
+        sat: Sob
+        saturday: Sob
+        sun: Nd
+        sunday: Nd
+        thu: Czw
+        thursday: Czw
+        tue: Wt
+        tuesday: Wt
+        wed: Śr
+        wednesday: Śr
+    day_part:
+      default:
+        day: Poł.
+        eve: Pop.
+        evening: Pop.
+        morn: Rano
+        morning: Rano
+        night: Noc

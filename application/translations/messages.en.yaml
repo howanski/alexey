@@ -118,16 +118,27 @@ app:
         temperature: Temperature
         wind_speed: "Wind speed"
   time:
-    day_short:
-      friday: Fri
-      monday: Mon
-      saturday: Sat
-      sunday: Sun
-      thursday: Thu
-      tuesday: Tue
-      wednesday: Wed
-    of_day:
-      day: Mid-day
-      evening: Evening
-      morning: Morning
-      night: Night
+    day:
+      short:
+        fri: Fri
+        friday: Fri
+        mon: Mon
+        monday: Mon
+        sat: Sat
+        saturday: Sat
+        sun: Sun
+        sunday: Sun
+        thu: Thu
+        thursday: Thu
+        tue: Tue
+        tuesday: Tue
+        wed: Wed
+        wednesday: Wed
+    day_part:
+      default:
+        day: Mid-day
+        eve: Evening
+        evening: Evening
+        morn: Morning
+        morning: Morning
+        night: Night
