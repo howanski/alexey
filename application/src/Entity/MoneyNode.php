@@ -18,12 +18,16 @@ class MoneyNode
     public const NODE_TYPE_INCOME_SOURCE = 1;
     public const NODE_TYPE_OUTCOME = 2;
     public const NODE_TYPE_CASH_STASH = 3;
+    public const NODE_TYPE_SERVICE = 4;
+    public const NODE_TYPE_BLACK_HOLE = 5;
 
     private const NODE_TYPES = [
         self::NODE_TYPE_BANK_ACCOUNT,
         self::NODE_TYPE_INCOME_SOURCE,
         self::NODE_TYPE_OUTCOME,
         self::NODE_TYPE_CASH_STASH,
+        self::NODE_TYPE_SERVICE,
+        self::NODE_TYPE_BLACK_HOLE,
     ];
 
     #[ORM\Id]
