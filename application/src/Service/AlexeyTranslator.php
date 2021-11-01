@@ -39,7 +39,7 @@ class AlexeyTranslator extends AbstractExtension
             return $this->translator->trans($translationId);
         }
         throw new MissingResourceException(
-            message: 'Time translation ' . $translationId . ' not found!',
+            message: 'Time translation ' . $translationId . ' not found! Example: ' . $translationId,
         );
     }
 
@@ -56,7 +56,7 @@ class AlexeyTranslator extends AbstractExtension
         }
         throw new MissingResourceException(
             message: 'Flash ' . $translationId
-                . ' not translated in module ' . $module . ' !',
+                . ' not translated in module ' . $module . ' ! Example: ' . $fullId,
         );
     }
 
@@ -72,7 +72,7 @@ class AlexeyTranslator extends AbstractExtension
         }
         throw new MissingResourceException(
             message: 'String ' . $translationId
-                . ' not translated in module ' . $module . ' !',
+                . ' not translated in module ' . $module . ' ! Example: ' . $fullId,
         );
     }
 
@@ -99,7 +99,7 @@ class AlexeyTranslator extends AbstractExtension
 
         throw new MissingResourceException(
             'Label ' . $label . ' not translated in module '
-                . $module . ' !'
+                . $module . ' ! Example: ' . $translationId
         );
     }
 
@@ -125,7 +125,34 @@ class AlexeyTranslator extends AbstractExtension
         }
         throw new MissingResourceException(
             message: 'Value ' . $value . ' for field ' . $field
-                . ' not translated in module ' . $module . ' !',
+                . ' not translated in module ' . $module . ' ! Example: ' . $translationId,
+        );
+    }
+
+    public function translateFormHelp(string $field, string $module): string
+    {
+
+        $translationId = strtolower('app.modules.'
+            . $module
+            . '.forms.help.'
+            . $field);
+
+        if ($this->isTranslated($translationId)) {
+            return $this->translator->trans($translationId);
+        }
+
+        $translationCommonId = strtolower('app.modules.'
+            . self::DEFAULT_TRANSLATION_MODULE
+            . '.forms.help.'
+            . $field);
+
+        if ($this->isTranslated($translationCommonId)) {
+            return $this->translator->trans($translationCommonId);
+        }
+
+        throw new MissingResourceException(
+            'Helper for field ' . $field . ' not translated in module '
+                . $module . ' ! Example: ' . $translationId
         );
     }
 

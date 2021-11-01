@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class MoneyNodeType extends CommonFormType
 {
@@ -28,17 +29,26 @@ class MoneyNodeType extends CommonFormType
                 'label' => $this->getLabelTrans(label: 'name'),
                 'priority' => 0,
                 'required' => true,
+                'constraints' => [
+                    new NotBlank()
+                ],
             ])
             ->add(child: 'nodeType', type: ChoiceType::class, options: [
                 'label' => $this->getLabelTrans(label: 'node_type'),
                 'priority' => -1,
                 'choices' => $typeChoices,
                 'required' => true,
+                'constraints' => [
+                    new NotBlank()
+                ],
             ])
             ->add(child: 'notes', type: TextareaType::class, options: [
                 'label' => $this->getLabelTrans(label: 'notes'),
                 'priority' => -2,
                 'required' => true,
+                'constraints' => [
+                    new NotBlank()
+                ],
             ]);
     }
 

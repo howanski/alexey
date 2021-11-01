@@ -44,6 +44,18 @@ class CommonFormType extends AbstractType
         );
     }
 
+    protected function getHelpTrans(string $field): string
+    {
+        if (is_null($this->translationModule)) {
+            throw new BadMethodCallException('setTranslationModule function not called!');
+        }
+
+        return $this->translator->translateFormHelp(
+            field: $field,
+            module: $this->translationModule,
+        );
+    }
+
     protected function setTranslationModule(string $moduleName): void
     {
         $this->translationModule = $moduleName;

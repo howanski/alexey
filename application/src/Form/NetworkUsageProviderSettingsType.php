@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use App\Form\CommonFormType;
 use App\Service\NetworkUsageService;
 use App\Service\SimpleSettingsService;
 use App\Class\NetworkUsageProviderSettings;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -30,17 +32,27 @@ class NetworkUsageProviderSettingsType extends CommonFormType
                     NetworkUsageService::NETWORK_USAGE_PROVIDER_NONE,
                     $this->getValueTrans(field: 'provider_type', value: 'hilink') =>
                     NetworkUsageService::NETWORK_USAGE_PROVIDER_HUAWEI
-                ]
+                ],
+                'required' => true,
+                'constraints' => [
+                    new NotBlank()
+                ],
             ])
             ->add(child: 'address', type: TextType::class, options: [
                 'label' => $this->getLabelTrans(label: 'address'),
                 'priority' => -1,
                 'required' => true,
+                'constraints' => [
+                    new NotBlank()
+                ],
             ])
             ->add(child: 'password', type: TextType::class, options: [
                 'label' => $this->getLabelTrans(label: 'password'),
                 'priority' => -2,
                 'required' => true,
+                'constraints' => [
+                    new NotBlank()
+                ],
             ])
             ->add(child: 'showOnDashboard', type: ChoiceType::class, options: [
                 'label' => $this->getLabelTrans(label: 'show_on_dashboard'),
@@ -50,7 +62,7 @@ class NetworkUsageProviderSettingsType extends CommonFormType
                     => SimpleSettingsService::UNIVERSAL_FALSE,
                     $this->getValueTrans(field: 'show_on_dashboard', value: 'show')
                     => SimpleSettingsService::UNIVERSAL_TRUTH,
-                ]
+                ],
             ]);
     }
 

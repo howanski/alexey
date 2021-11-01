@@ -38,6 +38,8 @@ app:
         menu_record: Dashboard
     network_machines:
       forms:
+        help:
+          wake_destination: "I.e. 192.168.1.255 for addresses in 192.168.1.X"
         labels:
           mac_address: "Mac Address"
           name: Name
@@ -125,8 +127,12 @@ app:
         menu_record: Settings
     weather:
       forms:
+        help:
+          latitude: "Format: XX.XX"
+          longitude: "Format: XX.XX"
+          api_key: 'Insert your <a href="https://home.openweathermap.org/api_keys" target="new">OpenWeather</a> key'
         labels:
-          api_key: "OpenWeather API key"
+          api_key: "API key"
           latitude: Latitude
           longitude: Longitude
       strings:

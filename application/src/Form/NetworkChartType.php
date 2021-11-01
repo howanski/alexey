@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
@@ -40,7 +41,11 @@ class NetworkChartType extends CommonFormType
         $builder
             ->add('chartType', ChoiceType::class, [
                 'choices' => $choices,
-                'label' => false
+                'label' => false,
+                'required' => true,
+                'constraints' => [
+                    new NotBlank()
+                ],
             ]);
     }
 

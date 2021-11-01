@@ -48,9 +48,9 @@ final class AlexeySideMenuProviderTest extends TestCase
         );
 
         $this->assertEquals(
-            expected: 3,
+            expected: 4,
             actual: sizeof($menu),
-            message: '---!---> Not enough main menu items',
+            message: '---!---> Main menu items count changed',
         );
 
         $menuConstruction = [
@@ -81,6 +81,17 @@ final class AlexeySideMenuProviderTest extends TestCase
                     [], //TODO: deeper
                     [],
                     [],
+                ],
+                'isHeading' => false,
+                'isDivider' => false,
+            ],
+            [
+                'icon' => 'fas fa-search-dollar',
+                'isActive' => false,
+                'name' => 'trans_menu_record',
+                'destination' => '/money',
+                'children' => [
+                    [], //TODO: deeper
                 ],
                 'isHeading' => false,
                 'isDivider' => false,

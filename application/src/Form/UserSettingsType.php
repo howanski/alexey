@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class UserSettingsType extends CommonFormType
@@ -30,9 +31,12 @@ class UserSettingsType extends CommonFormType
                 child: 'locale',
                 type: ChoiceType::class,
                 options: [
-                    'required' => true,
                     'choices' => $langChoices,
                     'label' => $this->getLabelTrans(label: 'locale'),
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank()
+                    ],
                 ],
             );
     }

@@ -38,6 +38,8 @@ app:
         menu_record: Sterownia
     network_machines:
       forms:
+        help:
+          wake_destination: "N.p. 192.168.1.255 dla adresów 192.168.1.X"
         labels:
           mac_address: "Adres MAC"
           name: Nazwa
@@ -125,8 +127,12 @@ app:
         menu_record: Ustawienia
     weather:
       forms:
+        help:
+          latitude: "Format: XX.XX"
+          longitude: "Format: XX.XX"
+          api_key: 'Wprowadź swój klucz <a href="https://home.openweathermap.org/api_keys" target="new">OpenWeather</a>'
         labels:
-          api_key: "Klucz API OpenWeather"
+          api_key: "Klucz API"
           latitude: "Szerokość geograficzna"
           longitude: "Długość geograficzna"
       strings:
