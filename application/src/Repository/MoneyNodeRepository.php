@@ -20,13 +20,18 @@ class MoneyNodeRepository extends ServiceEntityRepository
         parent::__construct($registry, MoneyNode::class);
     }
 
-    public function getAllUserNodes(User $user)
+    public function getAllUserNodes(User $user, int $groupId = null)
     {
-        return $this->createQueryBuilder('mn')
-        ->andWhere('mn.user = :user')
-        ->setParameter('user', $user->getId())
-        ->orderBy('mn.name', 'ASC')
-        ->getQuery()
-        ->getResult();
+        $qb = $this->createQueryBuilder('mn')
+            ->andWhere('mn.user = :user')
+            ->setParameter('user', $user->getId())
+            ->orderBy('mn.name', 'ASC');
+        if (false === is_null($groupId)) {
+            $qb->andWhere('mn.nodeGroup = :groupId')
+                ->setParameter('groupId', $groupId);
+        }
+        return $qb
+            ->getQuery()
+            ->getResult();
     }
 }

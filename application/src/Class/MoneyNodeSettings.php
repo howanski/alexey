@@ -54,4 +54,29 @@ class MoneyNodeSettings
         }
         $simpleSettingsService->saveSettings(settings: $conf, user: $this->user);
     }
+
+    public function getChoices(): array
+    {
+        $choices = [];
+        for ($i = 0; $i < self::GROUPS_MAX; $i++) {
+            $val = $this->{'name' . $i};
+            if (!(empty($val))) {
+                $choices[$val] = $i;
+            }
+        }
+        if (empty($choices)) {
+            $choices['---'] = 0;
+        }
+        ksort($choices);
+        return $choices;
+    }
+
+    public function getGroupName(int $groupId): string
+    {
+        $val = $this->{'name' . $groupId};
+        if (empty($val)) {
+            $val = '---';
+        }
+        return $val;
+    }
 }

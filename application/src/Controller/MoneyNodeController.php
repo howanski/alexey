@@ -19,19 +19,36 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/money/node')]
 class MoneyNodeController extends AbstractController
 {
-    #[Route('/list', name: 'money_node_index', methods: ['GET'])]
-    public function index(MoneyNodeRepository $moneyNodeRepository): Response
-    {
+    #[Route('/list/{groupId}', name: 'money_node_index', methods: ['GET'])]
+    public function index(
+        MoneyNodeRepository $moneyNodeRepository,
+        SimpleSettingsService $simpleSettingsService,
+        int $groupId = null,
+    ): Response {
+        $settings = new MoneyNodeSettings($this->getUser());
+        $settings->selfConfigure($simpleSettingsService);
         return $this->render('money_node/index.html.twig', [
-            'money_nodes' => $moneyNodeRepository->getAllUserNodes($this->getUser()),
+            'money_nodes' => $moneyNodeRepository->getAllUserNodes(
+                user: $this->getUser(),
+                groupId: $groupId,
+            ),
+            'node_group' => $groupId,
+            'settings' => $settings
         ]);
     }
 
     #[Route('/new', name: 'money_node_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, AlexeyTranslator $translator): Response
-    {
+    public function new(
+        Request $request,
+        AlexeyTranslator $translator,
+        SimpleSettingsService $simpleSettingsService,
+    ): Response {
         $moneyNode = new MoneyNode($this->getUser());
-        $form = $this->createForm(MoneyNodeType::class, $moneyNode);
+        $settings = new MoneyNodeSettings($this->getUser());
+        $settings->selfConfigure($simpleSettingsService);
+        $form = $this->createForm(type: MoneyNodeType::class, data: $moneyNode, options: [
+            'node_group_choices' => $settings->getChoices(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -49,19 +66,30 @@ class MoneyNodeController extends AbstractController
     }
 
     #[Route('/show/{id}', name: 'money_node_show', methods: ['GET'])]
-    public function show(MoneyNode $moneyNode): Response
+    public function show(MoneyNode $moneyNode, SimpleSettingsService $simpleSettingsService): Response
     {
         //TODO: check user
+        $settings = new MoneyNodeSettings($this->getUser());
+        $settings->selfConfigure($simpleSettingsService);
         return $this->render('money_node/show.html.twig', [
             'money_node' => $moneyNode,
+            'settings' => $settings,
         ]);
     }
 
     #[Route('/edit/{id}', name: 'money_node_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, MoneyNode $moneyNode, AlexeyTranslator $translator): Response
-    {
+    public function edit(
+        Request $request,
+        MoneyNode $moneyNode,
+        AlexeyTranslator $translator,
+        SimpleSettingsService $simpleSettingsService,
+    ): Response {
         //TODO: check user
-        $form = $this->createForm(MoneyNodeType::class, $moneyNode);
+        $settings = new MoneyNodeSettings($this->getUser());
+        $settings->selfConfigure($simpleSettingsService);
+        $form = $this->createForm(type: MoneyNodeType::class, data: $moneyNode, options: [
+            'node_group_choices' => $settings->getChoices(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -24,6 +24,12 @@
                 </td>
             </tr>
             <tr>
+                <th>{{ 'node_group'|localisedFormLabel('money') }}</th>
+                <td>
+					{{ settings.groupName(money_node.nodeGroup) }}
+                </td>
+            </tr>
+            <tr>
                 <th>{{ 'balance'|localised('money') }}</th>
                 <td>{{ money_node.balance }}</td>
             </tr>

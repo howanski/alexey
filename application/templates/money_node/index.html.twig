@@ -6,9 +6,20 @@
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('money') }}
-		 ~> {{ 'menu_record_nodes'|localised('money') }}
+		 ~> <a href="{{ path('money_node_index') }}" class="text-info">{{ 'menu_record_nodes'|localised('money') }}</a>
 		 | <a href="{{ path('money_node_settings') }}" class="fas fa-cog text-info"></a></h1>
 	</div>
+	<nav class="nav nav-tabs nav-fill">
+	{% set groups = settings.choices %}
+	{% if groups|length > 1 %}
+		{% for groupName, groupId in groups %}
+			<a class="nav-item nav-link text-primary{% if groupId == node_group and node_group is not null %} active{% endif %}"
+			href="{{ path('money_node_index', { groupId: groupId }) }}">
+				{{ groupName }}
+			</a>
+		{% endfor %}
+	{% endif %}
+	</nav>
 	<div class="row">
 		<div class="col-xl-12 col-lg-12">
 			<div class="card shadow bg-dark mb-4">
@@ -21,6 +32,9 @@
 							<tr>
 								<th>{{ 'name'|localised }}</th>
 								<th>{{ 'node_type'|localisedFormLabel('money') }}</th>
+								{% if node_group is null %}
+									<th>{{ 'node_group'|localisedFormLabel('money') }}</th>
+								{% endif %}
 								<th>{{ 'balance'|localised('money') }}</th>
 								<th>{{ 'actions'|localised }}</th>
 							</tr>
@@ -30,6 +44,9 @@
 								<tr>
 									<td>{{ money_node.name }}</td>
 									<td>{{ money_node.typeCode|localisedFormValue('node_type', 'money') }}</td>
+									{% if node_group is null %}
+										<td>{{ settings.groupName(money_node.nodeGroup) }}</td>
+									{% endif %}
 									<td>{{ money_node.balance }}</td>
 									<td>
 										<a href="{{ path('money_node_show', {'id': money_node.id}) }}" class="btn btn-sm btn-success">{{ 'show'|localised }}</a>

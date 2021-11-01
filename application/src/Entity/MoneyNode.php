@@ -60,6 +60,9 @@ class MoneyNode
     #[ORM\Column(type: 'smallint', nullable: false)]
     private int $nodeType;
 
+    #[ORM\Column(type: 'smallint', nullable: false, options: ['default' => 0])]
+    private int $nodeGroup = 0;
+
     #[ORM\Column(type: 'text', nullable: true)]
     private string $notes;
 
@@ -181,5 +184,16 @@ class MoneyNode
             return false;
         }
         return true;
+    }
+
+    public function getNodeGroup(): int
+    {
+        return $this->nodeGroup;
+    }
+
+    public function setNodeGroup(int $nodeGroup): self
+    {
+        $this->nodeGroup = $nodeGroup;
+        return $this;
     }
 }

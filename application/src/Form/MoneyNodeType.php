@@ -3,11 +3,12 @@
 namespace App\Form;
 
 use App\Entity\MoneyNode;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class MoneyNodeType extends CommonFormType
 {
@@ -43,9 +44,18 @@ class MoneyNodeType extends CommonFormType
                     new NotBlank()
                 ],
             ])
+            ->add(child: 'nodeGroup', type: ChoiceType::class, options: [
+                'label' => $this->getLabelTrans(label: 'node_group'),
+                'priority' => -2,
+                'choices' => $options['node_group_choices'],
+                'required' => true,
+                'constraints' => [
+                    new NotNull(),
+                ],
+            ])
             ->add(child: 'notes', type: TextareaType::class, options: [
                 'label' => $this->getLabelTrans(label: 'notes'),
-                'priority' => -2,
+                'priority' => -3,
                 'required' => true,
                 'constraints' => [
                     new NotBlank()
@@ -57,6 +67,9 @@ class MoneyNodeType extends CommonFormType
     {
         $resolver->setDefaults([
             'data_class' => MoneyNode::class,
+            'node_group_choices' => [
+                '---' => 0,
+            ]
         ]);
     }
 }

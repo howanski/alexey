@@ -122,6 +122,7 @@ app:
           source_node: "Węzeł źródłowy"
           target_node: "Węzeł docelowy"
           money_node_group_name: "Nazwa grupy"
+          node_group: "Grupa węzłów"
         values:
           node_type:
             bank_account: "Konto bankowe"

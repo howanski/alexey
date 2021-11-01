@@ -122,6 +122,7 @@ app:
           source_node: "Source node"
           target_node: "Target node"
           money_node_group_name: "Group name"
+          node_group: "Node group"
         values:
           node_type:
             bank_account: "Bank account"
