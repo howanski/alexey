@@ -31,26 +31,14 @@ class MoneyTransfer
     private int $amount;
 
     #[ORM\Column(type: 'float', nullable: false)]
-    private float $exchangeRate;
+    private float $exchangeRate = 1.0;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
 
-    public function __construct(
-        MoneyNode $sourceNode,
-        MoneyNode $targetNode,
-        float $amount,
-        float $exchangeRate = 1.0,
-        \DateTimeInterface $operationDate = null,
-    ) {
-        if (is_null($operationDate)) {
-            $operationDate = new \DateTime('today');
-        }
-        $this->setSourceNode($sourceNode);
-        $this->setTargetNode($targetNode);
-        $this->setAmount($amount);
-        $this->setExchangeRate($exchangeRate);
-        $this->setOperationDate($operationDate);
+    public function __construct()
+    {
+        $this->operationDate = new \DateTime('today');
     }
 
     public function getId(): ?int
@@ -63,7 +51,7 @@ class MoneyTransfer
         return $this->sourceNode;
     }
 
-    private function setSourceNode(MoneyNode $sourceNode): self
+    public function setSourceNode(MoneyNode $sourceNode): self
     {
         $this->sourceNode = $sourceNode;
         return $this;
@@ -74,7 +62,7 @@ class MoneyTransfer
         return $this->targetNode;
     }
 
-    private function setTargetNode(MoneyNode $targetNode): self
+    public function setTargetNode(MoneyNode $targetNode): self
     {
         $this->targetNode = $targetNode;
         return $this;
@@ -85,7 +73,7 @@ class MoneyTransfer
         return $this->operationDate;
     }
 
-    private function setOperationDate(\DateTimeInterface $operationDate): self
+    public function setOperationDate(\DateTimeInterface $operationDate): self
     {
         $this->operationDate = $operationDate;
         return $this;
@@ -93,10 +81,10 @@ class MoneyTransfer
 
     public function getAmount(): float
     {
-        return ($this->amount / 100.0);
+        return (floatval($this->amount) / 100.0);
     }
 
-    private function setAmount(float $amount): self
+    public function setAmount(float $amount): self
     {
         if ($amount < 0.01) {
             throw new InvalidArgumentException('Amount can\'t be less than 0.01');
@@ -110,7 +98,7 @@ class MoneyTransfer
         return $this->exchangeRate;
     }
 
-    private function setExchangeRate(float $exchangeRate): self
+    public function setExchangeRate(float $exchangeRate): self
     {
         if ($exchangeRate < 0) {
             throw new InvalidArgumentException('Exchange rate must be higher than 0');
@@ -121,7 +109,10 @@ class MoneyTransfer
 
     public function getExchangedAmount(): float
     {
-        return intval($this->exchangeRate * $this->amount) * 100.0;
+        return round(
+            num: floatval($this->getExchangeRate() * $this->getAmount()),
+            precision: 2,
+        );
     }
 
     public function getComment(): ?string

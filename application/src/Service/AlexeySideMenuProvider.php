@@ -166,7 +166,17 @@ class AlexeySideMenuProvider extends AbstractExtension
             isActive: $this->isActiveRoute($route),
         );
 
-        $menuItem->setChildren([$moneyNodes]);
+        $route = $this->router->generate('money_transfer_index');
+        $moneyTransfers = new SideMenuItem(
+            name: $this->translator->translateString(
+                translationId: 'menu_record_transfers',
+                module: 'money'
+            ),
+            destination: $route,
+            isActive: $this->isActiveRoute($route),
+        );
+
+        $menuItem->setChildren([$moneyNodes, $moneyTransfers]);
         $sideMenu[] = $menuItem;
 
         return $sideMenu;

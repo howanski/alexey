@@ -92,6 +92,7 @@ final class AlexeySideMenuProviderTest extends TestCase
                 'destination' => '/money',
                 'children' => [
                     [], //TODO: deeper
+                    [],
                 ],
                 'isHeading' => false,
                 'isDivider' => false,

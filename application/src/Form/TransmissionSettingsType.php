@@ -32,6 +32,7 @@ class TransmissionSettingsType extends CommonFormType
         foreach (self::AGGRESSION_ADAPT_CHOICES as $val) {
             $choicesAggresionAdapt[$this->getValueTrans(field: 'aggression_adapt', value: $val)] = $val;
         }
+        ksort($choicesAggresionAdapt);
 
         $builder
             ->add(child: 'host', type: TextType::class, options: [

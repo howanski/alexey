@@ -9,6 +9,7 @@ app:
           password: Password
           save: Save
           show_on_dashboard: "Show on Dashboard"
+          comment: Comment
         values:
           show_on_dashboard:
             hide: Hide
@@ -18,6 +19,7 @@ app:
         add: Add
         back: Back
         chart_type: "Chart type"
+        comment: Comment
         delete: Delete
         edit: Edit
         empty_data: "Nothing found"
@@ -96,14 +98,23 @@ app:
         traffic_left: "Traffic left"
     money:
       strings:
+        amount: Amount
         balance: Balance
+        exchange_rate: "Exchange rate"
         menu_record_nodes: Nodes
-        menu_record: Money
+        menu_record_transfers: Transfers
+        menu_record: Money (Beta)
+        operation_date: "Operation date"
       forms:
         labels:
+          amount: Amount
+          exchange_rate: "Exchange rate"
           name: Name
           node_type: "Node type"
           notes: "Notes"
+          operation_date: "Operation date"
+          source_node: "Source node"
+          target_node: "Target node"
         values:
           node_type:
             bank_account: "Bank account"
@@ -111,7 +122,9 @@ app:
             outcome: Outcome
             cash_stash: Cash
             service: Service
-            black_hole: Black hole
+            black_hole: "Black hole"
+            tax_account: "Tax account"
+            other: "Other"
     network:
       strings:
         menu_record: Network

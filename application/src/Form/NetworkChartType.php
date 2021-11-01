@@ -38,6 +38,7 @@ class NetworkChartType extends CommonFormType
         foreach (self::CHART_TYPES as $chartType) {
             $choices[$this->getValueTrans(field: 'chart_type', value: $chartType)] = $chartType;
         }
+        ksort($choices);
         $builder
             ->add('chartType', ChoiceType::class, [
                 'choices' => $choices,

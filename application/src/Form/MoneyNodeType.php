@@ -23,6 +23,7 @@ class MoneyNodeType extends CommonFormType
             $code = MoneyNode::NODE_TYPE_CODES[$typeId];
             $typeChoices[$this->getValueTrans(field: 'node_type', value: $code)] = $typeId;
         }
+        ksort($typeChoices);
 
         $builder
             ->add(child: 'name', options: [

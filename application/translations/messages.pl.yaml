@@ -9,6 +9,7 @@ app:
           password: Hasło
           save: Zapisz
           show_on_dashboard: "Pokaż w sterowni"
+          comment: Komentarz
         values:
           show_on_dashboard:
             hide: Ukryj
@@ -18,6 +19,7 @@ app:
         add: Dodaj
         back: Wstecz
         chart_type: "Typ wykresu"
+        comment: Komentarz
         delete: Usuń
         edit: Edytuj
         empty_data: "Brak wpisów"
@@ -96,14 +98,23 @@ app:
         traffic_left: "Pozostały transfer"
     money:
       strings:
+        amount: Kwota
         balance: Saldo
+        exchange_rate: "Kurs wymiany"
         menu_record_nodes: Węzły
-        menu_record: Finanse
+        menu_record_transfers: Przelewy
+        menu_record: Finanse (Beta)
+        operation_date: "Data wykonania"
       forms:
         labels:
+          amount: Kwota
+          exchange_rate: "Kurs wymiany"
           name: Nazwa
           node_type: "Typ węzła"
           notes: "Notatki"
+          operation_date: "Data wykonania"
+          source_node: "Węzeł źródłowy"
+          target_node: "Węzeł docelowy"
         values:
           node_type:
             bank_account: "Konto bankowe"
@@ -111,7 +122,9 @@ app:
             outcome: Wydatki
             cash_stash: Gotówka
             service: Usługa
-            black_hole: Czarna dziura
+            black_hole: "Czarna dziura"
+            tax_account: "Konto podatkowe"
+            other: "Inne"
     network:
       strings:
         menu_record: Sieć

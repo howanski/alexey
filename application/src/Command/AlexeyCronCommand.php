@@ -30,6 +30,7 @@ class AlexeyCronCommand extends Command
     public function __construct(
         private EntityManagerInterface $em,
         private MessageBusInterface $bus,
+        private string $kernelEnv,
     ) {
         parent::__construct();
     }
@@ -58,9 +59,11 @@ class AlexeyCronCommand extends Command
 
     private function runCronJobs()
     {
-        $cronJobs = $this->em->getRepository(CronJob::class)->findAll();
-        foreach ($cronJobs as $cronJob) {
-            $this->runCronJob($cronJob);
+        if (false === $this->isDevelepmentEnvironment()) {
+            $cronJobs = $this->em->getRepository(CronJob::class)->findAll();
+            foreach ($cronJobs as $cronJob) {
+                $this->runCronJob($cronJob);
+            }
         }
     }
 
@@ -101,5 +104,10 @@ class AlexeyCronCommand extends Command
             }
         }
         $this->em->flush();
+    }
+
+    private function isDevelepmentEnvironment(): bool
+    {
+        return $this->kernelEnv === 'dev';
     }
 }

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New MoneyTransfer{% endblock %}
+
+{%block pageContent %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('money') }} ~> <a href="{{ path('money_transfer_index') }}" class="text-info">{{ 'menu_record_transfers'|localised('money') }}</a> ~> {{ 'new'|localised }}</h1>
+	</div>
+
+    {{ include('money_transfer/_form.html.twig') }}
+    <a href="{{ path('money_transfer_index') }}" class="btn btn-success">{{ 'back'|localised }}</a>
+{% endblock %}

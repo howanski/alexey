@@ -26,6 +26,7 @@ class UserSettingsType extends CommonFormType
         foreach (self::LOCALES as $val) {
             $langChoices[$this->getValueTrans(field: 'locale', value: $val)] = $val;
         }
+        ksort($langChoices);
         $builder
             ->add(
                 child: 'locale',

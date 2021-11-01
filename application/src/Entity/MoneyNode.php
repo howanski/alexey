@@ -20,6 +20,8 @@ class MoneyNode
     public const NODE_TYPE_CASH_STASH = 3;
     public const NODE_TYPE_SERVICE = 4;
     public const NODE_TYPE_BLACK_HOLE = 5;
+    public const NODE_TYPE_TAX_ACCOUNT = 6;
+    public const NODE_TYPE_OTHER = 7;
 
     public const NODE_TYPES = [
         self::NODE_TYPE_BANK_ACCOUNT,
@@ -28,6 +30,8 @@ class MoneyNode
         self::NODE_TYPE_CASH_STASH,
         self::NODE_TYPE_SERVICE,
         self::NODE_TYPE_BLACK_HOLE,
+        self::NODE_TYPE_TAX_ACCOUNT,
+        self::NODE_TYPE_OTHER,
     ];
 
     public const NODE_TYPE_CODES = [
@@ -37,6 +41,8 @@ class MoneyNode
         self::NODE_TYPE_CASH_STASH => 'cash_stash',
         self::NODE_TYPE_SERVICE => 'service',
         self::NODE_TYPE_BLACK_HOLE => 'black_hole',
+        self::NODE_TYPE_TAX_ACCOUNT => 'tax_account',
+        self::NODE_TYPE_OTHER => 'other',
     ];
 
     #[ORM\Id]
@@ -121,20 +127,31 @@ class MoneyNode
         return $this->outgoingTransfers;
     }
 
-    public function getBalance(): float
+    public function getBalance(bool $force = false): float|string
     {
+        if (
+            false === $force
+            && in_array(needle: $this->getNodeType(), haystack: [
+                self::NODE_TYPE_INCOME_SOURCE,
+                self::NODE_TYPE_BLACK_HOLE,
+            ])
+        ) {
+            return '---';
+        }
         $balance = 0.0;
         /**
          * @var MoneyTransfer
          */
         foreach ($this->getIncomingTransfers() as $incomingTransfer) {
             $balance = $balance + $incomingTransfer->getExchangedAmount();
+            $balance = round(num: $balance, precision: 2);
         }
         /**
          * @var MoneyTransfer
          */
         foreach ($this->getOutgoingTransfers() as $outgoingTransfer) {
             $balance = $balance - $outgoingTransfer->getAmount();
+            $balance = round(num: $balance, precision: 2);
         }
         return $balance;
     }
