@@ -6,17 +6,20 @@ namespace App\Controller;
 
 use App\Entity\MoneyNode;
 use App\Form\MoneyNodeType;
-use App\Repository\MoneyNodeRepository;
+use App\Class\MoneyNodeSettings;
+use App\Form\MoneyNodeSettingsType;
 use App\Service\AlexeyTranslator;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Service\SimpleSettingsService;
+use App\Repository\MoneyNodeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/money/node')]
 class MoneyNodeController extends AbstractController
 {
-    #[Route('/', name: 'money_node_index', methods: ['GET'])]
+    #[Route('/list', name: 'money_node_index', methods: ['GET'])]
     public function index(MoneyNodeRepository $moneyNodeRepository): Response
     {
         return $this->render('money_node/index.html.twig', [
@@ -54,7 +57,7 @@ class MoneyNodeController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'money_node_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'money_node_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, MoneyNode $moneyNode, AlexeyTranslator $translator): Response
     {
         //TODO: check user
@@ -73,7 +76,7 @@ class MoneyNodeController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'money_node_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'money_node_delete', methods: ['POST'])]
     public function delete(Request $request, MoneyNode $moneyNode, AlexeyTranslator $translator): Response
     {
         // TODO: SECURITY!
@@ -90,5 +93,30 @@ class MoneyNodeController extends AbstractController
 
 
         return $this->redirectToRoute('money_node_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/settings', name: 'money_node_settings')]
+    public function settings(
+        Request $request,
+        SimpleSettingsService $simpleSettingsService,
+        AlexeyTranslator $translator,
+    ): Response {
+        $settings = new MoneyNodeSettings($this->getUser());
+        $settings->selfConfigure($simpleSettingsService);
+        $form = $this->createForm(
+            MoneyNodeSettingsType::class,
+            $settings
+        );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $settings->selfPersist($simpleSettingsService);
+            $this->addFlash(type: 'success', message: $translator->translateFlash('saved'));
+            return $this->redirectToRoute('money_node_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('money_node/settings.html.twig', [
+            'form' => $form,
+        ]);
     }
 }

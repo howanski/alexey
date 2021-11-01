@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Entity\User;
 use App\Entity\SimpleSetting;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\SimpleSettingRepository;
@@ -23,7 +24,7 @@ class SimpleSettingsService
         $this->simpleSettingRepository = $this->em->getRepository(SimpleSetting::class);
     }
 
-    public function getSettings(array $settingsKeys): array
+    public function getSettings(array $settingsKeys, User $user = null): array
     {
         $result = [];
         foreach ($settingsKeys as $key) {
@@ -32,19 +33,24 @@ class SimpleSettingsService
         /**
          * @var SimpleSetting $simpleSetting
          */
-        foreach ($this->simpleSettingRepository->findAllByKeys($settingsKeys) as $simpleSetting) {
+        foreach ($this->simpleSettingRepository->findAllByKeys(keys: $settingsKeys, user: $user) as $simpleSetting) {
             $result[$simpleSetting->getSettingKey()] = $simpleSetting->getSettingValue();
         }
         return $result;
     }
 
-    public function saveSettings(array $settings)
+    public function saveSettings(array $settings, User $user = null)
     {
         foreach ($settings as $key => $value) {
-            $entity = $this->simpleSettingRepository->findOneBy(['settingKey' => $key]);
+            $criteria = ['settingKey' => $key];
+            if ($user instanceof User) {
+                $criteria['user'] = $user;
+            }
+            $entity = $this->simpleSettingRepository->findOneBy($criteria);
             if (!($entity instanceof SimpleSetting)) {
                 $entity = new SimpleSetting();
                 $entity->setSettingKey($key);
+                $entity->setUser($user);
             }
             $entity->setSettingValue($value);
             $this->em->persist($entity);

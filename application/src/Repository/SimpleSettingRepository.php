@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\SimpleSetting;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method SimpleSetting|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,12 +22,17 @@ class SimpleSettingRepository extends ServiceEntityRepository
         parent::__construct($registry, SimpleSetting::class);
     }
 
-    public function findAllByKeys($keys): array
+    public function findAllByKeys($keys, User $user = null): array
     {
-        return $this->createQueryBuilder('ss')
+        $qb = $this->createQueryBuilder('ss')
             ->andWhere('ss.settingKey IN (:val)')
-            ->setParameter('val', $keys)
-            ->getQuery()
+            ->setParameter('val', $keys);
+        if ($user instanceof User) {
+            $qb->andWhere('ss.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        return $qb->getQuery()
             ->getResult();
     }
 }

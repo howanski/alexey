@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alexey | {{ 'menu_record_nodes'|localised('money') }} | {{ 'menu_record'|localised('settings') }}
+{% endblock %}
+
+{% block pageContent %}
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('money') }} ~> <a class="text-info" href="{{ path('money_node_index') }}">{{ 'menu_record_nodes'|localised('money') }}</a> ~> {{ 'menu_record'|localised('settings') }}</h1>
+	</div>
+	    {{ form_start(form) }}
+    	{{ form_widget(form) }}
+    	<button class="btn btn-warning">{{ 'save'|localised }}</button>
+		{{ form_end(form) }}
+{% endblock %}

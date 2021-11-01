@@ -5,7 +5,9 @@
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('money') }} ~> {{ 'menu_record_nodes'|localised('money') }}</h1>
+		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('money') }}
+		 ~> {{ 'menu_record_nodes'|localised('money') }}
+		 | <a href="{{ path('money_node_settings') }}" class="fas fa-cog text-info"></a></h1>
 	</div>
 	<div class="row">
 		<div class="col-xl-12 col-lg-12">

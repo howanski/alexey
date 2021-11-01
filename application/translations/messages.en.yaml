@@ -121,6 +121,7 @@ app:
           operation_date: "Operation date"
           source_node: "Source node"
           target_node: "Target node"
+          money_node_group_name: "Group name"
         values:
           node_type:
             bank_account: "Bank account"

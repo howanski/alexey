@@ -121,6 +121,7 @@ app:
           operation_date: "Data wykonania"
           source_node: "Węzeł źródłowy"
           target_node: "Węzeł docelowy"
+          money_node_group_name: "Nazwa grupy"
         values:
           node_type:
             bank_account: "Konto bankowe"
