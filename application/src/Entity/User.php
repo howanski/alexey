@@ -40,11 +40,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: MoneyNode::class, mappedBy: 'user', orphanRemoval: true)]
     private $moneyNodes;
 
+    #[ORM\OneToMany(targetEntity: MoneyTransfer::class, mappedBy: 'user', orphanRemoval: true)]
+    private $moneyTransfers;
+
     public function __construct()
     {
         $this->settings = new ArrayCollection();
         $this->caches = new ArrayCollection();
         $this->moneyNodes = new ArrayCollection();
+        $this->moneyTransfers = new ArrayCollection();
     }
 
     public function getId(): int

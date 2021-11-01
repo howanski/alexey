@@ -27,7 +27,7 @@ class MoneyTransferController extends AbstractController
     #[Route('/new', name: 'money_transfer_new', methods: ['GET', 'POST'])]
     public function new(Request $request, AlexeyTranslator $translator): Response
     {
-        $moneyTransfer = new MoneyTransfer();
+        $moneyTransfer = new MoneyTransfer($this->getUser());
         $form = $this->createForm(MoneyTransferType::class, $moneyTransfer);
         $form->handleRequest($request);
 

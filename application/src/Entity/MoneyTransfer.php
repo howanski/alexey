@@ -36,8 +36,13 @@ class MoneyTransfer
     #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
 
-    public function __construct()
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'moneyTransfers')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    private User $user;
+
+    public function __construct(User $user)
     {
+        $this->user = $user;
         $this->operationDate = new \DateTime('today');
     }
 
@@ -125,5 +130,10 @@ class MoneyTransfer
         $this->comment = $comment;
 
         return $this;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
     }
 }
