@@ -26,6 +26,28 @@
                 <td>{{ money_transfer.exchangeRate }}</td>
             </tr>
             <tr>
+                <th>{{ 'amount_after_exchange'|localised('money') }}</th>
+                <td>{{ money_transfer.exchangedAmount }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'source_node'|localisedFormLabel('money') }}</th>
+                <td>
+                    {{ money_transfer.sourceNode.name }}
+                    <a href="{{ path('money_node_show', {'id': money_transfer.sourceNode.id}) }}">
+                        <i class="fas fa-link"></i>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'target_node'|localisedFormLabel('money') }}</th>
+                <td>
+                    {{ money_transfer.targetNode.name }}
+                    <a href="{{ path('money_node_show', {'id': money_transfer.targetNode.id}) }}">
+                        <i class="fas fa-link"></i>
+                    </a>
+                </td>
+            </tr>
+            <tr>
                 <th>{{ 'comment'|localisedFormLabel('money') }}</th>
                 <td>{{ money_transfer.comment }}</td>
             </tr>

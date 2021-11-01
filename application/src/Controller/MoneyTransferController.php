@@ -20,7 +20,7 @@ class MoneyTransferController extends AbstractController
     public function index(MoneyTransferRepository $moneyTransferRepository): Response
     {
         return $this->render('money_transfer/index.html.twig', [
-            'money_transfers' => $moneyTransferRepository->findAll(),
+            'money_transfers' => $moneyTransferRepository->getAllUserTransfers($this->getUser()),
         ]);
     }
 
@@ -48,6 +48,7 @@ class MoneyTransferController extends AbstractController
     #[Route('/{id}', name: 'money_transfer_show', methods: ['GET'])]
     public function show(MoneyTransfer $moneyTransfer): Response
     {
+        // TODO: Security
         return $this->render('money_transfer/show.html.twig', [
             'money_transfer' => $moneyTransfer,
         ]);
@@ -56,6 +57,7 @@ class MoneyTransferController extends AbstractController
     #[Route('/{id}/edit', name: 'money_transfer_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, MoneyTransfer $moneyTransfer, AlexeyTranslator $translator): Response
     {
+        // TODO: Security
         $form = $this->createForm(MoneyTransferType::class, $moneyTransfer);
         $form->handleRequest($request);
 
@@ -74,13 +76,14 @@ class MoneyTransferController extends AbstractController
     #[Route('/{id}', name: 'money_transfer_delete', methods: ['POST'])]
     public function delete(Request $request, MoneyTransfer $moneyTransfer, AlexeyTranslator $translator): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $moneyTransfer->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($moneyTransfer);
-            $entityManager->flush();
-            $this->addFlash(type: 'success', message: $translator->translateFlash('deleted'));
-        }
-
+        // TODO: Security
+        // if ($this->isCsrfTokenValid('delete' . $moneyTransfer->getId(), $request->request->get('_token'))) {
+        //     $entityManager = $this->getDoctrine()->getManager();
+        //     $entityManager->remove($moneyTransfer);
+        //     $entityManager->flush();
+        //     $this->addFlash(type: 'success', message: $translator->translateFlash('deleted'));
+        // }
+        $this->addFlash(type: 'warning', message: $translator->translateFlash('delete_forbidden') . ' (Beta)');
         return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
     }
 }

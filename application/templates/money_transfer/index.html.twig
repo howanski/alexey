@@ -19,10 +19,10 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th>{{ 'id'|localised }}</th>
 								<th>{{ 'operation_date'|localised('money') }}</th>
 								<th>{{ 'amount'|localised('money') }}</th>
-								<th>{{ 'exchange_rate'|localised('money') }}</th>
+								<th>{{ 'source_node'|localisedFormLabel('money') }}</th>
+								<th>{{ 'target_node'|localisedFormLabel('money') }}</th>
 								<th>{{ 'comment'|localised }}</th>
 								<th>{{ 'actions'|localised }}</th>
 							</tr>
@@ -30,10 +30,20 @@
 						<tbody>
 							{% for money_transfer in money_transfers %}
 								<tr>
-									<td>{{ money_transfer.id }}</td>
 									<td>{{ money_transfer.operationDate ? money_transfer.operationDate|date('Y-m-d') : '' }}</td>
 									<td>{{ money_transfer.amount }}</td>
-									<td>{{ money_transfer.exchangeRate }}</td>
+									<td>
+										{{ money_transfer.sourceNode.name }}
+										<a href="{{ path('money_node_show', {'id': money_transfer.sourceNode.id}) }}">
+											<i class="fas fa-link"></i>
+										</a>
+									</td>
+									<td>
+										{{ money_transfer.targetNode.name }}
+										<a href="{{ path('money_node_show', {'id': money_transfer.targetNode.id}) }}">
+											<i class="fas fa-link"></i>
+										</a>
+									</td>
 									<td>{{ money_transfer.comment }}</td>
 									<td>
 										<a href="{{ path('money_transfer_show', {'id': money_transfer.id}) }}" class="btn btn-sm btn-success">{{ 'show'|localised }}</a>

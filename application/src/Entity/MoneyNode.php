@@ -171,4 +171,15 @@ class MoneyNode
         $this->notes = $notes;
         return $this;
     }
+
+    public function canBeDeleted(): bool
+    {
+        if ($this->getIncomingTransfers()->count() > 0) {
+            return false;
+        }
+        if ($this->getOutgoingTransfers()->count() > 0) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -36,5 +36,90 @@
 
     <a href="{{ path('money_node_index') }}"  class="btn btn-success">{{ 'back'|localised }}</a>
     <a href="{{ path('money_node_edit', {'id': money_node.id}) }}"  class="btn btn-warning">{{ 'edit'|localised }}</a>
-    {{ include('money_node/_delete_form.html.twig') }}
+	{% if money_node.canBeDeleted %}
+		{{ include('money_node/_delete_form.html.twig') }}
+	{% endif %}
+
+
+	<div class="row">
+		<div class="col-xl-12 col-lg-12">
+			<div class="card shadow bg-dark mb-4">
+				<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+					<h6 class="m-0 font-weight-bold text-primary">{{ 'incoming_transfers'|localised('money') }}</h6>
+				</div>
+				<div class="card-body">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>{{ 'operation_date'|localisedFormLabel('money') }}</th>
+								<th>{{ 'amount'|localisedFormLabel('money') }}</th>
+								<th>{{ 'source_node'|localisedFormLabel('money') }}</th>
+								<th>{{ 'comment'|localisedFormLabel('money') }}</th>
+								<th>{{ 'actions'|localised }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for transfer in money_node.incomingTransfers %}
+								<tr>
+                                <td>{{ transfer.operationDate|date('Y-m-d') }}</td>
+                                <td>{{ transfer.amount }}</td>
+                                <td>{{ transfer.sourceNode.name }}</td>
+                                <td>{{ transfer.comment }}</td>
+                                <td>
+									<a href="{{ path('money_transfer_show', {'id': transfer.id}) }}" class="btn btn-sm btn-success">{{ 'show_transfer'|localised('money') }}</a>
+									<a href="{{ path('money_node_show', {'id': transfer.sourceNode.id}) }}" class="btn btn-sm btn-success">{{ 'show_node'|localised('money') }}</a>
+                                </td>
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="5">{{ 'empty_data'|localised }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <div class="row">
+		<div class="col-xl-12 col-lg-12">
+			<div class="card shadow bg-dark mb-4">
+				<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+					<h6 class="m-0 font-weight-bold text-primary">{{ 'outgoing_transfers'|localised('money') }}</h6>
+				</div>
+				<div class="card-body">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>{{ 'operation_date'|localisedFormLabel('money') }}</th>
+								<th>{{ 'amount'|localisedFormLabel('money') }}</th>
+								<th>{{ 'target_node'|localisedFormLabel('money') }}</th>
+								<th>{{ 'comment'|localisedFormLabel('money') }}</th>
+								<th>{{ 'actions'|localised }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for transfer in money_node.outgoingTransfers %}
+								<tr>
+                                <td>{{ transfer.operationDate|date('Y-m-d') }}</td>
+                                <td>{{ transfer.amount }}</td>
+                                <td>{{ transfer.targetNode.name }}</td>
+                                <td>{{ transfer.comment }}</td>
+                                <td>
+                                    <a href="{{ path('money_transfer_show', {'id': transfer.id}) }}" class="btn btn-sm btn-success">{{ 'show_transfer'|localised('money') }}</a>
+                                    <a href="{{ path('money_node_show', {'id': transfer.targetNode.id}) }}" class="btn btn-sm btn-success">{{ 'show_node'|localised('money') }}</a>
+                                </td>
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="5">{{ 'empty_data'|localised }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

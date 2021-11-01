@@ -4,6 +4,7 @@ app:
       flashes:
         saved: "Pomyślnie zapisano"
         deleted: "Pomyślnie usunięto"
+        delete_forbidden: "Nie można usunąć"
       forms:
         labels:
           password: Hasło
@@ -58,7 +59,7 @@ app:
           address: Adres
           algorithm_aggression_auto_adapt: "Autoadaptacja agresji"
           algorithm_aggression: "Agresja algorytmu"
-          allow_target_speed_bumping: "Zezwól na pobijanie prędkości"
+          allow_target_speed_bumping: "Zezwól na podbijanie prędkości"
           host: Host
           provider_type: "Dostawca informacji o sieci"
           target_speed: "Docelowa prędkość"
@@ -98,13 +99,18 @@ app:
         traffic_left: "Pozostały transfer"
     money:
       strings:
+        amount_after_exchange: "Kwota po wymianie"
         amount: Kwota
         balance: Saldo
         exchange_rate: "Kurs wymiany"
+        incoming_transfers: "Przelewy przychodzące"
         menu_record_nodes: Węzły
         menu_record_transfers: Przelewy
         menu_record: Finanse (Beta)
         operation_date: "Data wykonania"
+        outgoing_transfers: "Przelewy wychodzące"
+        show_node: "Pokaż węzeł"
+        show_transfer: "Pokaż przelew"
       forms:
         labels:
           amount: Kwota

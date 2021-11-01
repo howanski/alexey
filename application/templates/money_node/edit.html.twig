@@ -10,6 +10,8 @@
 	{{ include('money_node/_form.html.twig') }}
 	<div class="row">
 		<a href="{{ path('money_node_index') }}" class="btn btn-success">{{ 'back'|localised }}</a>
-		{{ include('money_node/_delete_form.html.twig') }}
+		{% if money_node.canBeDeleted %}
+			{{ include('money_node/_delete_form.html.twig') }}
+		{% endif %}
 	</div>
 {% endblock %}

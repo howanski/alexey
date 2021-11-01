@@ -4,6 +4,7 @@ app:
       flashes:
         saved: "Successfully saved"
         deleted: "Successfully deleted"
+        delete_forbidden: "Cannot delete"
       forms:
         labels:
           password: Password
@@ -98,13 +99,18 @@ app:
         traffic_left: "Traffic left"
     money:
       strings:
+        amount_after_exchange: "Amount after exchange"
         amount: Amount
         balance: Balance
         exchange_rate: "Exchange rate"
+        incoming_transfers: "Incoming transfers"
         menu_record_nodes: Nodes
         menu_record_transfers: Transfers
         menu_record: Money (Beta)
         operation_date: "Operation date"
+        outgoing_transfers: "Outgoing transfers"
+        show_node: "Show node"
+        show_transfer: "Show transfer"
       forms:
         labels:
           amount: Amount

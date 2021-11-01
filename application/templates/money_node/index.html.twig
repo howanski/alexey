@@ -17,7 +17,6 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th>{{ 'id'|localised }}</th>
 								<th>{{ 'name'|localised }}</th>
 								<th>{{ 'node_type'|localisedFormLabel('money') }}</th>
 								<th>{{ 'balance'|localised('money') }}</th>
@@ -27,7 +26,6 @@
 						<tbody>
 							{% for money_node in money_nodes %}
 								<tr>
-									<td>{{ money_node.id }}</td>
 									<td>{{ money_node.name }}</td>
 									<td>{{ money_node.typeCode|localisedFormValue('node_type', 'money') }}</td>
 									<td>{{ money_node.balance }}</td>
@@ -38,7 +36,7 @@
 								</tr>
 							{% else %}
 								<tr>
-									<td colspan="5">{{ 'empty_data'|localised }}</td>
+									<td colspan="4">{{ 'empty_data'|localised }}</td>
 								</tr>
 							{% endfor %}
 						</tbody>
