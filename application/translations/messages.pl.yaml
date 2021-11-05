@@ -111,6 +111,7 @@ app:
         outgoing_transfers: "Przelewy wychodzące"
         show_node: "Pokaż węzeł"
         show_transfer: "Pokaż przelew"
+        sum: Suma
       forms:
         labels:
           amount: Kwota

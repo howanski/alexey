@@ -130,15 +130,20 @@ class MoneyNode
         return $this->outgoingTransfers;
     }
 
-    public function getBalance(bool $force = false): float|string
+    public function isEdgeType(): bool
     {
-        if (
-            false === $force
-            && in_array(needle: $this->getNodeType(), haystack: [
+        return in_array(
+            needle: $this->getNodeType(),
+            haystack: [
                 self::NODE_TYPE_INCOME_SOURCE,
                 self::NODE_TYPE_BLACK_HOLE,
-            ])
-        ) {
+            ]
+        );
+    }
+
+    public function getBalance(bool $force = false): float|string
+    {
+        if (false === $force && $this->isEdgeType()) {
             return '---';
         }
         $balance = 0.0;

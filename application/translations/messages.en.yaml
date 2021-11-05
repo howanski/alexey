@@ -111,6 +111,7 @@ app:
         outgoing_transfers: "Outgoing transfers"
         show_node: "Show node"
         show_transfer: "Show transfer"
+        sum: Sum
       forms:
         labels:
           amount: Amount

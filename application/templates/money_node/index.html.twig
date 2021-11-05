@@ -1,24 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Alexey | {{ 'menu_record'|localised('money') }}
+{% block title %}Alexey |
+	{{ 'menu_record'|localised('money') }}
 {% endblock %}
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('money') }}
-		 ~> <a href="{{ path('money_node_index') }}" class="text-info">{{ 'menu_record_nodes'|localised('money') }}</a>
-		 | <a href="{{ path('money_node_settings') }}" class="fas fa-cog text-info"></a></h1>
+			~>
+			<a href="{{ path('money_node_index') }}" class="text-info">{{ 'menu_record_nodes'|localised('money') }}</a>
+			|
+			<a href="{{ path('money_node_settings') }}" class="fas fa-cog text-info"></a>
+		</h1>
 	</div>
 	<nav class="nav nav-tabs nav-fill">
-	{% set groups = settings.choices %}
-	{% if groups|length > 1 %}
-		{% for groupName, groupId in groups %}
-			<a class="nav-item nav-link text-primary{% if groupId == node_group and node_group is not null %} active{% endif %}"
-			href="{{ path('money_node_index', { groupId: groupId }) }}">
-				{{ groupName }}
-			</a>
-		{% endfor %}
-	{% endif %}
+		{% set groups = settings.choices %}
+		{% set groups = {'*': null}|merge(groups) %}
+		{% if groups|length > 2 %}
+			{% for groupName, groupId in groups %}
+				<a class="nav-item nav-link text-primary{% if groupId is same as (node_group) %} active{% endif %}" href="{{ path('money_node_index', { groupId: groupId }) }}">
+					{{ groupName }}
+				</a>
+			{% endfor %}
+		{% endif %}
 	</nav>
 	<div class="row">
 		<div class="col-xl-12 col-lg-12">
@@ -40,24 +44,35 @@
 							</tr>
 						</thead>
 						<tbody>
-							{% for money_node in money_nodes %}
-								<tr>
-									<td>{{ money_node.name }}</td>
-									<td>{{ money_node.typeCode|localisedFormValue('node_type', 'money') }}</td>
-									{% if node_group is null %}
-										<td>{{ settings.groupName(money_node.nodeGroup) }}</td>
+							{% if money_nodes|length > 0 %}
+								{% set sum = 0.0 %}
+								{% for money_node in money_nodes %}
+									<tr>
+										<td>{{ money_node.name }}</td>
+										<td>{{ money_node.typeCode|localisedFormValue('node_type', 'money') }}</td>
+										{% if node_group is null %}
+											<td>{{ settings.groupName(money_node.nodeGroup) }}</td>
+										{% endif %}
+										<td>{{ money_node.balance }}</td>
+										<td>
+											<a href="{{ path('money_node_show', {'id': money_node.id}) }}" class="btn btn-sm btn-success">{{ 'show'|localised }}</a>
+											<a href="{{ path('money_node_edit', {'id': money_node.id}) }}" class="btn btn-sm btn-warning">{{ 'edit'|localised }}</a>
+										</td>
+									</tr>
+									{% if false == money_node.isEdgeType() %}
+										{% set sum = sum + money_node.balance %}
 									{% endif %}
-									<td>{{ money_node.balance }}</td>
-									<td>
-										<a href="{{ path('money_node_show', {'id': money_node.id}) }}" class="btn btn-sm btn-success">{{ 'show'|localised }}</a>
-										<a href="{{ path('money_node_edit', {'id': money_node.id}) }}" class="btn btn-sm btn-warning">{{ 'edit'|localised }}</a>
-									</td>
+								{% endfor %}
+								<tr>
+									<td colspan="{% if node_group is null %}3{% else %}2{% endif %}">{{ 'sum'|localised('money') }}:</td>
+									<td>{{ sum }}</td>
+									<td>---</td>
 								</tr>
 							{% else %}
 								<tr>
 									<td colspan="4">{{ 'empty_data'|localised }}</td>
 								</tr>
-							{% endfor %}
+							{% endif %}
 						</tbody>
 					</table>
 
