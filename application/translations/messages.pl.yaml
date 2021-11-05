@@ -104,6 +104,7 @@ app:
         balance: Saldo
         exchange_rate: "Kurs wymiany"
         incoming_transfers: "Przelewy przychodzące"
+        menu_record_graphs: Wykresy
         menu_record_nodes: Węzły
         menu_record_transfers: Przelewy
         menu_record: Finanse (Beta)

@@ -104,6 +104,7 @@ app:
         balance: Balance
         exchange_rate: "Exchange rate"
         incoming_transfers: "Incoming transfers"
+        menu_record_graphs: Charts
         menu_record_nodes: Nodes
         menu_record_transfers: Transfers
         menu_record: Money (Beta)

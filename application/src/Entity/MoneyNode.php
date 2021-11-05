@@ -141,7 +141,7 @@ class MoneyNode
         );
     }
 
-    public function getBalance(bool $force = false): float|string
+    public function getBalance(bool $force = false, \DateTimeInterface $onDate = null): float|string
     {
         if (false === $force && $this->isEdgeType()) {
             return '---';
@@ -151,15 +151,19 @@ class MoneyNode
          * @var MoneyTransfer
          */
         foreach ($this->getIncomingTransfers() as $incomingTransfer) {
-            $balance = $balance + $incomingTransfer->getExchangedAmount();
-            $balance = round(num: $balance, precision: 2);
+            if (is_null($onDate) || $incomingTransfer->getOperationDate() <= $onDate) {
+                $balance = $balance + $incomingTransfer->getExchangedAmount();
+                $balance = round(num: $balance, precision: 2);
+            }
         }
         /**
          * @var MoneyTransfer
          */
         foreach ($this->getOutgoingTransfers() as $outgoingTransfer) {
-            $balance = $balance - $outgoingTransfer->getAmount();
-            $balance = round(num: $balance, precision: 2);
+            if (is_null($onDate) || $outgoingTransfer->getOperationDate() <= $onDate) {
+                $balance = $balance - $outgoingTransfer->getAmount();
+                $balance = round(num: $balance, precision: 2);
+            }
         }
         return $balance;
     }
