@@ -21,7 +21,6 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('alexey', './assets/alexey.js')
-    .addEntry('network-usage-chart', './assets/network-usage-chart.js')
     .addEntry('linear-chart', './assets/linear-chart.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)

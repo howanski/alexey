@@ -1,6 +1,8 @@
 import Chart from "chart.js/auto";
 import axios from "axios";
 
+var chartStorage = [];
+
 function createChart(elem, labels, datasets) {
   let myLineChart = new Chart(elem, {
     type: "line",
@@ -66,6 +68,7 @@ function createChart(elem, labels, datasets) {
       },
     },
   });
+  return myLineChart;
 }
 
 function prepareDatasets(datasetsObject) {
@@ -82,23 +85,58 @@ function updateChartData(elem, src) {
     .then(function (response) {
       // handle success
       let responseData = response.data;
-      createChart(
-        elem,
-        responseData.labels,
-        prepareDatasets(responseData.datasets)
-      );
+      let chartId = elem.getAttribute("data-chart-id");
+      if (null === chartId) {
+        chartId = getRandomId();
+        elem.setAttribute("data-chart-id", chartId);
+      }
+      if (typeof chartStorage[chartId] === "undefined") {
+        chartStorage[chartId] = createChart(
+          elem,
+          responseData.labels,
+          prepareDatasets(responseData.datasets)
+        );
+      } else {
+        let storedChart = chartStorage[chartId];
+        storedChart.data.labels = responseData.labels;
+        storedChart.data.datasets = prepareDatasets(responseData.datasets);
+        storedChart.update("none");
+      }
+      updateBonusPayload(responseData.bonusPayload);
     })
     .catch(function (error) {
       // handle error
-      alert(error);
+      console.log(error);
     })
     .then(function () {
       // always executed
     });
 }
 
+function updateBonusPayload(payload) {
+  if (typeof payload !== "undefined") {
+    for (const prop in payload) {
+      let elem = document.getElementById(prop);
+      if (elem) {
+        elem.innerHTML = payload[prop];
+      }
+    }
+  }
+}
+
+function getRandomId() {
+  return Math.ceil(Math.random() * 1000).toString();
+}
+
 function createChartOnElem(elem) {
   let dataSource = elem.getAttribute("data-chart-src");
+  let refreshTime = elem.getAttribute("data-chart-refresh");
+  if (refreshTime !== null) {
+    let miliseconds = 1000 * refreshTime;
+    setTimeout(() => {
+      createChartOnElem(elem);
+    }, miliseconds);
+  }
   updateChartData(elem, dataSource);
 }
 

@@ -36,9 +36,7 @@ class NetworkUsageController extends AbstractController
         return $this->render('network_usage/index.html.twig', [
             'chart_selector_form' => $form->createView(),
             'chart_routes' => $chartRoutes,
-            'chart_data_src' => $routerInterface->generate('network_usage_chart_data', [
-                'chartType' => $chartType
-            ])
+            'chart_type' => $chartType,
         ]);
     }
 

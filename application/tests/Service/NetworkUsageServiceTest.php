@@ -195,13 +195,13 @@ final class NetworkUsageServiceTest extends TestCase
             ['randomString', [
                 'labels' => [],
                 'datasets' => [],
-                'current' => [
+                'bonusPayload' => [
                     'current_traffic_left' => '0 B',
                     'current_transfer_rate_left' => '0 B/s',
                     'current_transfer_rate' => '0 B/s',
                     'current_billing_frame_end' => '5 hours from now',
+                    'current_throttling' => 'N. A.',
                 ],
-                'throttling' => 'N. A.',
             ]],
             ['today', [
                 'labels' => [],
@@ -237,13 +237,13 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                 ],
-                'current' => [
+                'bonusPayload' => [
                     'current_traffic_left' => '0 B',
                     'current_transfer_rate_left' => '0 B/s',
                     'current_transfer_rate' => '0 B/s',
                     'current_billing_frame_end' => '5 hours from now',
+                    'current_throttling' => 'N. A.',
                 ],
-                'throttling' => 'N. A.',
             ]],
             ['last_week', [
                 'labels' => [],
@@ -279,13 +279,13 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                 ],
-                'current' => [
+                'bonusPayload' => [
                     'current_traffic_left' => '0 B',
                     'current_transfer_rate_left' => '0 B/s',
                     'current_transfer_rate' => '0 B/s',
                     'current_billing_frame_end' => '5 hours from now',
+                    'current_throttling' => 'N. A.',
                 ],
-                'throttling' => 'N. A.',
             ]],
             ['current_billing_frame', [
                 'labels' => [],
@@ -321,13 +321,13 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                 ],
-                'current' => [
+                'bonusPayload' => [
                     'current_traffic_left' => '0 B',
                     'current_transfer_rate_left' => '0 B/s',
                     'current_transfer_rate' => '0 B/s',
                     'current_billing_frame_end' => '5 hours from now',
+                    'current_throttling' => 'N. A.',
                 ],
-                'throttling' => 'N. A.',
             ]],
             ['last_2_hours', [
                 'labels' => [],
@@ -363,13 +363,13 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                 ],
-                'current' => [
+                'bonusPayload' => [
                     'current_traffic_left' => '0 B',
                     'current_transfer_rate_left' => '0 B/s',
                     'current_transfer_rate' => '0 B/s',
                     'current_billing_frame_end' => '5 hours from now',
+                    'current_throttling' => 'N. A.',
                 ],
-                'throttling' => 'N. A.',
             ]],
             ['last_10_minutes', [
                 'labels' => [],
@@ -405,13 +405,13 @@ final class NetworkUsageServiceTest extends TestCase
                         'data' => [],
                     ],
                 ],
-                'current' => [
+                'bonusPayload' => [
                     'current_traffic_left' => '0 B',
                     'current_transfer_rate_left' => '0 B/s',
                     'current_transfer_rate' => '0 B/s',
                     'current_billing_frame_end' => '5 hours from now',
+                    'current_throttling' => 'N. A.',
                 ],
-                'throttling' => 'N. A.',
             ]],
         ];
     }

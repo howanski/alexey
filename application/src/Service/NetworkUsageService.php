@@ -88,6 +88,7 @@ class NetworkUsageService
         $chdata = [
             'labels' => [],
             'datasets' => [],
+            'bonusPayload' => [],
         ];
         $today = new DateTime('today');
         $now = new DateTime('now');
@@ -114,21 +115,23 @@ class NetworkUsageService
             $billingStart = $currentStat->getTimeFrame()->getBillingFrameStart();
             $chdata = $this->prepareDataForChart($billingStart);
         }
+
+
         $latestStat = $this->getLatestStatistic();
         if ($latestStat instanceof NetworkStatistic) {
-            $current = [
-                'current_traffic_left' => $latestStat->getTrafficLeftReadable(4),
-                'current_transfer_rate_left' => $latestStat->getTransferRateLeftReadable(4),
-                'current_transfer_rate' => $latestStat->getTotalSpeedFromReferencePointReadable(),
-                'current_billing_frame_end' => $latestStat->getTimeFrame()->getBillingFrameEndReadable($locale),
-            ];
+            $chdata['bonusPayload']['current_traffic_left']
+                = $latestStat->getTrafficLeftReadable(4);
+            $chdata['bonusPayload']['current_transfer_rate_left']
+                = $latestStat->getTransferRateLeftReadable(4);
+            $chdata['bonusPayload']['current_transfer_rate']
+                = $latestStat->getTotalSpeedFromReferencePointReadable();
+            $chdata['bonusPayload']['current_billing_frame_end']
+                = $latestStat->getTimeFrame()->getBillingFrameEndReadable($locale);
         } else {
-            $current = [
-                'current_traffic_left' => 0,
-                'current_transfer_rate_left' => 0,
-                'current_transfer_rate' => 0,
-                'current_billing_frame_end' => 0,
-            ];
+            $chdata['bonusPayload']['current_traffic_left'] = 0;
+            $chdata['bonusPayload']['current_transfer_rate_left'] = 0;
+            $chdata['bonusPayload']['current_transfer_rate'] = 0;
+            $chdata['bonusPayload']['current_billing_frame_end'] = 0;
         }
 
         try {
@@ -142,13 +145,9 @@ class NetworkUsageService
         } catch (\Exception $e) {
             $throttling = 'N. A.';
         }
+        $chdata['bonusPayload']['current_throttling'] = $throttling;
 
-        return [
-            'labels' => $chdata['labels'],
-            'datasets' => $chdata['datasets'],
-            'current' => $current,
-            'throttling' => $throttling,
-        ];
+        return $chdata;
     }
 
     private function prepareDataForChart(DateTimeInterface $dateFrom): array

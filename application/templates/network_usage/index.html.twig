@@ -4,11 +4,8 @@
 {% endblock %}
 
 {% block javascripts %}
-	<script>
-		window.chart_data_src = '{{ chart_data_src|raw }}';
-	</script>
 	{{ encore_entry_script_tags('alexey') }}
-	{{ encore_entry_script_tags('network-usage-chart') }}
+	{{ encore_entry_script_tags('linear-chart') }}
 	<script>
 		let chartRoutes = {{ chart_routes|json_encode|raw }};
 let chartChanger = document.getElementById('network_chart_chartType');
@@ -66,7 +63,14 @@ window.location.replace(route);
 						<div class=""></div>
 					</div>
 				</div>
-				<canvas id="myAreaChart" style="display: block; width: 1041px; height: 320px;" class="chartjs-render-monitor" width="1041" height="320"></canvas>
+				<canvas
+					style="display: block; width: 1041px; height: 320px;"
+					class="chartjs-render-monitor chart-linear"
+					data-chart-src="{{ path('network_usage_chart_data', {chartType: chart_type}) }}"
+					data-chart-refresh="30"
+					width="1041"
+					height="320"
+				></canvas>
 			</div>
 			<hr>
 		</div>
