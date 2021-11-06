@@ -57,52 +57,56 @@ final class TransmissionServiceTest extends TestCase
             translator: $translator
         );
 
-        $result = $service->getSimulationChartData();
-        unset($result['speed']['labels']);
-        unset($result['speed']['datasets'][0]['data']);
-        unset($result['time']['labels']);
-        unset($result['time']['datasets'][0]['data']);
+        $resultSpeed = $service->getSimulationChartData('speed');
+        $resultTime = $service->getSimulationChartData('time');
+        unset($resultSpeed['labels']);
+        unset($resultSpeed['datasets'][0]['data']);
+        unset($resultTime['labels']);
+        unset($resultTime['datasets'][0]['data']);
 
         $this->assertEquals(
             expected: [
-                'speed' => [
-                    'datasets' => [
-                        [
-                            'label' => 'trans_throttling (kB/s)',
-                            'lineTension' => 0.3,
-                            'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
-                            'borderColor' => 'rgba(78, 115, 223, 1)',
-                            'pointRadius' => 3,
-                            'pointBackgroundColor' => 'rgba(78, 115, 223, 1)',
-                            'pointBorderColor' => 'rgba(78, 115, 223, 1)',
-                            'pointHoverRadius' => 3,
-                            'pointHoverBackgroundColor' => 'rgba(78, 115, 223, 1)',
-                            'pointHoverBorderColor' => 'rgba(78, 115, 223, 1)',
-                            'pointHitRadius' => 10,
-                            'pointBorderWidth' => 2,
-                        ],
-                    ],
-                ],
-                'time' => [
-                    'datasets' => [
-                        [
-                            'label' => 'trans_throttling (kB/s)',
-                            'lineTension' => 0.3,
-                            'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
-                            'borderColor' => 'rgba(78, 115, 223, 1)',
-                            'pointRadius' => 3,
-                            'pointBackgroundColor' => 'rgba(78, 115, 223, 1)',
-                            'pointBorderColor' => 'rgba(78, 115, 223, 1)',
-                            'pointHoverRadius' => 3,
-                            'pointHoverBackgroundColor' => 'rgba(78, 115, 223, 1)',
-                            'pointHoverBorderColor' => 'rgba(78, 115, 223, 1)',
-                            'pointHitRadius' => 10,
-                            'pointBorderWidth' => 2,
-                        ],
+                'datasets' => [
+                    [
+                        'label' => 'trans_throttling (kB/s)',
+                        'lineTension' => 0.3,
+                        'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
+                        'borderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointRadius' => 3,
+                        'pointBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverRadius' => 3,
+                        'pointHoverBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHitRadius' => 10,
+                        'pointBorderWidth' => 2,
                     ],
                 ],
             ],
-            actual: $result,
+            actual: $resultSpeed,
+            message: 'Simulation data malformed',
+        );
+
+        $this->assertEquals(
+            expected: [
+                'datasets' => [
+                    [
+                        'label' => 'trans_throttling (kB/s)',
+                        'lineTension' => 0.3,
+                        'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
+                        'borderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointRadius' => 3,
+                        'pointBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverRadius' => 3,
+                        'pointHoverBackgroundColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHoverBorderColor' => 'rgba(78, 115, 223, 1)',
+                        'pointHitRadius' => 10,
+                        'pointBorderWidth' => 2,
+                    ],
+                ],
+            ],
+            actual: $resultTime,
             message: 'Simulation data malformed',
         );
     }
