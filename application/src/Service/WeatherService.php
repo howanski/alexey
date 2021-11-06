@@ -30,39 +30,22 @@ class WeatherService
         return (SimpleSettingsService::UNIVERSAL_TRUTH === $settings->getShowOnDashboard());
     }
 
-    public function getChartData($locale): array
+    public function getChartData($locale, $type): array
+    {
+        if ('daily' === $type) {
+            return $this->getDailyChartData(locale: $locale);
+        } else {
+            return $this->getHourlyChartData(locale: $locale);
+        }
+    }
+
+    private function getDailyChartData(string $locale)
     {
         $chartData = [
-            'hourly' => [
-                'labels' => [],
-                'datasets' => $this->getEmptyDatasetsForChart(),
-            ],
-            'daily' => [
-                'labels' => [],
-                'datasets' => $this->getEmptyDatasetsForChart(),
-            ],
+            'labels' => [],
+            'datasets' => $this->getEmptyDatasetsForChart(),
         ];
         $sourceData = $this->getWeather()->getWeatherReadable(locale: $locale);
-        foreach ($sourceData['hourly'] as $hour) {
-            /**
-             * @var Carbon $time
-             */
-            $time = $hour['time'];
-            $hourString = $time->format('H:i');
-            $day = $time->format('l');
-            $label = $this->translator->translateTime(
-                timeUnit: 'day',
-                type: 'short',
-                value: $day,
-            );
-            $label .= ' ' . $hourString;
-            $chartData['hourly']['labels'][] = $label;
-            $chartData['hourly']['datasets']['temperature']['data'][] = round($hour['temperature']);
-            $chartData['hourly']['datasets']['feels_like']['data'][] = round($hour['temperature_feels_like']);
-            $chartData['hourly']['datasets']['rain']['data'][] = round($hour['rain'] + $hour['snow']);
-            $chartData['hourly']['datasets']['wind_speed']['data'][] =
-                round($this->metersPerSecondToKpH($hour['wind_speed']));
-        }
 
         $dayPartsCodes = ['morn', 'day', 'eve', 'night'];
 
@@ -78,15 +61,45 @@ class WeatherService
                     timeUnit: 'day_part',
                     value: $dayPart,
                 );
-                $chartData['daily']['labels'][] = $label;
-                $chartData['daily']['datasets']['temperature']['data'][] =
+                $chartData['labels'][] = $label;
+                $chartData['datasets']['temperature']['data'][] =
                     round($day['temperature_detailed'][$dayPart]);
-                $chartData['daily']['datasets']['feels_like']['data'][] =
+                $chartData['datasets']['feels_like']['data'][] =
                     round($day['temperature_feels_like'][$dayPart]);
-                $chartData['daily']['datasets']['rain']['data'][] = round($day['rain'] + $day['snow']);
-                $chartData['daily']['datasets']['wind_speed']['data'][] =
+                $chartData['datasets']['rain']['data'][] = round($day['rain'] + $day['snow']);
+                $chartData['datasets']['wind_speed']['data'][] =
                     round($this->metersPerSecondToKpH($day['wind_speed']));
             }
+        }
+        return $chartData;
+    }
+
+    private function getHourlyChartData(string $locale)
+    {
+        $chartData = [
+            'labels' => [],
+            'datasets' => $this->getEmptyDatasetsForChart(),
+        ];
+        $sourceData = $this->getWeather()->getWeatherReadable(locale: $locale);
+        foreach ($sourceData['hourly'] as $hour) {
+            /**
+             * @var Carbon $time
+             */
+            $time = $hour['time'];
+            $hourString = $time->format('H:i');
+            $day = $time->format('l');
+            $label = $this->translator->translateTime(
+                timeUnit: 'day',
+                type: 'short',
+                value: $day,
+            );
+            $label .= ' ' . $hourString;
+            $chartData['labels'][] = $label;
+            $chartData['datasets']['temperature']['data'][] = round($hour['temperature']);
+            $chartData['datasets']['feels_like']['data'][] = round($hour['temperature_feels_like']);
+            $chartData['datasets']['rain']['data'][] = round($hour['rain'] + $hour['snow']);
+            $chartData['datasets']['wind_speed']['data'][] =
+                round($this->metersPerSecondToKpH($hour['wind_speed']));
         }
         return $chartData;
     }

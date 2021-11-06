@@ -1,19 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Alexey | {{ 'menu_record'|localised('weather') }}
+{% block title %}Alexey |
+	{{ 'menu_record'|localised('weather') }}
 {% endblock %}
 
 {% block javascripts %}
-	<script>
-		window.chart_data_src = '{{ chart_data_src|raw }}';
-	</script>
 	{{ encore_entry_script_tags('alexey') }}
-	{{ encore_entry_script_tags('weather-chart') }}
+	{{ encore_entry_script_tags('linear-chart') }}
 {% endblock %}
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('weather') }} |
+		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('weather') }}
+			|
 			<a href="{{ path('weather_settings') }}" class="fas fa-cog text-info"></a>
 		</h1>
 	</div>
@@ -31,12 +30,18 @@
 						<div class=""></div>
 					</div>
 				</div>
-				<canvas id="weatherHourly" style="display: block; width: 1041px; height: 320px;" class="chartjs-render-monitor" width="1041" height="320"></canvas>
+				<canvas
+					style="display: block; width: 1041px; height: 320px;"
+					class="chartjs-render-monitor chart-linear"
+					data-chart-src="{{ path('weather_chart_data', {type: 'hourly'}) }}"
+					width="1041"
+					height="320"
+				></canvas>
 			</div>
 			<hr>
 		</div>
 	</div>
-		<div class="card shadow mb-4">
+	<div class="card shadow mb-4">
 		<div class="card-header py-3">
 			<h6 class="m-0 font-weight-bold text-primary">{{ 'daily'|localised('weather') }}</h6>
 		</div>
@@ -50,7 +55,13 @@
 						<div class=""></div>
 					</div>
 				</div>
-				<canvas id="weatherDaily" style="display: block; width: 1041px; height: 320px;" class="chartjs-render-monitor" width="1041" height="320"></canvas>
+				<canvas
+					style="display: block; width: 1041px; height: 320px;"
+					class="chartjs-render-monitor chart-linear"
+					data-chart-src="{{ path('weather_chart_data', {type: 'daily'}) }}"
+					width="1041"
+					height="320"
+				></canvas>
 			</div>
 			<hr>
 		</div>

@@ -4,16 +4,14 @@
 {% endblock %}
 
 {% block javascripts %}
-	<script>
-		window.chart_data_src = '{{ chart_data_src|raw }}';
-	</script>
 	{{ encore_entry_script_tags('alexey') }}
-	{{ encore_entry_script_tags('transmission-simulation') }}
+	{{ encore_entry_script_tags('linear-chart') }}
 {% endblock %}
 
 {% block pageContent %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('network') }} ~> Transmission |
+		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('network') }}
+			~> Transmission |
 			<a href="{{ path('network_transmission_settings') }}" class="fas fa-cog text-info"></a>
 		</h1>
 	</div>
@@ -22,7 +20,8 @@
 	kB/s
 	<div class="card shadow mb-4">
 		<div class="card-header py-3">
-			<h6 class="m-0 font-weight-bold text-primary">{{ 'simulation'|localised }}: {{ 'changes_in_time'|localised('network_usage') }}</h6>
+			<h6 class="m-0 font-weight-bold text-primary">{{ 'simulation'|localised }}:
+				{{ 'changes_in_time'|localised('network_usage') }}</h6>
 		</div>
 		<div class="card-body">
 			<div class="chart-area">
@@ -34,14 +33,21 @@
 						<div class=""></div>
 					</div>
 				</div>
-				<canvas id="timeChart" style="display: block; width: 1041px; height: 320px;" class="chartjs-render-monitor" width="1041" height="320"></canvas>
+				<canvas
+					style="display: block; width: 1041px; height: 320px;" 
+					class="chartjs-render-monitor chart-linear"
+					data-chart-src="{{ path('network_transmission_simulation', {type: 'time'}) }}"
+					width="1041"
+					height="320"
+				></canvas>
 			</div>
 			<hr>
 		</div>
 	</div>
 	<div class="card shadow mb-4">
 		<div class="card-header py-3">
-			<h6 class="m-0 font-weight-bold text-primary">{{ 'simulation'|localised }}: {{ 'throttling_by_optimal_speed'|localised('network_usage') }}</h6>
+			<h6 class="m-0 font-weight-bold text-primary">{{ 'simulation'|localised }}:
+				{{ 'throttling_by_optimal_speed'|localised('network_usage') }}</h6>
 		</div>
 		<div class="card-body">
 			<div class="chart-area">
@@ -53,7 +59,12 @@
 						<div class=""></div>
 					</div>
 				</div>
-				<canvas id="speedChart" style="display: block; width: 1041px; height: 320px;" class="chartjs-render-monitor" width="1041" height="320"></canvas>
+				<canvas
+					style="display: block; width: 1041px; height: 320px;" 
+					class="chartjs-render-monitor chart-linear"
+					data-chart-src="{{ path('network_transmission_simulation', {type: 'speed'}) }}"
+					width="1041" height="320"
+				></canvas>
 			</div>
 			<hr>
 		</div>

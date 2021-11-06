@@ -4,11 +4,8 @@
 {% endblock %}
 
 {% block javascripts %}
-	<script>
-		window.chart_data_src = '{{ chart_data_src|raw }}';
-	</script>
 	{{ encore_entry_script_tags('alexey') }}
-	{{ encore_entry_script_tags('money-node-chart') }}
+	{{ encore_entry_script_tags('linear-chart') }}
 {% endblock %}
 
 {% block pageContent %}
@@ -32,7 +29,13 @@
 						<div class=""></div>
 					</div>
 				</div>
-				<canvas id="myAreaChart" style="display: block; width: 1041px; height: 320px;" class="chartjs-render-monitor" width="1041" height="320"></canvas>
+				<canvas
+					style="display: block; width: 1041px; height: 320px;" 
+					class="chartjs-render-monitor chart-linear"
+					data-chart-src="{{ path('money_graph_nodes_data') }}"
+					width="1041"
+					height="320"
+				></canvas>
 			</div>
 			<hr>
 		</div>

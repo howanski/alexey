@@ -1,14 +1,12 @@
 import Chart from "chart.js/auto";
 import axios from "axios";
 
-function createChart(chartConfig, elem) {
+function createChart(elem, labels, datasets) {
   let myLineChart = new Chart(elem, {
     type: "line",
     data: {
-      labels: chartConfig.labels,
-      datasets: [
-        chartConfig.datasets[0],
-      ],
+      labels: labels,
+      datasets: datasets,
     },
     options: {
       maintainAspectRatio: false,
@@ -23,9 +21,6 @@ function createChart(chartConfig, elem) {
       scales: {
         xAxes: [
           {
-            time: {
-              unit: "time",
-            },
             gridLines: {
               display: false,
               drawBorder: false,
@@ -73,27 +68,25 @@ function createChart(chartConfig, elem) {
   });
 }
 
-function updateChartData() {
+function prepareDatasets(datasetsObject) {
+  var datasetsArray = [];
+  for (const prop in datasetsObject) {
+    datasetsArray.push(datasetsObject[prop]);
+  }
+  return datasetsArray;
+}
+
+function updateChartData(elem, src) {
   axios
-    .get(window.chart_data_src)
+    .get(src)
     .then(function (response) {
       // handle success
       let responseData = response.data;
-
-      let chartConfigSpeed = {
-        labels: responseData.speed.labels,
-        datasets: responseData.speed.datasets,
-      };
-      let chartSpeed = document.getElementById("speedChart");
-      createChart(chartConfigSpeed, chartSpeed);
-
-      let chartConfigTime = {
-        labels: responseData.time.labels,
-        datasets: responseData.time.datasets,
-      };
-      let chartTime = document.getElementById("timeChart");
-      createChart(chartConfigTime, chartTime);
-
+      createChart(
+        elem,
+        responseData.labels,
+        prepareDatasets(responseData.datasets)
+      );
     })
     .catch(function (error) {
       // handle error
@@ -104,4 +97,10 @@ function updateChartData() {
     });
 }
 
-updateChartData();
+function createChartOnElem(elem) {
+  let dataSource = elem.getAttribute("data-chart-src");
+  updateChartData(elem, dataSource);
+}
+
+let charts = document.querySelectorAll(".chart-linear");
+Array.from(charts).map(createChartOnElem);

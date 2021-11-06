@@ -9,7 +9,6 @@ use App\Entity\NetworkStatistic;
 use App\Class\TransmissionSettings;
 use App\Service\SimpleSettingsService;
 
-// TODO: REFACTORISATION!!!
 class TransmissionService
 {
     private TransmissionSettings $settings;
@@ -23,17 +22,11 @@ class TransmissionService
         $this->settings->selfConfigure($simpleSettingsService);
     }
 
-    public function getSimulationChartData(): array
+    private function getSimulationChartDataTime()
     {
         $chartData = [
-            'speed' => [
-                'labels' => [],
-                'datasets' => [],
-            ],
-            'time' => [
-                'labels' => [],
-                'datasets' => [],
-            ],
+            'labels' => [],
+            'datasets' => [],
         ];
         $datasetStub = [
             'label' => $this->translator->translateString(
@@ -53,21 +46,7 @@ class TransmissionService
             'pointBorderWidth' => 2,
             'data' => [],
         ];
-        $chartData['speed']['datasets'][0] = $datasetStub;
-        $chartData['time']['datasets'][0] = $datasetStub;
-
-
-        $inputSpeed = 1;
-        $throttled = 0;
-        while ($throttled < 1.5 * intval($this->settings->getTargetSpeed())) {
-            $throttled = $this->settings->getProposedThrottleSpeed($inputSpeed * 1024);
-            if ($throttled > TransmissionSettings::BOTTOM_SPEED) {
-                $chartData['speed']['datasets'][0]['data'][] = $throttled;
-                $chartData['speed']['labels'][] = $inputSpeed . ' kB/s';
-            }
-            $inputSpeed += 0.5;
-        }
-
+        $chartData['datasets'][0] = $datasetStub;
 
         $stat = $this->networkUsageService->getLatestStatistic();
         $throttled = $stat ? $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft()) : 0;
@@ -81,8 +60,8 @@ class TransmissionService
                 $stat->setProbingTime($mockedProbingTime);
                 $stat->setDataUploadedInFrame($stat->getDataUploadedInFrame() + $throttled * 1024 * 3600);
                 $mockedProbingTime->add($window);
-                $chartData['time']['datasets'][0]['data'][] = $throttled;
-                $chartData['time']['labels'][] = $mockedProbingTime->format('d.m H:i');
+                $chartData['datasets'][0]['data'][] = $throttled;
+                $chartData['labels'][] = $mockedProbingTime->format('d.m H:i');
                 $chartPoints++;
                 if ($chartPoints >= $maxChartPoints) {
                     break;
@@ -94,16 +73,63 @@ class TransmissionService
                 $stat->setProbingTime($mockedProbingTime);
                 $stat->setDataUploadedInFrame($stat->getDataUploadedInFrame() + $throttled * 1024 * 3600);
                 $mockedProbingTime->add($window);
-                $chartData['time']['datasets'][0]['data'][] = $throttled;
-                $chartData['time']['labels'][] = $mockedProbingTime->format('d.m H:i');
+                $chartData['datasets'][0]['data'][] = $throttled;
+                $chartData['labels'][] = $mockedProbingTime->format('d.m H:i');
                 $chartPoints++;
                 if ($chartPoints >= $maxChartPoints) {
                     break;
                 }
             }
         }
-
         return $chartData;
+    }
+
+    private function getSimulationChartDataSpeed()
+    {
+        $chartData = [
+            'labels' => [],
+            'datasets' => [],
+        ];
+        $datasetStub = [
+            'label' => $this->translator->translateString(
+                translationId: 'throttling',
+                module: 'network_usage'
+            ) . ' (kB/s)',
+            'lineTension' => 0.3,
+            'backgroundColor' => 'rgba(78, 115, 223, 0.05)',
+            'borderColor' => 'rgba(78, 115, 223, 1)',
+            'pointRadius' => 3,
+            'pointBackgroundColor' => 'rgba(78, 115, 223, 1)',
+            'pointBorderColor' => 'rgba(78, 115, 223, 1)',
+            'pointHoverRadius' => 3,
+            'pointHoverBackgroundColor' => 'rgba(78, 115, 223, 1)',
+            'pointHoverBorderColor' => 'rgba(78, 115, 223, 1)',
+            'pointHitRadius' => 10,
+            'pointBorderWidth' => 2,
+            'data' => [],
+        ];
+        $chartData['datasets'][0] = $datasetStub;
+
+        $inputSpeed = 1;
+        $throttled = 0;
+        while ($throttled < 1.5 * intval($this->settings->getTargetSpeed())) {
+            $throttled = $this->settings->getProposedThrottleSpeed($inputSpeed * 1024);
+            if ($throttled > TransmissionSettings::BOTTOM_SPEED) {
+                $chartData['datasets'][0]['data'][] = $throttled;
+                $chartData['labels'][] = $inputSpeed . ' kB/s';
+            }
+            $inputSpeed += 0.5;
+        }
+        return $chartData;
+    }
+
+    public function getSimulationChartData(string $type): array
+    {
+        if ('time' === $type) {
+            return $this->getSimulationChartDataTime();
+        } else {
+            return $this->getSimulationChartDataSpeed();
+        }
     }
 
     public function adjustSpeed(): void

@@ -7,13 +7,12 @@ namespace App\Controller;
 use App\Class\WeatherSettings;
 use App\Service\WeatherService;
 use App\Form\WeatherSettingsType;
+use App\Service\AlexeyTranslator;
 use App\Service\SimpleCacheService;
 use App\Service\SimpleSettingsService;
 use App\Class\OpenWeatherOneApiResponse;
-use App\Service\AlexeyTranslator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,19 +21,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class WeatherController extends AbstractController
 {
     #[Route('/', name: 'weather')]
-    public function index(WeatherService $weatherService, RouterInterface $routerInterface): Response
+    public function index(): Response
     {
-        $data = $weatherService->getWeather();
-        return $this->render('weather/index.html.twig', [
-            'weather_data' => $data,
-            'chart_data_src' => $routerInterface->generate('weather_chart_data'),
-        ]);
+        return $this->render('weather/index.html.twig');
     }
 
-    #[Route('/chart-data', name: 'weather_chart_data')]
-    public function chartData(WeatherService $weatherService, Request $request): Response
+    #[Route('/chart-data/{type}', name: 'weather_chart_data')]
+    public function chartData(string $type, WeatherService $weatherService, Request $request): Response
     {
-        $data = $weatherService->getChartData(locale: $request->getLocale());
+        $data = $weatherService->getChartData(locale: $request->getLocale(), type: $type);
         return new JsonResponse($data);
     }
 

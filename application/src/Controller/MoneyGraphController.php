@@ -6,7 +6,6 @@ namespace App\Controller;
 
 use App\Service\MoneyService;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,11 +13,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class MoneyGraphController extends AbstractController
 {
     #[Route('/money/graph/nodes', name: 'money_graph_nodes')]
-    public function nodes(RouterInterface $routerInterface): Response
+    public function nodes(): Response
     {
-        return $this->render('money_graph/nodes.html.twig', [
-            'chart_data_src' => $routerInterface->generate('money_graph_nodes_data'),
-        ]);
+        return $this->render('money_graph/nodes.html.twig');
     }
 
     #[Route('/money/graph/nodes-data', name: 'money_graph_nodes_data')]
