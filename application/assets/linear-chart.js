@@ -87,7 +87,7 @@ function updateChartData(elem, src) {
       let responseData = response.data;
       let chartId = elem.getAttribute("data-chart-id");
       if (null === chartId) {
-        chartId = getRandomId();
+        chartId = getUnusedRandomChatId();
         elem.setAttribute("data-chart-id", chartId);
       }
       if (typeof chartStorage[chartId] === "undefined") {
@@ -124,8 +124,13 @@ function updateBonusPayload(payload) {
   }
 }
 
-function getRandomId() {
-  return Math.ceil(Math.random() * 1000).toString();
+function getUnusedRandomChatId() {
+  let randomId = Math.ceil(Math.random() * 1000).toString();
+  if (typeof chartStorage[randomId] === "undefined") {
+    return randomId();
+  } else {
+    return getUnusedRandomChatId();
+  }
 }
 
 function createChartOnElem(elem) {

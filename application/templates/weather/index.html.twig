@@ -34,6 +34,7 @@
 					style="display: block; width: 1041px; height: 320px;"
 					class="chartjs-render-monitor chart-linear"
 					data-chart-src="{{ path('weather_chart_data', {type: 'hourly'}) }}"
+					data-chart-refresh="600"
 					width="1041"
 					height="320"
 				></canvas>
@@ -59,6 +60,7 @@
 					style="display: block; width: 1041px; height: 320px;"
 					class="chartjs-render-monitor chart-linear"
 					data-chart-src="{{ path('weather_chart_data', {type: 'daily'}) }}"
+					data-chart-refresh="3600"
 					width="1041"
 					height="320"
 				></canvas>
