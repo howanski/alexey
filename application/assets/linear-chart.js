@@ -127,7 +127,7 @@ function updateBonusPayload(payload) {
 function getUnusedRandomChatId() {
   let randomId = Math.ceil(Math.random() * 1000).toString();
   if (typeof chartStorage[randomId] === "undefined") {
-    return randomId();
+    return randomId;
   } else {
     return getUnusedRandomChatId();
   }
