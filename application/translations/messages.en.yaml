@@ -112,7 +112,10 @@ app:
         outgoing_transfers: "Outgoing transfers"
         show_node: "Show node"
         show_transfer: "Show transfer"
+        split: Split
         sum: Sum
+      flashes:
+        split: "Successfully split!"
       forms:
         labels:
           amount: Amount
@@ -123,6 +126,7 @@ app:
           operation_date: "Operation date"
           source_node: "Source node"
           target_node: "Target node"
+          target_node_rest_of_split: "Target node for rest of split money"
           money_node_group_name: "Group name"
           node_group: "Node group"
         values:

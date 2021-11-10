@@ -48,6 +48,7 @@
 									<td>
 										<a href="{{ path('money_transfer_show', {'id': money_transfer.id}) }}" class="btn btn-sm btn-success">{{ 'show'|localised }}</a>
 										<a href="{{ path('money_transfer_edit', {'id': money_transfer.id}) }}" class="btn btn-sm btn-warning">{{ 'edit'|localised }}</a>
+										<a href="{{ path('money_transfer_split', {'id': money_transfer.id}) }}" class="btn btn-sm btn-warning">{{ 'split'|localised('money') }}</a>
 									</td>
 								</tr>
 							{% else %}

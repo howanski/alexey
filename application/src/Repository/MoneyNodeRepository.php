@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Entity\MoneyNode;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -33,5 +34,12 @@ class MoneyNodeRepository extends ServiceEntityRepository
         return $qb
             ->getQuery()
             ->getResult();
+    }
+
+    // TODO: User
+    public function getQueryBuilderForForm(): QueryBuilder
+    {
+        return $this->createQueryBuilder('mn')
+        ->orderBy('mn.name', 'ASC');
     }
 }

@@ -56,5 +56,6 @@
 
     <a href="{{ path('money_transfer_index') }}" class="btn btn-success">{{ 'back'|localised }}</a>
     <a href="{{ path('money_transfer_edit', {'id': money_transfer.id}) }}" class="btn btn-warning">{{ 'edit'|localised }}</a>
+    <a href="{{ path('money_transfer_split', {'id': money_transfer.id}) }}" class="btn btn-warning">{{ 'split'|localised('money') }}</a>
     {{ include('money_transfer/_delete_form.html.twig') }}
 {% endblock %}

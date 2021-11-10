@@ -112,7 +112,10 @@ app:
         outgoing_transfers: "Przelewy wychodzące"
         show_node: "Pokaż węzeł"
         show_transfer: "Pokaż przelew"
+        split: Podziel
         sum: Suma
+      flashes:
+        split: "Pomyślnie podzielono!"
       forms:
         labels:
           amount: Kwota
@@ -123,6 +126,7 @@ app:
           operation_date: "Data wykonania"
           source_node: "Węzeł źródłowy"
           target_node: "Węzeł docelowy"
+          target_node_rest_of_split: "Węzeł na resztę z podziału kwoty"
           money_node_group_name: "Nazwa grupy"
           node_group: "Grupa węzłów"
         values:

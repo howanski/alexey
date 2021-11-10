@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\MoneyNode;
 use App\Form\CommonFormType;
 use App\Entity\MoneyTransfer;
+use App\Repository\MoneyNodeRepository;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -20,6 +21,7 @@ class MoneyTransferType extends CommonFormType
     {
         $this->setTranslationModule(moduleName: 'money');
     }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -52,6 +54,9 @@ class MoneyTransferType extends CommonFormType
                 'priority' => -3,
                 'required' => true,
                 'class' => MoneyNode::class,
+                'query_builder' => function (MoneyNodeRepository $er) {
+                    return $er->getQueryBuilderForForm();
+                },
                 'choice_label' => 'name',
                 'constraints' => [
                     new NotBlank(),
@@ -62,6 +67,9 @@ class MoneyTransferType extends CommonFormType
                 'priority' => -4,
                 'required' => true,
                 'class' => MoneyNode::class,
+                'query_builder' => function (MoneyNodeRepository $er) {
+                    return $er->getQueryBuilderForForm();
+                },
                 'choice_label' => 'name',
                 'constraints' => [
                     new NotBlank(),
