@@ -5,4 +5,5 @@
  * (and its CSS file) in your base layout (base.html.twig).
  */
 import './../node_modules/@fortawesome/fontawesome-free/css/all.css';
+import './../node_modules/tailwindcss/dist/tailwind.css';
 // import './styles/color-overrides-nord.css'
