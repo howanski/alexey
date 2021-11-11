@@ -3,33 +3,33 @@
 	<head>
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<meta name="theme-color" content="#000000"/>
 		{{ encore_entry_link_tags('alexey') }}
 		<title>Alexey | Login</title>
 	</head>
-	<body class="text-gray-800 antialiased bg-black">
+	<body class="text-gray-800 antialiased bg-nord1">
 		<main>
 			<section class="absolute w-full h-full">
 				<div class="container mx-auto px-4 h-full">
 					<div class="flex content-center items-center justify-center h-full">
 						<div class="w-full lg:w-4/12 px-4">
-							<div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blue-200 border-0">
+							<div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-nord2 border-0">
 								<div class="flex-auto px-4 lg:px-10 py-10 pt-0">
 									{% if error %}
-										<div class="bg-red-100 border mb-3 mt-3 border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+										<div class="bg-nord12 border mb-3 mt-6 border-nord11 text-nord1 px-4 py-3 rounded relative" role="alert">
 											<strong class="font-bold">{{ error.messageKey|trans(error.messageData, 'security') }}</strong>
 										</div>
 									{% endif %}
 									<form method="post">
 										<div class="relative w-full mb-3">
-											<label class="block uppercase text-gray-700 text-xs font-bold mb-2 mt-3" for="grid-password">Username</label><input type="text" value="{{ last_username }}" name="username" class="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full" id="inputUsername" style="transition: all 0.15s ease 0s;" placeholder="Enter your username..." required autofocus>
+											<label class="block uppercase text-nord4 text-xs font-bold mb-2 mt-3" for="grid-password">Username</label>
+											<input type="text" value="{{ last_username }}" name="username" class="border-0 px-3 py-3 placeholder-gray-400 text-nord4 bg-nord3 rounded text-sm shadow focus:outline-none focus:ring w-full" id="inputUsername" style="transition: all 0.15s ease 0s;" placeholder="Enter your username..." required autofocus>
 										</div>
 										<div class="relative w-full mb-3">
-											<label class="block uppercase text-gray-700 text-xs font-bold mb-2" for="grid-password">Password</label>
-											<input type="password" name="password" class="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full" placeholder="Password" style="transition: all 0.15s ease 0s;"/>
+											<label class="block uppercase text-nord4 text-xs font-bold mb-2" for="grid-password">Password</label>
+											<input type="password" name="password" class="border-0 px-3 py-3 placeholder-gray-400 text-nord4 bg-nord3 rounded text-sm shadow focus:outline-none focus:ring w-full" placeholder="Password" style="transition: all 0.15s ease 0s;"/>
 										</div>
 										<div class="text-center mt-6">
-											<button class="bg-gray-900 text-white hover:bg-green-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full" type="submit" style="transition: all 0.15s ease 0s;">
+											<button class="bg-nord3 text-nord6 hover:bg-nord7 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full" type="submit" style="transition: all 0.15s ease 0s;">
 												Sign In
 											</button>
 										</div>
