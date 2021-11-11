@@ -16,12 +16,13 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.4",
+        "autoprefixer": "^10.4.0",
         "axios": "^0.21.2",
-        "bootstrap": "4.6.0",
         "chart.js": "^3.5.0",
         "fontawesome": "^5.6.3",
-        "jquery": "^3.6.0",
-        "popper.js": "1.16.1",
-        "startbootstrap-sb-admin-2": "^4.1.4"
+        "popper.js": "^1.16.1",
+        "postcss": "^8.3.11",
+        "tailwindcss": "^2.2.19"
     }
 }
