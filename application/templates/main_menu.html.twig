@@ -1,0 +1,63 @@
+<nav class="bg-nord0 md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
+	<div class="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
+		<button class="navbar-toggler cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent" type="button" data-navbar-id="example-collapse-sidebar">
+			<i class="fas fa-bars text-nord4"></i>
+		</button>
+		<a class="md:block text-left md:pb-2 text-nord4 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0" href="/">
+			Alexey
+		</a>
+		<ul class="md:hidden items-center flex flex-wrap list-none">
+			<li class="inline-block relative">
+				<a class="dropdown-toggler text-nord4 block" data-dropdown-id="user-responsive-dropdown" href="#">
+					<div class="items-center flex">
+						<span class="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full">
+							<img alt="..." class="w-full rounded-full align-middle border-none shadow-lg" src="/user.png"/>
+						</span>
+					</div>
+				</a>
+				{% include 'user_drop_menu.html.twig' with {'id': 'user-responsive-dropdown'} only %}
+			</li>
+		</ul>
+		<div class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded hidden" id="example-collapse-sidebar">
+			<div class="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-blueGray-200">
+				<div class="flex flex-wrap">
+					<div class="w-6/12">
+						<a class="md:block text-left md:pb-2 text-nord4 hover:text-nord9 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0" href="/">
+							Alexey
+						</a>
+					</div>
+					<div class="w-6/12 flex justify-end">
+						<button type="button" class="navbar-toggler cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent" data-navbar-id="example-collapse-sidebar">
+							<i class="fas fa-times"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="mt-6 mb-4 md:hidden"></div>
+			{% for top_menu_key, menu_item in alexeySideMenu() %}
+				<h6 class="md:min-w-full text-nord4 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+					{% if menu_item.children|length < 1 %}
+						<ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-0">
+							<li class="inline-flex">
+								<a class="text-nord4 hover:text-nord9 text-sm block mb-4 no-underline font-semibold" href="{{ menu_item.destination }}">
+									<i class="fas {{ menu_item.icon }} mr-2 text-nord10 text-base"></i>
+									{{ menu_item.name }}</a>
+							</li>
+						</ul>
+					{% else %}
+						{{menu_item.name}}
+					{% endif %}
+				</h6>
+				<ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
+					{% for sub_menu in menu_item.children %}
+						<li class="inline-flex">
+							<a class="text-nord4 hover:text-nord9 text-sm block mb-4 no-underline font-semibold" href="{{ sub_menu.destination }}">
+								<i class="fas {{ menu_item.icon }} mr-2 text-nord10 text-base"></i>
+								{{ sub_menu.name }}</a>
+						</li>
+					{% endfor %}
+				</ul>
+			{% endfor %}
+		</div>
+	</div>
+</nav>

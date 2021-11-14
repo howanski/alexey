@@ -1,72 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="Alexey, the personal Personal Assistant">
-		<meta name="author" content="Maciej Howański">
-
-		<title>{% block title %}Alexey{% endblock %}</title>
-
-		<!-- Custom fonts for this template-->
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('alexey') }}
-        {% endblock %}
-		<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		{{ encore_entry_link_tags('alexey') }}
+		<title>
+			{% block title %}Alexey
+			{% endblock %}
+		</title>
 	</head>
-
-	<body id="page-top">
-		<!-- Page Wrapper -->
-		<div id="wrapper">
-			<!-- Sidebar -->
-			{{ include('sidebar.html.twig') }}
-			<!-- End of Sidebar -->
-			<!-- Content Wrapper -->
-			<div
-				id="content-wrapper" class="d-flex flex-column bg-dark">
-				<!-- Main Content -->
-				<div id="content">
-					<!-- Topbar -->
-					{{ include('topbar.html.twig') }}
-					<!-- End of Topbar -->
-					<!-- Begin Page Content -->
-					<div class="container-fluid">
-					{% for type, flashes in app.flashes %}
-						{% for message in flashes %}
-							<div class="alert alert-{{ type }}">
-								{{ message }}
-							</div>
-						{% endfor %}
-					{% endfor %}
-					{% block pageContent %}
-                    {% endblock %}
+	<body class="text-blueGray-700 antialiased bg-nord0">
+		<div id="root">
+			{{ include('main_menu.html.twig') }}
+			<div class="relative md:ml-64 bg-blueGray-50">
+				{{ include('top_menu.html.twig') }}
+				<div class="relative bg-nord3 md:pt-32 pb-32 pt-12">
+					<div class="px-4 md:px-10 mx-auto w-full">
+						<div>
+							{% block pageContentPrimary %}
+								<div class="flex flex-wrap">
+									{% include 'card.html.twig'
+									with {
+										'iconClass': 'fas fa-quote-left',
+										'iconBg': 'nord11',
+										'headerText': 'Blah Blah',
+										'headerValue': 'Lies',
+										'bottomData': '<span class="text-red-500 mr-2"><i class="fas fa-arrow-down"></i>WOW</span><span class="whitespace-nowrap">OMG</span>'
+										} only
+									%}
+									{% include 'card.html.twig'
+									with {
+										'iconClass': 'fas fa-brain',
+										'iconBg': 'nord12',
+										'headerText': 'Blam blam',
+										'headerValue': 'Confusion'
+										} only
+									%}
+								</div>
+								<div class="flex flex-wrap">
+									{% include 'card.html.twig'
+									with {
+										'iconClass': 'fas fa-angry',
+										'iconBg': 'nord13',
+										'headerText': 'Blim blim',
+										'headerValue': 'Government 38%'
+										} only
+									%}
+									{% include 'card.html.twig'
+									with {
+										'iconClass': 'far fa-chart-bar',
+										'iconBg': 'nord14',
+										'headerText': 'Blom blom',
+										'headerValue': 'Control'
+										} only
+									%}
+								</div>
+							{% endblock %}
+						</div>
 					</div>
-					<!-- /.container-fluid -->
 				</div>
-				<!-- End of Main Content -->
-				<!-- Footer -->
-				{{ include('footer.html.twig') }}
-				<!-- End of Footer -->
+				<div class="bg-nord0 px-4 md:px-10 mx-auto w-full -m-24">
+					{% block pageContentSecondary %}
+						{% include 'table.html.twig'
+						with {
+							'tableTitle' : 'Tytuł',
+							'tableHeaders' : ['Łan', 'Dwa łany', 'tri', 'czetyre'],
+							'tableData': [[1,2,3,4],[5,6,7,8]]
+						} only
+					%}
+					{% endblock %}
+					{% include 'footer.html.twig' %}
+				</div>
 			</div>
-			<!-- End of Content Wrapper -->
 		</div>
-		<!-- End of Page Wrapper -->
-		<!-- Scroll to Top Button-->
-		<a class="scroll-to-top rounded" href="#page-top">
-			<i class="fas fa-angle-up"></i>
-		</a>
-		<!-- Logout Modal-->
-		{{ include('logoutModal.html.twig') }}
-        {% block javascripts %}
-            {{ encore_entry_script_tags('alexey') }}
-            <!-- Core plugin JavaScript-->
-            {# <script src="vendor/jquery-easing/jquery.easing.min.js"></script> TODO: Maybe will be useful #}
-            <!-- Page level plugins -->
-            {# <script src="vendor/chart.js/Chart.min.js"></script> #}
-            <!-- Page level custom scripts -->
-            {# <script src="js/demo/chart-area-demo.js"></script> #}
-            {# <script src="js/demo/chart-pie-demo.js"></script> #}
-        {% endblock %}
+		{% block javascripts %}
+			<!-- additional javascripts -->
+		{% endblock %}
+		{{ encore_entry_script_tags('alexey') }}
 	</body>
 </html>
