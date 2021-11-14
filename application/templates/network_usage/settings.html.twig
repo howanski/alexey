@@ -1,14 +1,25 @@
 {% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('network_usage'), 'href': path('network_usage')},
+	{'name': 'settings'|localised },
+	]
+%}
 
-{% block title %}Alexey | {{ 'menu_record'|localised('network_usage') }}
+{% block pageContentPrimary %}
+	{% include 'form.html.twig'
+		with {
+			'form': form,
+			'additionalButtons': [
+				{
+					'color': 'nord10',
+					'href': path('network_usage'),
+					'name': 'cancel'|localised,
+					'icon': 'fas fa-undo'
+				}
+			]
+			} only
+	%}
 {% endblock %}
 
-{% block pageContent %}
-	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('network') }} ~> <a href="{{ path('network_usage') }}" class="text-info">{{ 'menu_record'|localised('network_usage') }}</a> ~> {{ 'menu_record'|localised('settings') }} </h1>
-	</div>
-	    {{ form_start(form) }}
-    	{{ form_widget(form) }}
-    	<button class="btn btn-warning">{{ 'save'|localised }}</button>
-		{{ form_end(form) }}
+{% block pageContentSecondary %}
 {% endblock %}

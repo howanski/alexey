@@ -3,6 +3,9 @@
 {% endif %}
 {% set light = 'nord4' %}
 {% set dark = 'nord0' %}
+{% if noHover is not defined %}
+	{% set noHover = false %}
+{% endif %}
 <div class="flex flex-wrap">
 	<div class="w-full xl:w-{{ maxWidth }}/12 mb-12 xl:mb-0 px-4">
 		<div class="relative flex flex-col min-w-0 break-words bg-{{ light }} w-full mb-6 shadow-lg rounded">
@@ -44,7 +47,7 @@
 					{% endif %}
 					<tbody>
 						{% for tableRow in tableData %}
-							<tr class="hover:bg-{{ dark }} hover:text-{{ light }}">
+							<tr class="{% if not noHover %}hover:bg-{{ dark }} hover:text-{{ light }}{% endif %}">
 								{% for cell in tableRow %}
 									<td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
 										{{ cell|raw }}

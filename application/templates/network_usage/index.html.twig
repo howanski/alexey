@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Alexey | {{ 'menu_record'|localised('network_usage') }}
-{% endblock %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('network')},
+	{'name': 'menu_record'|localised('network_usage')},
+	] %}
 
 {% block javascripts %}
-	{{ encore_entry_script_tags('alexey') }}
 	{{ encore_entry_script_tags('linear-chart') }}
 	<script>
 		let chartRoutes = {{ chart_routes|json_encode|raw }};
@@ -17,62 +17,49 @@ window.location.replace(route);
 	</script>
 {% endblock %}
 
-{% block pageContent %}
-	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('network') }} ~> {{ 'menu_record'|localised('network_usage') }} |
-			<a href="{{ path('network_usage_settings') }}" class="fas fa-cog text-info"></a>
-		</h1>
-	</div>
-	<table class="table table-dark">
-		<thead>
-			<tr>
-				<th scope="col">{{ 'traffic_left'|localised('network_usage') }}</th>
-				<th scope="col">{{ 'current_speed'|localised('network_usage') }}</th>
-				<th scope="col">{{ 'optimal_speed'|localised('network_usage') }}</th>
-				<th scope="col">{{ 'throttling'|localised('network_usage') }}</th>
-				<th scope="col">{{ 'billing_window_end'|localised('network_usage') }}</th>
-				<th scope="col">{{ 'chart_type'|localised }}</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td id="current_traffic_left"></td>
-				<td id="current_transfer_rate"></td>
-				<td id="current_transfer_rate_left"></td>
-				<td id="current_throttling"></td>
-				<td id="current_billing_frame_end"></td>
-				<td>
-					{{ form_start(chart_selector_form) }}
-					{{ form_widget(chart_selector_form) }}
-					{{ form_end(chart_selector_form) }}
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<div class="card shadow mb-4">
-		<div class="card-header py-3">
-			<h6 class="m-0 font-weight-bold text-primary">{{ 'outside_traffic'|localised('network_usage') }}</h6>
-		</div>
-		<div class="card-body">
-			<div class="chart-area">
-				<div class="chartjs-size-monitor">
-					<div class="chartjs-size-monitor-expand">
-						<div class=""></div>
-					</div>
-					<div class="chartjs-size-monitor-shrink">
-						<div class=""></div>
-					</div>
-				</div>
-				<canvas
-					style="display: block; width: 1041px; height: 320px;"
-					class="chartjs-render-monitor chart-linear"
-					data-chart-src="{{ path('network_usage_chart_data', {chartType: chart_type}) }}"
-					data-chart-refresh="30"
-					width="1041"
-					height="320"
-				></canvas>
-			</div>
-			<hr>
-		</div>
+
+{% block pageContentPrimary %}
+
+{% set renderedForm %}
+	{{ form_start(chart_selector_form) }}
+	{{ form_widget(chart_selector_form) }}
+	{{ form_end(chart_selector_form) }}
+{% endset %}
+
+{% include 'table.html.twig'
+	with {
+		'tableTitle' : '',
+		'tableHeaders' : [
+			'traffic_left'|localised('network_usage'),
+			'current_speed'|localised('network_usage'),
+			'optimal_speed'|localised('network_usage'),
+			'throttling'|localised('network_usage'),
+			'billing_window_end'|localised('network_usage'),
+			'chart_type'|localised
+		],
+		'tableData': [[
+			'<div id="current_traffic_left"></div>',
+			'<div id="current_transfer_rate"></div>',
+			'<div id="current_transfer_rate_left"></div>',
+			'<div id="current_throttling"></div>',
+			'<div id="current_billing_frame_end"></div>',
+			renderedForm,
+			]],
+		'buttons': [{'href': path('network_usage_settings'), text: 'settings'|localised }],
+		'noHover': true,
+	} only
+%}
+{% endblock %}
+
+
+{% block pageContentSecondary %}
+	<div class="flex flex-wrap">
+		{% include 'chart_linear.html.twig' with {
+			'titleSmall': '',
+			'titleBig': 'outside_traffic'|localised('network_usage'),
+			'chartSrc': path('network_usage_chart_data', {chartType: chart_type}),
+			'chartRefresh': 30,
+			} only
+		%}
 	</div>
 {% endblock %}
