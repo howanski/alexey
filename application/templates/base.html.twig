@@ -5,7 +5,16 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		{{ encore_entry_link_tags('alexey') }}
 		<title>
-			{% block title %}Alexey
+			{% block title %}
+				{% if breadcrumbs is defined %}
+					@
+					{% for crumb in breadcrumbs %}
+						|
+						{{ crumb.name }}
+					{% endfor %}
+				{% else %}
+					Alexey
+				{% endif %}
 			{% endblock %}
 		</title>
 	</head>

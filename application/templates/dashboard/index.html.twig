@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Alexey | {{ 'menu_record'|localised('dashboard') }}
-{% endblock %}
+{% set breadcrumbs = [{'name': 'menu_record'|localised('dashboard')}] %}
+{% set machinesShown = false %}
+{% set networkShown = false %}
+{% set weatherShown = false %}
 
 {% block javascripts %}
 	{{ parent() }}
@@ -12,46 +13,42 @@ window.location.reload(false);
 	</script>
 {% endblock %}
 
-{% block pageContent %}
-	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('dashboard') }}</h1>
-	</div>
+{% block pageContentPrimary %}
 	{% if dashboard_data.machines|length > 0 %}
-		<div class="row">
-			<h5 class="text-gray-400">{{ 'menu_record'|localised('network_machines') }}</h1>
-		</div>
-		<div class="row">
+		<div class="flex flex-wrap">
 			{% for machine in dashboard_data.machines %}
-				<div class="col-xl-3 col-md-6 mb-4">
-					<div class="card {% if machine.isReachable %} border-left-success {% elseif machine.lastSeen %} border-left-warning {% else %} border-left-danger {% endif %} shadow h-100 py-2">
-						<div class="card-body">
-							<div class="row no-gutters align-items-center">
-								<div class="col mr-2">
-									<div class="text-xs font-weight-bold {% if machine.isReachable %} text-success {% elseif machine.lastSeen %} text-warning {% else %} text-danger {% endif %} text-uppercase mb-1">
-										{{ 'machine'|localised('network_machines') }}:
-										{{ machine.name }}</div>
-									{% if machine.lastSeen %}
-										<div class="h5 mb-0 font-weight-bold text-gray-800">{{ 'last_seen'|localised('network_machines') }}
-											{{ machine.getLastSeenReadable(app.request.locale) }}</div>
-									{% endif %}
-								</div>
-								<div class="col-auto">
-									{% if machine.canBeWoken %}
-										<a href="{{ path('network_machine_wake', {'id': machine.id, 'backRoute': 'dashboard'}) }}">
-											<i class="fas fa-power-off fa-2x text-success"></i>
-										</a>
-									{% else %}
-										<i class="fas fa-server fa-2x text-gray-300"></i>
-									{% endif %}
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				{% set machinesShown = true %}
+				{% set iconHref = false %}
+				{% set iconColor = false %}
+				{% set iconClass = 'fas fa-server' %}
+				{% if machine.isReachable %}
+					{% set iconBg = 'nord14' %}
+				{% elseif machine.lastSeen %}
+					{% set iconBg = 'nord13' %}
+				{% else %}
+					{% set iconBg = 'nord11' %}
+				{% endif %}
+				{% if machine.canBeWoken %}
+					{% set iconHref = path('network_machine_wake', {'id': machine.id, 'backRoute': 'dashboard'}) %}
+					{% set iconClass = 'fas fa-power-off fa-2x' %}
+					{% set iconColor = 'nord12' %}
+				{% endif %}
+				{% include 'card.html.twig'
+			with {
+				'iconClass': iconClass,
+				'iconBg': iconBg,
+				'iconHref': iconHref,
+				'iconColor': iconColor,
+				'headerText': 'machine'|localised('network_machines') ~ ':',
+				'headerValue': machine.name,
+				'bottomData': 'last_seen'|localised('network_machines') ~ ' ' ~ machine.getLastSeenReadable(app.request.locale)
+				} only
+			%}
 			{% endfor %}
 		</div>
 	{% endif %}
-	{# TODO: refactor cards #}
+{% endblock %}
+{% block pageContentSecondary %}
 	{% if dashboard_data.network_statistic is defined and dashboard_data.network_statistic is not null %}
 		<div class="row">
 			<h5 class="text-gray-400">{{ 'menu_record'|localised('network_usage') }}</h1>
@@ -135,7 +132,8 @@ window.location.reload(false);
 										<br>{{ weather.temperature }}
 										°C
 										{% if weather.rain > 0  %}<br>Rain:
-											{{ weather.rain }} mm
+											{{ weather.rain }}
+											mm
 										{% endif %}
 									</div>
 								</div>
