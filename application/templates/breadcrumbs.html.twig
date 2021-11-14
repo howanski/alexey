@@ -1,0 +1,23 @@
+<nav class="rounded font-sans w-full">
+	<ol class="list-reset flex text-white">
+		<li>
+			<a href="/" class="font-bold">Alexey</a>
+		</li>
+		{% if breadcrumbs is defined %}
+			{% for crumb in breadcrumbs %}
+				<li>
+					<span class="mx-2">></span>
+				</li>
+				<li>
+					{% if crumb.href is defined %}
+						<a href="{{ crumb.href }}" class="font-bold">
+							{{ crumb.name }}
+						</a>
+					{% else %}
+						{{ crumb.name }}
+					{% endif %}
+				</li>
+			{% endfor %}
+		{% endif %}
+	</ol>
+</nav>
