@@ -26,6 +26,11 @@
 									{% include 'form_button.html.twig' with {'button': button } %}
 								{% endfor %}
 							{% endif %}
+							{% if additionalSecuredButtons is defined %}
+								{% for button in additionalSecuredButtons %}
+									{% include 'secured_button.html.twig' with {'button': button } %}
+								{% endfor %}
+							{% endif %}
 						</div>
 						{{ form_end(form) }}
 					</div>
