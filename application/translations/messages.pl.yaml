@@ -19,6 +19,7 @@ app:
         actions: Akcje
         add: Dodaj
         back: Wstecz
+        cancel: Anuluj
         chart_type: "Typ wykresu"
         comment: Komentarz
         delete: Usuń
@@ -34,6 +35,7 @@ app:
         show: Pokaż
         simulation: Symulacja
         status: Status
+        settings: Ustawienia
         wake: Obudź
         you_sure_delete: "Na pewno chcesz to usunąć?"
     dashboard:

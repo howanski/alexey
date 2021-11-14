@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		{{ encore_entry_link_tags('alexey') }}
 		<title>
-			{% block title %}
+			{% block titleOverride %}
 				{% if breadcrumbs is defined %}
 					@
 					{% for crumb in breadcrumbs %}
@@ -18,7 +18,7 @@
 			{% endblock %}
 		</title>
 	</head>
-	<body class="text-blueGray-700 antialiased bg-nord0">
+	<body class="text-blueGray-700 antialiased bg-nord1">
 		<div id="root">
 			{{ include('main_menu.html.twig') }}
 			<div class="relative md:ml-64 bg-blueGray-50">
@@ -68,7 +68,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="bg-nord0 px-4 md:px-10 mx-auto w-full -m-24">
+				<div class="bg-nord1 px-4 md:px-10 mx-auto w-full -m-24">
 					{% block pageContentSecondary %}
 						{% include 'table.html.twig'
 						with {

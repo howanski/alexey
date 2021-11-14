@@ -1,0 +1,36 @@
+<div class="w-full xl:w-12/12 mb-12 xl:mb-0 px-4">
+	<div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-nord0">
+		<div class="rounded-t mb-0 px-4 py-3 bg-transparent">
+			<div class="flex flex-wrap items-center">
+				<div class="relative w-full max-w-full flex-grow flex-1">
+					<h6 class="uppercase text-nord6 mb-1 text-xs font-semibold">
+						{{ titleSmall|raw }}
+					</h6>
+					<h2 class="text-nord6 text-xl font-semibold">
+						{{ titleBig|raw }}
+						{% if buttons is defined %}
+							{% for button in buttons %}
+								<a href="{{ button.href }}">
+									<i class="{{ button.icon }}"></i>
+								</a>
+							{% endfor %}
+						{% endif %}
+					</h2>
+				</div>
+			</div>
+		</div>
+		<div class="p-4 flex-auto">
+			<div class="relative" style="height:350px">
+				<div class="chartjs-size-monitor">
+					<div class="chartjs-size-monitor-expand">
+						<div class=""></div>
+					</div>
+					<div class="chartjs-size-monitor-shrink">
+						<div class=""></div>
+					</div>
+				</div>
+				<canvas style="display: block;" class="chartjs-render-monitor chart-linear" data-chart-src="{{ chartSrc }}" data-chart-refresh="{{ chartRefresh }}"></canvas>
+			</div>
+		</div>
+	</div>
+</div>

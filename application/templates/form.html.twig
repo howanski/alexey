@@ -1,0 +1,41 @@
+<div class="flex flex-wrap">
+	<div class="container mx-auto px-4">
+		<div class="flex flex-wrap justify-center">
+			<div class="w-full lg:w-10/12 px-4">
+				<div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-nord0">
+					<div class="flex-auto p-5 lg:p-10 text-nord4">
+						<h4 class="text-2xl font-semibold">
+							{% if formTitlePrimary is defined %}
+								{{ formTitlePrimary }}
+							{% endif %}
+						</h4>
+						<p class="leading-relaxed mt-1 mb-4 text-gray-600">
+							{% if formTitleSecondary is defined %}
+								{{ formTitleSecondary }}
+							{% endif %}
+						</p>
+						{{ form_start(form) }}
+						{{ form_widget(form) }}
+						<div class="text-center mt-6">
+							<button class="bg-nord5 text-nord14 hover:bg-nord14 hover:text-nord5 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1" style="transition: all 0.15s ease 0s;">
+								<i class="fas fa-save"></i>
+								{{ 'save'|localised }}
+							</button>
+							{% if additionalButtons is defined %}
+								{% for button in additionalButtons %}
+									<a class="bg-nord5 text-{{ button.color }} hover:bg-{{ button.color }} hover:text-nord5 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1" style="transition: all 0.15s ease 0s;" href="{{ button.href }}">
+										{% if button.icon is defined and button.icon %}
+											<i class="{{ button.icon }}"></i>
+										{% endif %}
+										{{ button.name }}
+									</a>
+								{% endfor %}
+							{% endif %}
+						</div>
+						{{ form_end(form) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

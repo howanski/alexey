@@ -19,6 +19,7 @@ app:
         actions: Actions
         add: Add
         back: Back
+        cancel: Cancel
         chart_type: "Chart type"
         comment: Comment
         delete: Delete
@@ -34,6 +35,7 @@ app:
         show: Show
         simulation: Simulation
         status: Status
+        settings: Settings
         wake: Wake
         you_sure_delete: "Are you sure you want to delete this item?"
     dashboard:
