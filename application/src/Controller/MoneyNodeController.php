@@ -55,7 +55,7 @@ class MoneyNodeController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($moneyNode);
             $entityManager->flush();
-            $this->addFlash(type: 'success', message: $translator->translateFlash('saved'));
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute('money_node_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -94,7 +94,7 @@ class MoneyNodeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash(type: 'success', message: $translator->translateFlash('saved'));
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute('money_node_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -116,7 +116,7 @@ class MoneyNodeController extends AbstractController
             //     $this->addFlash(type: 'success', message: $translator->translateFlash('deleted'));
             // }
         } else {
-            $this->addFlash(type: 'warning', message: $translator->translateFlash('delete_forbidden'));
+            $this->addFlash(type: 'nord11', message: $translator->translateFlash('delete_forbidden'));
         }
 
 
@@ -139,7 +139,7 @@ class MoneyNodeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $settings->selfPersist($simpleSettingsService);
-            $this->addFlash(type: 'success', message: $translator->translateFlash('saved'));
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute('money_node_index', [], Response::HTTP_SEE_OTHER);
         }
 

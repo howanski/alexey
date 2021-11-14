@@ -37,7 +37,7 @@ class MoneyTransferController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($moneyTransfer);
             $entityManager->flush();
-            $this->addFlash(type: 'success', message: $translator->translateFlash('saved'));
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -65,7 +65,7 @@ class MoneyTransferController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash(type: 'success', message: $translator->translateFlash('saved'));
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -85,7 +85,7 @@ class MoneyTransferController extends AbstractController
         //     $entityManager->flush();
         //     $this->addFlash(type: 'success', message: $translator->translateFlash('deleted'));
         // }
-        $this->addFlash(type: 'warning', message: $translator->translateFlash('delete_forbidden') . ' (Beta)');
+        $this->addFlash(type: 'nord11', message: $translator->translateFlash('delete_forbidden') . ' (Beta)');
         return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
     }
 
@@ -153,7 +153,7 @@ class MoneyTransferController extends AbstractController
                 $em->flush();
                 $em->getConnection()->commit();
                 $this->addFlash(
-                    type: 'success',
+                    type: 'nord14',
                     message: $translator->translateFlash(
                         translationId: 'split',
                         module: 'money',
@@ -163,7 +163,7 @@ class MoneyTransferController extends AbstractController
             } catch (\Exception $e) {
                 $em->getConnection()->rollBack();
                 $this->addFlash(
-                    type: 'danger',
+                    type: 'nord11',
                     message: $e->getMessage(),
                 );
             }

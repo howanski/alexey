@@ -51,7 +51,7 @@ class NetworkTransmissionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $settings->selfPersist($simpleSettingsService);
-            $this->addFlash(type: 'success', message: $translator->translateFlash('saved'));
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute('network_transmission', [], Response::HTTP_SEE_OTHER);
         }
         $transferLeft = $networkUsageService->getLatestStatistic()?->getTransferRateLeft();

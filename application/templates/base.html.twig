@@ -20,12 +20,24 @@
 	</head>
 	<body class="text-blueGray-700 antialiased bg-nord1">
 		<div id="root">
+
 			{{ include('main_menu.html.twig') }}
 			<div class="relative md:ml-64 bg-blueGray-50">
 				{{ include('top_menu.html.twig') }}
 				<div class="relative bg-nord3 md:pt-32 pb-32 pt-12">
 					<div class="px-4 md:px-10 mx-auto w-full">
 						<div>
+							<div class="flex flex-wrap flash-destruct">
+								{% for type, flashes in app.flashes %}
+									{% for message in flashes %}
+										<div class="w-full bg-{{ type }} text-center text-nord0 font-bold rounded py-2 mb-6" style="transition: all 0.15s ease 0s;">
+											<div>
+												{{ message }}
+											</div>
+										</div>
+									{% endfor %}
+								{% endfor %}
+							</div>
 							{% block pageContentPrimary %}
 								<div class="flex flex-wrap">
 									{% include 'card.html.twig'
@@ -78,7 +90,6 @@
 						} only
 					%}
 					{% endblock %}
-					{% include 'footer.html.twig' %}
 				</div>
 			</div>
 		</div>
