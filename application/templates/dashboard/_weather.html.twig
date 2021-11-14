@@ -1,0 +1,26 @@
+<div class="flex flex-wrap">
+	{% for weather in dashboard_data.weather.getWeatherReadable(app.request.locale).daily|slice(0, 6) %}
+		{% if weather.rain > 20  %}
+			{% set iconBg = 'nord11' %}
+		{% elseif weather.rain > 0  %}
+			{% set iconBg = 'nord13' %}
+		{% else %}
+			{% set iconBg = 'nord10' %}
+		{% endif %}
+		{% set bottomData = weather.temperature ~ ' °C' %}
+		{% if weather.rain > 0  %}
+			{% set bottomData = bottomData ~ ' (' ~ 'rain_or_snow'|localised('weather')|lower ~ ': ' ~ weather.rain ~ 'mm)' %}
+		{% endif %}
+		{% include 'card.html.twig'
+        with {
+            'iconClass': 'far fa-eye',
+            'iconBg': iconBg,
+            'iconHref': path('weather'),
+            'iconCustomSrc': 'http://openweathermap.org/img/wn/' ~ weather.weather_icon ~'@2x.png',
+            'headerValue': weather.date|localisedTime('day', 'long'),
+            'headerText': weather.weather,
+            'bottomData': bottomData
+            } only
+    %}
+	{% endfor %}
+</div>

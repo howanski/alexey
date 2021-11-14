@@ -50,7 +50,7 @@ app:
           wake_destination: "Adres rozgłoszeniowy"
       strings:
         menu_record: "Urządzenia sieciowe"
-        last_seen: "Ostatnio widziane"
+        last_seen: "Ostatnio widziana"
         machine: Urządzenie
         never_seen: "Nigdy nie widziana"
     network_usage:
@@ -91,7 +91,7 @@ app:
         changes_in_time: "Zmiany w czasie"
         current_speed: "Bieżąca prędkość"
         menu_record_transmission: Transmission
-        menu_record: Zużycie
+        menu_record: "Zużycie sieci"
         optimal_speed: "Optymalna prędkość"
         outside_traffic: "Ruch zewnętrzny"
         throttling_by_optimal_speed: "Dławiene wg. optymalnej prędkości"
@@ -167,7 +167,7 @@ app:
         feels_like: Odczuwalna
         menu_record: Pogoda
         hourly: "Pogoda godzinowa"
-        rain_or_snow: "Deszcz / Śnieg"
+        rain_or_snow: "Opady"
         temperature: Temperatura
         wind_speed: Wiatr
   time:

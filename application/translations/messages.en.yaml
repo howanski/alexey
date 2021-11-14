@@ -167,7 +167,7 @@ app:
         feels_like: "Feels like"
         menu_record: Weather
         hourly: "Hourly weather"
-        rain_or_snow: "Rain / Snow"
+        rain_or_snow: "Precipitation"
         temperature: Temperature
         wind_speed: "Wind speed"
   time:

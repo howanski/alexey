@@ -1,0 +1,34 @@
+<div class="flex flex-wrap">
+	{% include 'card.html.twig'
+        with {
+            'iconClass': 'fas fa-network-wired',
+            'iconBg': 'nord10',
+            'iconHref': path('network_usage'),
+            'headerValue': dashboard_data.network_statistic.getTransferRateLeftReadable(4),
+            'headerText': 'menu_record'|localised('network_usage'),
+            'bottomData': 'optimal_speed'|localised('network_usage')
+            } only
+    %}
+
+	{% include 'card.html.twig'
+        with {
+            'iconClass': 'fas fa-network-wired',
+            'iconBg': 'nord10',
+            'iconHref': path('network_usage'),
+            'headerValue': dashboard_data.network_statistic.getTrafficLeftReadable(4),
+            'headerText': 'menu_record'|localised('network_usage'),
+            'bottomData': 'traffic_left'|localised('network_usage')
+            } only
+    %}
+
+	{% include 'card.html.twig'
+        with {
+            'iconClass': 'fas fa-network-wired',
+            'iconBg': 'nord10',
+            'iconHref': path('network_usage'),
+            'headerValue': dashboard_data.network_statistic.timeFrame.getBillingFrameEndReadable(app.request.locale),
+            'headerText': 'menu_record'|localised('network_usage'),
+            'bottomData': 'billing_window_end'|localised('network_usage')
+            } only
+    %}
+</div>

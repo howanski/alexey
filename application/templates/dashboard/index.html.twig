@@ -22,7 +22,7 @@ window.location.reload(false);
 				{% set iconColor = false %}
 				{% set iconClass = 'fas fa-server' %}
 				{% if machine.isReachable %}
-					{% set iconBg = 'nord14' %}
+					{% set iconBg = 'nord10' %}
 				{% elseif machine.lastSeen %}
 					{% set iconBg = 'nord13' %}
 				{% else %}
@@ -31,7 +31,14 @@ window.location.reload(false);
 				{% if machine.canBeWoken %}
 					{% set iconHref = path('network_machine_wake', {'id': machine.id, 'backRoute': 'dashboard'}) %}
 					{% set iconClass = 'fas fa-power-off fa-2x' %}
-					{% set iconColor = 'nord12' %}
+					{% set iconColor = 'nord10' %}
+				{% else %}
+					{% set iconHref = path('network_machine_show', {'id': machine.id}) %}
+				{% endif %}
+				{% if machine.lastSeen is not null %}
+					{% set seen = 'last_seen'|localised('network_machines') ~ ' ' ~ machine.getLastSeenReadable(app.request.locale) %}
+				{% else %}
+					{% set seen = 'never_seen'|localised('network_machines') %}
 				{% endif %}
 				{% include 'card.html.twig'
 			with {
@@ -41,110 +48,35 @@ window.location.reload(false);
 				'iconColor': iconColor,
 				'headerText': 'machine'|localised('network_machines') ~ ':',
 				'headerValue': machine.name,
-				'bottomData': 'last_seen'|localised('network_machines') ~ ' ' ~ machine.getLastSeenReadable(app.request.locale)
+				'bottomData': seen
 				} only
 			%}
 			{% endfor %}
 		</div>
 	{% endif %}
-{% endblock %}
-{% block pageContentSecondary %}
-	{% if dashboard_data.network_statistic is defined and dashboard_data.network_statistic is not null %}
-		<div class="row">
-			<h5 class="text-gray-400">{{ 'menu_record'|localised('network_usage') }}</h1>
-		</div>
-		<div class="row">
-			<div class="col-xl-3 col-md-6 mb-4">
-				<div class="card  border-left-success shadow h-100 py-2">
-					<div class="card-body">
-						<div class="row no-gutters align-items-center">
-							<div class="col mr-2">
-								<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
-									{{ 'optimal_speed'|localised('network_usage') }}:
-								</div>
-								<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.getTransferRateLeftReadable(4) }}</div>
-							</div>
-							<div class="col-auto">
-								<a href="{{ path('network_usage') }}">
-									<i class="far fa-eye fa-2x text-success"></i>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-xl-3 col-md-6 mb-4">
-				<div class="card  border-left-success shadow h-100 py-2">
-					<div class="card-body">
-						<div class="row no-gutters align-items-center">
-							<div class="col mr-2">
-								<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
-									{{ 'traffic_left'|localised('network_usage') }}:
-								</div>
-								<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.getTrafficLeftReadable(4) }}</div>
-							</div>
-							<div class="col-auto">
-								<a href="{{ path('network_usage') }}">
-									<i class="far fa-eye fa-2x text-success"></i>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-xl-3 col-md-6 mb-4">
-				<div class="card  border-left-success shadow h-100 py-2">
-					<div class="card-body">
-						<div class="row no-gutters align-items-center">
-							<div class="col mr-2">
-								<div class="text-xs font-weight-bold  text-success text-uppercase mb-1">
-									{{ 'billing_window_end'|localised('network_usage') }}:
-								</div>
-								<div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.network_statistic.timeFrame.getBillingFrameEndReadable(app.request.locale) }}</div>
-							</div>
-							<div class="col-auto">
-								<a href="{{ path('network_usage') }}">
-									<i class="far fa-eye fa-2x text-success"></i>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+
+
+	{% if dashboard_data.network_statistic is defined and dashboard_data.network_statistic is not null and not machinesShown %}
+		{% set networkShown = true %}
+		{% include 'dashboard/_network_usage.html.twig' %}
 	{% endif %}
-	{% if dashboard_data.weather is defined and dashboard_data.weather is not null %}
-		<div class="row">
-			<h5 class="text-gray-400">{{ 'menu_record'|localised('weather') }}</h1>
-		</div>
-		<div class="row">
-			{% for weather in dashboard_data.weather.getWeatherReadable(app.request.locale).daily|slice(0, 4) %}
-				<div class="col-xl-3 col-md-6 mb-4">
-					<div class="card {% if weather.rain > 20  %} border-left-danger {% elseif weather.rain > 0  %} border-left-warning {% else %} border-left-success {% endif %} shadow h-100 py-2">
-						<div class="card-body">
-							<div class="row no-gutters align-items-center">
-								<div class="col mr-2">
-									<div class="text-xs font-weight-bold {% if weather.rain > 20  %} text-danger {% elseif weather.rain > 0  %} text-warning {% else %} text-success {% endif %} text-uppercase mb-1">
-										{{ weather.date|localisedTime('day', 'long') }}
-									</div>
-									<div class="h5 mb-0 font-weight-bold text-gray-500">
-										{{ weather.weather }}
-										<br>{{ weather.temperature }}
-										°C
-										{% if weather.rain > 0  %}<br>Rain:
-											{{ weather.rain }}
-											mm
-										{% endif %}
-									</div>
-								</div>
-								<div class="col-auto">
-									<img src="http://openweathermap.org/img/wn/{{ weather.weather_icon }}@2x.png">
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			{% endfor %}
-		</div>
+
+
+	{% if dashboard_data.weather is defined and dashboard_data.weather is not null and not machinesShown and not networkShown %}
+		{% set weatherShown = true %}
+		{% include 'dashboard/_weather.html.twig' %}
+	{% endif %}
+{% endblock %}
+
+
+{% block pageContentSecondary %}
+	{% if dashboard_data.network_statistic is defined and dashboard_data.network_statistic is not null and not networkShown  %}
+		{% set networkShown = true %}
+		{% include 'dashboard/_network_usage.html.twig' %}
+	{% endif %}
+
+	{% if dashboard_data.weather is defined and dashboard_data.weather is not null and not weatherShown %}
+		{% set weatherShown = true %}
+		{% include 'dashboard/_weather.html.twig' %}
 	{% endif %}
 {% endblock %}
