@@ -4,3 +4,4 @@ import "./css/tailwind.css";
 import "@popperjs/core";
 import "./sidebar-menu.js"
 import "./flash-destructor.js"
+import "./secured-button.js"

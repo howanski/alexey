@@ -19,6 +19,7 @@ app:
         actions: Akcje
         add: Dodaj
         back: Wstecz
+        back_to_list: "Wróć do listy"
         cancel: Anuluj
         chart_type: "Typ wykresu"
         comment: Komentarz

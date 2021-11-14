@@ -19,6 +19,7 @@ app:
         actions: Actions
         add: Add
         back: Back
+        back_to_list: "Back to list"
         cancel: Cancel
         chart_type: "Chart type"
         comment: Comment

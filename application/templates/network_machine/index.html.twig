@@ -1,61 +1,50 @@
 {% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('network')},
+	{'name': 'menu_record'|localised('network_machines'), 'href': path('network_machine_index')},
+	]
+%}
 
-{% block title %}Alexey | {{ 'menu_record'|localised('network_machines') }}
+
+{% block pageContentPrimary %}
+	{% set tableData = {} %}
+	{% for network_machine in network_machines %}
+		{% if network_machine.lastSeen %}
+			{% set seen = network_machine.getLastSeenReadable(app.request.locale) %}
+		{% else %}
+			{% set seen = 'never_seen'|localised('network_machines') %}
+		{% endif %}
+		{% set actions = '<a href="' ~ path('network_machine_show', {'id': network_machine.id}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'show'|localised ~ '</a>' %}
+		{% set actions = actions ~ ' <a href="' ~ path('network_machine_edit', {'id': network_machine.id}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'edit'|localised ~ '</a>' %}
+		{% if network_machine.canBeWoken %}
+			{% set actions = actions ~ ' <a href="' ~ path('network_machine_wake', {'id': network_machine.id, 'backRoute': 'network_machine_index'}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'wake'|localised ~ '</a>' %}
+		{% endif %}
+		{% set tableData = tableData|merge([{
+			'id': network_machine.id,
+			'name': network_machine.name,
+			'uri': network_machine.uri,
+			'mac': network_machine.macAddress,
+			'stat': network_machine.statusReadable,
+			'seen': seen,
+			'actions': actions
+		}]) %}
+	{% endfor %}
+	{% include 'table.html.twig'
+		with {
+			'tableTitle' : 'menu_record'|localised('network_machines'),
+			'tableHeaders' : [
+				'id'|localised,
+				'name'|localised,
+				'ip_or_url'|localised,
+				'mac_address'|localised,
+				'status'|localised,
+				'last_seen'|localised('network_machines'),
+				'actions'|localised,
+				],
+			'tableData': tableData,
+			'buttons': [{'href': path('network_machine_new'), text: 'add'|localised }]
+		} only
+	%}
 {% endblock %}
 
-{% block pageContent %}
-	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('network') }} ~> {{ 'menu_record'|localised('network_machines') }}</h1>
-	</div>
-	<div class="row">
-		<div class="col-xl-12 col-lg-12">
-			<div class="card shadow bg-dark mb-4">
-				<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-					<h6 class="m-0 font-weight-bold text-primary">{{ 'menu_record'|localised('network_machines') }}</h6>
-				</div>
-				<div class="card-body">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>{{ 'id'|localised }}</th>
-								<th>{{ 'name'|localised }}</th>
-								<th>{{ 'ip_or_url'|localised }}</th>
-								<th>{{ 'mac_address'|localised }}</th>
-								<th>{{ 'status'|localised }}</th>
-								<th>{{ 'last_seen'|localised('network_machines') }}</th>
-								<th>{{ 'actions'|localised }}</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for network_machine in network_machines %}
-								<tr>
-									<td>{{ network_machine.id }}</td>
-									<td>{{ network_machine.name }}</td>
-									<td>{{ network_machine.uri }}</td>
-									<td>{{ network_machine.macAddress }}</td>
-									<td>{{ network_machine.statusReadable }}</td>
-									<td>{% if network_machine.lastSeen %} {{ network_machine.getLastSeenReadable(app.request.locale) }} {% else %} {{ 'never_seen'|localised('network_machines') }} {% endif %}</td>
-									<td>
-										{% if network_machine.canBeWoken %}
-											<a href="{{ path('network_machine_wake', {'id': network_machine.id, 'backRoute': 'network_machine_index'}) }}" class="btn btn-sm btn-success">{{ 'wake'|localised }}</a>
-										{% endif %}
-										<a href="{{ path('network_machine_show', {'id': network_machine.id}) }}" class="btn btn-sm btn-success">{{ 'show'|localised }}</a>
-										<a href="{{ path('network_machine_edit', {'id': network_machine.id}) }}" class="btn btn-sm btn-warning">{{ 'edit'|localised }}</a>
-									</td>
-								</tr>
-							{% else %}
-								<tr>
-									<td colspan="6">{{ 'empty_data'|localised }}</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-
-					<a class="btn btn-success" href="{{ path('network_machine_new') }}">{{ 'add'|localised }}</a>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-{% endblock %}
+{% block pageContentSecondary %}{% endblock %}

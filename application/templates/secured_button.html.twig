@@ -1,0 +1,6 @@
+<button type="button" class="button-secure bg-nord5 text-{{ button.color }} hover:bg-{{ button.color }} hover:text-nord5 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1" style="transition: all 0.15s ease 0s;" data-action="{{ button.action }}" data-csrf="{{ button.csrf }}" data-confirmation-question="{{ button.confirmation }}">
+	{% if button.icon is defined and button.icon %}
+		<i class="{{ button.icon }}"></i>
+	{% endif %}
+	{{ button.name }}
+</button>

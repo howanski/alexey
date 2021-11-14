@@ -1,0 +1,23 @@
+<div class="w-full px-4">
+	<div class="relative flex flex-col min-w-0 break-words bg-nord4 rounded mb-6 shadow-lg">
+		<div class="flex-auto p-4">
+			<div class="flex flex-wrap">
+				<div class="relative w-full pr-4 max-w-full">
+					<div class="font-semibold text-xl text-blueGray-700 flex flex-wrap justify-center">
+						{% if buttons is defined %}
+							{% for button in buttons %}
+								{% include 'form_button.html.twig' with {'button': button } %}
+							{% endfor %}
+						{% endif %}
+
+						{% if securedButtons is defined %}
+							{% for button in securedButtons %}
+								{% include 'secured_button.html.twig' with {'button': button } %}
+							{% endfor %}
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,36 +1,51 @@
 {% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('network')},
+	{'name': 'menu_record'|localised('network_machines'), 'href': path('network_machine_index')},
+	{'name': network_machine.name},
+	]
+%}
 
-{% block title %}Alexey | {{ 'menu_record'|localised('network_machines') }} | {{ network_machine.name }}{% endblock %}
+{% block pageContentPrimary %}
+	{% include 'table.html.twig'
+		with {
+			'tableTitle' : network_machine.name,
+			'tableData': [
+                ['id'|localised, network_machine.id ],
+                ['name'|localised, network_machine.name ],
+                ['ip_or_url'|localised, network_machine.uri ],
+                ['mac_address'|localised, network_machine.macAddress ],
+            ],
+		} only
+	%}
 
-{% block pageContent %}
-	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('network') }} ~> <a href="{{ path('network_machine_index') }}" class="text-info">{{ 'menu_record'|localised('network_machines') }}</a> ~> #{{ network_machine.id }} - {{ network_machine.name }}</h1>
-	</div>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ network_machine.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ network_machine.name }}</td>
-            </tr>
-            <tr>
-                <th>Uri</th>
-                <td>{{ network_machine.uri }}</td>
-            </tr>
-            <tr>
-                <th>MAC address</th>
-                <td>{{ network_machine.macAddress }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="row">
-        <a href="{{ path('network_machine_index') }}" class="btn btn-success">{{ 'back'|localised }}</a>
-        <a href="{{ path('network_machine_edit', {'id': network_machine.id}) }}" class="btn btn-warning">{{ 'edit'|localised }}</a>
-        {{ include('network_machine/_delete_form.html.twig') }}
-    </div>
+{% endblock %}
+{% block pageContentSecondary %}
+	{% set buttons = [
+        {
+            'color': 'nord10',
+            'href': path('network_machine_index'),
+            'name': 'back_to_list'|localised,
+            'icon': 'fas fa-undo'
+        },
+        {
+            'color': 'nord12',
+            'href': path('network_machine_edit', {'id': network_machine.id}),
+            'name': 'edit'|localised,
+            'icon': 'far fa-edit'
+        }
+        ]
+    %}
+	{% set securedButtons = [
+        {
+            'color': 'nord11',
+            'name': 'delete'|localised,
+            'icon': 'fas fa-trash',
+            'action': path('network_machine_delete', {'id': network_machine.id}),
+            'csrf': csrf_token('delete' ~ network_machine.id),
+            'confirmation': 'you_sure_delete'|localised
+        }
+        ]
+    %}
+	{% include 'entity_actions_row.html.twig' with {'buttons': buttons, 'securedButtons': securedButtons} only %}
 {% endblock %}
