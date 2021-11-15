@@ -1,44 +1,24 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Alexey | {{ 'menu_record'|localised('network_usage') }}
-{% endblock %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('money')},
+	{'name': 'menu_record_graphs'|localised('money')},
+]%}
 
 {% block javascripts %}
-	{{ encore_entry_script_tags('alexey') }}
 	{{ encore_entry_script_tags('linear-chart') }}
 {% endblock %}
 
-{% block pageContent %}
-	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('money') }}
-			~>
-			{{ 'menu_record_graphs'|localised('money') }}
-		</h1>
+{% block pageContentPrimary %}
+	<div class="flex flex-wrap">
+		{% include 'chart_linear.html.twig' with {
+			'titleSmall': '',
+			'titleBig': 'balance'|localised('money'),
+			'chartSrc': path('money_graph_nodes_data'),
+			'chartRefresh': 600,
+			} only
+		%}
 	</div>
-	<div class="card shadow mb-4">
-		<div class="card-header py-3">
-			<h6 class="m-0 font-weight-bold text-primary">{{ 'balance'|localised('money') }}</h6>
-		</div>
-		<div class="card-body">
-			<div class="chart-area">
-				<div class="chartjs-size-monitor">
-					<div class="chartjs-size-monitor-expand">
-						<div class=""></div>
-					</div>
-					<div class="chartjs-size-monitor-shrink">
-						<div class=""></div>
-					</div>
-				</div>
-				<canvas
-					style="display: block; width: 1041px; height: 320px;" 
-					class="chartjs-render-monitor chart-linear"
-					data-chart-src="{{ path('money_graph_nodes_data') }}"
-					data-chart-refresh="60"
-					width="1041"
-					height="320"
-				></canvas>
-			</div>
-			<hr>
-		</div>
-	</div>
+{% endblock %}
+
+{% block pageContentSecondary %}
 {% endblock %}
