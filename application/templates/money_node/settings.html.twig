@@ -1,14 +1,25 @@
 {% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('money')},
+	{'name': 'menu_record_nodes'|localised('money'), 'href': path('money_node_index')},
+	{'name': 'menu_record'|localised('settings')},
+	] %}
 
-{% block title %}Alexey | {{ 'menu_record_nodes'|localised('money') }} | {{ 'menu_record'|localised('settings') }}
+{% block pageContentPrimary %}
+	{% include 'form.html.twig'
+		with {
+			'form': form,
+			'additionalButtons': [
+				{
+					'color': 'nord10',
+					'href': path('money_node_index'),
+					'name': 'cancel'|localised,
+					'icon': 'fas fa-undo'
+				}
+			]
+			} only
+	%}
 {% endblock %}
 
-{% block pageContent %}
-	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('money') }} ~> <a class="text-info" href="{{ path('money_node_index') }}">{{ 'menu_record_nodes'|localised('money') }}</a> ~> {{ 'menu_record'|localised('settings') }}</h1>
-	</div>
-	    {{ form_start(form) }}
-    	{{ form_widget(form) }}
-    	<button class="btn btn-warning">{{ 'save'|localised }}</button>
-		{{ form_end(form) }}
+{% block pageContentSecondary %}
 {% endblock %}

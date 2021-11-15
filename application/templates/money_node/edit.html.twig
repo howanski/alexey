@@ -1,17 +1,39 @@
 {% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('money')},
+	{'name': 'menu_record_nodes'|localised('money'), 'href': path('money_node_index')},
+	{'name': money_node.name },
+	]
+%}
 
-{% block title %}Edit MoneyNode
+{% block pageContentPrimary %}
+	{% if money_node.canBeDeleted %}
+		{% set secureButtons = [{
+			'color': 'nord11',
+			'name': 'delete'|localised,
+			'icon': 'fas fa-trash',
+			'action': path('money_node_delete', {'id': money_node.id}),
+			'csrf': csrf_token('delete' ~ money_node.id),
+			'confirmation': 'you_sure_delete'|localised
+		}]
+	%}
+	{% else %}
+		{% set secureButtons = [] %}
+	{% endif %}
+	{% include 'form.html.twig'
+		with {
+			'form': form,
+			'additionalButtons': [
+				{
+					'color': 'nord10',
+					'href': path('money_node_show', { id: money_node.id }),
+					'name': 'cancel'|localised,
+					'icon': 'fas fa-undo'
+				}
+			],
+            'additionalSecuredButtons': secureButtons
+			} only
+	%}
 {% endblock %}
 
-{% block pageContent %}
-	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('money') }} ~> <a href="{{ path('money_node_index') }}" class="text-info">{{ 'menu_record_nodes'|localised('money') }}</a> ~> #{{ money_node.id }} - {{ money_node.name }}</h1>
-	</div>
-	{{ include('money_node/_form.html.twig') }}
-	<div class="row">
-		<a href="{{ path('money_node_index') }}" class="btn btn-success">{{ 'back'|localised }}</a>
-		{% if money_node.canBeDeleted %}
-			{{ include('money_node/_delete_form.html.twig') }}
-		{% endif %}
-	</div>
-{% endblock %}
+{% block pageContentSecondary %}{% endblock %}

@@ -56,7 +56,7 @@ class MoneyNodeController extends AbstractController
             $entityManager->persist($moneyNode);
             $entityManager->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
-            return $this->redirectToRoute('money_node_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('money_node_index', ['groupId' => $moneyNode->getNodeGroup()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('money_node/new.html.twig', [
@@ -95,7 +95,7 @@ class MoneyNodeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
-            return $this->redirectToRoute('money_node_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('money_node_index', ['groupId' => $moneyNode->getNodeGroup()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('money_node/edit.html.twig', [
@@ -108,19 +108,20 @@ class MoneyNodeController extends AbstractController
     public function delete(Request $request, MoneyNode $moneyNode, AlexeyTranslator $translator): Response
     {
         // TODO: SECURITY!
+        $groupId = $moneyNode->getNodeGroup();
         if (true === $moneyNode->canBeDeleted()) {
-            // if ($this->isCsrfTokenValid('delete' . $moneyNode->getId(), $request->request->get('_token'))) {
-            //     $entityManager = $this->getDoctrine()->getManager();
-            //     $entityManager->remove($moneyNode);
-            //     $entityManager->flush();
-            //     $this->addFlash(type: 'success', message: $translator->translateFlash('deleted'));
-            // }
+            if ($this->isCsrfTokenValid('delete' . $moneyNode->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($moneyNode);
+                $entityManager->flush();
+                $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
+            } else {
+                $this->addFlash(type: 'nord11', message: $translator->translateFlash('delete_forbidden'));
+            }
         } else {
             $this->addFlash(type: 'nord11', message: $translator->translateFlash('delete_forbidden'));
         }
-
-
-        return $this->redirectToRoute('money_node_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('money_node_index', ['groupId' => $groupId], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/settings', name: 'money_node_settings')]

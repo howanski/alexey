@@ -1,6 +1,9 @@
 {% if maxWidth is not defined %}
 	{% set maxWidth = 12 %}
 {% endif %}
+{% if hideColumns is not defined %}
+	{% set hideColumns = [] %}
+{% endif %}
 {% set light = 'nord4' %}
 {% set dark = 'nord0' %}
 {% if noHover is not defined %}
@@ -19,16 +22,13 @@
 						</h3>
 					</div>
 					<div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-					{% if buttons is defined %}
-					{% for button in buttons %}
-						<a class="bg-nord2 text-{{ light }} hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
-						 style="transition:all .15s ease"
-						 href="{{ button.href }}"
-						 >
-							{{button.text}}
-						</a>
-						{% endfor %}
-					{% endif %}
+						{% if buttons is defined %}
+							{% for button in buttons %}
+								<a class="bg-nord2 text-{{ light }} hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1" style="transition:all .15s ease" href="{{ button.href }}">
+									{{button.text}}
+								</a>
+							{% endfor %}
+						{% endif %}
 					</div>
 				</div>
 			</div>
@@ -38,9 +38,11 @@
 						<thead>
 							<tr>
 								{% for header in tableHeaders %}
-									<th class="px-6 bg-{{ light }} text-{{ dark }} align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-										{{ header|raw }}
-									</th>
+									{% if loop.index not in hideColumns %}
+										<th class="px-6 bg-{{ light }} text-{{ dark }} align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+											{{ header|raw }}
+										</th>
+									{% endif %}
 								{% endfor %}
 							</tr>
 						</thead>
@@ -49,10 +51,18 @@
 						{% for tableRow in tableData %}
 							<tr class="{% if not noHover %}hover:bg-{{ dark }} hover:text-{{ light }}{% endif %}">
 								{% for cell in tableRow %}
-									<td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-										{{ cell|raw }}
-									</td>
+									{% if loop.index not in hideColumns %}
+										<td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+											{{ cell|raw }}
+										</td>
+									{% endif %}
 								{% endfor %}
+							</tr>
+						{% else %}
+							<tr>
+								<td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+									--- {{ 'empty_data'|localised }} ---
+								</td>
 							</tr>
 						{% endfor %}
 					</tbody>

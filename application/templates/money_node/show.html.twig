@@ -1,131 +1,114 @@
 {% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('money')},
+	{'name': 'menu_record_nodes'|localised('money'), 'href': path('money_node_index')},
+	{'name': money_node.name },
+	]
+%}
 
-{% block title %}Alexey | {{ 'menu_record_nodes'|localised('money') }} | {{ money_node.name }}{% endblock %}
-
-{% block pageContent %}
-	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('money') }} ~> <a href="{{ path('money_node_index') }}" class="text-info">{{ 'menu_record_nodes'|localised('money') }}</a> ~> #{{ money_node.id }} - {{ money_node.name }}</h1>
-	</div>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ money_node.id }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'name'|localisedFormLabel('money') }}</th>
-                <td>{{ money_node.name }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'node_type'|localisedFormLabel('money') }}</th>
-                <td>
-                    {{ money_node.typeCode|localisedFormValue('node_type', 'money') }}
-                </td>
-            </tr>
-            <tr>
-                <th>{{ 'node_group'|localisedFormLabel('money') }}</th>
-                <td>
-					{{ settings.groupName(money_node.nodeGroup) }}
-                </td>
-            </tr>
-            <tr>
-                <th>{{ 'balance'|localised('money') }}</th>
-                <td>{{ money_node.balance }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'notes'|localisedFormLabel('money') }}</th>
-                <td>{{ money_node.notes }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('money_node_index') }}"  class="btn btn-success">{{ 'back'|localised }}</a>
-    <a href="{{ path('money_node_edit', {'id': money_node.id}) }}"  class="btn btn-warning">{{ 'edit'|localised }}</a>
+{% block pageContentPrimary %}
+	{% include 'table.html.twig'
+		with {
+			'tableTitle' : money_node.name,
+			'tableData': [
+                ['id'|localised, money_node.id ],
+                ['name'|localisedFormLabel('money'), money_node.name ],
+                ['node_type'|localisedFormLabel('money'), money_node.typeCode|localisedFormValue('node_type', 'money') ],
+                ['node_group'|localisedFormLabel('money'), settings.groupName(money_node.nodeGroup) ],
+                ['balance'|localised('money'), money_node.balance ],
+                ['notes'|localisedFormLabel('money'), money_node.notes ],
+            ],
+		} only
+	%}
+{% endblock %}
+{% block pageContentSecondary %}
+	{% set actionButtons = [
+        {
+            'color': 'nord10',
+            'href': path('money_node_index', {'groupId': money_node.nodeGroup}),
+            'name': 'back_to_list'|localised,
+            'icon': 'fas fa-undo'
+        },
+        {
+            'color': 'nord12',
+            'href': path('money_node_edit', {'id': money_node.id}),
+            'name': 'edit'|localised,
+            'icon': 'far fa-edit'
+        }
+        ]
+    %}
 	{% if money_node.canBeDeleted %}
-		{{ include('money_node/_delete_form.html.twig') }}
+		{% set securedButtons = [
+        {
+            'color': 'nord11',
+            'name': 'delete'|localised,
+            'icon': 'fas fa-trash',
+            'action': path('money_node_delete', {'id': money_node.id}),
+            'csrf': csrf_token('delete' ~ money_node.id),
+            'confirmation': 'you_sure_delete'|localised
+        }
+        ]
+    %}
+	{% else %}
+		{% set securedButtons = [] %}
 	{% endif %}
+	{% include 'entity_actions_row.html.twig' with {'buttons': actionButtons, 'securedButtons': securedButtons} only %}
+
+	{% set tableData = [] %}
+	{% for transfer in money_node.incomingTransfers %}
+		{% set actions %}
+		{% include 'table_action_button.html.twig' with {'href': path('money_transfer_show', {'id': transfer.id}), 'name': 'show_transfer'|localised('money') } only %}
+		{% include 'table_action_button.html.twig' with {'href': path('money_node_show', {'id': transfer.sourceNode.id}), 'name': 'show_node'|localised('money') } only %}
+		{% endset %}
+		{% set tableData = tableData|merge([{
+				'operation_date': transfer.operationDate|date('Y-m-d'),
+				'amount': transfer.amount,
+				'opposite_node': transfer.sourceNode.name,
+				'comment': transfer.comment,
+				'actions': actions,
+		}]) %}
+	{% endfor %}
+
+	{% include 'table.html.twig'
+		with {
+			'tableTitle' : 'incoming_transfers'|localised('money'),
+			'tableData': tableData,
+			'tableHeaders': [
+				'operation_date'|localisedFormLabel('money'),
+				'amount'|localisedFormLabel('money'),
+				'source_node'|localisedFormLabel('money'),
+				'comment'|localisedFormLabel('money'),
+				'actions'|localised,
+			]
+		} only
+	%}
 
 
-	<div class="row">
-		<div class="col-xl-12 col-lg-12">
-			<div class="card shadow bg-dark mb-4">
-				<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-					<h6 class="m-0 font-weight-bold text-primary">{{ 'incoming_transfers'|localised('money') }}</h6>
-				</div>
-				<div class="card-body">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>{{ 'operation_date'|localisedFormLabel('money') }}</th>
-								<th>{{ 'amount'|localisedFormLabel('money') }}</th>
-								<th>{{ 'source_node'|localisedFormLabel('money') }}</th>
-								<th>{{ 'comment'|localisedFormLabel('money') }}</th>
-								<th>{{ 'actions'|localised }}</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for transfer in money_node.incomingTransfers %}
-								<tr>
-                                <td>{{ transfer.operationDate|date('Y-m-d') }}</td>
-                                <td>{{ transfer.amount }}</td>
-                                <td>{{ transfer.sourceNode.name }}</td>
-                                <td>{{ transfer.comment }}</td>
-                                <td>
-									<a href="{{ path('money_transfer_show', {'id': transfer.id}) }}" class="btn btn-sm btn-success">{{ 'show_transfer'|localised('money') }}</a>
-									<a href="{{ path('money_node_show', {'id': transfer.sourceNode.id}) }}" class="btn btn-sm btn-success">{{ 'show_node'|localised('money') }}</a>
-                                </td>
-								</tr>
-							{% else %}
-								<tr>
-									<td colspan="5">{{ 'empty_data'|localised }}</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-
-    <div class="row">
-		<div class="col-xl-12 col-lg-12">
-			<div class="card shadow bg-dark mb-4">
-				<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-					<h6 class="m-0 font-weight-bold text-primary">{{ 'outgoing_transfers'|localised('money') }}</h6>
-				</div>
-				<div class="card-body">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>{{ 'operation_date'|localisedFormLabel('money') }}</th>
-								<th>{{ 'amount'|localisedFormLabel('money') }}</th>
-								<th>{{ 'target_node'|localisedFormLabel('money') }}</th>
-								<th>{{ 'comment'|localisedFormLabel('money') }}</th>
-								<th>{{ 'actions'|localised }}</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for transfer in money_node.outgoingTransfers %}
-								<tr>
-                                <td>{{ transfer.operationDate|date('Y-m-d') }}</td>
-                                <td>{{ transfer.amount }}</td>
-                                <td>{{ transfer.targetNode.name }}</td>
-                                <td>{{ transfer.comment }}</td>
-                                <td>
-                                    <a href="{{ path('money_transfer_show', {'id': transfer.id}) }}" class="btn btn-sm btn-success">{{ 'show_transfer'|localised('money') }}</a>
-                                    <a href="{{ path('money_node_show', {'id': transfer.targetNode.id}) }}" class="btn btn-sm btn-success">{{ 'show_node'|localised('money') }}</a>
-                                </td>
-								</tr>
-							{% else %}
-								<tr>
-									<td colspan="5">{{ 'empty_data'|localised }}</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
+	{% set tableData = [] %}
+	{% for transfer in money_node.outgoingTransfers %}
+		{% set actions %}
+		{% include 'table_action_button.html.twig' with {'href': path('money_transfer_show', {'id': transfer.id}), 'name': 'show_transfer'|localised('money') } only %}
+		{% include 'table_action_button.html.twig' with {'href': path('money_node_show', {'id': transfer.targetNode.id}), 'name': 'show_node'|localised('money') } only %}
+		{% endset %}
+		{% set tableData = tableData|merge([{
+				'operation_date': transfer.operationDate|date('Y-m-d'),
+				'amount': transfer.amount,
+				'opposite_node': transfer.targetNode.name,
+				'comment': transfer.comment,
+				'actions': actions,
+		}]) %}
+	{% endfor %}
+	{% include 'table.html.twig'
+		with {
+			'tableTitle' : 'outgoing_transfers'|localised('money'),
+			'tableData': tableData,
+			'tableHeaders': [
+				'operation_date'|localisedFormLabel('money'),
+				'amount'|localisedFormLabel('money'),
+				'target_node'|localisedFormLabel('money'),
+				'comment'|localisedFormLabel('money'),
+				'actions'|localised,
+			]
+		} only
+	%}
 {% endblock %}
