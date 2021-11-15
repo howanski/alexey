@@ -1,67 +1,62 @@
 {% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('money')},
+	{'name': 'menu_record_transfers'|localised('money')},
+	]
+%}
 
-{% block title %}MoneyTransfer index
+
+{% block pageContentPrimary %}
+	{% set tableData = {} %}
+
+	{% for money_transfer in money_transfers %}
+		{% set actions %}
+		{% include 'table_action_button.html.twig' with {'href': path('money_transfer_show', {'id': money_transfer.id}), 'name': 'show'|localised } only %}
+		{% include 'table_action_button.html.twig' with {'href': path('money_transfer_edit', {'id': money_transfer.id}), 'name': 'edit'|localised } only %}
+		{% include 'table_action_button.html.twig' with {'href': path('money_transfer_split', {'id': money_transfer.id}), 'name': 'split'|localised('money') } only %}
+		{% endset %}
+
+		{% set sourcenode %}
+		{{ money_transfer.sourceNode.name }}
+		<a href="{{ path('money_node_show', {'id': money_transfer.sourceNode.id}) }}">
+			<i class="fas fa-link"></i>
+		</a>
+		{% endset %}
+
+		{% set targetnode %}
+		{{ money_transfer.targetNode.name }}
+		<a href="{{ path('money_node_show', {'id': money_transfer.targetNode.id}) }}">
+			<i class="fas fa-link"></i>
+		</a>
+		{% endset %}
+
+		{% set tableData = tableData|merge([{
+			'operation_date': money_transfer.operationDate ? money_transfer.operationDate|date('Y-m-d') : '',
+			'amount': money_transfer.amount,
+			'source_node': sourcenode,
+			'target_node': targetnode,
+			'actions': actions,
+			'comment': money_transfer.comment,
+		}]) %}
+	{% endfor %}
+
+	{% include 'table.html.twig'
+		with {
+			'tableTitle' : 'menu_record_nodes'|localised('money'),
+			'tableHeaders' : [
+				'operation_date'|localised('money'),
+				'amount'|localised('money'),
+				'source_node'|localisedFormLabel('money'),
+				'target_node'|localisedFormLabel('money'),
+				'actions'|localised,
+				'comment'|localised,
+			],
+			'tableData': tableData,
+			'buttons': [
+				{'href': path('money_transfer_new'), text: 'add'|localised },
+			],
+		} only
+	%}
 {% endblock %}
 
-{%block pageContent %}
-	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('money') }}
-			~>
-			{{ 'menu_record_transfers'|localised('money') }}</h1>
-	</div>
-	<div class="row">
-		<div class="col-xl-12 col-lg-12">
-			<div class="card shadow bg-dark mb-4">
-				<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-					<h6 class="m-0 font-weight-bold text-primary">{{ 'menu_record_transfers'|localised('money') }}</h6>
-				</div>
-				<div class="card-body">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>{{ 'operation_date'|localised('money') }}</th>
-								<th>{{ 'amount'|localised('money') }}</th>
-								<th>{{ 'source_node'|localisedFormLabel('money') }}</th>
-								<th>{{ 'target_node'|localisedFormLabel('money') }}</th>
-								<th>{{ 'comment'|localised }}</th>
-								<th>{{ 'actions'|localised }}</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for money_transfer in money_transfers %}
-								<tr>
-									<td>{{ money_transfer.operationDate ? money_transfer.operationDate|date('Y-m-d') : '' }}</td>
-									<td>{{ money_transfer.amount }}</td>
-									<td>
-										{{ money_transfer.sourceNode.name }}
-										<a href="{{ path('money_node_show', {'id': money_transfer.sourceNode.id}) }}">
-											<i class="fas fa-link"></i>
-										</a>
-									</td>
-									<td>
-										{{ money_transfer.targetNode.name }}
-										<a href="{{ path('money_node_show', {'id': money_transfer.targetNode.id}) }}">
-											<i class="fas fa-link"></i>
-										</a>
-									</td>
-									<td>{{ money_transfer.comment }}</td>
-									<td>
-										<a href="{{ path('money_transfer_show', {'id': money_transfer.id}) }}" class="btn btn-sm btn-success">{{ 'show'|localised }}</a>
-										<a href="{{ path('money_transfer_edit', {'id': money_transfer.id}) }}" class="btn btn-sm btn-warning">{{ 'edit'|localised }}</a>
-										<a href="{{ path('money_transfer_split', {'id': money_transfer.id}) }}" class="btn btn-sm btn-warning">{{ 'split'|localised('money') }}</a>
-									</td>
-								</tr>
-							{% else %}
-								<tr>
-									<td colspan="6">{{ 'empty_data'|localised }}</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-
-					<a class="btn btn-success" href="{{ path('money_transfer_new') }}">{{ 'add'|localised }}</a>
-				</div>
-			</div>
-		</div>
-	</div>
-{% endblock %}
+{% block pageContentSecondary %}{% endblock %}

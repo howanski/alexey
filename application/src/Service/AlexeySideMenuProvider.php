@@ -145,7 +145,6 @@ class AlexeySideMenuProvider extends AbstractExtension
 
     private function addMoneyMenuRecords(array $sideMenu): array
     {
-        return $sideMenu;
         $route = '/money';
         $menuItem = new SideMenuItem(
             name: $this->translator->translateString(

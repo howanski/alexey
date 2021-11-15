@@ -1,16 +1,36 @@
 {% extends 'base.html.twig' %}
-{# TODO: check all titles #}
-{% block title %}Edit MoneyTransfer
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('money')},
+	{'name': 'menu_record_transfers'|localised('money'), 'href': path('money_transfer_index')},
+	{'name': 'edit'|localised ~ ' #' ~ money_transfer.id },
+	]
+%}
+
+
+{% block pageContentPrimary %}
+	{% include 'form.html.twig'
+		with {
+			'form': form,
+			'additionalButtons': [
+				{
+					'color': 'nord10',
+					'href': path('money_transfer_index'),
+					'name': 'back_to_list'|localised,
+					'icon': 'fas fa-undo'
+				}
+			],
+			'additionalSecuredButtons': [
+				{
+					'color': 'nord11',
+					'name': 'delete'|localised,
+					'icon': 'fas fa-trash',
+					'action': path('money_transfer_delete', {'id': money_transfer.id}),
+					'csrf': csrf_token('delete' ~ money_transfer.id),
+					'confirmation': 'you_sure_delete'|localised
+				}
+			],
+			} only
+	%}
 {% endblock %}
 
-{%block pageContent %}
-	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-400">{{ 'menu_record'|localised('money') }} ~> <a href="{{ path('money_transfer_index') }}" class="text-info">{{ 'menu_record_transfers'|localised('money') }}</a> ~> #{{ money_transfer.id }}</h1>
-	</div>
-	{{ include('money_transfer/_form.html.twig') }}
-	<div class="row">
-		<a href="{{ path('money_transfer_index') }}" class="btn btn-success">{{ 'back'|localised }}</a>
-		{{ include('money_transfer/_delete_form.html.twig') }}
-	</div>
-
-{% endblock %}
+{% block pageContentSecondary %}{% endblock %}

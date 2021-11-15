@@ -1,4 +1,0 @@
-<form method="post" action="{{ path('money_transfer_delete', {'id': money_transfer.id}) }}" onsubmit="return confirm('{{ 'you_sure_delete'|localised }}');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ money_transfer.id) }}">
-    <button class="btn btn-danger">{{ 'delete'|localised }}</button>
-</form>

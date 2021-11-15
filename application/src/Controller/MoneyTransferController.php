@@ -79,12 +79,13 @@ class MoneyTransferController extends AbstractController
     public function delete(Request $request, MoneyTransfer $moneyTransfer, AlexeyTranslator $translator): Response
     {
         // TODO: Security
-        // if ($this->isCsrfTokenValid('delete' . $moneyTransfer->getId(), $request->request->get('_token'))) {
-        //     $entityManager = $this->getDoctrine()->getManager();
-        //     $entityManager->remove($moneyTransfer);
-        //     $entityManager->flush();
-        //     $this->addFlash(type: 'success', message: $translator->translateFlash('deleted'));
-        // }
+        if ($this->isCsrfTokenValid('delete' . $moneyTransfer->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($moneyTransfer);
+            $entityManager->flush();
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
+            return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
+        }
         $this->addFlash(type: 'nord11', message: $translator->translateFlash('delete_forbidden') . ' (Beta)');
         return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
     }

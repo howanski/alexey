@@ -62,7 +62,7 @@
 		{% endset %}
 		{% set tableData = tableData|merge([{
 				'operation_date': transfer.operationDate|date('Y-m-d'),
-				'amount': transfer.amount,
+				'amount': transfer.exchangedAmount,
 				'opposite_node': transfer.sourceNode.name,
 				'comment': transfer.comment,
 				'actions': actions,
