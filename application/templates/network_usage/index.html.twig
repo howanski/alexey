@@ -58,7 +58,8 @@ window.location.replace(route);
 			'titleSmall': '',
 			'titleBig': 'outside_traffic'|localised('network_usage'),
 			'chartSrc': path('network_usage_chart_data', {chartType: chart_type}),
-			'chartRefresh': 30,
+			'chartRefresh': 5,
+			'enablePausing': true,
 			} only
 		%}
 	</div>

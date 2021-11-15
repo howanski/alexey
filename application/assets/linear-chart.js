@@ -80,6 +80,10 @@ function prepareDatasets(datasetsObject) {
 }
 
 function updateChartData(elem, src) {
+  let isPaused = elem.dataset.chartIsPaused;
+  if (isPaused === "true") {
+    return;
+  }
   axios
     .get(src)
     .then(function (response) {
@@ -147,3 +151,47 @@ function createChartOnElem(elem) {
 
 let charts = document.querySelectorAll(".chart-linear");
 Array.from(charts).map(createChartOnElem);
+
+function clickPlay(event) {
+  event.preventDefault();
+  var elem = event.currentTarget;
+  var chartContainer = elem.closest(".linear-chart-container");
+
+  var chart = chartContainer.querySelector("canvas");
+  chart.dataset.chartIsPaused = "false";
+
+  var pause = chartContainer.querySelector(".linear-chart-pause-button");
+  pause.style.display = "";
+
+  var play = chartContainer.querySelector(".linear-chart-play-button");
+  play.style.display = "none";
+}
+
+function clickPause(event) {
+  event.preventDefault();
+  var elem = event.currentTarget;
+  var chartContainer = elem.closest(".linear-chart-container");
+
+  var chart = chartContainer.querySelector("canvas");
+  chart.dataset.chartIsPaused = "true";
+
+  var pause = chartContainer.querySelector(".linear-chart-pause-button");
+  pause.style.display = "none";
+
+  var play = chartContainer.querySelector(".linear-chart-play-button");
+  play.style.display = "";
+}
+
+function makePlayBtnClickable(elem) {
+  elem.addEventListener("click", clickPlay);
+}
+
+function makePauseBtnClickable(elem) {
+  elem.addEventListener("click", clickPause);
+}
+
+let chartPlayBtns = document.querySelectorAll(".linear-chart-play-button");
+let chartPauseBtns = document.querySelectorAll(".linear-chart-pause-button");
+
+Array.from(chartPlayBtns).map(makePlayBtnClickable);
+Array.from(chartPauseBtns).map(makePauseBtnClickable);

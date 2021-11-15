@@ -1,4 +1,4 @@
-<div class="w-full xl:w-12/12 mb-12 xl:mb-0 px-4">
+<div class="w-full xl:w-12/12 mb-12 xl:mb-0 px-4 linear-chart-container">
 	<div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-nord0">
 		<div class="rounded-t mb-0 px-4 py-3 bg-transparent">
 			<div class="flex flex-wrap items-center">
@@ -7,6 +7,15 @@
 						{{ titleSmall|raw }}
 					</h6>
 					<h2 class="text-nord6 text-xl font-semibold">
+						{% if enablePausing is defined and enablePausing %}
+							<button 
+								class="far fa-pause-circle linear-chart-pause-button"
+							></button>
+							<button 
+								class="far fa-play-circle linear-chart-play-button animate-pulse"
+								style="display:none;"
+							></button>
+						{% endif %}
 						{{ titleBig|raw }}
 						{% if buttons is defined %}
 							{% for button in buttons %}
@@ -29,7 +38,7 @@
 						<div class=""></div>
 					</div>
 				</div>
-				<canvas style="display: block;" class="chartjs-render-monitor chart-linear" data-chart-src="{{ chartSrc }}" data-chart-refresh="{{ chartRefresh }}"></canvas>
+				<canvas style="display: block;" class="chartjs-render-monitor chart-linear" data-chart-src="{{ chartSrc }}" data-chart-refresh="{{ chartRefresh }}" data-chart-is-paused="false"></canvas>
 			</div>
 		</div>
 	</div>
