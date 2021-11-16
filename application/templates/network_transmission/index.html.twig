@@ -15,7 +15,7 @@
 			'titleSmall': 'simulation'|localised,
 			'titleBig': 'changes_in_time'|localised('network_usage'),
 			'chartSrc': path('network_transmission_simulation', {type: 'time'}),
-			'chartRefresh': 30,
+			'chartRefresh': 20,
 			'buttons': [{'href': path('network_transmission_settings'), 'icon': 'fas fa-cog' }]
 			} only
 		%}
@@ -29,7 +29,7 @@
 			'titleSmall': 'simulation'|localised,
 			'titleBig': 'throttling_by_optimal_speed'|localised('network_usage'),
 			'chartSrc': path('network_transmission_simulation', {type: 'speed'}),
-			'chartRefresh': 30,
+			'chartRefresh': 20,
 			'buttons': [{'href': path('network_transmission_settings'), 'icon': 'fas fa-cog' }]
 			} only
 		%}

@@ -12,8 +12,9 @@
 			'titleSmall': '',
 			'titleBig': 'hourly'|localised('weather'),
 			'chartSrc': path('weather_chart_data', {type: 'hourly'}),
-			'chartRefresh': 600,
+			'chartRefresh': 60,
 			'buttons': [{'href': path('weather_settings'), 'icon': 'fas fa-cog'}],
+			'enablePausing': true,
 			} only
 		%}
 	</div>

@@ -33,10 +33,18 @@ class NetworkUsageController extends AbstractController
                 ]
             );
         }
+
+        if (NetworkChartType::CHART_TYPE_MINUTES_TEN == $chartType) {
+            $chartRefresh = 5;
+        } else {
+            $chartRefresh = 45;
+        }
+
         return $this->render('network_usage/index.html.twig', [
             'chart_selector_form' => $form->createView(),
             'chart_routes' => $chartRoutes,
             'chart_type' => $chartType,
+            'chartRefresh' => $chartRefresh,
         ]);
     }
 

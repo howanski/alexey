@@ -165,6 +165,9 @@ function clickPlay(event) {
 
   var play = chartContainer.querySelector(".linear-chart-play-button");
   play.style.display = "none";
+
+  var refresh = chartContainer.querySelector(".linear-chart-force-refresh-button");
+  refresh.style.display = "";  
 }
 
 function clickPause(event) {
@@ -180,6 +183,24 @@ function clickPause(event) {
 
   var play = chartContainer.querySelector(".linear-chart-play-button");
   play.style.display = "";
+
+  var refresh = chartContainer.querySelector(".linear-chart-force-refresh-button");
+  refresh.style.display = "none";
+}
+
+function clickRefresh(event) {
+  event.preventDefault();
+  var elem = event.currentTarget;
+  elem.classList.add("animate-spin-once");
+  setTimeout(() => {
+    elem.classList.remove("animate-spin-once");
+  }, 1000);
+
+  var chartContainer = elem.closest(".linear-chart-container");
+  var chart = chartContainer.querySelector("canvas");
+
+  let dataSource = chart.getAttribute("data-chart-src");
+  updateChartData(chart, dataSource);
 }
 
 function makePlayBtnClickable(elem) {
@@ -190,8 +211,16 @@ function makePauseBtnClickable(elem) {
   elem.addEventListener("click", clickPause);
 }
 
+function makeRefreshBtnClickable(elem) {
+  elem.addEventListener("click", clickRefresh);
+}
+
 let chartPlayBtns = document.querySelectorAll(".linear-chart-play-button");
 let chartPauseBtns = document.querySelectorAll(".linear-chart-pause-button");
+let chartRefreshBtns = document.querySelectorAll(
+  ".linear-chart-force-refresh-button"
+);
 
 Array.from(chartPlayBtns).map(makePlayBtnClickable);
 Array.from(chartPauseBtns).map(makePauseBtnClickable);
+Array.from(chartRefreshBtns).map(makeRefreshBtnClickable);

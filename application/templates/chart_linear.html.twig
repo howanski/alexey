@@ -7,6 +7,7 @@
 						{{ titleSmall|raw }}
 					</h6>
 					<h2 class="text-nord6 text-xl font-semibold">
+					<i class="fas fa-circle-notch animate-spin-{{ chartRefresh }}"></i>
 						{% if enablePausing is defined and enablePausing %}
 							<button 
 								class="far fa-pause-circle linear-chart-pause-button"
@@ -16,7 +17,9 @@
 								style="display:none;"
 							></button>
 						{% endif %}
-						{{ titleBig|raw }}
+							<button 
+								class="fas fa-sync linear-chart-force-refresh-button"
+							></button>
 						{% if buttons is defined %}
 							{% for button in buttons %}
 								<a href="{{ button.href }}">
@@ -24,6 +27,7 @@
 								</a>
 							{% endfor %}
 						{% endif %}
+						{{ titleBig|raw }}
 					</h2>
 				</div>
 			</div>
