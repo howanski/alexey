@@ -95,15 +95,37 @@ function updateChartData(elem, src) {
         elem.setAttribute("data-chart-id", chartId);
       }
       if (typeof chartStorage[chartId] === "undefined") {
+        // fresh chart instance
         chartStorage[chartId] = createChart(
           elem,
           responseData.labels,
           prepareDatasets(responseData.datasets)
         );
       } else {
+        // refresh already built chart
         let storedChart = chartStorage[chartId];
+
+        let datasetKeysArray = Object.keys(responseData.datasets);
+        let index = 0;
+        let visibilityIndexes = [];
+        for (const datasetKey of datasetKeysArray) {
+          let isDatasetHidden = storedChart.getDatasetMeta(index).hidden;
+          if (isDatasetHidden) {
+            visibilityIndexes[index] = false;
+          } else {
+            visibilityIndexes[index] = true;
+          }
+          index = index + 1;
+        }
+
         storedChart.data.labels = responseData.labels;
         storedChart.data.datasets = prepareDatasets(responseData.datasets);
+
+        index = 0;
+        for (const visibility of visibilityIndexes) {
+          storedChart.setDatasetVisibility(index, visibility);
+          index = index + 1;
+        }
         storedChart.update("none");
       }
       updateBonusPayload(responseData.bonusPayload);
@@ -166,8 +188,10 @@ function clickPlay(event) {
   var play = chartContainer.querySelector(".linear-chart-play-button");
   play.style.display = "none";
 
-  var refresh = chartContainer.querySelector(".linear-chart-force-refresh-button");
-  refresh.style.display = "";  
+  var refresh = chartContainer.querySelector(
+    ".linear-chart-force-refresh-button"
+  );
+  refresh.style.display = "";
 }
 
 function clickPause(event) {
@@ -184,7 +208,9 @@ function clickPause(event) {
   var play = chartContainer.querySelector(".linear-chart-play-button");
   play.style.display = "";
 
-  var refresh = chartContainer.querySelector(".linear-chart-force-refresh-button");
+  var refresh = chartContainer.querySelector(
+    ".linear-chart-force-refresh-button"
+  );
   refresh.style.display = "none";
 }
 
