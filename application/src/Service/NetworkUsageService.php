@@ -93,7 +93,7 @@ class NetworkUsageService
         $today = new DateTime('today');
         $now = new DateTime('now');
         if ($chartDataType === NetworkChartType::CHART_TYPE_TODAY) {
-            $chdata = $this->prepareDataForChart($today);
+            $chdata = $this->prepareDataForChart(dateFrom: $today, timeFormat: 'H:i:s');
         } elseif ($chartDataType === NetworkChartType::CHART_TYPE_WEEK) {
             $shift = new DateInterval('P1W');
             $today->sub($shift);
@@ -101,7 +101,7 @@ class NetworkUsageService
         } elseif ($chartDataType === NetworkChartType::CHART_TYPE_HOURS_2) {
             $shift = new DateInterval('PT2H');
             $now->sub($shift);
-            $chdata = $this->prepareDataForChart($now);
+            $chdata = $this->prepareDataForChart(dateFrom: $now, timeFormat: 'H:i:s');
         } elseif ($chartDataType === NetworkChartType::CHART_TYPE_HOURS_48) {
             $shift = new DateInterval('PT48H');
             $now->sub($shift);
@@ -109,7 +109,7 @@ class NetworkUsageService
         } elseif ($chartDataType === NetworkChartType::CHART_TYPE_MINUTES_TEN) {
             $shift = new DateInterval('PT10M');
             $now->sub($shift);
-            $chdata = $this->prepareDataForChart($now);
+            $chdata = $this->prepareDataForChart(dateFrom: $now, timeFormat: 'H:i:s');
         } elseif ($chartDataType === NetworkChartType::CHART_TYPE_BILLING_FRAME) {
             $currentStat = $this->getLatestStatistic();
             $billingStart = $currentStat->getTimeFrame()->getBillingFrameStart();
@@ -150,7 +150,7 @@ class NetworkUsageService
         return $chdata;
     }
 
-    private function prepareDataForChart(DateTimeInterface $dateFrom): array
+    private function prepareDataForChart(DateTimeInterface $dateFrom, string $timeFormat = 'd.m H:i'): array
     {
         $data = [];
         $labels = [];
@@ -198,7 +198,7 @@ class NetworkUsageService
          * @var NetworkStatistic $stat
          */
         foreach ($networkStatistics as $stat) {
-            $labels[] = $stat->getProbingTime()->format('d.m H:i');
+            $labels[] = $stat->getProbingTime()->format($timeFormat);
             $datasets['speed_relative']['data'][] = round(($stat->getTotalSpeedFromReferencePoint() / 1024), 4);
             $datasets['speed_left']['data'][] = round(($stat->getTransferRateLeft() / 1024), 4);
         }
