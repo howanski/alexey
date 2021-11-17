@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NetworkMachineType extends CommonFormType
+final class NetworkMachineType extends CommonFormType
 {
     protected function init(): void
     {

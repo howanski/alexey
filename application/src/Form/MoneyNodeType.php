@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\MoneyNode;
@@ -10,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class MoneyNodeType extends CommonFormType
+final class MoneyNodeType extends CommonFormType
 {
     protected function init(): void
     {

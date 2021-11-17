@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class UserSettingsType extends CommonFormType
+final class UserSettingsType extends CommonFormType
 {
     public const LOCALES = [
         'en',

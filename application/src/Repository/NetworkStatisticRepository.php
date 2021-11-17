@@ -16,7 +16,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  * @method NetworkStatistic[]    findAll()
  * @method NetworkStatistic[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class NetworkStatisticRepository extends ServiceEntityRepository
+final class NetworkStatisticRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -38,7 +38,7 @@ class NetworkStatisticRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getLatestOne(): ?NetworkStatistic
+    public function getLatestOne()
     {
         $qb = $this->createQueryBuilder('ns')
             ->addOrderBy('ns.id', 'DESC')

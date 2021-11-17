@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class NetworkChartType extends CommonFormType
+final class NetworkChartType extends CommonFormType
 {
     public const CHART_TYPE_BILLING_FRAME = 'current_billing_frame';
     public const CHART_TYPE_HOURS_2 = 'last_2_hours';

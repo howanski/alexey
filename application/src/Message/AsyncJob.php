@@ -14,7 +14,7 @@ final class AsyncJob
 
     public function __construct(
         private string $jobType,
-        private array $payload = [],
+        private array $payload,
     ) {
     }
 

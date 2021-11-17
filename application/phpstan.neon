@@ -1,2 +1,6 @@
 includes:
 	- vendor/ergebnis/phpstan-rules/rules.neon
+parameters:
+    ignoreErrors:
+        - "#is not allowed to extend#"
+        - "#Kernel is neither abstract nor final.#"

@@ -10,7 +10,7 @@ use App\Service\SimpleSettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\NetworkMachineRepository;
 
-class DashboardService
+final class DashboardService
 {
     public function __construct(
         private EntityManagerInterface $em,

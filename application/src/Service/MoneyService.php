@@ -8,7 +8,7 @@ use App\Entity\User;
 use App\Entity\MoneyNode;
 use App\Repository\MoneyNodeRepository;
 
-class MoneyService
+final class MoneyService
 {
 
     public function __construct(
@@ -72,7 +72,7 @@ class MoneyService
         $result = [];
         $amountDate = new \DateTime('today');
         $window = new \DateInterval('P7D');
-        $allNodes = $this->repository->getAllUserNodes(user: $user);
+        $allNodes = $this->repository->getAllUserNodes(user: $user, groupId: null);
         for ($i = 0; $i < $weeksToShow; $i++) {
             $amount = 0.0;
             /** @var MoneyNode $node */

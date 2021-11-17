@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class TransmissionSettingsType extends CommonFormType
+final class TransmissionSettingsType extends CommonFormType
 {
     private const AGGRESSION_ADAPT_CHOICES = [
         SimpleSettingsService::UNIVERSAL_FALSE,

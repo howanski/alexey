@@ -9,7 +9,7 @@ use App\Entity\NetworkMachine;
 use App\Repository\NetworkMachineRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class NetworkMachineService
+final class NetworkMachineService
 {
     public function __construct(
         private EntityManagerInterface $em,

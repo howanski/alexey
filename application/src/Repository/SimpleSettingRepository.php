@@ -15,14 +15,14 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  * @method SimpleSetting[]    findAll()
  * @method SimpleSetting[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SimpleSettingRepository extends ServiceEntityRepository
+final class SimpleSettingRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, SimpleSetting::class);
     }
 
-    public function findAllByKeys($keys, User $user = null): array
+    public function findAllByKeys($keys, $user): array
     {
         $qb = $this->createQueryBuilder('ss')
             ->andWhere('ss.settingKey IN (:val)')

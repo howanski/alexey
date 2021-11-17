@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class NetworkUsageProviderSettingsType extends CommonFormType
+final class NetworkUsageProviderSettingsType extends CommonFormType
 {
     protected function init(): void
     {

@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class MoneyNodeSettingsType extends CommonFormType
+final class MoneyNodeSettingsType extends CommonFormType
 {
     protected function init(): void
     {

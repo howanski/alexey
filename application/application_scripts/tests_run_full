@@ -1,6 +1,7 @@
 #!/bin/bash
 cd ..
 mkdir -p var/qa-results
+rm -rf var/cache
 clear
 echo "---------------------------------------"
 echo "------------ ALEXEY  TESTS ------------"

@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method NetworkStatisticTimeFrame[]    findAll()
  * @method NetworkStatisticTimeFrame[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class NetworkStatisticTimeFrameRepository extends ServiceEntityRepository
+final class NetworkStatisticTimeFrameRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\MoneyNode;
@@ -14,7 +16,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 
-class MoneyTransferSplitType extends CommonFormType
+final class MoneyTransferSplitType extends CommonFormType
 {
     protected function init(): void
     {
@@ -28,7 +30,7 @@ class MoneyTransferSplitType extends CommonFormType
          * @var MoneyTransfer
          */
         $splitSource = $options['source'];
-        if (false === $splitSource instanceof MoneyTransfer || is_null($splitSource->getId())) {
+        if (!($splitSource instanceof MoneyTransfer) || is_null($splitSource->getId())) {
             throw new InvalidArgumentException('Wrongly specified MoneyTransfer split source.');
         }
         $builder

@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method NetworkMachine[]    findAll()
  * @method NetworkMachine[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class NetworkMachineRepository extends ServiceEntityRepository
+final class NetworkMachineRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

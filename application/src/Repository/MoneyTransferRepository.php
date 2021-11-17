@@ -15,7 +15,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  * @method MoneyTransfer[]    findAll()
  * @method MoneyTransfer[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MoneyTransferRepository extends ServiceEntityRepository
+final class MoneyTransferRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

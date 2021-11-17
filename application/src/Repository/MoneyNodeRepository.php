@@ -16,20 +16,20 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  * @method MoneyNode[]    findAll()
  * @method MoneyNode[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MoneyNodeRepository extends ServiceEntityRepository
+final class MoneyNodeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, MoneyNode::class);
     }
 
-    public function getAllUserNodes(User $user, int $groupId = null)
+    public function getAllUserNodes(User $user, $groupId): array
     {
         $qb = $this->createQueryBuilder('mn')
             ->andWhere('mn.user = :user')
             ->setParameter('user', $user->getId())
             ->orderBy('mn.name', 'ASC');
-        if (false === is_null($groupId)) {
+        if (is_integer($groupId)) {
             $qb->andWhere('mn.nodeGroup = :groupId')
                 ->setParameter('groupId', $groupId);
         }

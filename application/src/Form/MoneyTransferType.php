@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\MoneyNode;
@@ -15,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class MoneyTransferType extends CommonFormType
+final class MoneyTransferType extends CommonFormType
 {
     protected function init(): void
     {

@@ -9,7 +9,7 @@ use Twig\Extension\AbstractExtension;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 
-class AlexeyTranslator extends AbstractExtension
+final class AlexeyTranslator extends AbstractExtension
 {
 
     public const DEFAULT_TRANSLATION_MODULE = 'common';

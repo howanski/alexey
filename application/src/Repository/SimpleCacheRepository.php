@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\SimpleCache;
@@ -12,14 +14,14 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method SimpleCache[]    findAll()
  * @method SimpleCache[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SimpleCacheRepository extends ServiceEntityRepository
+final class SimpleCacheRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, SimpleCache::class);
     }
 
-    public function findValidRecordByKey(string $key): ?SimpleCache
+    public function findValidRecordByKey(string $key)
     {
         $now = new \DateTime('now');
         return $this->createQueryBuilder('s')
@@ -31,7 +33,7 @@ class SimpleCacheRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findRecordByKey(string $key): ?SimpleCache
+    public function findRecordByKey(string $key)
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.cacheKey = :key')

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class AlexeySideMenuProvider extends AbstractExtension
+final class AlexeySideMenuProvider extends AbstractExtension
 {
 
     private ?Request $currentRequest;
@@ -25,8 +25,9 @@ class AlexeySideMenuProvider extends AbstractExtension
         private AlexeyTranslator $translator,
     ) {
         $this->currentRequest = $this->requestStack->getCurrentRequest();
-        $this->currentRoute = $this?->currentRequest?->getRequestUri();
-        if (is_null($this->currentRoute)) {
+        if ($this->currentRequest instanceof Request) {
+            $this->currentRoute = $this->currentRequest->getRequestUri();
+        } else {
             $this->currentRoute = '/';
         }
         $this->router = $router;
@@ -39,9 +40,6 @@ class AlexeySideMenuProvider extends AbstractExtension
         ];
     }
 
-    /**
-     * @return []SideMenuItem
-     */
     public function exportMenuSchema(): array
     {
         $sideMenu = [];
@@ -56,7 +54,6 @@ class AlexeySideMenuProvider extends AbstractExtension
             icon: 'fa-tachometer-alt',
             isActive: $this->isActiveRoute($route),
         );
-
 
         $route = $this->router->generate('weather');
         $sideMenu[] = new SideMenuItem(

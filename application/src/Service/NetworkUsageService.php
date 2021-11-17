@@ -7,7 +7,6 @@ namespace App\Service;
 use DateTime;
 use DateInterval;
 use SimpleXMLElement;
-use DateTimeInterface;
 use App\Form\NetworkChartType;
 use App\Entity\NetworkStatistic;
 use if0xx\HuaweiHilinkApi\Router;
@@ -19,7 +18,7 @@ use App\Class\NetworkUsageProviderSettings;
 use App\Repository\NetworkStatisticRepository;
 use App\Repository\NetworkStatisticTimeFrameRepository;
 
-class NetworkUsageService
+final class NetworkUsageService
 {
     public const NETWORK_USAGE_PROVIDER_HUAWEI = 'HILINK';
     public const NETWORK_USAGE_PROVIDER_NONE = 'NONE';
@@ -51,14 +50,14 @@ class NetworkUsageService
         $this->em->flush();
     }
 
-    public function getCurrentStatistic(): ?NetworkStatistic
+    public function getCurrentStatistic()
     {
         $connectionSettings = $this->getConnectionSettings();
         $type = $connectionSettings->getProviderType();
         $stat = null;
         if ($type === self::NETWORK_USAGE_PROVIDER_HUAWEI) {
             $stat = $this->getCurrentStatisticFromHuawei($connectionSettings);
-        } elseif (empty($type) || $type === self::NETWORK_USAGE_PROVIDER_NONE) {
+        } elseif ($type === '' || $type === self::NETWORK_USAGE_PROVIDER_NONE) {
             // No settings, no work, great!
         } else {
             throw new \Exception('Unknown network usage provider.');
@@ -66,7 +65,7 @@ class NetworkUsageService
         return $stat;
     }
 
-    public function getLatestStatistic(): ?NetworkStatistic
+    public function getLatestStatistic()
     {
         $latest = $this->networkStatisticRepository->getLatestOne();
         return $latest;
@@ -223,8 +222,9 @@ class NetworkUsageService
             }
             $networkStatistics = $loosenEntities;
         }
+        $length = count($networkStatistics) - 1;
         foreach ($networkStatistics as $key => $stat) {
-            if (isset($networkStatistics[$key + 1])) {
+            if ($key < $length) {
                 if ($stat->getTimeFrame() === $networkStatistics[$key + 1]->getTimeFrame()) {
                     $networkStatistics[$key + 1]->setReferencePoint($stat);
                 }
@@ -234,7 +234,7 @@ class NetworkUsageService
         return $networkStatistics;
     }
 
-    private function getCurrentStatisticFromHuawei(NetworkUsageProviderSettings $connectionSettings): ?NetworkStatistic
+    private function getCurrentStatisticFromHuawei(NetworkUsageProviderSettings $connectionSettings)
     {
         try {
             $huaweiRouter = new Router();
