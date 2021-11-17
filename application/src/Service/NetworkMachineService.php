@@ -36,7 +36,7 @@ class NetworkMachineService
                 $networkMachine->setStatus(NetworkMachine::STATUS_UNREACHABLE);
             }
             $this->em->persist($networkMachine);
-            $this->em->flush($networkMachine);
+            $this->em->flush();
         }
     }
 

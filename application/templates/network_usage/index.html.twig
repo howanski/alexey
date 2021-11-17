@@ -20,16 +20,15 @@ window.location.replace(route);
 
 {% block pageContentPrimary %}
 
-{% set renderedForm %}
+	{% set rendered_form %}
 	{{ form_start(chart_selector_form) }}
 	{{ form_widget(chart_selector_form) }}
 	{{ form_end(chart_selector_form) }}
-{% endset %}
+	{% endset %}
 
-{% include 'table.html.twig'
-	with {
-		'tableTitle' : '',
-		'tableHeaders' : [
+	{% include 'table.html.twig' with {
+		'tableTitle': '',
+		'tableHeaders': [
 			'traffic_left'|localised('network_usage'),
 			'current_speed'|localised('network_usage'),
 			'optimal_speed'|localised('network_usage'),
@@ -43,9 +42,14 @@ window.location.replace(route);
 			'<div id="current_transfer_rate_left"></div>',
 			'<div id="current_throttling"></div>',
 			'<div id="current_billing_frame_end"></div>',
-			renderedForm,
+			rendered_form,
 			]],
-		'buttons': [{'href': path('network_usage_settings'), text: 'settings'|localised }],
+		'buttons': [
+			{
+				'href': path('network_usage_settings'),
+				'text': 'settings'|localised,
+			}
+		],
 		'noHover': true,
 	} only
 %}
@@ -60,7 +64,6 @@ window.location.replace(route);
 			'chartSrc': path('network_usage_chart_data', {chartType: chart_type}),
 			'chartRefresh': chartRefresh,
 			'enablePausing': true,
-			} only
-		%}
+		} only %}
 	</div>
 {% endblock %}

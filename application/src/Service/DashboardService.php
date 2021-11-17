@@ -45,6 +45,8 @@ class DashboardService
 
     private function getNetworkMachineRepository(): NetworkMachineRepository
     {
-        return $this->em->getRepository(NetworkMachine::class);
+        /** @var NetworkMachineRepository */
+        $repo = $this->em->getRepository(NetworkMachine::class);
+        return $repo;
     }
 }

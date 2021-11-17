@@ -12,7 +12,7 @@ echo "---------------------------------------"
 echo "-------------PHPSTAN:"
 echo "---------------------------------------"
 # Adjust --level parameter from 1 to 8, 8 being the most strict
-phpqa phpstan --level=1 --memory-limit=2048M analyse src
+phpqa phpstan --level=5 --memory-limit=2048M analyse src
 echo "---------------------------------------"
 echo "-------------COMPOSER REQUIRE CHECKER:"
 echo "---------------------------------------"

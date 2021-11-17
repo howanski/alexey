@@ -6,6 +6,7 @@ namespace App\Service;
 
 use DateTime;
 use DateInterval;
+use SimpleXMLElement;
 use DateTimeInterface;
 use App\Form\NetworkChartType;
 use App\Entity\NetworkStatistic;
@@ -37,7 +38,7 @@ class NetworkUsageService
         $stat = $this->getCurrentStatistic();
         if ($stat instanceof NetworkStatistic) {
             $this->em->persist($stat);
-            $this->em->flush($stat);
+            $this->em->flush();
         }
     }
 
@@ -150,7 +151,7 @@ class NetworkUsageService
         return $chdata;
     }
 
-    private function prepareDataForChart(DateTimeInterface $dateFrom, string $timeFormat = 'd.m H:i'): array
+    private function prepareDataForChart(DateTime $dateFrom, string $timeFormat = 'd.m H:i'): array
     {
         $data = [];
         $labels = [];
@@ -240,8 +241,10 @@ class NetworkUsageService
             $huaweiRouter->setAddress($connectionSettings->getAddress());
             $huaweiRouter->login('admin', $connectionSettings->getPassword());
 
+            /** @var SimpleXMLElement $monthStats */
             $monthStats = $huaweiRouter->getMonthStats();
 
+            /** @var SimpleXMLElement $startDate */
             $startDate = $huaweiRouter->generalizedGet('api/monitoring/start_date');
 
             $currentMonthDownload = (int)$monthStats->CurrentMonthDownload;
@@ -266,8 +269,8 @@ class NetworkUsageService
     }
 
     private function getTimeFrame(
-        DateTimeInterface $frameStart,
-        DateTimeInterface $frameEnd,
+        DateTime $frameStart,
+        DateTime $frameEnd,
         int $frameDataLimit
     ): NetworkStatisticTimeFrame {
         $timeFrame = $this->networkStatisticTimeFrameRepository->findOneBy([

@@ -75,9 +75,7 @@ class MoneyService
         $allNodes = $this->repository->getAllUserNodes(user: $user);
         for ($i = 0; $i < $weeksToShow; $i++) {
             $amount = 0.0;
-            /**
-             * @var MoneyNode
-             */
+            /** @var MoneyNode $node */
             foreach ($allNodes as $node) {
                 if (false === $node->isEdgeType()) {
                     $amount += $node->getBalance(onDate: $amountDate);

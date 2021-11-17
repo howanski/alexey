@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use Carbon\Carbon;
+use App\Class\WeatherSettings;
 use App\Service\SimpleSettingsService;
 use App\Class\OpenWeatherOneApiResponse;
-use App\Class\WeatherSettings;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class WeatherService

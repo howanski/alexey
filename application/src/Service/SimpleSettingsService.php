@@ -14,14 +14,10 @@ class SimpleSettingsService
     public const UNIVERSAL_TRUTH = 'BOOL_TRUE';
     public const UNIVERSAL_FALSE = 'BOOL_FALSE';
 
-    private EntityManagerInterface $em;
-
-    private SimpleSettingRepository $simpleSettingRepository;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-        $this->simpleSettingRepository = $this->em->getRepository(SimpleSetting::class);
+    public function __construct(
+        private EntityManagerInterface $em,
+        private SimpleSettingRepository $simpleSettingRepository
+    ) {
     }
 
     public function getSettings(array $settingsKeys, User $user = null): array

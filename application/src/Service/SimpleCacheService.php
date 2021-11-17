@@ -10,14 +10,10 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class SimpleCacheService
 {
-    private EntityManagerInterface $em;
-
-    private SimpleCacheRepository $simpleCacheRepository;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-        $this->simpleCacheRepository = $em->getRepository(SimpleCache::class);
+    public function __construct(
+        private EntityManagerInterface $em,
+        private SimpleCacheRepository $simpleCacheRepository,
+    ) {
     }
 
     public function cacheData(string $key, array $data, \DateTimeInterface $validTo): void
@@ -30,7 +26,7 @@ class SimpleCacheService
         $entity->setCacheData($data);
         $entity->setValidTo($validTo);
         $this->em->persist($entity);
-        $this->em->flush($entity);
+        $this->em->flush();
     }
 
     public function retrieveDataFromCache(string $key): array
@@ -48,7 +44,7 @@ class SimpleCacheService
         if ($entity instanceof SimpleCache) {
             $entity->setValidTo(new \DateTime('today'));
             $this->em->persist($entity);
-            $this->em->flush($entity);
+            $this->em->flush();
         }
     }
 }
