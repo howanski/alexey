@@ -23,12 +23,15 @@ final class NetworkUsageProviderSettings
 
     public function selfConfigure(SimpleSettingsService $simpleSettingsService): void
     {
-        $settingsArray = $simpleSettingsService->getSettings([
-            self::PROVIDER_TYPE,
-            self::PROVIDER_ADDRESS,
-            self::PROVIDER_PASSWORD,
-            self::SHOW_ON_DASHBOARD,
-        ]);
+        $settingsArray = $simpleSettingsService->getSettings(
+            keys: [
+                self::PROVIDER_TYPE,
+                self::PROVIDER_ADDRESS,
+                self::PROVIDER_PASSWORD,
+                self::SHOW_ON_DASHBOARD,
+            ],
+            user: null,
+        );
         $this->setProviderType(strval($settingsArray[self::PROVIDER_TYPE]));
         $this->setAddress(strval($settingsArray[self::PROVIDER_ADDRESS]));
         $this->setPassword(strval($settingsArray[self::PROVIDER_PASSWORD]));
@@ -37,12 +40,15 @@ final class NetworkUsageProviderSettings
 
     public function selfPersist(SimpleSettingsService $simpleSettingsService)
     {
-        $simpleSettingsService->saveSettings([
-            self::PROVIDER_TYPE => $this->getProviderType(),
-            self::PROVIDER_ADDRESS => $this->getAddress(),
-            self::PROVIDER_PASSWORD => $this->getPassword(),
-            self::SHOW_ON_DASHBOARD => $this->getShowOnDashboard(),
-        ]);
+        $simpleSettingsService->saveSettings(
+            settings: [
+                self::PROVIDER_TYPE => $this->getProviderType(),
+                self::PROVIDER_ADDRESS => $this->getAddress(),
+                self::PROVIDER_PASSWORD => $this->getPassword(),
+                self::SHOW_ON_DASHBOARD => $this->getShowOnDashboard(),
+            ],
+            user: null,
+        );
     }
 
     public function getProviderType(): string

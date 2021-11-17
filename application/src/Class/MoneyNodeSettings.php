@@ -39,7 +39,7 @@ class MoneyNodeSettings
         for ($i = 0; $i < self::GROUPS_MAX; $i++) {
             $conf[] = self::PREFIX . $i;
         }
-        $namesRead = $simpleSettingsService->getSettings(settingsKeys: $conf, user: $this->user);
+        $namesRead = $simpleSettingsService->getSettings(keys: $conf, user: $this->user);
         foreach ($namesRead as $key => $val) {
             $id = str_replace(search: self::PREFIX, replace: '', subject: $key);
             $this->{'name' . $id} = $val;

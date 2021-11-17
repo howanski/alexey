@@ -8,7 +8,7 @@ use BadMethodCallException;
 use App\Service\AlexeyTranslator;
 use Symfony\Component\Form\AbstractType;
 
-class CommonFormType extends AbstractType
+abstract class CommonFormType extends AbstractType
 {
     private $translationModule = null;
 

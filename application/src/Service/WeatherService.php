@@ -10,7 +10,7 @@ use App\Service\SimpleSettingsService;
 use App\Class\OpenWeatherOneApiResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class WeatherService
+final class WeatherService
 {
     public function __construct(
         private HttpClientInterface $client,

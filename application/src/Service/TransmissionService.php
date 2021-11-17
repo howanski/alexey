@@ -9,7 +9,7 @@ use App\Entity\NetworkStatistic;
 use App\Class\TransmissionSettings;
 use App\Service\SimpleSettingsService;
 
-class TransmissionService
+final class TransmissionService
 {
     private TransmissionSettings $settings;
 

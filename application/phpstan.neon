@@ -1,0 +1,2 @@
+includes:
+	- vendor/ergebnis/phpstan-rules/rules.neon

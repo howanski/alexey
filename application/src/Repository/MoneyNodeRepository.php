@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\User;
@@ -40,6 +42,6 @@ class MoneyNodeRepository extends ServiceEntityRepository
     public function getQueryBuilderForForm(): QueryBuilder
     {
         return $this->createQueryBuilder('mn')
-        ->orderBy('mn.name', 'ASC');
+            ->orderBy('mn.name', 'ASC');
     }
 }

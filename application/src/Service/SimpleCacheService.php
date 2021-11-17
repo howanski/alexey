@@ -8,7 +8,7 @@ use App\Entity\SimpleCache;
 use App\Repository\SimpleCacheRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class SimpleCacheService
+final class SimpleCacheService
 {
     public function __construct(
         private EntityManagerInterface $em,

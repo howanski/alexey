@@ -9,7 +9,7 @@ use App\Entity\SimpleSetting;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\SimpleSettingRepository;
 
-class SimpleSettingsService
+final class SimpleSettingsService
 {
     public const UNIVERSAL_TRUTH = 'BOOL_TRUE';
     public const UNIVERSAL_FALSE = 'BOOL_FALSE';
@@ -20,22 +20,22 @@ class SimpleSettingsService
     ) {
     }
 
-    public function getSettings(array $settingsKeys, User $user = null): array
+    public function getSettings(array $keys, $user): array
     {
         $result = [];
-        foreach ($settingsKeys as $key) {
+        foreach ($keys as $key) {
             $result[$key] = '';
         }
         /**
          * @var SimpleSetting $simpleSetting
          */
-        foreach ($this->simpleSettingRepository->findAllByKeys(keys: $settingsKeys, user: $user) as $simpleSetting) {
+        foreach ($this->simpleSettingRepository->findAllByKeys(keys: $keys, user: $user) as $simpleSetting) {
             $result[$simpleSetting->getSettingKey()] = $simpleSetting->getSettingValue();
         }
         return $result;
     }
 
-    public function saveSettings(array $settings, User $user = null)
+    public function saveSettings(array $settings, $user)
     {
         foreach ($settings as $key => $value) {
             $criteria = ['settingKey' => $key];

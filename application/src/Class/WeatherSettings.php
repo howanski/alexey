@@ -23,12 +23,15 @@ class WeatherSettings
 
     public function selfConfigure(SimpleSettingsService $simpleSettingsService): void
     {
-        $arraySettings = $simpleSettingsService->getSettings([
-            self::LATITUDE,
-            self::LONGITUDE,
-            self::API_KEY,
-            self::SHOW_ON_DASHBOARD,
-        ]);
+        $arraySettings = $simpleSettingsService->getSettings(
+            keys: [
+                self::LATITUDE,
+                self::LONGITUDE,
+                self::API_KEY,
+                self::SHOW_ON_DASHBOARD,
+            ],
+            user: null,
+        );
         $this->setLatitude(strval($arraySettings[self::LATITUDE]));
         $this->setLongitude(strval($arraySettings[self::LONGITUDE]));
         $this->setApiKey(strval($arraySettings[self::API_KEY]));
@@ -37,12 +40,15 @@ class WeatherSettings
 
     public function selfPersist(SimpleSettingsService $simpleSettingsService): void
     {
-        $simpleSettingsService->saveSettings([
-            self::LATITUDE => $this->getLatitude(),
-            self::LONGITUDE => $this->getLongitude(),
-            self::API_KEY => $this->getApiKey(),
-            self::SHOW_ON_DASHBOARD => $this->getShowOnDashboard(),
-        ]);
+        $simpleSettingsService->saveSettings(
+            settings: [
+                self::LATITUDE => $this->getLatitude(),
+                self::LONGITUDE => $this->getLongitude(),
+                self::API_KEY => $this->getApiKey(),
+                self::SHOW_ON_DASHBOARD => $this->getShowOnDashboard(),
+            ],
+            user: null,
+        );
     }
 
     public function getLatitude(): string

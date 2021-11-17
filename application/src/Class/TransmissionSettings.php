@@ -43,16 +43,19 @@ final class TransmissionSettings
 
     public function selfConfigure(SimpleSettingsService $simpleSettingsService): void
     {
-        $settingsArray = $simpleSettingsService->getSettings([
-            self::IS_ACTIVE,
-            self::HOST,
-            self::USER,
-            self::PASSWORD,
-            self::TARGET_SPEED,
-            self::TARGET_SPEED_BUMPING,
-            self::AGGRESSION,
-            self::AGGRESSION_ADAPT,
-        ]);
+        $settingsArray = $simpleSettingsService->getSettings(
+            keys: [
+                self::IS_ACTIVE,
+                self::HOST,
+                self::USER,
+                self::PASSWORD,
+                self::TARGET_SPEED,
+                self::TARGET_SPEED_BUMPING,
+                self::AGGRESSION,
+                self::AGGRESSION_ADAPT,
+            ],
+            user: null,
+        );
         $this->setIsActive(strval($settingsArray[self::IS_ACTIVE]));
         $this->setHost(strval($settingsArray[self::HOST]));
         $this->setUser(strval($settingsArray[self::USER]));
@@ -65,16 +68,19 @@ final class TransmissionSettings
 
     public function selfPersist(SimpleSettingsService $simpleSettingsService): void
     {
-        $simpleSettingsService->saveSettings([
-            self::IS_ACTIVE => $this->getIsActive(),
-            self::HOST => $this->getHost(),
-            self::USER => $this->getUser(),
-            self::PASSWORD => $this->getPassword(),
-            self::TARGET_SPEED => $this->getTargetSpeed(),
-            self::TARGET_SPEED_BUMPING => $this->getAllowSpeedBump(),
-            self::AGGRESSION => $this->getAlgorithmAggression(),
-            self::AGGRESSION_ADAPT => $this->getAggressionAdapt(),
-        ]);
+        $simpleSettingsService->saveSettings(
+            settings: [
+                self::IS_ACTIVE => $this->getIsActive(),
+                self::HOST => $this->getHost(),
+                self::USER => $this->getUser(),
+                self::PASSWORD => $this->getPassword(),
+                self::TARGET_SPEED => $this->getTargetSpeed(),
+                self::TARGET_SPEED_BUMPING => $this->getAllowSpeedBump(),
+                self::AGGRESSION => $this->getAlgorithmAggression(),
+                self::AGGRESSION_ADAPT => $this->getAggressionAdapt(),
+            ],
+            user: null,
+        );
     }
 
     public function getProposedThrottleSpeed(int|float $speedLeft): int
