@@ -41,9 +41,9 @@ final class NetworkMachineControllerTest extends ControllerTestStub
         $response = $client->getResponse()->getContent();
 
         $this->assertStringContainsString(
-            needle: '<h6 class="m-0 font-weight-bold text-primary">Network machines</h6>',
+            needle: '<table class="items-center w-full bg-transparent border-collapse">',
             haystack: $response,
-            message: '---!---> Can\'t find table header after new machine creation.',
+            message: '---!---> Can\'t find table (list) after new machine creation.',
         );
 
         $em = $this->getEntityManager();
@@ -86,9 +86,9 @@ final class NetworkMachineControllerTest extends ControllerTestStub
         $response = $client->getResponse()->getContent();
 
         $this->assertStringContainsString(
-            needle: '<h6 class="m-0 font-weight-bold text-primary">Network machines</h6>',
+            needle: '<table class="items-center w-full bg-transparent border-collapse">',
             haystack: $response,
-            message: '---!---> Can\'t find table header after new machine creation.',
+            message: '---!---> Can\'t find table/list after new machine creation.',
         );
 
         $em = $this->getEntityManager();
