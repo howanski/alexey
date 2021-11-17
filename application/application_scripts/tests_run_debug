@@ -1,0 +1,23 @@
+#!/bin/bash
+cd ..
+mkdir -p var/qa-results
+clear
+echo "---------------------------------------"
+echo "------------ ALEXEY  TESTS ------------"
+echo "---------------------------------------"
+sleep 1
+clear
+echo "---------------------------------------"
+echo "------- PREPARE DB....."
+echo "---------------------------------------"
+XDEBUG_MODE=off php bin/console doctrine:database:drop --force --env=test > /dev/null
+XDEBUG_MODE=off php bin/console doctrine:database:create --env=test > /dev/null
+XDEBUG_MODE=off php bin/console doctrine:migrations:migrate --no-interaction --env=test > /dev/null
+XDEBUG_MODE=off php bin/console doctrine:fixtures:load --env=test --no-interaction > /dev/null
+clear
+echo "---------------------------------------"
+echo "------- PHPUNIT:"
+echo "---------------------------------------"
+XDEBUG_MODE=debug /var/www/html/vendor/bin/phpunit --verbose
+chown -R 1000:1000 var/qa-results/ >/dev/null
+echo "----------------- DONE ----------------"

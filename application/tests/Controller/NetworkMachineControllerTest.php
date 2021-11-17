@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\Entity\NetworkMachine;
-use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 final class NetworkMachineControllerTest extends ControllerTestStub
 {
@@ -125,16 +124,22 @@ final class NetworkMachineControllerTest extends ControllerTestStub
     {
         $client = $this->getClientWithLoggedInUser();
         $client->followRedirects(true);
-        /**
-         * @var CsrfTokenManager
-         */
-        $tokenManager = $this->getContainer()->get('security.csrf.token_manager');
-        $token = $tokenManager->getToken('delete' . $machineId);
+        $crawler = $client->request('GET', '/network/machines/' . $machineId);
+        $this->assertResponseIsSuccessful();
+        $crawler = $crawler->filter(selector: '.button-secure');
+        $count = $crawler->count();
+        $this->assertEquals(
+            expected: 1,
+            actual: $count,
+            message: 'Too much secured buttons found',
+        );
+        $button = $crawler->eq(0);
+        $csrf = $button->attr('data-csrf');
         $client->request(
             method: 'POST',
             uri: '/network/machines/' . $machineId,
             parameters: [
-                '_token' => $token,
+                '_token' => $csrf,
             ],
         );
         $this->assertResponseIsSuccessful();
