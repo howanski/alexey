@@ -7,19 +7,12 @@
 						{{ titleSmall|raw }}
 					</h6>
 					<h2 class="text-nord6 text-xl font-semibold">
-					<i class="fas fa-circle-notch animate-spin-{{ chartRefresh }}"></i>
+						<i class="fas fa-circle-notch animate-spin-{{ chartRefresh }}"></i>
 						{% if enablePausing is defined and enablePausing %}
-							<button 
-								class="far fa-pause-circle linear-chart-pause-button"
-							></button>
-							<button 
-								class="far fa-play-circle linear-chart-play-button animate-pulse"
-								style="display:none;"
-							></button>
+							<button class="far fa-pause-circle linear-chart-pause-button"></button>
+							<button class="far fa-play-circle linear-chart-play-button animate-pulse" style="display:none;"></button>
 						{% endif %}
-							<button 
-								class="fas fa-sync linear-chart-force-refresh-button"
-							></button>
+						<button class="fas fa-sync linear-chart-force-refresh-button"></button>
 						{% if buttons is defined %}
 							{% for button in buttons %}
 								<a href="{{ button.href }}">

@@ -23,12 +23,12 @@
 							</button>
 							{% if additionalButtons is defined %}
 								{% for button in additionalButtons %}
-									{% include 'form_button.html.twig' with {'button': button } %}
+									{% include 'form_button.html.twig' with {'button': button} %}
 								{% endfor %}
 							{% endif %}
 							{% if additionalSecuredButtons is defined %}
 								{% for button in additionalSecuredButtons %}
-									{% include 'secured_button.html.twig' with {'button': button } %}
+									{% include 'secured_button.html.twig' with {'button': button} %}
 								{% endfor %}
 							{% endif %}
 						</div>

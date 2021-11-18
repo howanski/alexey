@@ -6,13 +6,13 @@
 					<div class="font-semibold text-xl text-blueGray-700 flex flex-wrap justify-center">
 						{% if buttons is defined %}
 							{% for button in buttons %}
-								{% include 'form_button.html.twig' with {'button': button } %}
+								{% include 'form_button.html.twig' with {'button': button} %}
 							{% endfor %}
 						{% endif %}
 
 						{% if securedButtons is defined %}
 							{% for button in securedButtons %}
-								{% include 'secured_button.html.twig' with {'button': button } %}
+								{% include 'secured_button.html.twig' with {'button': button} %}
 							{% endfor %}
 						{% endif %}
 					</div>

@@ -5,20 +5,17 @@
 %}
 
 {% block pageContentPrimary %}
-	{% include 'form.html.twig'
-		with {
-			'form': form,
-			'additionalButtons': [
-				{
-					'color': 'nord10',
-					'href': path('dashboard'),
-					'name': 'cancel'|localised,
-					'icon': 'fas fa-undo'
-				}
-			]
-			} only
-	%}
+	{% include 'form.html.twig' with {
+		'form': form,
+		'additionalButtons': [
+			{
+				'color': 'nord10',
+				'href': path('dashboard'),
+				'name': 'cancel'|localised,
+				'icon': 'fas fa-undo'
+			}
+		],
+	} only %}
 {% endblock %}
 
-{% block pageContentSecondary %}
-{% endblock %}
+{% block pageContentSecondary %}{% endblock %}
