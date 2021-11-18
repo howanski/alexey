@@ -53,12 +53,12 @@ class SimpleSetting
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User|null
     {
         return $this->user;
     }
 
-    public function setUser(User $user = null): self
+    public function setUser($user): self
     {
         $this->user = $user;
         return $this;

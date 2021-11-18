@@ -141,11 +141,8 @@ class MoneyNode
         );
     }
 
-    public function getBalance(bool $force = false, \DateTimeInterface $onDate = null): float|string
+    public function getBalance($onDate): float
     {
-        if (false === $force && $this->isEdgeType()) {
-            return '---';
-        }
         $balance = 0.0;
         /**
          * @var MoneyTransfer

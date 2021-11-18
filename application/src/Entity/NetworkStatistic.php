@@ -93,20 +93,6 @@ class NetworkStatistic
         return $this;
     }
 
-    private function ensureReferencePointSet(): void
-    {
-        // If no reference point set, measures are done on empty statistic set on $timeFrame start
-        if (!($this->referencePoint instanceof NetworkStatistic)) {
-            $referencePoint = new NetworkStatistic();
-            $timeFrame = $this->getTimeFrame();
-            $referencePoint->setTimeFrame($timeFrame);
-            $referencePoint->setProbingTime($timeFrame->getBillingFrameStart());
-            $referencePoint->setDataUploadedInFrame(0);
-            $referencePoint->setDataDownloadedInFrame(0);
-            $this->setReferencePoint($referencePoint);
-        }
-    }
-
     // Time
 
     public function getTimeLeftTillFrameEnd(): int
@@ -119,7 +105,6 @@ class NetworkStatistic
     // seconds passed
     public function getTimePassedFromReferencePoint(): int
     {
-        $this->ensureReferencePointSet();
         $startTime = $this->referencePoint->getProbingTime()->getTimestamp();
         $endTime = $this->getProbingTime()->getTimestamp();
         return ($endTime - $startTime);
@@ -129,7 +114,6 @@ class NetworkStatistic
 
     public function getDataDownloadedFromReferencePoint(): int
     {
-        $this->ensureReferencePointSet();
         return ($this->getDataDownloadedInFrame() - $this->referencePoint->getDataDownloadedInFrame());
     }
 
@@ -147,7 +131,6 @@ class NetworkStatistic
 
     public function getDataUploadedFromReferencePoint(): int
     {
-        $this->ensureReferencePointSet();
         return ($this->getDataUploadedInFrame() - $this->referencePoint->getDataUploadedInFrame());
     }
 

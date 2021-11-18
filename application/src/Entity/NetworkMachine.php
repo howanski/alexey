@@ -96,7 +96,9 @@ class NetworkMachine
 
     public function canBeWoken(): bool
     {
-        return (!empty($this->getMacAddress()) && !empty($this->getWakeDestination()) && !$this->isReachable());
+        return (strlen($this->getMacAddress()) > 0
+            && strlen($this->getWakeDestination()) > 0
+            && false === $this->isReachable());
     }
 
     public function setStatus(int $status): self
@@ -105,18 +107,18 @@ class NetworkMachine
         return $this;
     }
 
-    public function getLastSeen(): ?\DateTimeInterface
+    public function getLastSeen(): \DateTimeInterface|null
     {
         return $this->lastSeen;
     }
 
-    public function setLastSeen(?\DateTimeInterface $lastSeen): self
+    public function setLastSeen(\DateTimeInterface $lastSeen): self
     {
         $this->lastSeen = $lastSeen;
         return $this;
     }
 
-    public function getMacAddress(): ?string
+    public function getMacAddress(): string
     {
         return strval($this->macAddress);
     }
@@ -127,7 +129,7 @@ class NetworkMachine
         return $this;
     }
 
-    public function getWakeDestination(): ?string
+    public function getWakeDestination(): string
     {
         return strval($this->wakeDestination);
     }

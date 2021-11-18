@@ -46,7 +46,7 @@ class MoneyTransfer
         $this->operationDate = new \DateTime('today');
     }
 
-    public function getId(): ?int
+    public function getId(): int|null
     {
         return $this->id;
     }
@@ -120,12 +120,12 @@ class MoneyTransfer
         );
     }
 
-    public function getComment(): ?string
+    public function getComment(): string
     {
-        return $this->comment;
+        return strval($this->comment);
     }
 
-    public function setComment(?string $comment): self
+    public function setComment(string $comment): self
     {
         $this->comment = $comment;
 

@@ -7,12 +7,11 @@ namespace App\Command;
 use App\Entity\User;
 use Doctrine\ORM\EntityManager;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -21,30 +20,19 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
     name: 'alexey:user:new',
     description: 'Create new user',
 )]
-class AlexeyCreateUserCommand extends Command
+final class AlexeyCreateUserCommand extends Command
 {
-    private UserRepository $userRepository;
 
-    private EntityManager $em;
-
-    private UserPasswordHasherInterface $passwordHasher;
-
-    public function __construct(ManagerRegistry $doctrine, UserPasswordHasherInterface $encoder)
-    {
-        $this->em = $doctrine->getManager();
-
-        $this->userRepository = $this->em->getRepository(User::class);
-
-        $this->passwordHasher = $encoder;
-
+    public function __construct(
+        private EntityManagerInterface $em,
+        private UserRepository $userRepository,
+        private UserPasswordHasherInterface $passwordHasher,
+    ) {
         parent::__construct();
     }
 
     protected function configure(): void
     {
-        // $this
-        //     ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-        //     ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -75,7 +63,7 @@ class AlexeyCreateUserCommand extends Command
     private function isStringOk(OutputInterface $output, $authString): bool
     {
         $authString = trim($authString);
-        if (empty($authString)) {
+        if (strlen($authString) === 0) {
             return false;
         }
         if (preg_match('/[^a-z_\-0-9]/i', $authString)) {
@@ -88,7 +76,7 @@ class AlexeyCreateUserCommand extends Command
     private function isUsernameUnique(OutputInterface $output, $username): bool
     {
         $existingUser = $this->userRepository->findOneBy(['username' => $username]);
-        if (!empty($existingUser)) {
+        if ($existingUser instanceof User) {
             $output->writeln('Username ' . $username . ' already taken');
             return false;
         }

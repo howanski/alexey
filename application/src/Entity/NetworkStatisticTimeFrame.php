@@ -97,13 +97,7 @@ class NetworkStatisticTimeFrame
 
     public function removeNetworkStatistic(NetworkStatistic $networkStatistic): self
     {
-        if ($this->networkStatistics->removeElement($networkStatistic)) {
-            // set the owning side to null (unless already changed)
-            if ($networkStatistic->getTimeFrame() === $this) {
-                $networkStatistic->setTimeFrame(null);
-            }
-        }
-
+        $this->networkStatistics->removeElement($networkStatistic);
         return $this;
     }
 

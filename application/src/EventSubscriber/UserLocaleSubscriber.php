@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
-class UserLocaleSubscriber implements EventSubscriberInterface
+final class UserLocaleSubscriber implements EventSubscriberInterface
 {
     public const USER_LOCALE = 'alexey_user_locale';
 
@@ -25,7 +25,7 @@ class UserLocaleSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         $userLocale = $this->requestStack->getSession()->get(self::USER_LOCALE);
-        if (!(empty($userLocale))) {
+        if (is_string($userLocale) && strlen($userLocale) > 0) {
             $request->setLocale($userLocale);
         }
     }

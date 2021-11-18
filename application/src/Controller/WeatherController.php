@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/weather')]
-class WeatherController extends AbstractController
+final class WeatherController extends AbstractController
 {
     #[Route('/', name: 'weather')]
     public function index(): Response

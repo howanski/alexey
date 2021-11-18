@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/money/node')]
-class MoneyNodeController extends AbstractController
+final class MoneyNodeController extends AbstractController
 {
     #[Route('/list/{groupId}', name: 'money_node_index', methods: ['GET'])]
     public function index(

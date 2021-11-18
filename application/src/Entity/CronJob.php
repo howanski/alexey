@@ -31,7 +31,7 @@ class CronJob
         return $this->id;
     }
 
-    public function getLastRun(): ?\DateTimeInterface
+    public function getLastRun(): \DateTimeInterface|null
     {
         return $this->lastRun;
     }

@@ -18,11 +18,9 @@ abstract class CommonFormType extends AbstractType
         $this->init();
     }
 
-    protected function init(): void
-    {
-    }
+    abstract protected function init();
 
-    protected function getLabelTrans(string $label): string
+    final protected function getLabelTrans(string $label): string
     {
         if (is_null($this->translationModule)) {
             throw new BadMethodCallException('setTranslationModule function not called!');
@@ -31,7 +29,7 @@ abstract class CommonFormType extends AbstractType
         return $this->translator->translateFormLabel(label: $label, module: $this->translationModule);
     }
 
-    protected function getValueTrans(string $field, string $value): string
+    final protected function getValueTrans(string $field, string $value): string
     {
         if (is_null($this->translationModule)) {
             throw new BadMethodCallException('setTranslationModule function not called!');
@@ -44,7 +42,7 @@ abstract class CommonFormType extends AbstractType
         );
     }
 
-    protected function getHelpTrans(string $field): string
+    final protected function getHelpTrans(string $field): string
     {
         if (is_null($this->translationModule)) {
             throw new BadMethodCallException('setTranslationModule function not called!');
@@ -56,7 +54,7 @@ abstract class CommonFormType extends AbstractType
         );
     }
 
-    protected function setTranslationModule(string $moduleName): void
+    final protected function setTranslationModule(string $moduleName): void
     {
         $this->translationModule = $moduleName;
     }

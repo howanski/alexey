@@ -117,7 +117,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @see UserInterface
      */
-    public function getSalt(): ?string
+    public function getSalt()
     {
         return null;
     }
@@ -153,7 +153,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCaches()
+    public function getCaches(): ArrayCollection
     {
         return $this->caches;
     }
@@ -162,5 +162,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->caches = $caches;
         return $this;
+    }
+
+    public function getMoneyTransfers(): ArrayCollection
+    {
+        return $this->moneyTransfers;
+    }
+
+    public function getMoneyNodes(): ArrayCollection
+    {
+        return $this->moneyNodes;
     }
 }

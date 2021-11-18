@@ -4,3 +4,5 @@ parameters:
     ignoreErrors:
         - "#is not allowed to extend#"
         - "#Kernel is neither abstract nor final.#"
+        - "#id is never written, only read.#"
+        - "#with null as default value.#"

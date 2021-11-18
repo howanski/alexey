@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Entity\User;
@@ -27,7 +29,7 @@ class SimpleCache
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?User $user;
 
-    public function getId(): ?int
+    public function getId(): int|null
     {
         return $this->id;
     }
@@ -65,12 +67,12 @@ class SimpleCache
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User|null
     {
         return $this->user;
     }
 
-    public function setUser(User $user = null): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
         return $this;

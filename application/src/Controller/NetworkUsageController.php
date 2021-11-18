@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouterInterface;
 
 #[Route('/network/usage')]
-class NetworkUsageController extends AbstractController
+final class NetworkUsageController extends AbstractController
 {
     #[Route('/info/{chartType}', name: 'network_usage')]
     public function index(
@@ -34,7 +34,7 @@ class NetworkUsageController extends AbstractController
             );
         }
 
-        if (NetworkChartType::CHART_TYPE_MINUTES_TEN == $chartType) {
+        if (NetworkChartType::CHART_TYPE_MINUTES_TEN === $chartType) {
             $chartRefresh = 5;
         } else {
             $chartRefresh = 45;

@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
     name: 'alexey:cron',
     description: 'background timed Messenger jobs invoker',
 )]
-class AlexeyCronCommand extends Command
+final class AlexeyCronCommand extends Command
 {
     private const DEFAULT_JOBS = [
         AsyncJob::TYPE_PING => 30,
@@ -81,7 +81,7 @@ class AlexeyCronCommand extends Command
                 $readyToRun =  ($nextRun <= $now);
             }
             if (true === $readyToRun) {
-                $message = new AsyncJob($cronJob->getJobType());
+                $message = new AsyncJob(jobType: $cronJob->getJobType(), payload: []);
                 $this->bus->dispatch($message);
                 $cronJob->setLastRun($now);
                 $this->em->persist($cronJob);

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
 use App\Entity\User;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
-class AppFixtures extends Fixture
+final class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {

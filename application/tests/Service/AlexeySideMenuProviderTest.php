@@ -60,8 +60,6 @@ final class AlexeySideMenuProviderTest extends TestCase
                 'name' => 'trans_menu_record',
                 'destination' => '/dashboard',
                 'children' => [],
-                'isHeading' => false,
-                'isDivider' => false,
             ],
             [
                 'icon' => 'fa-cloud-sun',
@@ -69,8 +67,6 @@ final class AlexeySideMenuProviderTest extends TestCase
                 'name' => 'trans_menu_record',
                 'destination' => '/weather',
                 'children' => [],
-                'isHeading' => false,
-                'isDivider' => false,
             ],
             [
                 'icon' => 'fa-wifi',
@@ -82,8 +78,6 @@ final class AlexeySideMenuProviderTest extends TestCase
                     [],
                     [],
                 ],
-                'isHeading' => false,
-                'isDivider' => false,
             ],
             [
                 'icon' => 'fas fa-search-dollar',
@@ -95,8 +89,6 @@ final class AlexeySideMenuProviderTest extends TestCase
                     [],
                     [],
                 ],
-                'isHeading' => false,
-                'isDivider' => false,
             ],
         ];
 
@@ -132,18 +124,6 @@ final class AlexeySideMenuProviderTest extends TestCase
                 expected: $menuConstruction[$key]['destination'],
                 actual: $val->getDestination(),
                 message: '---!---> Wrong menu item destination',
-            );
-
-            $this->assertEquals(
-                expected: $menuConstruction[$key]['isHeading'],
-                actual: $val->getIsHeading(),
-                message: '---!---> Wrong menu item heading flag',
-            );
-
-            $this->assertEquals(
-                expected: $menuConstruction[$key]['isDivider'],
-                actual: $val->getIsDivider(),
-                message: '---!---> Wrong menu item divider flag',
             );
 
             $this->assertEquals(

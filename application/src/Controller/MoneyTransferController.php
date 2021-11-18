@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/money/transfer')]
-class MoneyTransferController extends AbstractController
+final class MoneyTransferController extends AbstractController
 {
     #[Route('/', name: 'money_transfer_index', methods: ['GET'])]
     public function index(MoneyTransferRepository $moneyTransferRepository): Response

@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class SettingsController extends AbstractController
+final class SettingsController extends AbstractController
 {
     #[Route('/settings', name: 'settings')]
     public function settings(

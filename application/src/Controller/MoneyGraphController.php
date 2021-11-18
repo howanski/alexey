@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class MoneyGraphController extends AbstractController
+final class MoneyGraphController extends AbstractController
 {
     #[Route('/money/graph/nodes', name: 'money_graph_nodes')]
     public function nodes(): Response

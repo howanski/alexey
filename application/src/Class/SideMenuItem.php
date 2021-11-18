@@ -17,26 +17,18 @@ final class SideMenuItem
 
     private array $children;
 
-    private bool $isHeading;
-
-    private bool $isDivider;
-
     public function __construct(
         string $name = '',
         string $destination = '/',
         string $icon = 'fa-cog',
         bool $isActive = false,
-        bool $isHeading = false,
         array $children = [],
-        bool $isDivider = false,
     ) {
         $this->setName($name);
         $this->setDestination($destination);
         $this->setIcon($icon);
         $this->setIsActive($isActive);
-        $this->setIsHeading($isHeading);
         $this->setChildren($children);
-        $this->setIsDivider($isDivider);
     }
 
     public function getIcon(): string
@@ -85,7 +77,7 @@ final class SideMenuItem
 
     public function haveChildren(): bool
     {
-        return !empty($this->getChildren());
+        return sizeof($this->getChildren()) > 0;
     }
 
     public function getChildren(): array
@@ -96,30 +88,6 @@ final class SideMenuItem
     public function setChildren(array $children): self
     {
         $this->children = $children;
-        return $this;
-    }
-
-    public function getIsHeading(): bool
-    {
-        return $this->isHeading;
-    }
-
-    public function setIsHeading(bool $isHeading): self
-    {
-        $this->isHeading = $isHeading;
-
-        return $this;
-    }
-
-    public function getIsDivider(): bool
-    {
-        return $this->isDivider;
-    }
-
-    public function setIsDivider(bool $isDivider): self
-    {
-        $this->isDivider = $isDivider;
-
         return $this;
     }
 }

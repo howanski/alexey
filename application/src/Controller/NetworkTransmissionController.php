@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/network/transmission')]
-class NetworkTransmissionController extends AbstractController
+final class NetworkTransmissionController extends AbstractController
 {
     #[Route('/', name: 'network_transmission')]
     public function index(): Response

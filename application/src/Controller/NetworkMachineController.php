@@ -15,7 +15,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/network/machines')]
-class NetworkMachineController extends AbstractController
+final class NetworkMachineController extends AbstractController
 {
     #[Route('/', name: 'network_machine_index', methods: ['GET'])]
     public function index(NetworkMachineRepository $networkMachineRepository): Response

@@ -15,7 +15,7 @@
                 ['name'|localisedFormLabel('money'), money_node.name ],
                 ['node_type'|localisedFormLabel('money'), money_node.typeCode|localisedFormValue('node_type', 'money') ],
                 ['node_group'|localisedFormLabel('money'), settings.groupName(money_node.nodeGroup) ],
-                ['balance'|localised('money'), money_node.balance ],
+                ['balance'|localised('money'), money_node.balance(null) ],
                 ['notes'|localisedFormLabel('money'), money_node.notes ],
             ],
 		} only
