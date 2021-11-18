@@ -48,8 +48,11 @@ final class TransmissionService
         ];
         $chartData['datasets'][0] = $datasetStub;
 
+        $throttled = 0;
         $stat = $this->networkUsageService->getLatestStatistic();
-        $throttled = $stat ? $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft()) : 0;
+        if ($stat instanceof NetworkStatistic) {
+            $throttled = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft());
+        }
         $mockedProbingTime = new \DateTime('now');
         $window = new \DateInterval('PT1H');
         $maxChartPoints = 300;
@@ -146,7 +149,7 @@ final class TransmissionService
                 $session->setDownloadSpeedLimit($proposedSpeed);
                 $session->setAltSpeedDown($proposedSpeed);
                 $session->save();
-                if (SimpleSettingsService::UNIVERSAL_FALSE !== $this->settings->getAggressionAdapt()) {
+                if (false === (SimpleSettingsService::UNIVERSAL_FALSE === $this->settings->getAggressionAdapt())) {
                     $targetSpeed = intval($this->settings->getTargetSpeed());
                     $aggression = intval($this->settings->getAlgorithmAggression());
                     if ($proposedSpeed > $targetSpeed / 2) {
@@ -163,7 +166,7 @@ final class TransmissionService
                         }
                     } elseif (
                         ($proposedSpeed < ($targetSpeed / 4)) &&
-                        (TransmissionSettings::ADAPT_TYPE_UP_ONLY !== $this->settings->getAggressionAdapt())
+                        (false === (TransmissionSettings::ADAPT_TYPE_UP_ONLY === $this->settings->getAggressionAdapt()))
                     ) {
                         $aggression -= 1;
                     }

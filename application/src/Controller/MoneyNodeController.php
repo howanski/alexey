@@ -56,7 +56,13 @@ final class MoneyNodeController extends AbstractController
             $entityManager->persist($moneyNode);
             $entityManager->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
-            return $this->redirectToRoute('money_node_index', ['groupId' => $moneyNode->getNodeGroup()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(
+                route: 'money_node_index',
+                parameters: [
+                    'groupId' => $moneyNode->getNodeGroup(),
+                ],
+                status: Response::HTTP_SEE_OTHER,
+            );
         }
 
         return $this->renderForm('money_node/new.html.twig', [
@@ -95,7 +101,13 @@ final class MoneyNodeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
-            return $this->redirectToRoute('money_node_index', ['groupId' => $moneyNode->getNodeGroup()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(
+                route: 'money_node_index',
+                parameters: [
+                    'groupId' => $moneyNode->getNodeGroup(),
+                ],
+                status: Response::HTTP_SEE_OTHER,
+            );
         }
 
         return $this->renderForm('money_node/edit.html.twig', [

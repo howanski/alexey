@@ -7,7 +7,7 @@ namespace App\Class;
 use App\Entity\User;
 use App\Service\SimpleSettingsService;
 
-class MoneyNodeSettings
+final class MoneyNodeSettings
 {
     private const PREFIX = 'MONEY_NODE_GROUP_NAME_';
     public const GROUPS_MAX = 10;
@@ -59,12 +59,12 @@ class MoneyNodeSettings
     {
         $choices = [];
         for ($i = 0; $i < self::GROUPS_MAX; $i++) {
-            $val = $this->{'name' . $i};
-            if (!(empty($val))) {
+            $val = strval($this->{'name' . $i});
+            if (strlen($val) > 0) {
                 $choices[$val] = $i;
             }
         }
-        if (empty($choices)) {
+        if (count($choices) === 0) {
             $choices['---'] = 0;
         }
         ksort($choices);
@@ -73,8 +73,8 @@ class MoneyNodeSettings
 
     public function getGroupName(int $groupId): string
     {
-        $val = $this->{'name' . $groupId};
-        if (empty($val)) {
+        $val = strval($this->{'name' . $groupId});
+        if (strlen($val) === 0) {
             $val = '---';
         }
         return $val;
