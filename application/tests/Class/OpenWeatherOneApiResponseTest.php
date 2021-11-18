@@ -11,9 +11,6 @@ use App\Class\OpenWeatherOneApiResponse;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-/**
- * @covers App\Class\OpenWeatherOneApiResponse
- */
 final class OpenWeatherOneApiResponseTest extends TestCase
 {
     public function testGetWeatherReadable(): void

@@ -9,9 +9,6 @@ use PHPUnit\Framework\TestCase;
 use App\Entity\NetworkStatistic;
 use App\Entity\NetworkStatisticTimeFrame;
 
-/**
- * @covers App\Entity\NetworkStatistic
- */
 final class NetworkStatisticTest extends TestCase
 {
     public function testProbingTime(): void

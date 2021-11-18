@@ -14,9 +14,6 @@ use App\Entity\NetworkStatisticTimeFrame;
 use App\Repository\NetworkStatisticRepository;
 use App\Repository\NetworkStatisticTimeFrameRepository;
 
-/**
- * @covers App\Service\NetworkUsageService
- */
 final class NetworkUsageServiceTest extends TestCase
 {
     public function testGetLatestStatistics(): void

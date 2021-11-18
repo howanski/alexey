@@ -11,9 +11,6 @@ use App\Service\AlexeyTranslator;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * @covers App\Service\AlexeySideMenuProvider
- */
 final class AlexeySideMenuProviderTest extends TestCase
 {
     public function testExportMenuSchema(): void

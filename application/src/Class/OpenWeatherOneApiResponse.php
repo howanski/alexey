@@ -38,26 +38,38 @@ final class OpenWeatherOneApiResponse
         $this->simpleCacheService = $simpleCacheService;
     }
 
-    private function ensureWeatherDataFetched($locale): void
+    private function ensureWeatherDataFetched(string $locale): void
     {
-        if (empty($this->rawApiResponse)) {
-            $cachedResponse = $this->simpleCacheService->retrieveDataFromCache(self::WEATHER_CACHE_KEY);
-            if (empty($cachedResponse)) {
-                $response = $this->client->request(
-                    'GET',
-                    'https://api.openweathermap.org/data/2.5/onecall?lat=' . $this->latitude .
-                        '&lon=' . $this->longitude .
-                        '&exclude=minutely&units=metric&lang=' . $locale . '&appid=' . $this->apiKey
-                );
-                $this->rawApiResponse = $response->toArray();
-                $validTo = new \DateTime('now');
-                $interval = new \DateInterval('PT3H');
-                $validTo->add($interval);
-                $this->simpleCacheService->cacheData(self::WEATHER_CACHE_KEY, $this->rawApiResponse, $validTo);
-            } else {
-                $this->rawApiResponse = $cachedResponse;
-            }
+        $cachedResponse = $this->simpleCacheService->retrieveDataFromCache(key: self::WEATHER_CACHE_KEY);
+        if (count($cachedResponse) === 0) {
+            $this->fetchWeatherFromServer(locale: $locale);
+            $this->storeWeatherDataInCache();
+        } else {
+            $this->rawApiResponse = $cachedResponse;
         }
+    }
+
+    private function fetchWeatherFromServer(string $locale): void
+    {
+        $response = $this->client->request(
+            'GET',
+            'https://api.openweathermap.org/data/2.5/onecall?lat=' . $this->latitude .
+                '&lon=' . $this->longitude .
+                '&exclude=minutely&units=metric&lang=' . $locale . '&appid=' . $this->apiKey
+        );
+        $this->rawApiResponse = $response->toArray();
+    }
+
+    private function storeWeatherDataInCache()
+    {
+        $validTo = new \DateTime('now');
+        $interval = new \DateInterval('PT3H');
+        $validTo->add($interval);
+        $this->simpleCacheService->cacheData(
+            key: self::WEATHER_CACHE_KEY,
+            data: $this->rawApiResponse,
+            validTo: $validTo,
+        );
     }
 
     public function getWeatherReadable($locale): array

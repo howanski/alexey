@@ -53,6 +53,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
             destination: $route,
             icon: 'fa-tachometer-alt',
             isActive: $this->isActiveRoute($route),
+            children: [],
         );
 
         $route = $this->router->generate('weather');
@@ -64,6 +65,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
             destination: $route,
             icon: 'fa-cloud-sun',
             isActive: $this->isActiveRoute($route),
+            children: [],
         );
 
         $sideMenu = $this->addNetworkMenuRecords($sideMenu);
@@ -93,17 +95,6 @@ final class AlexeySideMenuProvider extends AbstractExtension
 
     private function addNetworkMenuRecords(array $sideMenu): array
     {
-        $route = '/network';
-        $menuItem = new SideMenuItem(
-            name: $this->translator->translateString(
-                translationId: 'menu_record',
-                module: 'network'
-            ),
-            destination: $route,
-            icon: 'fa-wifi',
-            isActive: $this->isActiveRoute($route),
-        );
-
         $route = $this->router->generate('network_machine_index');
         $networkMachines = new SideMenuItem(
             name: $this->translator->translateString(
@@ -111,7 +102,9 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'network_machines'
             ),
             destination: $route,
+            icon: 'fa-wifi',
             isActive: $this->isActiveRoute($route),
+            children: [],
         );
 
         $route = $this->router->generate('network_usage');
@@ -121,7 +114,9 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'network_usage'
             ),
             destination: $route,
+            icon: 'fa-wifi',
             isActive: $this->isActiveRoute($route),
+            children: [],
         );
 
         $route = $this->router->generate('network_transmission');
@@ -131,10 +126,28 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'network_usage'
             ),
             destination: $route,
+            icon: 'fa-wifi',
             isActive: $this->isActiveRoute($route),
+            children: [],
         );
 
-        $menuItem->setChildren([$networkMachines, $networkUsage, $networkTransmission]);
+
+        $route = '/network';
+        $menuItem = new SideMenuItem(
+            name: $this->translator->translateString(
+                translationId: 'menu_record',
+                module: 'network'
+            ),
+            destination: $route,
+            icon: 'fa-wifi',
+            isActive: $this->isActiveRoute($route),
+            children: [
+                $networkMachines,
+                $networkUsage,
+                $networkTransmission,
+            ],
+        );
+
         $sideMenu[] = $menuItem;
 
         return $sideMenu;
@@ -142,6 +155,45 @@ final class AlexeySideMenuProvider extends AbstractExtension
 
     private function addMoneyMenuRecords(array $sideMenu): array
     {
+
+
+        $route = $this->router->generate('money_node_index');
+        $moneyNodes = new SideMenuItem(
+            name: $this->translator->translateString(
+                translationId: 'menu_record_nodes',
+                module: 'money'
+            ),
+            destination: $route,
+            icon: 'fas fa-search-dollar',
+            isActive: $this->isActiveRoute($route),
+            children: [],
+        );
+
+        $route = $this->router->generate('money_transfer_index');
+        $moneyTransfers = new SideMenuItem(
+            name: $this->translator->translateString(
+                translationId: 'menu_record_transfers',
+                module: 'money'
+            ),
+            icon: 'fas fa-search-dollar',
+            destination: $route,
+            isActive: $this->isActiveRoute($route),
+            children: [],
+        );
+
+        $route = $this->router->generate('money_graph_nodes');
+        $moneyGraphs = new SideMenuItem(
+            name: $this->translator->translateString(
+                translationId: 'menu_record_graphs',
+                module: 'money'
+            ),
+            icon: 'fas fa-search-dollar',
+            destination: $route,
+            isActive: $this->isActiveRoute($route),
+            children: [],
+        );
+
+
         $route = '/money';
         $menuItem = new SideMenuItem(
             name: $this->translator->translateString(
@@ -151,39 +203,14 @@ final class AlexeySideMenuProvider extends AbstractExtension
             destination: $route,
             icon: 'fas fa-search-dollar',
             isActive: $this->isActiveRoute($route),
+            children: [
+                $moneyNodes,
+                $moneyTransfers,
+                $moneyGraphs,
+            ],
         );
 
-        $route = $this->router->generate('money_node_index');
-        $moneyNodes = new SideMenuItem(
-            name: $this->translator->translateString(
-                translationId: 'menu_record_nodes',
-                module: 'money'
-            ),
-            destination: $route,
-            isActive: $this->isActiveRoute($route),
-        );
 
-        $route = $this->router->generate('money_transfer_index');
-        $moneyTransfers = new SideMenuItem(
-            name: $this->translator->translateString(
-                translationId: 'menu_record_transfers',
-                module: 'money'
-            ),
-            destination: $route,
-            isActive: $this->isActiveRoute($route),
-        );
-
-        $route = $this->router->generate('money_graph_nodes');
-        $moneyGraphs = new SideMenuItem(
-            name: $this->translator->translateString(
-                translationId: 'menu_record_graphs',
-                module: 'money'
-            ),
-            destination: $route,
-            isActive: $this->isActiveRoute($route),
-        );
-
-        $menuItem->setChildren([$moneyNodes, $moneyTransfers, $moneyGraphs]);
         $sideMenu[] = $menuItem;
 
         return $sideMenu;

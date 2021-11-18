@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use App\Class\TransmissionSettings;
 use App\Service\SimpleSettingsService;
 
-/**
- * @covers App\Class\TransmissionSettings
- */
 final class TransmissionSettingsTest extends TestCase
 {
     public function testSelfConfigure(): void

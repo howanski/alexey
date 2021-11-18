@@ -13,9 +13,6 @@ use App\Class\OpenWeatherOneApiResponse;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-/**
- * @covers App\Service\WeatherService
- */
 final class WeatherServiceTest extends TestCase
 {
     public function testGetWeather(): void

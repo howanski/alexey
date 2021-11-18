@@ -12,9 +12,6 @@ use App\Service\TransmissionService;
 use App\Service\SimpleSettingsService;
 use App\Entity\NetworkStatisticTimeFrame;
 
-/**
- * @covers App\Service\TransmissionService
- */
 final class TransmissionServiceTest extends TestCase
 {
     public function testgetSimulationChartData(): void

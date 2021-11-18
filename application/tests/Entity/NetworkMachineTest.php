@@ -7,9 +7,6 @@ namespace App\Tests\Entity;
 use App\Entity\NetworkMachine;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers App\Entity\NetworkMachine
- */
 final class NetworkMachineTest extends TestCase
 {
     public function testEntityFields(): void

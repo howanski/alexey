@@ -7,9 +7,6 @@ namespace App\Tests\Entity;
 use PHPUnit\Framework\TestCase;
 use App\Entity\NetworkStatisticTimeFrame;
 
-/**
- * @covers App\Entity\NetworkStatisticTimeFrame
- */
 final class NetworkStatisticTimeFrameTest extends TestCase
 {
     public function testGetBillingFrameEndReadable(): void
