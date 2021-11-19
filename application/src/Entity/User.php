@@ -41,6 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $moneyNodes;
 
     #[ORM\OneToMany(targetEntity: MoneyTransfer::class, mappedBy: 'user', orphanRemoval: true)]
+    #[ORM\OrderBy(['operationDate' => 'DESC', 'comment' => 'ASC'])]
     private $moneyTransfers;
 
     public function __construct()

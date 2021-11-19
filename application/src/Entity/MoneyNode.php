@@ -67,9 +67,11 @@ class MoneyNode
     private string $notes;
 
     #[ORM\OneToMany(mappedBy: 'targetNode', targetEntity: MoneyTransfer::class)]
+    #[ORM\OrderBy(['operationDate' => 'DESC', 'comment' => 'ASC'])]
     private $incomingTransfers;
 
     #[ORM\OneToMany(mappedBy: 'sourceNode', targetEntity: MoneyTransfer::class)]
+    #[ORM\OrderBy(['operationDate' => 'DESC', 'comment' => 'ASC'])]
     private $outgoingTransfers;
 
     public function __construct(User $user)
