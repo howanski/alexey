@@ -4,7 +4,7 @@ rm -rf var/cache
 rm -rf public/build
 XDEBUG_MODE=off composer install
 XDEBUG_MODE=off yarn install
-XDEBUG_MODE=off yarn encore prod
+XDEBUG_MODE=off yarn build
 
 until XDEBUG_MODE=off php bin/console doctrine:query:sql -q "show tables"; do
 	echo "--------------------------------"
