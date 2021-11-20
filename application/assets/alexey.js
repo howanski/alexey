@@ -1,5 +1,6 @@
 import "./../node_modules/@fortawesome/fontawesome-free/css/all.css";
 import "./css/tailwind.css";
+import "./css/flash-toast.css";
 
 import "@popperjs/core";
 import "./sidebar-menu.js"
