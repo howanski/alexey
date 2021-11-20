@@ -8,6 +8,7 @@ use App\Entity\NetworkMachine;
 use App\Form\NetworkMachineType;
 use App\Message\AsyncJob;
 use App\Repository\NetworkMachineRepository;
+use App\Service\AlexeyTranslator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -85,8 +86,12 @@ final class NetworkMachineController extends AbstractController
     }
 
     #[Route('/{id}/wake/and-back-to/{backRoute}', name: 'network_machine_wake', methods: ['GET'])]
-    public function wake(NetworkMachine $networkMachine, string $backRoute, MessageBusInterface $bus): Response
-    {
+    public function wake(
+        NetworkMachine $networkMachine,
+        string $backRoute,
+        MessageBusInterface $bus,
+        AlexeyTranslator $translator,
+    ): Response {
         $payload = [
             'wakeDestination' => $networkMachine->getWakeDestination(),
             'macAddress' => $networkMachine->getMacAddress(),
@@ -96,6 +101,7 @@ final class NetworkMachineController extends AbstractController
             payload: $payload,
         );
         $bus->dispatch($message);
+        $this->addFlash(type: 'nord14', message: $translator->translateFlash('signal_dispatched'));
         return $this->redirectToRoute($backRoute, [], Response::HTTP_SEE_OTHER);
     }
 }

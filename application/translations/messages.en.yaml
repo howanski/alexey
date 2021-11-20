@@ -5,6 +5,7 @@ app:
         saved: "Successfully saved"
         deleted: "Successfully deleted"
         delete_forbidden: "Cannot delete"
+        signal_dispatched: "Signal dispatched"
       forms:
         labels:
           password: Password

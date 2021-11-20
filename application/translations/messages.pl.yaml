@@ -5,6 +5,7 @@ app:
         saved: "Pomyślnie zapisano"
         deleted: "Pomyślnie usunięto"
         delete_forbidden: "Nie można usunąć"
+        signal_dispatched: "Sygnał wysłany"
       forms:
         labels:
           password: Hasło
