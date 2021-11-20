@@ -24,4 +24,11 @@ final class MoneyGraphController extends AbstractController
         $data = $service->getDataForChart(user: $this->getUser());
         return new JsonResponse($data);
     }
+
+    #[Route('/money/graph/forecast-data', name: 'money_graph_forecast_data')]
+    public function forecastData(MoneyService $service): Response
+    {
+        $data = $service->getDataForForecastChart(user: $this->getUser());
+        return new JsonResponse($data);
+    }
 }

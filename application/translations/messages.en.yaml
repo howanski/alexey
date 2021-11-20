@@ -105,6 +105,7 @@ app:
         amount_after_exchange: "Amount after exchange"
         amount: Amount
         balance: Balance
+        forecast: Forecast
         exchange_rate: "Exchange rate"
         incoming_transfers: "Incoming transfers"
         menu_record_graphs: Charts

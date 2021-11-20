@@ -105,6 +105,7 @@ app:
         amount_after_exchange: "Kwota po wymianie"
         amount: Kwota
         balance: Saldo
+        forecast: Prognoza
         exchange_rate: "Kurs wymiany"
         incoming_transfers: "Przelewy przychodzące"
         menu_record_graphs: Wykresy

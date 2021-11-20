@@ -19,4 +19,13 @@
 	</div>
 {% endblock %}
 
-{% block pageContentSecondary %}{% endblock %}
+{% block pageContentSecondary %}
+	<div class="flex flex-wrap">
+		{% include 'chart_linear.html.twig' with {
+			'titleSmall': '',
+			'titleBig': 'forecast'|localised('money'),
+			'chartSrc': path('money_graph_forecast_data'),
+			'chartRefresh': 600,
+		} only %}
+	</div>
+{% endblock %}
