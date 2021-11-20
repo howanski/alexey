@@ -2,34 +2,32 @@
 {% set breadcrumbs = [
 	{'name': 'menu_record'|localised('money')},
 	{'name': 'menu_record_transfers'|localised('money'), 'href': path('money_transfer_index')},
-	{'name': '#' ~ money_transfer.id },
-	{'name': 'split'|localised('money') },
+	{'name': '#' ~ money_transfer.id},
+	{'name': 'split'|localised('money')},
 	]
 %}
 
 
 {% block pageContentPrimary %}
-	{% include 'form.html.twig'
-		with {
-			'form': form,
-			'formTitlePrimary': 'split'|localised('money'),
-			'formTitleSecondary': '#' ~ money_transfer.id,
-			'additionalButtons': [
-				{
-					'color': 'nord10',
-					'href': path('money_transfer_index'),
-					'name': 'back_to_list'|localised,
-					'icon': 'fas fa-undo'
-				},
-				{
-					'color': 'nord12',
-					'href': path('money_transfer_edit', {'id': money_transfer.id}),
-					'name': 'edit'|localised,
-					'icon': 'far fa-edit'
-        		},
-			]
-			} only
-	%}
+	{% include 'form.html.twig' with {
+		'form': form,
+		'formTitlePrimary': 'split'|localised('money'),
+		'formTitleSecondary': '#' ~ money_transfer.id,
+		'additionalButtons': [
+			{
+				'color': 'nord10',
+				'href': path('money_transfer_index'),
+				'name': 'back_to_list'|localised,
+				'icon': 'fas fa-undo'
+			},
+			{
+				'color': 'nord12',
+				'href': path('money_transfer_edit', {'id': money_transfer.id}),
+				'name': 'edit'|localised,
+				'icon': 'far fa-edit'
+			},
+		]
+	} only %}
 {% endblock %}
 
 {% block pageContentSecondary %}
@@ -47,18 +45,16 @@
 	</a>
 	{% endset %}
 
-	{% include 'table.html.twig'
-		with {
+	{% include 'table.html.twig' with {
 			'tableData': [
-                ['id'|localised, money_transfer.id ],
-                ['operation_date'|localisedFormLabel('money'), money_transfer.operationDate ? money_transfer.operationDate|date('Y-m-d') : '' ],
-                ['amount'|localisedFormLabel('money'), money_transfer.amount ],
-                ['exchange_rate'|localisedFormLabel('money'), money_transfer.exchangeRate ],
-                ['amount_after_exchange'|localised('money'), money_transfer.exchangedAmount ],
+                ['id'|localised, money_transfer.id],
+                ['operation_date'|localisedFormLabel('money'), money_transfer.operationDate ? money_transfer.operationDate|date('Y-m-d') : ''],
+                ['amount'|localisedFormLabel('money'), money_transfer.amount],
+                ['exchange_rate'|localisedFormLabel('money'), money_transfer.exchangeRate],
+                ['amount_after_exchange'|localised('money'), money_transfer.exchangedAmount],
                 ['source_node'|localisedFormLabel('money'), sourcenode],
                 ['target_node'|localisedFormLabel('money'), targetnode],
                 ['comment'|localisedFormLabel('money'), money_transfer.comment],
             ],
-		} only
-	%}
+	} only %}
 {% endblock %}

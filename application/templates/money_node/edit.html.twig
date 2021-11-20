@@ -2,38 +2,35 @@
 {% set breadcrumbs = [
 	{'name': 'menu_record'|localised('money')},
 	{'name': 'menu_record_nodes'|localised('money'), 'href': path('money_node_index')},
-	{'name': money_node.name },
+	{'name': money_node.name},
 	]
 %}
 
 {% block pageContentPrimary %}
 	{% if money_node.canBeDeleted %}
-		{% set secureButtons = [{
+		{% set secure_buttons = [{
 			'color': 'nord11',
 			'name': 'delete'|localised,
 			'icon': 'fas fa-trash',
 			'action': path('money_node_delete', {'id': money_node.id}),
 			'csrf': csrf_token('delete' ~ money_node.id),
 			'confirmation': 'you_sure_delete'|localised
-		}]
-	%}
+		}] %}
 	{% else %}
-		{% set secureButtons = [] %}
+		{% set secure_buttons = [] %}
 	{% endif %}
-	{% include 'form.html.twig'
-		with {
-			'form': form,
-			'additionalButtons': [
-				{
-					'color': 'nord10',
-					'href': path('money_node_show', { id: money_node.id }),
-					'name': 'cancel'|localised,
-					'icon': 'fas fa-undo'
-				}
-			],
-            'additionalSecuredButtons': secureButtons
-			} only
-	%}
+	{% include 'form.html.twig' with {
+		'form': form,
+		'additionalButtons': [
+			{
+				'color': 'nord10',
+				'href': path('money_node_show', {id: money_node.id}),
+				'name': 'cancel'|localised,
+				'icon': 'fas fa-undo'
+			}
+		],
+		'additionalSecuredButtons': secure_buttons
+	} only %}
 {% endblock %}
 
 {% block pageContentSecondary %}{% endblock %}

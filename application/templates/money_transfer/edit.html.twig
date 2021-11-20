@@ -2,35 +2,33 @@
 {% set breadcrumbs = [
 	{'name': 'menu_record'|localised('money')},
 	{'name': 'menu_record_transfers'|localised('money'), 'href': path('money_transfer_index')},
-	{'name': 'edit'|localised ~ ' #' ~ money_transfer.id },
+	{'name': 'edit'|localised ~ ' #' ~ money_transfer.id},
 	]
 %}
 
 
 {% block pageContentPrimary %}
-	{% include 'form.html.twig'
-		with {
-			'form': form,
-			'additionalButtons': [
-				{
-					'color': 'nord10',
-					'href': path('money_transfer_index'),
-					'name': 'back_to_list'|localised,
-					'icon': 'fas fa-undo'
-				}
-			],
-			'additionalSecuredButtons': [
-				{
-					'color': 'nord11',
-					'name': 'delete'|localised,
-					'icon': 'fas fa-trash',
-					'action': path('money_transfer_delete', {'id': money_transfer.id}),
-					'csrf': csrf_token('delete' ~ money_transfer.id),
-					'confirmation': 'you_sure_delete'|localised
-				}
-			],
-			} only
-	%}
+	{% include 'form.html.twig' with {
+		'form': form,
+		'additionalButtons': [
+			{
+				'color': 'nord10',
+				'href': path('money_transfer_index'),
+				'name': 'back_to_list'|localised,
+				'icon': 'fas fa-undo',
+			}
+		],
+		'additionalSecuredButtons': [
+			{
+				'color': 'nord11',
+				'name': 'delete'|localised,
+				'icon': 'fas fa-trash',
+				'action': path('money_transfer_delete', {'id': money_transfer.id}),
+				'csrf': csrf_token('delete' ~ money_transfer.id),
+				'confirmation': 'you_sure_delete'|localised,
+			}
+		],
+	} only %}
 {% endblock %}
 
 {% block pageContentSecondary %}{% endblock %}

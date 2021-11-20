@@ -1,10 +1,10 @@
-{% if medWidth is not defined %}
-	{% set medWidth = 6 %}
+{% if med_width is not defined %}
+	{% set med_width = 6 %}
 {% endif %}
-{% if maxWidth is not defined %}
-	{% set maxWidth = 4 %}
+{% if max_width is not defined %}
+	{% set max_width = 4 %}
 {% endif %}
-<div class="w-full lg:w-{{ medWidth }}/12 xl:w-{{ maxWidth }}/12 px-4">
+<div class="w-full lg:w-{{ med_width }}/12 xl:w-{{ max_width }}/12 px-4">
 	<div class="relative flex flex-col min-w-0 break-words bg-nord4 rounded mb-6 shadow-lg">
 		<div class="flex-auto p-4">
 			<div class="flex flex-wrap">

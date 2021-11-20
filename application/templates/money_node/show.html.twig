@@ -2,65 +2,71 @@
 {% set breadcrumbs = [
 	{'name': 'menu_record'|localised('money')},
 	{'name': 'menu_record_nodes'|localised('money'), 'href': path('money_node_index')},
-	{'name': money_node.name },
+	{'name': money_node.name},
 	]
 %}
 
 {% block pageContentPrimary %}
-	{% include 'table.html.twig'
-		with {
-			'tableTitle' : money_node.name,
-			'tableData': [
-                ['id'|localised, money_node.id ],
-                ['name'|localisedFormLabel('money'), money_node.name ],
-                ['node_type'|localisedFormLabel('money'), money_node.typeCode|localisedFormValue('node_type', 'money') ],
-                ['node_group'|localisedFormLabel('money'), settings.groupName(money_node.nodeGroup) ],
-                ['balance'|localised('money'), money_node.balance(null) ],
-                ['notes'|localisedFormLabel('money'), money_node.notes ],
-            ],
-		} only
-	%}
+	{% include 'table.html.twig' with {
+		'tableTitle': money_node.name,
+		'tableData': [
+			['id'|localised, money_node.id],
+			['name'|localisedFormLabel('money'), money_node.name],
+			['node_type'|localisedFormLabel('money'), money_node.typeCode|localisedFormValue('node_type', 'money')],
+			['node_group'|localisedFormLabel('money'), settings.groupName(money_node.nodeGroup)],
+			['balance'|localised('money'), money_node.balance(null)],
+			['notes'|localisedFormLabel('money'), money_node.notes],
+		],
+	} only %}
 {% endblock %}
 {% block pageContentSecondary %}
-	{% set actionButtons = [
+	{% set action_buttons = [
         {
             'color': 'nord10',
             'href': path('money_node_index', {'groupId': money_node.nodeGroup}),
             'name': 'back_to_list'|localised,
             'icon': 'fas fa-undo'
-        },
+       },
         {
             'color': 'nord12',
             'href': path('money_node_edit', {'id': money_node.id}),
             'name': 'edit'|localised,
             'icon': 'far fa-edit'
         }
-        ]
-    %}
+	] %}
 	{% if money_node.canBeDeleted %}
-		{% set securedButtons = [
-        {
-            'color': 'nord11',
-            'name': 'delete'|localised,
-            'icon': 'fas fa-trash',
-            'action': path('money_node_delete', {'id': money_node.id}),
-            'csrf': csrf_token('delete' ~ money_node.id),
-            'confirmation': 'you_sure_delete'|localised
-        }
-        ]
-    %}
+		{% set secured_buttons = [
+			{
+				'color': 'nord11',
+				'name': 'delete'|localised,
+				'icon': 'fas fa-trash',
+				'action': path('money_node_delete', {'id': money_node.id}),
+				'csrf': csrf_token('delete' ~ money_node.id),
+				'confirmation': 'you_sure_delete'|localised
+			}
+        ] %}
 	{% else %}
-		{% set securedButtons = [] %}
+		{% set secured_buttons = [] %}
 	{% endif %}
-	{% include 'entity_actions_row.html.twig' with {'buttons': actionButtons, 'securedButtons': securedButtons} only %}
+	{% include 'entity_actions_row.html.twig' with {'buttons': action_buttons, 'secured_buttons': secured_buttons} only %}
 
-	{% set tableData = [] %}
+	{% set table_data = [] %}
 	{% for transfer in money_node.incomingTransfers %}
 		{% set actions %}
-		{% include 'table_action_button.html.twig' with {'href': path('money_transfer_show', {'id': transfer.id}), 'name': 'show_transfer'|localised('money') } only %}
-		{% include 'table_action_button.html.twig' with {'href': path('money_node_show', {'id': transfer.sourceNode.id}), 'name': 'show_node'|localised('money') } only %}
+
+		{% include 'table_action_button.html.twig' with {
+			'href': path('money_transfer_show', {'id': transfer.id}),
+			'name': 'show_transfer'|localised('money'),
+		} only %}
+
+		{% include 'table_action_button.html.twig' with {
+			'href': path('money_node_show', {'id': transfer.sourceNode.id}),
+			'name': 'show_node'|localised('money'),
+		} only %}
+
 		{% endset %}
-		{% set tableData = tableData|merge([{
+
+		{% set table_data = table_data|merge([{
 				'operation_date': transfer.operationDate|date('Y-m-d'),
 				'amount': transfer.exchangedAmount,
 				'opposite_node': transfer.sourceNode.name,
@@ -69,28 +75,36 @@
 		}]) %}
 	{% endfor %}
 
-	{% include 'table.html.twig'
-		with {
-			'tableTitle' : 'incoming_transfers'|localised('money'),
-			'tableData': tableData,
-			'tableHeaders': [
-				'operation_date'|localisedFormLabel('money'),
-				'amount'|localisedFormLabel('money'),
-				'source_node'|localisedFormLabel('money'),
-				'comment'|localisedFormLabel('money'),
-				'actions'|localised,
-			]
-		} only
-	%}
+	{% include 'table.html.twig' with {
+		'tableTitle': 'incoming_transfers'|localised('money'),
+		'tableData': table_data,
+		'tableHeaders': [
+			'operation_date'|localisedFormLabel('money'),
+			'amount'|localisedFormLabel('money'),
+			'source_node'|localisedFormLabel('money'),
+			'comment'|localisedFormLabel('money'),
+			'actions'|localised,
+		]
+	} only %}
 
 
-	{% set tableData = [] %}
+	{% set table_data = [] %}
 	{% for transfer in money_node.outgoingTransfers %}
 		{% set actions %}
-		{% include 'table_action_button.html.twig' with {'href': path('money_transfer_show', {'id': transfer.id}), 'name': 'show_transfer'|localised('money') } only %}
-		{% include 'table_action_button.html.twig' with {'href': path('money_node_show', {'id': transfer.targetNode.id}), 'name': 'show_node'|localised('money') } only %}
+
+		{% include 'table_action_button.html.twig' with {
+			'href': path('money_transfer_show', {'id': transfer.id}),
+			'name': 'show_transfer'|localised('money'),
+		} only %}
+
+		{% include 'table_action_button.html.twig' with {
+			'href': path('money_node_show', {'id': transfer.targetNode.id}),
+			'name': 'show_node'|localised('money'),
+		} only %}
+
 		{% endset %}
-		{% set tableData = tableData|merge([{
+
+		{% set table_data = table_data|merge([{
 				'operation_date': transfer.operationDate|date('Y-m-d'),
 				'amount': transfer.amount,
 				'opposite_node': transfer.targetNode.name,
@@ -98,17 +112,15 @@
 				'actions': actions,
 		}]) %}
 	{% endfor %}
-	{% include 'table.html.twig'
-		with {
-			'tableTitle' : 'outgoing_transfers'|localised('money'),
-			'tableData': tableData,
-			'tableHeaders': [
-				'operation_date'|localisedFormLabel('money'),
-				'amount'|localisedFormLabel('money'),
-				'target_node'|localisedFormLabel('money'),
-				'comment'|localisedFormLabel('money'),
-				'actions'|localised,
-			]
-		} only
-	%}
+	{% include 'table.html.twig' with {
+		'tableTitle': 'outgoing_transfers'|localised('money'),
+		'tableData': table_data,
+		'tableHeaders': [
+			'operation_date'|localisedFormLabel('money'),
+			'amount'|localisedFormLabel('money'),
+			'target_node'|localisedFormLabel('money'),
+			'comment'|localisedFormLabel('money'),
+			'actions'|localised,
+		],
+	} only %}
 {% endblock %}

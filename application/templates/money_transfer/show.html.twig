@@ -21,20 +21,18 @@
 	</a>
 	{% endset %}
 
-	{% include 'table.html.twig'
-		with {
-			'tableData': [
-                ['id'|localised, money_transfer.id ],
-                ['operation_date'|localisedFormLabel('money'), money_transfer.operationDate ? money_transfer.operationDate|date('Y-m-d') : '' ],
-                ['amount'|localisedFormLabel('money'), money_transfer.amount ],
-                ['exchange_rate'|localisedFormLabel('money'), money_transfer.exchangeRate ],
-                ['amount_after_exchange'|localised('money'), money_transfer.exchangedAmount ],
-                ['source_node'|localisedFormLabel('money'), sourcenode],
-                ['target_node'|localisedFormLabel('money'), targetnode],
-                ['comment'|localisedFormLabel('money'), money_transfer.comment],
-            ],
-		} only
-	%}
+	{% include 'table.html.twig' with {
+        'tableData': [
+            ['id'|localised, money_transfer.id],
+            ['operation_date'|localisedFormLabel('money'), money_transfer.operationDate ? money_transfer.operationDate|date('Y-m-d') : ''],
+            ['amount'|localisedFormLabel('money'), money_transfer.amount],
+            ['exchange_rate'|localisedFormLabel('money'), money_transfer.exchangeRate],
+            ['amount_after_exchange'|localised('money'), money_transfer.exchangedAmount],
+            ['source_node'|localisedFormLabel('money'), sourcenode],
+            ['target_node'|localisedFormLabel('money'), targetnode],
+            ['comment'|localisedFormLabel('money'), money_transfer.comment],
+        ],
+    } only %}
 {% endblock %}
 {% block pageContentSecondary %}
 	{% set buttons = [
@@ -56,9 +54,8 @@
             'name': 'split'|localised('money'),
             'icon': 'fas fa-columns'
         }
-        ]
-    %}
-	{% set securedButtons = [
+    ] %}
+	{% set secured_buttons = [
         {
             'color': 'nord11',
             'name': 'delete'|localised,
@@ -67,7 +64,6 @@
             'csrf': csrf_token('delete' ~ money_transfer.id),
             'confirmation': 'you_sure_delete'|localised
         }
-        ]
-    %}
-	{% include 'entity_actions_row.html.twig' with {'buttons': buttons, 'securedButtons': securedButtons} only %}
+    ] %}
+	{% include 'entity_actions_row.html.twig' with {'buttons': buttons, 'secured_buttons': secured_buttons} only %}
 {% endblock %}

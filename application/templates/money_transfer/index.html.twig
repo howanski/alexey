@@ -7,13 +7,22 @@
 
 
 {% block pageContentPrimary %}
-	{% set tableData = {} %}
+	{% set table_data = {} %}
 
 	{% for money_transfer in money_transfers %}
 		{% set actions %}
-		{% include 'table_action_button.html.twig' with {'href': path('money_transfer_show', {'id': money_transfer.id}), 'name': 'show'|localised } only %}
-		{% include 'table_action_button.html.twig' with {'href': path('money_transfer_edit', {'id': money_transfer.id}), 'name': 'edit'|localised } only %}
-		{% include 'table_action_button.html.twig' with {'href': path('money_transfer_split', {'id': money_transfer.id}), 'name': 'split'|localised('money') } only %}
+		{% include 'table_action_button.html.twig' with {
+			'href': path('money_transfer_show', {'id': money_transfer.id}),
+			'name': 'show'|localised,
+		} only %}
+		{% include 'table_action_button.html.twig' with {
+			'href': path('money_transfer_edit', {'id': money_transfer.id}),
+			'name': 'edit'|localised ,
+		} only %}
+		{% include 'table_action_button.html.twig' with {
+			'href': path('money_transfer_split', {'id': money_transfer.id}),
+			'name': 'split'|localised('money'),
+		} only %}
 		{% endset %}
 
 		{% set sourcenode %}
@@ -30,7 +39,7 @@
 		</a>
 		{% endset %}
 
-		{% set tableData = tableData|merge([{
+		{% set table_data = table_data|merge([{
 			'operation_date': money_transfer.operationDate ? money_transfer.operationDate|date('Y-m-d') : '',
 			'amount': money_transfer.amount,
 			'source_node': sourcenode,
@@ -40,23 +49,21 @@
 		}]) %}
 	{% endfor %}
 
-	{% include 'table.html.twig'
-		with {
-			'tableTitle' : 'menu_record_nodes'|localised('money'),
-			'tableHeaders' : [
-				'operation_date'|localised('money'),
-				'amount'|localised('money'),
-				'source_node'|localisedFormLabel('money'),
-				'target_node'|localisedFormLabel('money'),
-				'actions'|localised,
-				'comment'|localised,
-			],
-			'tableData': tableData,
-			'buttons': [
-				{'href': path('money_transfer_new'), text: 'add'|localised },
-			],
-		} only
-	%}
+	{% include 'table.html.twig' with {
+		'tableTitle': 'menu_record_nodes'|localised('money'),
+		'tableHeaders': [
+			'operation_date'|localised('money'),
+			'amount'|localised('money'),
+			'source_node'|localisedFormLabel('money'),
+			'target_node'|localisedFormLabel('money'),
+			'actions'|localised,
+			'comment'|localised,
+		],
+		'tableData': table_data,
+		'buttons': [
+			{'href': path('money_transfer_new'), text: 'add'|localised},
+		],
+	} only %}
 {% endblock %}
 
 {% block pageContentSecondary %}{% endblock %}

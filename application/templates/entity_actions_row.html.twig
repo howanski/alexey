@@ -10,8 +10,8 @@
 							{% endfor %}
 						{% endif %}
 
-						{% if securedButtons is defined %}
-							{% for button in securedButtons %}
+						{% if secured_buttons is defined %}
+							{% for button in secured_buttons %}
 								{% include 'secured_button.html.twig' with {'button': button} %}
 							{% endfor %}
 						{% endif %}

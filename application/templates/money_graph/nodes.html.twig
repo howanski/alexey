@@ -2,7 +2,7 @@
 {% set breadcrumbs = [
 	{'name': 'menu_record'|localised('money')},
 	{'name': 'menu_record_graphs'|localised('money')},
-]%}
+] %}
 
 {% block javascripts %}
 	{{ encore_entry_script_tags('linear-chart') }}
@@ -15,10 +15,8 @@
 			'titleBig': 'balance'|localised('money'),
 			'chartSrc': path('money_graph_nodes_data'),
 			'chartRefresh': 600,
-			} only
-		%}
+		} only %}
 	</div>
 {% endblock %}
 
-{% block pageContentSecondary %}
-{% endblock %}
+{% block pageContentSecondary %}{% endblock %}

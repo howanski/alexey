@@ -8,18 +8,17 @@
 
 
 {% block pageContentPrimary %}
-	{% include 'form.html.twig'
-		with {
+	{% include 'form.html.twig' with {
 			'form': form,
 			'additionalButtons': [
 				{
 					'color': 'nord10',
-					'href': path('network_machine_show', { id: network_machine.id }),
+					'href': path('network_machine_show', {id: network_machine.id}),
 					'name': 'cancel'|localised,
 					'icon': 'fas fa-undo'
 				}
 			],
-            'additionalSecuredButtons':[
+            'additionalSecuredButtons': [
                 {
                     'color': 'nord11',
                     'name': 'delete'|localised,
@@ -28,9 +27,8 @@
                     'csrf': csrf_token('delete' ~ network_machine.id),
                     'confirmation': 'you_sure_delete'|localised
                 }
-            ]
-			} only
-	%}
+            ],
+		} only %}
 {% endblock %}
 
 {% block pageContentSecondary %}{% endblock %}

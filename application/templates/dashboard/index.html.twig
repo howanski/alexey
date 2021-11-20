@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 {% set breadcrumbs = [{'name': 'menu_record'|localised('dashboard')}] %}
-{% set machinesShown = false %}
-{% set networkShown = false %}
-{% set weatherShown = false %}
+{% set machines_were_shown = false %}
+{% set network_was_shown = false %}
+{% set weather_was_hown = false %}
 
 {% block javascripts %}
 	<script>
@@ -16,66 +16,64 @@ window.location.reload(false);
 	{% if dashboard_data.machines|length > 0 %}
 		<div class="flex flex-wrap">
 			{% for machine in dashboard_data.machines %}
-				{% set machinesShown = true %}
-				{% set iconHref = false %}
-				{% set iconColor = false %}
-				{% set iconClass = 'fas fa-server' %}
+				{% set machines_were_shown = true %}
+				{% set icon_href = false %}
+				{% set icon_color = false %}
+				{% set icon_class = 'fas fa-server' %}
 				{% if machine.isReachable %}
-					{% set iconBg = 'nord10' %}
+					{% set icon_background = 'nord10' %}
 				{% elseif machine.lastSeen %}
-					{% set iconBg = 'nord13' %}
+					{% set icon_background = 'nord13' %}
 				{% else %}
-					{% set iconBg = 'nord11' %}
+					{% set icon_background = 'nord11' %}
 				{% endif %}
 				{% if machine.canBeWoken %}
-					{% set iconHref = path('network_machine_wake', {'id': machine.id, 'backRoute': 'dashboard'}) %}
-					{% set iconClass = 'fas fa-power-off fa-2x' %}
-					{% set iconColor = 'nord10' %}
+					{% set icon_href = path('network_machine_wake', {'id': machine.id, 'backRoute': 'dashboard'}) %}
+					{% set icon_class = 'fas fa-power-off fa-2x' %}
+					{% set icon_color = 'nord10' %}
 				{% else %}
-					{% set iconHref = path('network_machine_show', {'id': machine.id}) %}
+					{% set icon_href = path('network_machine_show', {'id': machine.id}) %}
 				{% endif %}
 				{% if machine.lastSeen is not null %}
 					{% set seen = 'last_seen'|localised('network_machines') ~ ' ' ~ machine.getLastSeenReadable(app.request.locale) %}
 				{% else %}
 					{% set seen = 'never_seen'|localised('network_machines') %}
 				{% endif %}
-				{% include 'card.html.twig'
-			with {
-				'iconClass': iconClass,
-				'iconBg': iconBg,
-				'iconHref': iconHref,
-				'iconColor': iconColor,
-				'headerText': 'machine'|localised('network_machines') ~ ':',
-				'headerValue': machine.name,
-				'bottomData': seen
-				} only
-			%}
+				{% include 'card.html.twig'	with {
+					'iconClass': icon_class,
+					'iconBg': icon_background,
+					'iconHref': icon_href,
+					'iconColor': icon_color,
+					'headerText': 'machine'|localised('network_machines') ~ ':',
+					'headerValue': machine.name,
+					'bottomData': seen,
+				} only %}
 			{% endfor %}
 		</div>
 	{% endif %}
 
 
-	{% if dashboard_data.network_statistic is defined and dashboard_data.network_statistic is not null and not machinesShown %}
-		{% set networkShown = true %}
+	{% if dashboard_data.network_statistic is defined and dashboard_data.network_statistic is not null and not machines_were_shown %}
+		{% set network_was_shown = true %}
 		{% include 'dashboard/_network_usage.html.twig' %}
 	{% endif %}
 
 
-	{% if dashboard_data.weather is defined and dashboard_data.weather is not null and not machinesShown and not networkShown %}
-		{% set weatherShown = true %}
+	{% if dashboard_data.weather is defined and dashboard_data.weather is not null and not machines_were_shown and not network_was_shown %}
+		{% set weather_was_hown = true %}
 		{% include 'dashboard/_weather.html.twig' %}
 	{% endif %}
 {% endblock %}
 
 
 {% block pageContentSecondary %}
-	{% if dashboard_data.network_statistic is defined and dashboard_data.network_statistic is not null and not networkShown  %}
-		{% set networkShown = true %}
+	{% if dashboard_data.network_statistic is defined and dashboard_data.network_statistic is not null and not network_was_shown  %}
+		{% set network_was_shown = true %}
 		{% include 'dashboard/_network_usage.html.twig' %}
 	{% endif %}
 
-	{% if dashboard_data.weather is defined and dashboard_data.weather is not null and not weatherShown %}
-		{% set weatherShown = true %}
+	{% if dashboard_data.weather is defined and dashboard_data.weather is not null and not weather_was_hown %}
+		{% set weather_was_hown = true %}
 		{% include 'dashboard/_weather.html.twig' %}
 	{% endif %}
 {% endblock %}

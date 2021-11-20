@@ -15,8 +15,7 @@
 			'chartRefresh': 60,
 			'buttons': [{'href': path('weather_settings'), 'icon': 'fas fa-cog'}],
 			'enablePausing': true,
-			} only
-		%}
+		} only %}
 	</div>
 {% endblock %}
 
@@ -28,7 +27,6 @@
 			'titleBig': 'daily'|localised('weather'),
 			'chartSrc': path('weather_chart_data', {type: 'daily'}),
 			'chartRefresh': 600,
-			} only
-		%}
+		} only %}
 	</div>
 {% endblock %}

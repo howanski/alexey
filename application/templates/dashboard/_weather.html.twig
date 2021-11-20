@@ -1,26 +1,24 @@
 <div class="flex flex-wrap">
 	{% for weather in dashboard_data.weather.getWeatherReadable(app.request.locale).daily|slice(0, 6) %}
 		{% if weather.rain > 20  %}
-			{% set iconBg = 'nord11' %}
+			{% set icon_background = 'nord11' %}
 		{% elseif weather.rain > 0  %}
-			{% set iconBg = 'nord13' %}
+			{% set icon_background = 'nord13' %}
 		{% else %}
-			{% set iconBg = 'nord10' %}
+			{% set icon_background = 'nord10' %}
 		{% endif %}
-		{% set bottomData = weather.temperature ~ ' °C' %}
+		{% set bottom_data = weather.temperature ~ ' °C' %}
 		{% if weather.rain > 0  %}
-			{% set bottomData = bottomData ~ ' (' ~ 'rain_or_snow'|localised('weather')|lower ~ ': ' ~ weather.rain ~ 'mm)' %}
+			{% set bottom_data = bottom_data ~ ' (' ~ 'rain_or_snow'|localised('weather')|lower ~ ': ' ~ weather.rain ~ 'mm)' %}
 		{% endif %}
-		{% include 'card.html.twig'
-        with {
+		{% include 'card.html.twig' with {
             'iconClass': 'far fa-eye',
-            'iconBg': iconBg,
+            'iconBg': icon_background,
             'iconHref': path('weather'),
-            'iconCustomSrc': 'http://openweathermap.org/img/wn/' ~ weather.weather_icon ~'@2x.png',
+            'iconCustomSrc': 'http://openweathermap.org/img/wn/' ~ weather.weather_icon ~ '@2x.png',
             'headerValue': weather.date|localisedTime('day', 'long'),
             'headerText': weather.weather,
-            'bottomData': bottomData
-            } only
-    %}
+            'bottomData': bottom_data
+		} only %}
 	{% endfor %}
 </div>

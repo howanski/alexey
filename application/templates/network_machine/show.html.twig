@@ -7,17 +7,15 @@
 %}
 
 {% block pageContentPrimary %}
-	{% include 'table.html.twig'
-		with {
-			'tableTitle' : network_machine.name,
-			'tableData': [
-                ['id'|localised, network_machine.id ],
-                ['name'|localised, network_machine.name ],
-                ['ip_or_url'|localised, network_machine.uri ],
-                ['mac_address'|localised, network_machine.macAddress ],
-            ],
-		} only
-	%}
+	{% include 'table.html.twig' with {
+        'tableTitle': network_machine.name,
+        'tableData': [
+            ['id'|localised, network_machine.id],
+            ['name'|localised, network_machine.name],
+            ['ip_or_url'|localised, network_machine.uri],
+            ['mac_address'|localised, network_machine.macAddress],
+        ],
+    } only %}
 
 {% endblock %}
 {% block pageContentSecondary %}
@@ -27,16 +25,15 @@
             'href': path('network_machine_index'),
             'name': 'back_to_list'|localised,
             'icon': 'fas fa-undo'
-        },
+       },
         {
             'color': 'nord12',
             'href': path('network_machine_edit', {'id': network_machine.id}),
             'name': 'edit'|localised,
             'icon': 'far fa-edit'
         }
-        ]
-    %}
-	{% set securedButtons = [
+    ] %}
+	{% set secured_buttons = [
         {
             'color': 'nord11',
             'name': 'delete'|localised,
@@ -45,7 +42,6 @@
             'csrf': csrf_token('delete' ~ network_machine.id),
             'confirmation': 'you_sure_delete'|localised
         }
-        ]
-    %}
-	{% include 'entity_actions_row.html.twig' with {'buttons': buttons, 'securedButtons': securedButtons} only %}
+    ] %}
+	{% include 'entity_actions_row.html.twig' with {'buttons': buttons, 'secured_buttons': secured_buttons} only %}
 {% endblock %}

@@ -1,16 +1,16 @@
-{% if maxWidth is not defined %}
-	{% set maxWidth = 12 %}
+{% if max_width is not defined %}
+	{% set max_width = 12 %}
 {% endif %}
-{% if hideColumns is not defined %}
-	{% set hideColumns = [] %}
+{% if hide_columns is not defined %}
+	{% set hide_columns = [] %}
 {% endif %}
 {% set light = 'nord4' %}
 {% set dark = 'nord0' %}
-{% if noHover is not defined %}
-	{% set noHover = false %}
+{% if no_hover is not defined %}
+	{% set no_hover = false %}
 {% endif %}
 <div class="flex flex-wrap">
-	<div class="w-full xl:w-{{ maxWidth }}/12 mb-12 xl:mb-0 px-4">
+	<div class="w-full xl:w-{{ max_width }}/12 mb-12 xl:mb-0 px-4">
 		<div class="relative flex flex-col min-w-0 break-words bg-{{ light }} w-full mb-6 shadow-lg rounded">
 			<div class="rounded-t mb-0 px-4 py-3 border-0">
 				<div class="flex flex-wrap items-center">
@@ -25,7 +25,7 @@
 						{% if buttons is defined %}
 							{% for button in buttons %}
 								<a class="bg-nord2 text-{{ light }} hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1" style="transition:all .15s ease" href="{{ button.href }}">
-									{{button.text}}
+									{{ button.text }}
 								</a>
 							{% endfor %}
 						{% endif %}
@@ -38,7 +38,7 @@
 						<thead>
 							<tr>
 								{% for header in tableHeaders %}
-									{% if loop.index not in hideColumns %}
+									{% if loop.index not in hide_columns %}
 										<th class="px-6 bg-{{ light }} text-{{ dark }} align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
 											{{ header|raw }}
 										</th>
@@ -48,10 +48,10 @@
 						</thead>
 					{% endif %}
 					<tbody>
-						{% for tableRow in tableData %}
-							<tr class="{% if not noHover %}hover:bg-{{ dark }} hover:text-{{ light }}{% endif %}">
-								{% for cell in tableRow %}
-									{% if loop.index not in hideColumns %}
+						{% for table_row in tableData %}
+							<tr class="{% if not no_hover %}hover:bg-{{ dark }} hover:text-{{ light }}{% endif %}">
+								{% for cell in table_row %}
+									{% if loop.index not in hide_columns %}
 										<td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
 											{{ cell|raw }}
 										</td>

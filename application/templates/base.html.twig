@@ -39,41 +39,33 @@
 						<div>
 							{% block pageContentPrimary %}
 								<div class="flex flex-wrap">
-									{% include 'card.html.twig'
-									with {
+									{% include 'card.html.twig' with {
 										'iconClass': 'fas fa-quote-left',
 										'iconBg': 'nord11',
 										'headerText': 'Blah Blah',
 										'headerValue': 'Lies',
 										'bottomData': '<span class="text-red-500 mr-2"><i class="fas fa-arrow-down"></i>WOW</span><span class="whitespace-nowrap">OMG</span>'
-										} only
-									%}
-									{% include 'card.html.twig'
-									with {
+										} only %}
+									{% include 'card.html.twig' with {
 										'iconClass': 'fas fa-brain',
 										'iconBg': 'nord12',
 										'headerText': 'Blam blam',
 										'headerValue': 'Confusion'
-										} only
-									%}
+										} only %}
 								</div>
 								<div class="flex flex-wrap">
-									{% include 'card.html.twig'
-									with {
+									{% include 'card.html.twig' with {
 										'iconClass': 'fas fa-angry',
 										'iconBg': 'nord13',
 										'headerText': 'Blim blim',
 										'headerValue': 'Government 38%'
-										} only
-									%}
-									{% include 'card.html.twig'
-									with {
+									} only %}
+									{% include 'card.html.twig'	with {
 										'iconClass': 'far fa-chart-bar',
 										'iconBg': 'nord14',
 										'headerText': 'Blom blom',
 										'headerValue': 'Control'
-										} only
-									%}
+									} only %}
 								</div>
 							{% endblock %}
 						</div>
@@ -81,13 +73,11 @@
 				</div>
 				<div class="bg-nord1 px-4 md:px-10 mx-auto w-full -m-24">
 					{% block pageContentSecondary %}
-						{% include 'table.html.twig'
-						with {
-							'tableTitle' : 'Tytuł',
-							'tableHeaders' : ['Łan', 'Dwa łany', 'tri', 'czetyre'],
-							'tableData': [[1,2,3,4],[5,6,7,8]]
-						} only
-					%}
+						{% include 'table.html.twig' with {
+							'tableTitle': 'Tytuł',
+							'tableHeaders': ['Łan', 'Dwa łany', 'tri', 'czetyre'],
+							'tableData': [[1, 2, 3, 4], [5, 6, 7, 8]]
+						} only %}
 					{% endblock %}
 				</div>
 			</div>

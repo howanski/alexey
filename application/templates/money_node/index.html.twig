@@ -11,9 +11,9 @@
 	{% set groups = {'*': null}|merge(groups) %}
 	{% if groups|length > 2 %}
 		<div class="justify-center -my-4 flex flex-wrap">
-			{% for groupName, groupId in groups %}
-				<a class="py-1 my-1 px-4 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none mr-2{% if groupId is same as (node_group) %} bg-nord9{% else %} bg-nord1{% endif %}" href="{{ path('money_node_index', { groupId: groupId }) }}">
-					{{ groupName }}
+			{% for group_name, group_id in groups %}
+				<a class="py-1 my-1 px-4 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none mr-2{% if group_id is same as (node_group) %} bg-nord9{% else %} bg-nord1{% endif %}" href="{{ path('money_node_index', {groupId: group_id}) }}">
+					{{ group_name }}
 				</a>
 			{% endfor %}
 		</div>
@@ -22,11 +22,11 @@
 
 {% block pageContentSecondary %}
 	{% if node_group is null %}
-		{% set hideColumns = [] %}
+		{% set hide_columns = [] %}
 	{% else %}
-		{% set hideColumns = [3] %}
+		{% set hide_columns = [3] %}
 	{% endif %}
-	{% set tableData = {} %}
+	{% set table_data = {} %}
 
 	{% for money_node in money_nodes %}
 		{% set actions %}
@@ -41,7 +41,7 @@
 		{% endif %}
 
 
-		{% set tableData = tableData|merge([{
+		{% set table_data = table_data|merge([{
 			'name': money_node.name,
 			'node_type': money_node.typeCode|localisedFormValue('node_type', 'money'),
 			'node_group': settings.groupName(money_node.nodeGroup),
@@ -50,22 +50,20 @@
 		}]) %}
 	{% endfor %}
 
-	{% include 'table.html.twig'
-		with {
-			'tableTitle' : 'menu_record_nodes'|localised('money'),
-			'tableHeaders' : [
-				'name'|localised,
-				'node_type'|localisedFormLabel('money'),
-				'node_group'|localisedFormLabel('money'),
-				'balance'|localised('money'),
-				'actions'|localised,
-			],
-			'tableData': tableData,
-			'buttons': [
-				{'href': path('money_node_new'), text: 'add'|localised },
-				{'href': path('money_node_settings'), text: 'settings'|localised },
-			],
-			'hideColumns': hideColumns,
-		} only
-	%}
+	{% include 'table.html.twig' with {
+		'tableTitle': 'menu_record_nodes'|localised('money'),
+		'tableHeaders': [
+			'name'|localised,
+			'node_type'|localisedFormLabel('money'),
+			'node_group'|localisedFormLabel('money'),
+			'balance'|localised('money'),
+			'actions'|localised,
+		],
+		'tableData': table_data,
+		'buttons': [
+			{'href': path('money_node_new'), text: 'add'|localised},
+			{'href': path('money_node_settings'), text: 'settings'|localised},
+		],
+		'hide_columns': hide_columns,
+	} only %}
 {% endblock %}

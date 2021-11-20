@@ -7,7 +7,7 @@
 
 
 {% block pageContentPrimary %}
-	{% set tableData = {} %}
+	{% set table_data = {} %}
 	{% for network_machine in network_machines %}
 		{% if network_machine.lastSeen %}
 			{% set seen = network_machine.getLastSeenReadable(app.request.locale) %}
@@ -19,7 +19,7 @@
 		{% if network_machine.canBeWoken %}
 			{% set actions = actions ~ ' <a href="' ~ path('network_machine_wake', {'id': network_machine.id, 'backRoute': 'network_machine_index'}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'wake'|localised ~ '</a>' %}
 		{% endif %}
-		{% set tableData = tableData|merge([{
+		{% set table_data = table_data|merge([{
 			'id': network_machine.id,
 			'name': network_machine.name,
 			'uri': network_machine.uri,
@@ -29,22 +29,20 @@
 			'actions': actions
 		}]) %}
 	{% endfor %}
-	{% include 'table.html.twig'
-		with {
-			'tableTitle' : 'menu_record'|localised('network_machines'),
-			'tableHeaders' : [
-				'id'|localised,
-				'name'|localised,
-				'ip_or_url'|localised,
-				'mac_address'|localised,
-				'status'|localised,
-				'last_seen'|localised('network_machines'),
-				'actions'|localised,
-				],
-			'tableData': tableData,
-			'buttons': [{'href': path('network_machine_new'), text: 'add'|localised }]
-		} only
-	%}
+	{% include 'table.html.twig' with {
+		'tableTitle': 'menu_record'|localised('network_machines'),
+		'tableHeaders': [
+			'id'|localised,
+			'name'|localised,
+			'ip_or_url'|localised,
+			'mac_address'|localised,
+			'status'|localised,
+			'last_seen'|localised('network_machines'),
+			'actions'|localised,
+			],
+		'tableData': table_data,
+		'buttons': [{'href': path('network_machine_new'), text: 'add'|localised}]
+	} only %}
 {% endblock %}
 
 {% block pageContentSecondary %}{% endblock %}

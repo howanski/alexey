@@ -2,25 +2,23 @@
 {% set breadcrumbs = [
 	{'name': 'menu_record'|localised('network')},
 	{'name': 'menu_record'|localised('network_machines'), 'href': path('network_machine_index')},
-	{'name': 'new'|localised },
+	{'name': 'new'|localised},
 	]
 %}
 
 
 {% block pageContentPrimary %}
-	{% include 'form.html.twig'
-		with {
-			'form': form,
-			'additionalButtons': [
-				{
-					'color': 'nord10',
-					'href': path('network_machine_index'),
-					'name': 'back_to_list'|localised,
-					'icon': 'fas fa-undo'
-				}
-			]
-			} only
-	%}
+	{% include 'form.html.twig' with {
+		'form': form,
+		'additionalButtons': [
+			{
+				'color': 'nord10',
+				'href': path('network_machine_index'),
+				'name': 'back_to_list'|localised,
+				'icon': 'fas fa-undo'
+			}
+		]
+	} only %}
 {% endblock %}
 
 {% block pageContentSecondary %}{% endblock %}
