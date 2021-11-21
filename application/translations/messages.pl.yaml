@@ -54,9 +54,9 @@ app:
           wake_destination: "Adres rozgłoszeniowy"
       strings:
         menu_record: "Urządzenia sieciowe"
-        last_seen: "Ostatnio widziana"
+        last_seen: "Ostatnio widziane"
         machine: Urządzenie
-        never_seen: "Nigdy nie widziana"
+        never_seen: "Nigdy nie widziane"
     network_usage:
       forms:
         labels:
