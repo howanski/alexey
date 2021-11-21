@@ -107,21 +107,17 @@ final class NetworkMachineController extends AbstractController
     }
 
     #[Route('/{id}/card-data', name: 'network_machine_dynacard', methods: ['GET'])]
-    public function dynacard(NetworkMachine $networkMachine, AlexeyTranslator $t, Request $request): Response
+    public function dynacard(NetworkMachine $networkMachine): Response
     {
-        $mod = 'network_machines';
-        if (is_null($networkMachine->getLastSeen())) {
-            $lastSeen = $t->translateString(translationId: 'never_seen', module: $mod);
-        } else {
-            $lastSeen = $t->translateString(translationId: 'last_seen', module: $mod) . ' ' .
-                $networkMachine->getLastSeenReadable($request->getLocale());
-        }
-
-        $card = new DynamicCard(
-            headerText: $t->translateString(translationId: 'machine', module: $mod),
-            headerValue: $networkMachine->getName(),
-            footerValue: $lastSeen,
+        $render = $this->renderView(
+            view: 'network_machine/card_content.html.twig',
+            parameters: [
+                'network_machine' => $networkMachine,
+            ],
         );
+
+        $card = new DynamicCard();
+        $card->setRawContent($render);
         return $card->toResponse();
     }
 }

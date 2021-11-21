@@ -5,40 +5,9 @@
 	{% set max_width = 4 %}
 {% endif %}
 <div class="w-full lg:w-{{ med_width }}/12 xl:w-{{ max_width }}/12 px-4{% if dynamicSrc is defined and dynamicSrc %} dynacard{% endif %}" {% if dynamicSrc is defined and dynamicSrc %} data-dynacard-src="{{ dynamicSrc }}" data-dynacard-refresh-rate="{% if refreshRate is defined and refreshRate %}{{ refreshRate }}{% else %}0{% endif %}" {% endif %}>
-	<div class="relative flex flex-col min-w-0 break-words bg-nord4 rounded mb-6 shadow-lg">
-		<div class="flex-auto p-4">
-			<div class="flex flex-wrap">
-				<div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-					<h5 class="text-blueGray-400 uppercase font-bold text-xs dynacard-header-text">
-						{{ headerText }}
-					</h5>
-					<span class="font-semibold text-xl text-blueGray-700 dynacard-header-value">
-						{{ headerValue }}
-					</span>
-				</div>
-				{% if iconClass is defined and iconBg is defined %}
-					<div class="relative w-auto pl-4 flex-initial">
-						{% if iconHref is defined and iconHref %}
-							<a href="{{ iconHref }}">
-							{% endif %}
-							<div class="{% if iconColor is defined and iconColor %}text-{{ iconColor }}{% else %}text-nord6{% endif %} p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-{{ iconBg }}">
-								{% if iconCustomSrc is defined and iconCustomSrc %}
-									<img src="{{ iconCustomSrc }}">
-								{% else %}
-									<i class="{{ iconClass }}"></i>
-								{% endif %}
-							</div>
-							{% if iconHref is defined and iconHref %}
-							</a>
-						{% endif %}
-					</div>
-				{% endif %}
-			</div>
-			<p class="text-sm text-blueGray-400 mt-4 dynacard-footer-value">
-				{% if bottomData is defined %}
-					{{ bottomData|raw }}
-				{% endif %}
-			</p>
-		</div>
-	</div>
+	{% if rawContent is defined and rawContent %}
+		{{ rawContent|raw }}
+	{% else %}
+		{% include 'card_content.html.twig' %}
+	{% endif %}
 </div>

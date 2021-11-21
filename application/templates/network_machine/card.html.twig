@@ -1,0 +1,8 @@
+{% set content %}
+{% include 'network_machine/card_content.html.twig' with {'network_machine': network_machine} only %}
+{% endset %}
+{% include 'card.html.twig' with {
+    'rawContent': content,
+    'dynamicSrc': path('network_machine_dynacard', {id: network_machine.id}),
+    'refreshRate': 30,
+} only %}

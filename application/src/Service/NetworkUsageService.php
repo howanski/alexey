@@ -162,10 +162,13 @@ final class NetworkUsageService
         } elseif ($property === 'billing_window_end') {
             $headerValue = $networkStatistics->getTimeFrame()->getBillingFrameEndReadable(locale: $locale);
         }
-        $dynaCard = new DynamicCard(
-            headerText: $this->translator->translateString(translationId: 'menu_record', module: 'network_usage'),
-            headerValue: $headerValue,
-            footerValue: $this->translator->translateString(translationId: $property, module: 'network_usage'),
+        $dynaCard = new DynamicCard();
+        $dynaCard->setHeaderText(
+            $this->translator->translateString(translationId: 'menu_record', module: 'network_usage')
+        );
+        $dynaCard->setHeaderValue($headerValue);
+        $dynaCard->setFooterValue(
+            $this->translator->translateString(translationId: $property, module: 'network_usage')
         );
         return $dynaCard;
     }

@@ -17,14 +17,24 @@ function refreshCard(elem) {
         .then(function (response) {
             // handle success
             let responseData = response.data;
+            if (responseData.isRaw) {
+                let decoded = decodeURIComponent(escape(window.atob( responseData.rawContent )));
+                elem.innerHTML = decoded;
+            } else {
+                let headerTextElem = elem.querySelector(
+                    ".dynacard-header-text"
+                );
+                let headerValueElem = elem.querySelector(
+                    ".dynacard-header-value"
+                );
+                let footerValueElem = elem.querySelector(
+                    ".dynacard-footer-value"
+                );
 
-            let headerTextElem = elem.querySelector(".dynacard-header-text");
-            let headerValueElem = elem.querySelector(".dynacard-header-value");
-            let footerValueElem = elem.querySelector(".dynacard-footer-value");
-
-            headerTextElem.innerHTML = responseData.headerText;
-            headerValueElem.innerHTML = responseData.headerValue;
-            footerValueElem.innerHTML = responseData.footerValue;
+                headerTextElem.innerHTML = responseData.headerText;
+                headerValueElem.innerHTML = responseData.headerValue;
+                footerValueElem.innerHTML = responseData.footerValue;
+            }
         })
         .catch(function (error) {
             // handle error
