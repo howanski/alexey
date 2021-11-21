@@ -6,3 +6,4 @@ import "@popperjs/core";
 import "./sidebar-menu.js"
 import "./flash-destructor.js"
 import "./secured-button.js"
+import "./ping.js"
