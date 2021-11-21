@@ -23,8 +23,6 @@ final class DashboardService
     {
         $dashboardData = [];
 
-        $dashboardData['refresh_time'] = 30000;
-
         $networkMachineRepository = $this->getNetworkMachineRepository();
         $dashboardData['machines'] = $networkMachineRepository->findBy(['showOnDashboard' => true]);
 
@@ -33,7 +31,7 @@ final class DashboardService
         $showNetworkUsageOnDashboard =
             ($networkUsageSettings->getShowOnDashboard() === SimpleSettingsService::UNIVERSAL_TRUTH);
         if (true === $showNetworkUsageOnDashboard) {
-            $dashboardData['network_statistic'] = $this->networkUsageService->getLatestStatistic();
+            $dashboardData['network_statistic'] = true;
         }
 
         if ($this->weatherService->showWeatherOnDashboard()) {

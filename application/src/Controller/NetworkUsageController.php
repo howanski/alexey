@@ -77,4 +77,11 @@ final class NetworkUsageController extends AbstractController
         );
         return new JsonResponse($data);
     }
+
+    #[Route('/card-data/{property}', name: 'network_usage_card_data')]
+    public function ajaxCardData(string $property, NetworkUsageService $service, Request $request): Response
+    {
+        $cardData = $service->getDynacard(property: $property, locale: $request->getLocale());
+        return $cardData->toResponse();
+    }
 }

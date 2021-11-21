@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Class\DynamicCard;
 use App\Entity\NetworkMachine;
 use App\Form\NetworkMachineType;
 use App\Message\AsyncJob;
 use App\Repository\NetworkMachineRepository;
 use App\Service\AlexeyTranslator;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/network/machines')]
 final class NetworkMachineController extends AbstractController
@@ -103,5 +104,24 @@ final class NetworkMachineController extends AbstractController
         $bus->dispatch($message);
         $this->addFlash(type: 'nord14', message: $translator->translateFlash('signal_dispatched'));
         return $this->redirectToRoute($backRoute, [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/card-data', name: 'network_machine_dynacard', methods: ['GET'])]
+    public function dynacard(NetworkMachine $networkMachine, AlexeyTranslator $t, Request $request): Response
+    {
+        $mod = 'network_machines';
+        if (is_null($networkMachine->getLastSeen())) {
+            $lastSeen = $t->translateString(translationId: 'never_seen', module: $mod);
+        } else {
+            $lastSeen = $t->translateString(translationId: 'last_seen', module: $mod) . ' ' .
+                $networkMachine->getLastSeenReadable($request->getLocale());
+        }
+
+        $card = new DynamicCard(
+            headerText: $t->translateString(translationId: 'machine', module: $mod),
+            headerValue: $networkMachine->getName(),
+            footerValue: $lastSeen,
+        );
+        return $card->toResponse();
     }
 }

@@ -27,6 +27,7 @@ Encore
    */
   .addEntry("alexey", "./assets/alexey.js")
   .addEntry("linear-chart", "./assets/linear-chart.js")
+  .addEntry("dynacard", "./assets/dynacard.js")
 
   // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
   // .enableStimulusBridge('./assets/controllers.json')

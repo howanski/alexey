@@ -5,11 +5,7 @@
 {% set weather_was_hown = false %}
 
 {% block javascripts %}
-	<script>
-		setTimeout(() => {
-window.location.reload(false);
-}, {{ dashboard_data.refresh_time }});
-	</script>
+	{{ encore_entry_script_tags('dynacard') }}
 {% endblock %}
 
 {% block pageContentPrimary %}
@@ -44,9 +40,11 @@ window.location.reload(false);
 					'iconBg': icon_background,
 					'iconHref': icon_href,
 					'iconColor': icon_color,
-					'headerText': 'machine'|localised('network_machines') ~ ':',
+					'headerText': 'machine'|localised('network_machines'),
 					'headerValue': machine.name,
 					'bottomData': seen,
+            		'dynamicSrc': path('network_machine_dynacard', {id: machine.id}),
+		            'refreshRate': 30,
 				} only %}
 			{% endfor %}
 		</div>

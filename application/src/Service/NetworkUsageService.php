@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use DateTime;
-use DateInterval;
-use SimpleXMLElement;
-use App\Form\NetworkChartType;
-use App\Entity\NetworkStatistic;
-use if0xx\HuaweiHilinkApi\Router;
-use App\Class\TransmissionSettings;
-use App\Service\SimpleSettingsService;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\NetworkStatisticTimeFrame;
+use App\Class\DynamicCard;
 use App\Class\NetworkUsageProviderSettings;
+use App\Class\TransmissionSettings;
+use App\Entity\NetworkStatistic;
+use App\Entity\NetworkStatisticTimeFrame;
+use App\Form\NetworkChartType;
 use App\Repository\NetworkStatisticRepository;
 use App\Repository\NetworkStatisticTimeFrameRepository;
+use App\Service\SimpleSettingsService;
+use DateInterval;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
+use if0xx\HuaweiHilinkApi\Router;
+use SimpleXMLElement;
 
 final class NetworkUsageService
 {
@@ -148,6 +149,25 @@ final class NetworkUsageService
         $chdata['bonusPayload']['current_throttling'] = $throttling;
 
         return $chdata;
+    }
+
+    public function getDynacard(string $property, string $locale): DynamicCard
+    {
+        $networkStatistics = $this->getLatestStatistic();
+        $headerValue = '';
+        if ($property === 'optimal_speed') {
+            $headerValue = $networkStatistics->getTransferRateLeftReadable(4);
+        } elseif ($property === 'traffic_left') {
+            $headerValue = $networkStatistics->getTrafficLeftReadable(4);
+        } elseif ($property === 'billing_window_end') {
+            $headerValue = $networkStatistics->getTimeFrame()->getBillingFrameEndReadable(locale: $locale);
+        }
+        $dynaCard = new DynamicCard(
+            headerText: $this->translator->translateString(translationId: 'menu_record', module: 'network_usage'),
+            headerValue: $headerValue,
+            footerValue: $this->translator->translateString(translationId: $property, module: 'network_usage'),
+        );
+        return $dynaCard;
     }
 
     private function prepareDataForChart(DateTime $dateFrom, string $timeFormat = 'd.m H:i'): array
