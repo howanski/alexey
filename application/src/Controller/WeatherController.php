@@ -30,25 +30,33 @@ final class WeatherController extends AbstractController
     #[Route('/chart-data/{type}', name: 'weather_chart_data')]
     public function chartData(string $type, WeatherService $weatherService, Request $request): Response
     {
-        $data = $weatherService->getChartData(locale: $request->getLocale(), type: $type);
-        return new JsonResponse($data);
+        if ($request->isXmlHttpRequest()) {
+            $data = $weatherService->getChartData(locale: $request->getLocale(), type: $type);
+            return new JsonResponse($data);
+        } else {
+            return $this->redirectToRoute(route: 'dashboard');
+        }
     }
 
     #[Route('/card-data/{daysAhead}', name: 'weather_card_data')]
     public function cardData(int $daysAhead, WeatherService $weatherService, Request $request)
     {
-        $weatherData = $weatherService->getWeather()->getWeatherReadable($request->getLocale());
-        $dailyWeather = $weatherData['daily'][$daysAhead];
-        $render = $this->renderView(
-            view: 'weather/card_content.html.twig',
-            parameters: [
-                'weather' => $dailyWeather,
-            ],
-        );
+        if ($request->isXmlHttpRequest()) {
+            $weatherData = $weatherService->getWeather()->getWeatherReadable($request->getLocale());
+            $dailyWeather = $weatherData['daily'][$daysAhead];
+            $render = $this->renderView(
+                view: 'weather/card_content.html.twig',
+                parameters: [
+                    'weather' => $dailyWeather,
+                ],
+            );
 
-        $card = new DynamicCard();
-        $card->setRawContent($render);
-        return $card->toResponse();
+            $card = new DynamicCard();
+            $card->setRawContent($render);
+            return $card->toResponse();
+        } else {
+            return $this->redirectToRoute(route: 'dashboard');
+        }
     }
 
     #[Route('/settings', name: 'weather_settings')]

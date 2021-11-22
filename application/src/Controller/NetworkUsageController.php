@@ -76,17 +76,25 @@ final class NetworkUsageController extends AbstractController
     #[Route('/chart-data/{chartType}', name: 'network_usage_chart_data')]
     public function ajaxChartData(string $chartType, NetworkUsageService $service, Request $request): Response
     {
-        $data = $service->getDataForChart(
-            chartDataType: $chartType,
-            locale: $request->getLocale(),
-        );
-        return new JsonResponse($data);
+        if ($request->isXmlHttpRequest()) {
+            $data = $service->getDataForChart(
+                chartDataType: $chartType,
+                locale: $request->getLocale(),
+            );
+            return new JsonResponse($data);
+        } else {
+            return $this->redirectToRoute(route: 'dashboard');
+        }
     }
 
     #[Route('/card-data/{property}', name: 'network_usage_card_data')]
     public function ajaxCardData(string $property, NetworkUsageService $service, Request $request): Response
     {
-        $cardData = $service->getDynacard(property: $property, locale: $request->getLocale());
-        return $cardData->toResponse();
+        if ($request->isXmlHttpRequest()) {
+            $cardData = $service->getDynacard(property: $property, locale: $request->getLocale());
+            return $cardData->toResponse();
+        } else {
+            return $this->redirectToRoute(route: 'dashboard');
+        }
     }
 }

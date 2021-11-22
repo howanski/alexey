@@ -12,13 +12,18 @@ function manageDynacard(elem) {
 
 function refreshCard(elem) {
     let dynacardSource = elem.dataset.dynacardSrc;
-    axios
+    const instance = axios.create({
+        headers: { "X-Requested-With": "XMLHttpRequest" },
+    });
+    instance
         .get(dynacardSource)
         .then(function (response) {
             // handle success
             let responseData = response.data;
             if (responseData.isRaw) {
-                let decoded = decodeURIComponent(escape(window.atob( responseData.rawContent )));
+                let decoded = decodeURIComponent(
+                    escape(window.atob(responseData.rawContent))
+                );
                 elem.innerHTML = decoded;
             } else {
                 let headerTextElem = elem.querySelector(

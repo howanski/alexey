@@ -49,8 +49,12 @@ final class NetworkTransmissionController extends AbstractController
     }
 
     #[Route('/simulation/{type}', name: 'network_transmission_simulation')]
-    public function simulation(string $type, TransmissionService $transmissionService): Response
+    public function simulation(string $type, TransmissionService $transmissionService, Request $request): Response
     {
-        return new JsonResponse($transmissionService->getSimulationChartData(type: $type));
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse($transmissionService->getSimulationChartData(type: $type));
+        } else {
+            return $this->redirectToRoute(route: 'dashboard');
+        }
     }
 }

@@ -107,17 +107,21 @@ final class NetworkMachineController extends AbstractController
     }
 
     #[Route('/{id}/card-data', name: 'network_machine_dynacard', methods: ['GET'])]
-    public function dynacard(NetworkMachine $networkMachine): Response
+    public function dynacard(NetworkMachine $networkMachine, Request $request): Response
     {
-        $render = $this->renderView(
-            view: 'network_machine/card_content.html.twig',
-            parameters: [
-                'network_machine' => $networkMachine,
-            ],
-        );
+        if ($request->isXmlHttpRequest()) {
+            $render = $this->renderView(
+                view: 'network_machine/card_content.html.twig',
+                parameters: [
+                    'network_machine' => $networkMachine,
+                ],
+            );
 
-        $card = new DynamicCard();
-        $card->setRawContent($render);
-        return $card->toResponse();
+            $card = new DynamicCard();
+            $card->setRawContent($render);
+            return $card->toResponse();
+        } else {
+            return $this->redirectToRoute(route: 'dashboard');
+        }
     }
 }
