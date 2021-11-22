@@ -8,3 +8,4 @@ framework:
 
         routing:
             'App\Message\AsyncJob': async_queue
+            'Symfony\Component\Mailer\Messenger\SendEmailMessage': async_queue
