@@ -1,0 +1,20 @@
+{% if (weather.rain + weather.snow) > 20  %}
+	{% set icon_background = 'nord11' %}
+{% elseif (weather.rain + weather.snow) > 0  %}
+	{% set icon_background = 'nord13' %}
+{% else %}
+	{% set icon_background = 'nord10' %}
+{% endif %}
+{% set bottom_data = weather.temperature ~ ' °C' %}
+{% if (weather.rain + weather.snow) > 0  %}
+	{% set bottom_data = bottom_data ~ ' (' ~ 'rain_or_snow'|localised('weather')|lower ~ ': ' ~ (weather.rain + weather.snow) ~ 'mm)' %}
+{% endif %}
+{% include 'card_content.html.twig' with {
+    'iconClass': 'far fa-eye',
+    'iconBg': icon_background,
+    'iconHref': path('weather'),
+    'iconCustomSrc': 'https://openweathermap.org/img/wn/' ~ weather.weather_icon ~ '@2x.png',
+    'headerValue': weather.date|localisedTime('day', 'long'),
+    'headerText': weather.weather,
+    'bottomData': bottom_data
+} only %}

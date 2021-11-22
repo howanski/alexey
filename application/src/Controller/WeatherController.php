@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Class\DynamicCard;
 use App\Class\WeatherSettings;
 use App\Service\WeatherService;
 use App\Form\WeatherSettingsType;
@@ -31,6 +32,23 @@ final class WeatherController extends AbstractController
     {
         $data = $weatherService->getChartData(locale: $request->getLocale(), type: $type);
         return new JsonResponse($data);
+    }
+
+    #[Route('/card-data/{daysAhead}', name: 'weather_card_data')]
+    public function cardData(int $daysAhead, WeatherService $weatherService, Request $request)
+    {
+        $weatherData = $weatherService->getWeather()->getWeatherReadable($request->getLocale());
+        $dailyWeather = $weatherData['daily'][$daysAhead];
+        $render = $this->renderView(
+            view: 'weather/card_content.html.twig',
+            parameters: [
+                'weather' => $dailyWeather,
+            ],
+        );
+
+        $card = new DynamicCard();
+        $card->setRawContent($render);
+        return $card->toResponse();
     }
 
     #[Route('/settings', name: 'weather_settings')]

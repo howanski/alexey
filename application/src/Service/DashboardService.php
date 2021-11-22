@@ -35,7 +35,7 @@ final class DashboardService
         }
 
         if ($this->weatherService->showWeatherOnDashboard()) {
-            $dashboardData['weather'] = $this->weatherService->getWeather();
+            $dashboardData['weather'] = true;
         }
 
         return $dashboardData;

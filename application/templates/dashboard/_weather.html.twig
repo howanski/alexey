@@ -1,24 +1,20 @@
 <div class="flex flex-wrap">
-	{% for weather in dashboard_data.weather.getWeatherReadable(app.request.locale).daily|slice(0, 6) %}
-		{% if weather.rain > 20  %}
-			{% set icon_background = 'nord11' %}
-		{% elseif weather.rain > 0  %}
-			{% set icon_background = 'nord13' %}
-		{% else %}
-			{% set icon_background = 'nord10' %}
-		{% endif %}
-		{% set bottom_data = weather.temperature ~ ' °C' %}
-		{% if weather.rain > 0  %}
-			{% set bottom_data = bottom_data ~ ' (' ~ 'rain_or_snow'|localised('weather')|lower ~ ': ' ~ weather.rain ~ 'mm)' %}
-		{% endif %}
+	{% set placeholder_weather_data %}
+	{% include 'placeholder_text_loading.html.twig' %}
+	{% endset %}
+	{% set placeholder_weather_data_big %}
+	{% include 'placeholder_text_loading.html.twig' with {'loadingText': 'daily'|localised('weather') ~ '...'} only %}
+	{% endset %}
+	{% for weather_days_ahead in 0..5 %}
 		{% include 'card.html.twig' with {
-            'iconClass': 'far fa-eye',
-            'iconBg': icon_background,
+            'iconClass': 'fas fa-cloud-sun-rain',
+            'iconBg': 'nord10',
             'iconHref': path('weather'),
-            'iconCustomSrc': 'https://openweathermap.org/img/wn/' ~ weather.weather_icon ~ '@2x.png',
-            'headerValue': weather.date|localisedTime('day', 'long'),
-            'headerText': weather.weather,
-            'bottomData': bottom_data
-		} only %}
+            'headerValue': placeholder_weather_data_big,
+            'headerText': placeholder_weather_data,
+            'bottomData': placeholder_weather_data,
+            'dynamicSrc': path('weather_card_data', {daysAhead: weather_days_ahead}),
+            'refreshRate': 3600,
+    	} only %}
 	{% endfor %}
 </div>
