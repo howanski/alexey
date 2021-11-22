@@ -36,7 +36,7 @@ final class SettingsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $settings = $form->getData();
             $user->setLocale($settings['locale']);
-            $user->setEmail($settings['email']);
+            $user->setEmail(strval($settings['email']));
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
