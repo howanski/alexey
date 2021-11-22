@@ -23,24 +23,35 @@ final class AsyncJobHandler implements MessageHandlerInterface
 
     public function __invoke(AsyncJob $message)
     {
-        if (AsyncJob::TYPE_PING === $message->getJobType()) {
-            $this->networkMachineService->pingMachines();
-        } elseif (AsyncJob::TYPE_UPDATE_NETWORK_STATS === $message->getJobType()) {
-            $this->networkUsageService->updateStats();
-            $this->bus->dispatch(new AsyncJob(
-                jobType: AsyncJob::TYPE_TRANSMISSION_SPEED_ADJUST,
-                payload: [],
-            ));
-        } elseif (AsyncJob::TYPE_TRANSMISSION_SPEED_ADJUST === $message->getJobType()) {
-            $this->transmissionService->adjustSpeed();
-        } elseif (AsyncJob::TYPE_CLEANUP_NETWORK_STATS === $message->getJobType()) {
-            $this->networkUsageService->cleanUpStats();
-        } elseif (AsyncJob::TYPE_WAKE_ON_LAN === $message->getJobType()) {
-            $payload = $message->getPayload();
-            $this->networkMachineService->wakeOnLan(
-                wakeDestination: $payload['wakeDestination'],
-                macAddress: $payload['macAddress'],
-            );
+        $jobType = $message->getJobType();
+        $payload = $message->getPayload();
+
+        switch ($jobType) {
+            case AsyncJob::TYPE_PING_ALL_MACHINES:
+                $this->networkMachineService->schedulePinging();
+                break;
+            case AsyncJob::TYPE_PING_MACHINE:
+                $this->networkMachineService->pingNetworkMachine(id: $payload['id']);
+                break;
+            case AsyncJob::TYPE_UPDATE_NETWORK_STATS:
+                $this->networkUsageService->updateStats();
+                $this->bus->dispatch(new AsyncJob(
+                    jobType: AsyncJob::TYPE_TRANSMISSION_SPEED_ADJUST,
+                    payload: [],
+                ));
+                break;
+            case AsyncJob::TYPE_TRANSMISSION_SPEED_ADJUST:
+                $this->transmissionService->adjustSpeed();
+                break;
+            case AsyncJob::TYPE_CLEANUP_NETWORK_STATS:
+                $this->networkUsageService->cleanUpStats();
+                break;
+            case AsyncJob::TYPE_WAKE_ON_LAN:
+                $this->networkMachineService->wakeOnLan(
+                    wakeDestination: $payload['wakeDestination'],
+                    macAddress: $payload['macAddress'],
+                );
+                break;
         }
     }
 }

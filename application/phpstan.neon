@@ -6,3 +6,4 @@ parameters:
         - "#Kernel is neither abstract nor final.#"
         - "#id is never written, only read.#"
         - "#with null as default value.#"
+        - "#Control structures using switch should not be used#"
