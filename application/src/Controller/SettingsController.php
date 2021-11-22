@@ -25,6 +25,7 @@ final class SettingsController extends AbstractController
         $user = $this->getUser();
         $settings = [
             'locale' => $user->getLocale(),
+            'email' => $user->getEmail(),
         ];
         $form = $this->createForm(
             UserSettingsType::class,
@@ -35,6 +36,7 @@ final class SettingsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $settings = $form->getData();
             $user->setLocale($settings['locale']);
+            $user->setEmail($settings['email']);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();

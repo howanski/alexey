@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class UserSettingsType extends CommonFormType
 {
@@ -37,6 +39,17 @@ final class UserSettingsType extends CommonFormType
                     'required' => true,
                     'constraints' => [
                         new NotBlank()
+                    ],
+                ],
+            )
+            ->add(
+                child: 'email',
+                type: EmailType::class,
+                options: [
+                    'label' => $this->getLabelTrans(label: 'your_email'),
+                    'required' => false,
+                    'constraints' => [
+                        new Email(),
                     ],
                 ],
             );

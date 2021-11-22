@@ -44,6 +44,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OrderBy(['operationDate' => 'DESC', 'comment' => 'ASC'])]
     private $moneyTransfers;
 
+    #[ORM\Column(type: 'string', length: 254, options: ['default' => ''])]
+    private string $email = '';
+
     public function __construct()
     {
         $this->settings = new ArrayCollection();
@@ -173,5 +176,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getMoneyNodes(): ArrayCollection
     {
         return $this->moneyNodes;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        return $this;
     }
 }

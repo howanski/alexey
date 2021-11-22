@@ -151,6 +151,7 @@ app:
       forms:
         labels:
           locale: Locale
+          your_email: "Your email"
         values:
           locale:
             en: English

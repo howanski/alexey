@@ -8,6 +8,7 @@ use App\Form\NetworkChartType;
 use App\Service\NetworkUsageService;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\NetworkUsageProviderSettingsType;
+use App\Service\AlexeyTranslator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,8 +50,11 @@ final class NetworkUsageController extends AbstractController
     }
 
     #[Route('/settings', name: 'network_usage_settings')]
-    public function settings(Request $request, NetworkUsageService $networkUsageService): Response
-    {
+    public function settings(
+        Request $request,
+        NetworkUsageService $networkUsageService,
+        AlexeyTranslator $translator,
+    ): Response {
         $settings = $networkUsageService->getConnectionSettings();
         $form = $this->createForm(
             NetworkUsageProviderSettingsType::class,
@@ -60,6 +64,7 @@ final class NetworkUsageController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $networkUsageService->saveConnectionSettings($settings);
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute('network_usage', [], Response::HTTP_SEE_OTHER);
         }
 

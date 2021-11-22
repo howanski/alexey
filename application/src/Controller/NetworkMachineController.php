@@ -28,7 +28,7 @@ final class NetworkMachineController extends AbstractController
     }
 
     #[Route('/new', name: 'network_machine_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    public function new(Request $request, AlexeyTranslator $translator): Response
     {
         $networkMachine = new NetworkMachine();
         $form = $this->createForm(NetworkMachineType::class, $networkMachine);
@@ -38,7 +38,7 @@ final class NetworkMachineController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($networkMachine);
             $entityManager->flush();
-
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute('network_machine_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -57,14 +57,14 @@ final class NetworkMachineController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'network_machine_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, NetworkMachine $networkMachine): Response
+    public function edit(Request $request, NetworkMachine $networkMachine, AlexeyTranslator $translator): Response
     {
         $form = $this->createForm(NetworkMachineType::class, $networkMachine);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute('network_machine_index', [], Response::HTTP_SEE_OTHER);
         }
 
