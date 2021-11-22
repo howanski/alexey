@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\MoneyNode;
-use App\Form\CommonFormType;
 use App\Entity\MoneyTransfer;
-use App\Repository\MoneyNodeRepository;
-use Symfony\Component\Form\FormBuilderInterface;
+use App\Form\CommonFormType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class MoneyTransferType extends CommonFormType
 {
@@ -56,10 +55,9 @@ final class MoneyTransferType extends CommonFormType
                 'priority' => -3,
                 'required' => true,
                 'class' => MoneyNode::class,
-                'query_builder' => function (MoneyNodeRepository $er) {
-                    return $er->getQueryBuilderForForm();
-                },
+                'choices' => $options['money_node_choices'],
                 'choice_label' => 'name',
+
                 'constraints' => [
                     new NotBlank(),
                 ],
@@ -69,10 +67,9 @@ final class MoneyTransferType extends CommonFormType
                 'priority' => -4,
                 'required' => true,
                 'class' => MoneyNode::class,
-                'query_builder' => function (MoneyNodeRepository $er) {
-                    return $er->getQueryBuilderForForm();
-                },
+                'choices' => $options['money_node_choices'],
                 'choice_label' => 'name',
+
                 'constraints' => [
                     new NotBlank(),
                 ],
@@ -91,6 +88,7 @@ final class MoneyTransferType extends CommonFormType
     {
         $resolver->setDefaults([
             'data_class' => MoneyTransfer::class,
+            'money_node_choices' => [],
         ]);
     }
 }

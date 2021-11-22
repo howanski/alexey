@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\User;
+use App\Class\MoneyNodeSettings;
 use App\Entity\MoneyNode;
+use App\Entity\User;
 use App\Repository\MoneyNodeRepository;
 
 final class MoneyService
@@ -14,7 +15,25 @@ final class MoneyService
     public function __construct(
         private AlexeyTranslator $translator,
         private MoneyNodeRepository $repository,
+        private SimpleSettingsService $simpleSettingsService,
     ) {
+    }
+
+    public function getMoneyNodeChoicesForForm(User $user)
+    {
+        $choices = [];
+        $settings = new MoneyNodeSettings($user);
+        $settings->selfConfigure($this->simpleSettingsService);
+        $allNodes = $this->repository->getAllUserNodes(user: $user, groupId: null);
+        /** @var MoneyNode $node */
+        foreach ($allNodes as $node) {
+            $groupName = $settings->getGroupName(
+                groupId: $node->getNodeGroup(),
+            );
+            $choices[$groupName][] = $node;
+        }
+        ksort($choices);
+        return $choices;
     }
 
     public function getDataForChart(User $user): array

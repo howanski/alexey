@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\MoneyTransfer;
-use App\Form\MoneyTransferType;
-use App\Service\AlexeyTranslator;
 use App\Form\MoneyTransferSplitType;
+use App\Form\MoneyTransferType;
 use App\Repository\MoneyTransferRepository;
+use App\Service\AlexeyTranslator;
+use App\Service\MoneyService;
 use Doctrine\ORM\EntityManager;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/money/transfer')]
 final class MoneyTransferController extends AbstractController
@@ -27,10 +28,17 @@ final class MoneyTransferController extends AbstractController
     }
 
     #[Route('/new', name: 'money_transfer_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, AlexeyTranslator $translator): Response
+    public function new(Request $request, AlexeyTranslator $translator, MoneyService $service): Response
     {
-        $moneyTransfer = new MoneyTransfer($this->getUser());
-        $form = $this->createForm(MoneyTransferType::class, $moneyTransfer);
+        $user = $this->getUser();
+        $moneyTransfer = new MoneyTransfer($user);
+        $form = $this->createForm(
+            type: MoneyTransferType::class,
+            data: $moneyTransfer,
+            options: [
+                'money_node_choices' => $service->getMoneyNodeChoicesForForm($user),
+            ],
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -91,10 +99,14 @@ final class MoneyTransferController extends AbstractController
     }
 
     #[Route('/{id}/split', name: 'money_transfer_split', methods: ['GET', 'POST'])]
-    public function split(MoneyTransfer $moneyTransfer, Request $request, AlexeyTranslator $translator): Response
-    {
+    public function split(
+        MoneyTransfer $moneyTransfer,
+        Request $request,
+        AlexeyTranslator $translator,
+        MoneyService $service
+    ): Response {
         // TODO: Security
-
+        $user = $this->getUser();
         $initialData = [
             'targetNodePrimary' => $moneyTransfer->getTargetNode(),
             'targetNodeSecondary' => $moneyTransfer->getTargetNode(),
@@ -104,7 +116,10 @@ final class MoneyTransferController extends AbstractController
         $form = $this->createForm(
             type: MoneyTransferSplitType::class,
             data: $initialData,
-            options: ['source' => $moneyTransfer],
+            options: [
+                'source' => $moneyTransfer,
+                'money_node_choices' => $service->getMoneyNodeChoicesForForm($user),
+            ],
         );
         $form->handleRequest(request: $request);
 

@@ -39,9 +39,7 @@ final class MoneyTransferSplitType extends CommonFormType
                 'priority' => 0,
                 'required' => true,
                 'class' => MoneyNode::class,
-                'query_builder' => function (MoneyNodeRepository $er) {
-                    return $er->getQueryBuilderForForm();
-                },
+                'choices' => $options['money_node_choices'],
                 'choice_label' => 'name',
                 'constraints' => [
                     new NotBlank(),
@@ -61,9 +59,7 @@ final class MoneyTransferSplitType extends CommonFormType
                 'priority' => -2,
                 'required' => true,
                 'class' => MoneyNode::class,
-                'query_builder' => function (MoneyNodeRepository $er) {
-                    return $er->getQueryBuilderForForm();
-                },
+                'choices' => $options['money_node_choices'],
                 'choice_label' => 'name',
                 'constraints' => [
                     new NotBlank(),
@@ -75,6 +71,7 @@ final class MoneyTransferSplitType extends CommonFormType
     {
         $resolver->setDefaults([
             'source' => null,
+            'money_node_choices' => [],
         ]);
     }
 }
