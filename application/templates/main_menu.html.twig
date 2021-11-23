@@ -37,28 +37,31 @@
 			</div>
 			<div class="mt-6 mb-4 md:hidden"></div>
 			{% for top_menu_key, menu_item in alexeySideMenu() %}
-				<h6 class="md:min-w-full text-nord4 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+				<h6 class="md:min-w-full text-nord4 text-xs uppercase font-bold block pt-1 pb-1 no-underline">
 					{% if menu_item.children|length < 1 %}
 						<ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-0">
 							<li class="inline-flex">
-								<a class="text-nord4 hover:text-nord9 text-sm block mb-4 no-underline font-semibold" href="{{ menu_item.destination }}">
+								<a class="{% if menu_item.isActive %}text-nord13{% else %}text-nord4{% endif %} hover:text-nord9 text-sm block mb-4 no-underline font-semibold" href="{{ menu_item.destination }}">
 									<i class="fas {{ menu_item.icon }} mr-2 text-nord10 text-base"></i>
 									{{ menu_item.name }}</a>
 							</li>
 						</ul>
 					{% else %}
 						{{ menu_item.name }}
+						:
 					{% endif %}
 				</h6>
-				<ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
-					{% for sub_menu in menu_item.children %}
-						<li class="inline-flex">
-							<a class="text-nord4 hover:text-nord9 text-sm block mb-4 no-underline font-semibold" href="{{ sub_menu.destination }}">
-								<i class="fas {{ menu_item.icon }} mr-2 text-nord10 text-base"></i>
-								{{ sub_menu.name }}</a>
-						</li>
-					{% endfor %}
-				</ul>
+				{% if menu_item.children|length > 0 %}
+					<ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
+						{% for sub_menu in menu_item.children %}
+							<li class="inline-flex">
+								<a class="{% if sub_menu.isActive %}text-nord13{% else %}text-nord4{% endif %} hover:text-nord9 text-sm block mb-4 no-underline font-semibold" href="{{ sub_menu.destination }}">
+									<i class="fas {{ sub_menu.icon }} mr-2 text-nord10 text-base"></i>
+									{{ sub_menu.name }}</a>
+							</li>
+						{% endfor %}
+					</ul>
+				{% endif %}
 			{% endfor %}
 		</div>
 	</div>
