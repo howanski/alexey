@@ -51,7 +51,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'dashboard'
             ),
             destination: $route,
-            icon: 'fa-tachometer-alt',
+            icon: 'fa-yin-yang',
             isActive: $this->isActiveRoute($route),
             children: [],
         );
@@ -102,7 +102,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'network_machines'
             ),
             destination: $route,
-            icon: 'fa-wifi',
+            icon: 'fa-robot',
             isActive: $this->isActiveRoute($route),
             children: [],
         );
@@ -114,7 +114,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'network_usage'
             ),
             destination: $route,
-            icon: 'fa-wifi',
+            icon: 'fa-tachometer-alt',
             isActive: $this->isActiveRoute($route),
             children: [],
         );
@@ -126,7 +126,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'network_usage'
             ),
             destination: $route,
-            icon: 'fa-wifi',
+            icon: 'fa-cloud-download-alt',
             isActive: $this->isActiveRoute($route),
             children: [],
         );
@@ -164,7 +164,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'money'
             ),
             destination: $route,
-            icon: 'fas fa-search-dollar',
+            icon: 'fa-hand-holding-usd',
             isActive: $this->isActiveRoute($route),
             children: [],
         );
@@ -175,7 +175,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 translationId: 'menu_record_transfers',
                 module: 'money'
             ),
-            icon: 'fas fa-search-dollar',
+            icon: 'fa-exchange-alt',
             destination: $route,
             isActive: $this->isActiveRoute($route),
             children: [],
@@ -187,7 +187,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 translationId: 'menu_record_graphs',
                 module: 'money'
             ),
-            icon: 'fas fa-search-dollar',
+            icon: 'fa-chart-line',
             destination: $route,
             isActive: $this->isActiveRoute($route),
             children: [],

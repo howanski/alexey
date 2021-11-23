@@ -52,7 +52,7 @@ final class AlexeySideMenuProviderTest extends TestCase
 
         $menuConstruction = [
             [
-                'icon' => 'fa-tachometer-alt',
+                'icon' => 'fa-yin-yang',
                 'isActive' => false,
                 'name' => 'trans_menu_record',
                 'destination' => '/dashboard',
