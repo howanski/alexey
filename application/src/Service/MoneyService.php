@@ -8,14 +8,18 @@ use App\Class\MoneyNodeSettings;
 use App\Entity\MoneyNode;
 use App\Entity\User;
 use App\Repository\MoneyNodeRepository;
+use App\Repository\MoneyTransferRepository;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class MoneyService
 {
 
     public function __construct(
         private AlexeyTranslator $translator,
-        private MoneyNodeRepository $repository,
+        private MoneyNodeRepository $moneyNodeRepository,
+        private MoneyTransferRepository $moneyTransferRepository,
         private SimpleSettingsService $simpleSettingsService,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -24,7 +28,7 @@ final class MoneyService
         $choices = [];
         $settings = new MoneyNodeSettings($user);
         $settings->selfConfigure($this->simpleSettingsService);
-        $allNodes = $this->repository->getAllUserNodes(user: $user, groupId: null);
+        $allNodes = $this->moneyNodeRepository->getAllUserNodes(user: $user, groupId: null);
         /** @var MoneyNode $node */
         foreach ($allNodes as $node) {
             $groupName = $settings->getGroupName(
@@ -34,6 +38,39 @@ final class MoneyService
         }
         ksort($choices);
         return $choices;
+    }
+
+    public function getMoneyTransferMonthSelectorPills(User $user, string $selectedMonth)
+    {
+        $randomString = 'XYZZY';
+        $pillsLimit = 6;
+        $pills = [];
+        $basePath = $this->urlGenerator->generate(
+            name: 'money_transfer_index',
+            parameters: [
+                'month' => $randomString,
+            ]
+        );
+        $usableMonths = $this->moneyTransferRepository->getUserTransferMonths(user: $user);
+        foreach ($usableMonths as $month) {
+            $isCurrent = $month === $selectedMonth;
+            $pills[] = [
+                'name' => $month,
+                'path' => str_replace(search: $randomString, replace: $month, subject: $basePath),
+                'active' => $isCurrent,
+            ];
+            if (true === $isCurrent) {
+                while (count($pills) > ($pillsLimit / 2) + 1) {
+                    array_shift($pills);
+                }
+            }
+        }
+
+        while (count($pills) > $pillsLimit + 1) {
+            array_pop($pills);
+        }
+
+        return $pills;
     }
 
     public function getDataForChart(User $user): array
@@ -107,7 +144,7 @@ final class MoneyService
         $result = [];
         $amountDate = new \DateTime('today');
         $window = new \DateInterval('P7D');
-        $allNodes = $this->repository->getAllUserNodes(user: $user, groupId: null);
+        $allNodes = $this->moneyNodeRepository->getAllUserNodes(user: $user, groupId: null);
         for ($i = 0; $i < $weeksToShow; $i++) {
             $amount = 0.0;
             /** @var MoneyNode $node */
@@ -165,7 +202,7 @@ final class MoneyService
     private function getForecastChanges(User $user): array
     {
         $result = [];
-        $allNodes = $this->repository->getAllUserNodes(user: $user, groupId: null);
+        $allNodes = $this->moneyNodeRepository->getAllUserNodes(user: $user, groupId: null);
         $amountDate = new \DateTime('today');
         $window = new \DateInterval('P7D');
         $bigWindow = new \DateInterval('P' . intval(7 * 20) . 'D');

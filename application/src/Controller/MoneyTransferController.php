@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\MoneyTransfer;
+use App\Entity\User;
 use App\Form\MoneyTransferSplitType;
 use App\Form\MoneyTransferType;
 use App\Repository\MoneyTransferRepository;
 use App\Service\AlexeyTranslator;
 use App\Service\MoneyService;
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +22,33 @@ use Symfony\Component\Routing\Annotation\Route;
 final class MoneyTransferController extends AbstractController
 {
     #[Route('/', name: 'money_transfer_index', methods: ['GET'])]
-    public function index(MoneyTransferRepository $moneyTransferRepository): Response
-    {
+    public function index(
+        MoneyService $service,
+        MoneyTransferRepository $moneyTransferRepository,
+        Request $request,
+    ): Response {
+        /** @var User */
+        $user = $this->getUser();
+        $filters = $request->query->all();
+        if (array_key_exists(key: 'month', array: $filters)) {
+            $monthStr = $filters['month'];
+        } else {
+            $monthStr = date('Y-m');
+        }
+
+        $pills = $service->getMoneyTransferMonthSelectorPills(
+            user: $user,
+            selectedMonth: $monthStr,
+        );
+
+        $month = new DateTime($monthStr);
         return $this->render('money_transfer/index.html.twig', [
-            'money_transfers' => $moneyTransferRepository->getAllUserTransfers($this->getUser()),
+            'month_selector_pills' => $pills,
+            'money_transfers' => $moneyTransferRepository
+                ->getAllUserTransfersFromMonth(
+                    user: $user,
+                    fromMonth: $month,
+                ),
         ]);
     }
 
@@ -58,7 +83,10 @@ final class MoneyTransferController extends AbstractController
     #[Route('/{id}', name: 'money_transfer_show', methods: ['GET'])]
     public function show(MoneyTransfer $moneyTransfer): Response
     {
-        // TODO: Security
+        $user = $this->getUser();
+        if (false === ($user === $moneyTransfer->getUser())) {
+            return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
+        }
         return $this->render('money_transfer/show.html.twig', [
             'money_transfer' => $moneyTransfer,
         ]);
@@ -67,7 +95,10 @@ final class MoneyTransferController extends AbstractController
     #[Route('/{id}/edit', name: 'money_transfer_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, MoneyTransfer $moneyTransfer, AlexeyTranslator $translator): Response
     {
-        // TODO: Security
+        $user = $this->getUser();
+        if (false === ($user === $moneyTransfer->getUser())) {
+            return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
+        }
         $form = $this->createForm(MoneyTransferType::class, $moneyTransfer);
         $form->handleRequest($request);
 
@@ -86,7 +117,10 @@ final class MoneyTransferController extends AbstractController
     #[Route('/{id}/delete', name: 'money_transfer_delete', methods: ['POST'])]
     public function delete(Request $request, MoneyTransfer $moneyTransfer, AlexeyTranslator $translator): Response
     {
-        // TODO: Security
+        $user = $this->getUser();
+        if (false === ($user === $moneyTransfer->getUser())) {
+            return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
+        }
         if ($this->isCsrfTokenValid('delete' . $moneyTransfer->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($moneyTransfer);
@@ -105,8 +139,10 @@ final class MoneyTransferController extends AbstractController
         AlexeyTranslator $translator,
         MoneyService $service
     ): Response {
-        // TODO: Security
         $user = $this->getUser();
+        if (false === ($user === $moneyTransfer->getUser())) {
+            return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
+        }
         $initialData = [
             'targetNodePrimary' => $moneyTransfer->getTargetNode(),
             'targetNodeSecondary' => $moneyTransfer->getTargetNode(),

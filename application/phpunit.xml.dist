@@ -6,7 +6,7 @@
          backupGlobals="false"
          colors="true"
          bootstrap="tests/bootstrap.php"
-         convertDeprecationsToExceptions="false"
+         convertDeprecationsToExceptions="true"
 >
     <php>
         <ini name="display_errors" value="1" />

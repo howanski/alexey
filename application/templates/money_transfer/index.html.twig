@@ -7,6 +7,17 @@
 
 
 {% block pageContentPrimary %}
+	<div class="justify-center -my-4 flex flex-wrap">
+		{% for pill in month_selector_pills %}
+			<a class="{% if pill.active %}bg-nord9{% else %}bg-nord1{% endif %} py-1 my-1 px-4 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none mr-2" href="{{ pill.path }}">
+				{{ pill.name }}
+			</a>
+		{% endfor %}
+	</div>
+{% endblock %}
+
+
+{% block pageContentSecondary %}
 	{% set table_data = {} %}
 
 	{% for money_transfer in money_transfers %}
@@ -65,5 +76,3 @@
 		],
 	} only %}
 {% endblock %}
-
-{% block pageContentSecondary %}{% endblock %}
