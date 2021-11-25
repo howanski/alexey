@@ -108,13 +108,16 @@ app:
         balance: Saldo
         forecast: Prognoza
         exchange_rate: "Kurs wymiany"
+        income: "Dochody"
         incoming_transfers: "Przelewy przychodzące"
         menu_record_graphs: Wykresy
         menu_record_nodes: Węzły
         menu_record_transfers: Przelewy
         menu_record: Finanse (Beta)
         operation_date: "Data wykonania"
+        outcome: "Wydatki"
         outgoing_transfers: "Przelewy wychodzące"
+        remaining_amount: "Pozostała kwota"
         show_node: "Pokaż węzeł"
         show_transfer: "Pokaż przelew"
         split: Podziel

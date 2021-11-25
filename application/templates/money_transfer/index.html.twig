@@ -5,6 +5,9 @@
 	]
 %}
 
+{% block javascripts %}
+	{{ encore_entry_script_tags('pie-chart') }}
+{% endblock %}
 
 {% block pageContentPrimary %}
 	<div class="justify-center -my-4 flex flex-wrap">
@@ -75,4 +78,23 @@
 			{'href': path('money_transfer_new'), text: 'add'|localised},
 		],
 	} only %}
+	<div class="flex flex-wrap items-stretch">
+		{% include 'chart_pie.html.twig' with {
+			'titleSmall': '',
+			'titleBig': 'outcome'|localised('money'),
+			'chartSrc': path('money_edge_transfers_chart_data', {'type': 'outcome', 'month': month}),
+		} only %}
+
+		{% include 'chart_pie.html.twig' with {
+			'titleSmall': '',
+			'titleBig': 'outcome'|localised('money'),
+			'chartSrc': path('money_edge_transfers_chart_data', {'type': 'outcome_grouped', 'month': month}),
+		} only %}
+
+		{% include 'chart_pie.html.twig' with {
+			'titleSmall': '',
+			'titleBig': 'income'|localised('money'),
+			'chartSrc': path('money_edge_transfers_chart_data', {'type': 'income', 'month': month}),
+		} only %}
+	</div>
 {% endblock %}

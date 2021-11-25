@@ -6,9 +6,11 @@ namespace App\Service;
 
 use App\Class\MoneyNodeSettings;
 use App\Entity\MoneyNode;
+use App\Entity\MoneyTransfer;
 use App\Entity\User;
 use App\Repository\MoneyNodeRepository;
 use App\Repository\MoneyTransferRepository;
+use DateTime;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class MoneyService
@@ -99,6 +101,105 @@ final class MoneyService
             'labels' => $chdata['labels'],
             'datasets' => $chdata['datasets'],
         ];
+    }
+
+    public function getDataForEdgePieChart(string $chartType, DateTime $month, User $user)
+    {
+        $settings = new MoneyNodeSettings($user);
+        $settings->selfConfigure($this->simpleSettingsService);
+        $totalIncome = 0;
+        $totalOutcome = 0;
+        $transfersConsidered = $this->moneyTransferRepository->getAllUserTransfersFromMonth(
+            user: $user,
+            fromMonth: $month,
+        );
+        $labels = [];
+        $data = [];
+        $colors = [];
+        /** @var MoneyTransfer $transfer */
+        foreach ($transfersConsidered as $transfer) {
+            $source = $transfer->getSourceNode();
+            $target = $transfer->getTargetNode();
+            if ($source->isEdgeType()) {
+                $totalIncome += $transfer->getAmount();
+            }
+            if ($target->isEdgeType()) {
+                $totalOutcome += $transfer->getExchangedAmount();
+            }
+            if ($chartType == 'outcome_grouped') {
+                if ($target->isEdgeType()) {
+                    $id = $settings->getGroupName($target->getNodeGroup());
+                    $prev = 0;
+                    if (array_key_exists(key: $id, array: $data)) {
+                        $prev = $data[$id];
+                    }
+                    $labels[$id] = $id;
+                    $data[$id] = $transfer->getExchangedAmount() + $prev;
+                    $colors[$id] = $this->mdColor($target->getName() . date('s'));
+                }
+            } elseif ($chartType == 'outcome') {
+                if ($target->isEdgeType()) {
+                    $id = $target->getId();
+                    $prev = 0;
+                    if (array_key_exists(key: $id, array: $data)) {
+                        $prev = $data[$id];
+                    }
+                    $labels[$id] = $target->getName();
+                    $data[$id] = $transfer->getExchangedAmount() + $prev;
+                    $colors[$id] = $this->mdColor($target->getName() . date('s'));
+                }
+            } elseif ($chartType == 'income') {
+                if ($source->isEdgeType()) {
+                    $id = $source->getId();
+                    $prev = 0;
+                    if (array_key_exists(key: $id, array: $data)) {
+                        $prev = $data[$id];
+                    }
+                    $labels[$id] = $source->getName();
+                    $data[$id] = $transfer->getAmount() + $prev;
+                    $colors[$id] = $this->mdColor($source->getName() . date('s'));
+                }
+            } else {
+                throw new \Exception('WTF');
+            }
+        }
+        $savings = $totalIncome - $totalOutcome;
+        if ($savings > 0) {
+            if (in_array(needle: $chartType, haystack: ['outcome', 'outcome_grouped'])) {
+                $id = md5(strval($savings));
+                $labels[$id] = $this->translator->translateString('remaining_amount', 'money');
+                $data[$id] = $savings;
+                $colors[$id] = $this->mdColor($id . date('s'));
+            }
+        }
+        $this->dumbifyArray($labels);
+        $this->dumbifyArray($data);
+        $this->dumbifyArray($colors);
+        $data = [
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'data' => $data,
+                    'backgroundColor' => $colors,
+                ]
+            ]
+        ];
+        return $data;
+    }
+
+    private function mdColor(string $source)
+    {
+        return '#' . substr(md5($source), 0, 6);
+    }
+
+    private function dumbifyArray(array &$sourceArray)
+    {
+        $dumb = [];
+        ksort($sourceArray);
+        foreach ($sourceArray as $val) {
+            $dumb[] = $val;
+        }
+        $sourceArray = $dumb;
     }
 
     private function prepareDataForChart(User $user): array

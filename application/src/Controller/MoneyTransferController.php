@@ -14,6 +14,7 @@ use App\Service\MoneyService;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,6 +50,7 @@ final class MoneyTransferController extends AbstractController
                     user: $user,
                     fromMonth: $month,
                 ),
+            'month' => $monthStr,
         ]);
     }
 
@@ -225,5 +227,28 @@ final class MoneyTransferController extends AbstractController
             'money_transfer' => $moneyTransfer,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/edge-transfers-chart-data/{type}/{month}', name: 'money_edge_transfers_chart_data', methods: ['GET'])]
+    public function pieChartData(
+        string $type,
+        DateTime $month,
+        Request $request,
+        MoneyService $service,
+    ): Response {
+        if (false === $request->isXmlHttpRequest()) {
+            return $this->redirectToRoute(route: 'dashboard');
+        }
+
+        /** @var User */
+        $user = $this->getUser();
+
+        $data = $service->getDataForEdgePieChart(
+            chartType: $type,
+            month: $month,
+            user: $user,
+        );
+
+        return new JsonResponse(data: $data);
     }
 }

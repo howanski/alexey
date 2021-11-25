@@ -108,13 +108,16 @@ app:
         balance: Balance
         forecast: Forecast
         exchange_rate: "Exchange rate"
+        income: "Income"
         incoming_transfers: "Incoming transfers"
         menu_record_graphs: Charts
         menu_record_nodes: Nodes
         menu_record_transfers: Transfers
         menu_record: Money (Beta)
         operation_date: "Operation date"
+        outcome: "Spendings"
         outgoing_transfers: "Outgoing transfers"
+        remaining_amount: "Remaining amount"
         show_node: "Show node"
         show_transfer: "Show transfer"
         split: Split
