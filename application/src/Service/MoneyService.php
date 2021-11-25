@@ -181,6 +181,7 @@ final class MoneyService
                 [
                     'data' => $data,
                     'backgroundColor' => $colors,
+                    'borderColor' => ['#2e3440']
                 ]
             ]
         ];

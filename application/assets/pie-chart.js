@@ -16,6 +16,9 @@ function createChart(elem, labels, datasets) {
                 legend: {
                     display: true,
                     position: "bottom",
+                    labels: {
+                        color: "#eceff4"
+                    },
                 },
                 title: {
                     display: false,
