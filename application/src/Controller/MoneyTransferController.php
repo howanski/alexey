@@ -95,8 +95,12 @@ final class MoneyTransferController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'money_transfer_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, MoneyTransfer $moneyTransfer, AlexeyTranslator $translator, MoneyService $service): Response
-    {
+    public function edit(
+        AlexeyTranslator $translator,
+        MoneyService $service,
+        MoneyTransfer $moneyTransfer,
+        Request $request,
+    ): Response {
         $user = $this->getUser();
         if (false === ($user === $moneyTransfer->getUser())) {
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);

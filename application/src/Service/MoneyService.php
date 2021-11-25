@@ -126,7 +126,7 @@ final class MoneyService
             if ($target->isEdgeType()) {
                 $totalOutcome += $transfer->getExchangedAmount();
             }
-            if ($chartType == 'outcome_grouped') {
+            if ($chartType === 'outcome_grouped') {
                 if ($target->isEdgeType()) {
                     $id = $settings->getGroupName($target->getNodeGroup());
                     $prev = 0;
@@ -137,7 +137,7 @@ final class MoneyService
                     $data[$id] = $transfer->getExchangedAmount() + $prev;
                     $colors[$id] = $this->mdColor($target->getName() . date('s'));
                 }
-            } elseif ($chartType == 'outcome') {
+            } elseif ($chartType === 'outcome') {
                 if ($target->isEdgeType()) {
                     $id = $target->getId();
                     $prev = 0;
@@ -148,7 +148,7 @@ final class MoneyService
                     $data[$id] = $transfer->getExchangedAmount() + $prev;
                     $colors[$id] = $this->mdColor($target->getName() . date('s'));
                 }
-            } elseif ($chartType == 'income') {
+            } elseif ($chartType === 'income') {
                 if ($source->isEdgeType()) {
                     $id = $source->getId();
                     $prev = 0;
@@ -160,7 +160,7 @@ final class MoneyService
                     $colors[$id] = $this->mdColor($source->getName() . date('s'));
                 }
             } else {
-                throw new \Exception('WTF');
+                throw new \Exception('Unknown chart type');
             }
         }
         $savings = $totalIncome - $totalOutcome;
