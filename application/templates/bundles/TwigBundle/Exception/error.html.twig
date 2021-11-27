@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		{{ encore_entry_link_tags('alexey') }}
+		<title>Alexey | Error</title>
+	</head>
+	<body class="text-gray-800 antialiased bg-nord1">
+		<main>
+			<section class="absolute w-full h-full">
+				<div class="container mx-auto px-4 h-full">
+					<div class="flex content-center items-center justify-center h-full">
+						<div class="w-full lg:w-4/12 px-4">
+							<div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-nord2 border-0">
+								<div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+									<div class="bg-nord3 text-nord6 border text-center mb-3 mt-6 border-nord13 px-4 py-3 rounded relative">
+										<strong class="font-bold ">
+											<i class="fas fa-bug"></i>
+											{{status_code}}
+											-
+											{{ status_text }}
+										</strong>
+									</div>
+									<div class="text-center mt-6">
+										<a class="bg-nord3 text-nord6 hover:bg-nord9 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full" style="transition: all 0.15s ease 0s;" href="/">
+											<i class="fas fa-home"></i>
+											<i class="fas fa-long-arrow-alt-left"></i>
+                                            <i class="fas fa-dumpster-fire"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+	</body>
+</html>
