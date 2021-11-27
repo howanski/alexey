@@ -44,11 +44,7 @@ final class NetworkUsageService
 
     public function cleanUpStats(): void
     {
-        $obsoleteStats = $this->networkStatisticRepository->findObsolete();
-        foreach ($obsoleteStats as $stat) {
-            $this->em->remove($stat);
-        }
-        $this->em->flush();
+        $this->networkStatisticRepository->dropObsoleteRecords();
     }
 
     public function getCurrentStatistic()

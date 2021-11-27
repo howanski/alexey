@@ -7,6 +7,7 @@ namespace App\Repository;
 use DateTime;
 use Carbon\Carbon;
 use App\Entity\NetworkStatistic;
+use App\Entity\NetworkStatisticTimeFrame;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -61,13 +62,27 @@ final class NetworkStatisticRepository extends ServiceEntityRepository
         }
     }
 
-    public function findObsolete(): array
+    public function dropObsoleteRecords(): int
     {
-        $monthAgo = new Carbon('now');
-        $monthAgo->subMonths(1);
-        $qb = $this->createQueryBuilder('ns')
-            ->andWhere('ns.probingTime < :monthAgo')
-            ->setParameter('monthAgo', $monthAgo);
-        return $qb->getQuery()->getResult();
+        $latestStat = $this->getLatestOne();
+        if ($latestStat instanceof NetworkStatistic) {
+            $timeFrame = $latestStat->getTimeFrame();
+            if ($timeFrame instanceof NetworkStatisticTimeFrame) {
+                $connection = $this->getEntityManager()->getConnection();
+                $sql =
+                    'DELETE network_statistic ' .
+                    'FROM network_statistic ' .
+                    'JOIN network_statistic_time_frame nstf ON nstf.id = network_statistic.time_frame_id ' .
+                    'WHERE nstf.id != :id;';
+                $count = $connection->executeStatement(
+                    sql: $sql,
+                    params: [
+                        'id' => $timeFrame->getId(),
+                    ],
+                );
+                return $count;
+            }
+        }
+        return 0;
     }
 }

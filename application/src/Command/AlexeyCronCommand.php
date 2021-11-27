@@ -24,7 +24,7 @@ final class AlexeyCronCommand extends Command
         AsyncJob::TYPE_PING_ALL_MACHINES => 30,
         AsyncJob::TYPE_UPDATE_NETWORK_STATS => 30,
         // AsyncJob::TYPE_TRANSMISSION_SPEED_ADJUST => 50, Moved after stat update
-        AsyncJob::TYPE_CLEANUP_NETWORK_STATS => 21600,
+        AsyncJob::TYPE_CLEANUP_NETWORK_STATS => 600,
     ];
 
     public function __construct(
@@ -69,6 +69,7 @@ final class AlexeyCronCommand extends Command
 
     private function runCronJob(CronJob $cronJob)
     {
+        $this->em->refresh($cronJob);
         $runEvery = $cronJob->getRunEvery();
         if ($cronJob->getIsActive() && $runEvery > 0) {
             $now = new Carbon('now');
