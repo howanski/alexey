@@ -11,6 +11,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class OpenWeatherOneApiResponse
 {
+    // TODO: use key with user id or locale so they won't mix
     public const WEATHER_CACHE_KEY = 'WEATHER';
 
     # https://openweathermap.org/api/one-call-api

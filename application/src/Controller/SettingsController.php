@@ -8,16 +8,18 @@ use App\Form\UserSettingsType;
 use App\Service\SimpleCacheService;
 use App\Class\OpenWeatherOneApiResponse;
 use App\EventSubscriber\UserLocaleSubscriber;
+use App\Form\SystemSettingsType;
 use App\Service\AlexeyTranslator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+// TODO: Too much logic, move some garbage to service
 final class SettingsController extends AbstractController
 {
-    #[Route('/settings', name: 'settings')]
-    public function settings(
+    #[Route('/settings/user', name: 'settings_user')]
+    public function settingsUser(
         Request $request,
         AlexeyTranslator $translator,
         SimpleCacheService $cacheService,
@@ -43,11 +45,46 @@ final class SettingsController extends AbstractController
             $cacheService->invalidateCache(OpenWeatherOneApiResponse::WEATHER_CACHE_KEY);
             $request->getSession()->set(UserLocaleSubscriber::USER_LOCALE, $user->getLocale());
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
-            return $this->redirectToRoute('settings', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('settings_user', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('settings/index.html.twig', [
+        return $this->renderForm('settings/user.html.twig', [
             'form' => $form,
+            'pills' => $this->getMenuPills(true),
         ]);
+    }
+
+    #[Route('/settings/system', name: 'settings_system')]
+    public function settingsSystem(): Response
+    {
+        $settings = [];
+        $form = $this->createForm(
+            SystemSettingsType::class,
+            $settings
+        );
+
+        return $this->renderForm('settings/system.html.twig', [
+            'form' => $form,
+            'pills' => $this->getMenuPills(false),
+        ]);
+    }
+
+    public function __construct(
+        private AlexeyTranslator $translator,
+    ) {
+    }
+
+    private function getMenuPills(bool $isUserActive): array
+    {
+        // TODO: refactor pills globally
+        return [[
+            'name' => $this->translator->translateString(translationId: 'user_settings', module: 'settings'),
+            'path' => $this->generateUrl(route: 'settings_user'),
+            'active' => (true === $isUserActive),
+        ], [
+            'name' => $this->translator->translateString(translationId: 'system_settings', module: 'settings'),
+            'path' => $this->generateUrl(route: 'settings_system'),
+            'active' => (false === $isUserActive),
+        ]];
     }
 }

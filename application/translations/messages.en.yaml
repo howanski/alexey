@@ -161,6 +161,8 @@ app:
             pl: Polish
       strings:
         menu_record: Settings
+        system_settings: "System settings"
+        user_settings: "User settings"
     weather:
       forms:
         help:

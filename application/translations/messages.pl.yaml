@@ -160,7 +160,9 @@ app:
             en: Angielski
             pl: Polski
       strings:
-        menu_record: Ustawienia
+        menu_record: Settings
+        system_settings: "Ustawienia systemowe"
+        user_settings: "Ustawienia użytkownika"
     weather:
       forms:
         help:

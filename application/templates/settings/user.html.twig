@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('settings'), 'href': path('settings_user')},
+	]
+%}
+
+{% block pageContentPrimary %}
+	<div class="justify-center -my-4 flex flex-wrap">
+		{% for pill in pills %}
+			<a class="{% if pill.active %}bg-nord9{% else %}bg-nord1{% endif %} py-1 my-1 px-4 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none mr-2" href="{{ pill.path }}">
+				{{ pill.name }}
+			</a>
+		{% endfor %}
+	</div>
+{% endblock %}
+
+{% block pageContentSecondary %}
+	{% include 'form.html.twig' with {
+		'form': form,
+		'additionalButtons': [
+			{
+				'color': 'nord10',
+				'href': path('dashboard'),
+				'name': 'cancel'|localised,
+				'icon': 'fas fa-undo'
+			}
+		],
+	} only %}
+{% endblock %}
