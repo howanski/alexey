@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Class\MoneyNodeSettings;
 use App\Entity\MoneyNode;
 use App\Entity\MoneyTransfer;
 use App\Entity\User;
+use App\Model\MoneyNodeSettings;
 use App\Repository\MoneyNodeRepository;
 use App\Repository\MoneyTransferRepository;
 use DateTime;

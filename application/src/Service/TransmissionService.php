@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use Transmission\Transmission;
 use App\Entity\NetworkStatistic;
-use App\Class\TransmissionSettings;
+use App\Model\TransmissionSettings;
 use App\Service\SimpleSettingsService;
+use Transmission\Transmission;
 
 final class TransmissionService
 {

@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\MoneyNode;
-use App\Form\MoneyNodeType;
-use App\Class\MoneyNodeSettings;
 use App\Form\MoneyNodeSettingsType;
+use App\Form\MoneyNodeType;
+use App\Model\MoneyNodeSettings;
+use App\Repository\MoneyNodeRepository;
 use App\Service\AlexeyTranslator;
 use App\Service\SimpleSettingsService;
-use App\Repository\MoneyNodeRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/money/node')]
 final class MoneyNodeController extends AbstractController

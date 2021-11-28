@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Form\CommonFormType;
+use App\Model\NetworkUsageProviderSettings;
 use App\Service\NetworkUsageService;
 use App\Service\SimpleSettingsService;
-use App\Class\NetworkUsageProviderSettings;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class NetworkUsageProviderSettingsType extends CommonFormType
 {

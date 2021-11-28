@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Class\DynamicCard;
-use App\Class\NetworkUsageProviderSettings;
-use App\Class\TransmissionSettings;
 use App\Entity\NetworkStatistic;
 use App\Entity\NetworkStatisticTimeFrame;
 use App\Form\NetworkChartType;
+use App\Model\NetworkUsageProviderSettings;
+use App\Model\TransmissionSettings;
 use App\Repository\NetworkStatisticRepository;
 use App\Repository\NetworkStatisticTimeFrameRepository;
 use App\Service\SimpleSettingsService;

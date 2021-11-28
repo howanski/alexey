@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Class;
 
-use PHPUnit\Framework\TestCase;
-use App\Class\TransmissionSettings;
+use App\Model\TransmissionSettings;
 use App\Service\SimpleSettingsService;
+use PHPUnit\Framework\TestCase;
 
 final class TransmissionSettingsTest extends TestCase
 {

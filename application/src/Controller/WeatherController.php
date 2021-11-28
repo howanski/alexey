@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Class\DynamicCard;
-use App\Class\WeatherSettings;
-use App\Service\WeatherService;
+use App\Class\OpenWeatherOneApiResponse;
 use App\Form\WeatherSettingsType;
+use App\Model\WeatherSettings;
 use App\Service\AlexeyTranslator;
 use App\Service\SimpleCacheService;
 use App\Service\SimpleSettingsService;
-use App\Class\OpenWeatherOneApiResponse;
+use App\Service\WeatherService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/weather')]
 final class WeatherController extends AbstractController

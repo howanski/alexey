@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Class;
 
-use App\Class\WeatherSettings;
-use PHPUnit\Framework\TestCase;
-use App\Service\SimpleCacheService;
 use App\Class\OpenWeatherOneApiResponse;
-use Symfony\Contracts\HttpClient\ResponseInterface;
+use App\Model\WeatherSettings;
+use App\Service\SimpleCacheService;
+use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final class OpenWeatherOneApiResponseTest extends TestCase
 {

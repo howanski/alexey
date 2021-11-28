@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Form\CommonFormType;
-use App\Class\MoneyNodeSettings;
+use App\Model\MoneyNodeSettings;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class MoneyNodeSettingsType extends CommonFormType
 {

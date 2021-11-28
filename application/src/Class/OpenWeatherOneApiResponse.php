@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Class;
 
+use App\Model\WeatherSettings;
 use App\Service\SimpleCacheService;
 use Carbon\Carbon;
 use Carbon\CarbonTimeZone;
