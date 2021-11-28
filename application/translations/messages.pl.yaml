@@ -152,15 +152,22 @@ app:
         menu_record: Sieć
     settings:
       forms:
+        help:
+          cron_job_cleanup_network_stats: "Sprzatanie przestarzalych statystyk sieci"
+          cron_job_ping: "Monitorowanie stanu urzadzen sieciowych"
+          cron_job_update_network_stats: "Zbieranie statystyk sieci"
         labels:
+          cron_jobs: "Procesy w tle"
+          is_cron_active: "Uruchamiaj ten proces w tle"
           locale: Język
+          run_cron_every: "Przerwa pomiędzy uruchomieniami (sekundy)"
           your_email: "Twój email"
         values:
           locale:
             en: Angielski
             pl: Polski
       strings:
-        menu_record: Settings
+        menu_record: Ustawienia
         system_settings: "Ustawienia systemowe"
         user_settings: "Ustawienia użytkownika"
     weather:

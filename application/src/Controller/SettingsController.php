@@ -9,7 +9,9 @@ use App\Service\SimpleCacheService;
 use App\Class\OpenWeatherOneApiResponse;
 use App\EventSubscriber\UserLocaleSubscriber;
 use App\Form\SystemSettingsType;
+use App\Model\SystemSettings;
 use App\Service\AlexeyTranslator;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,13 +57,22 @@ final class SettingsController extends AbstractController
     }
 
     #[Route('/settings/system', name: 'settings_system')]
-    public function settingsSystem(): Response
+    public function settingsSystem(EntityManagerInterface $em, AlexeyTranslator $t, Request $request): Response
     {
-        $settings = [];
+        $settings = new SystemSettings(em: $em, translator: $t);
         $form = $this->createForm(
             SystemSettingsType::class,
             $settings
         );
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $settings = $form->getData();
+            $settings->save();
+            $this->addFlash(type: 'nord14', message: $t->translateFlash('saved'));
+            return $this->redirectToRoute('settings_system', [], Response::HTTP_SEE_OTHER);
+        }
 
         return $this->renderForm('settings/system.html.twig', [
             'form' => $form,
