@@ -96,6 +96,7 @@ app:
         current_speed: "Bieżąca prędkość"
         menu_record_transmission: Transmission
         menu_record: "Zużycie sieci"
+        mobile_signal: "Sygnał komórkowy"
         optimal_speed: "Optymalna prędkość"
         outside_traffic: "Ruch zewnętrzny"
         throttling_by_optimal_speed: "Dławiene wg. optymalnej prędkości"

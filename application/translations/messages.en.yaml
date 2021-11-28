@@ -96,6 +96,7 @@ app:
         current_speed: "Current speed"
         menu_record_transmission: Transmission
         menu_record: "Network usage"
+        mobile_signal: "Mobile signal"
         optimal_speed: "Optimal speed"
         outside_traffic: "Outside traffic"
         throttling_by_optimal_speed: "Throttling by optimal speed"

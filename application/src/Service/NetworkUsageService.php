@@ -8,6 +8,7 @@ use App\Class\DynamicCard;
 use App\Entity\NetworkStatistic;
 use App\Entity\NetworkStatisticTimeFrame;
 use App\Form\NetworkChartType;
+use App\Model\MobileSignalInfo;
 use App\Model\NetworkUsageProviderSettings;
 use App\Model\TransmissionSettings;
 use App\Repository\NetworkStatisticRepository;
@@ -47,7 +48,7 @@ final class NetworkUsageService
         $this->networkStatisticRepository->dropObsoleteRecords();
     }
 
-    public function getCurrentStatistic()
+    public function getCurrentStatistic(): NetworkStatistic|null
     {
         $connectionSettings = $this->getConnectionSettings();
         $type = $connectionSettings->getProviderType();
@@ -169,6 +170,55 @@ final class NetworkUsageService
         return $dynaCard;
     }
 
+    public function getMobileSignalInfo(): MobileSignalInfo
+    {
+        $info = new MobileSignalInfo();
+        $info->fetchedAt = new DateTime('now');
+        $connectionSettings = $this->getConnectionSettings();
+        $type = $connectionSettings->getProviderType();
+        if ($type === self::NETWORK_USAGE_PROVIDER_HUAWEI) {
+            try {
+                $router = new Router();
+                $router->setAddress($connectionSettings->getAddress());
+                $router->login('admin', $connectionSettings->getPassword());
+            } catch (\Exception $e) {
+                $info->error = $e->getMessage();
+                $info->errorOn = 'login';
+                return $info;
+            }
+
+            try {
+                $status = $router->getStatus();
+                $signalMax = (int)$status->maxsignal;
+                $signalCurrent = (int)$status->SignalIcon;
+                $info->signalStrengthPercent = (int)($signalMax / $signalCurrent * 100);
+            } catch (\Exception $e) {
+                $info->error = $e->getMessage();
+                $info->errorOn = 'basic_info';
+                return $info;
+            }
+
+            try {
+                $signal = $router->generalizedGet('api/device/signal');
+                $info->band = (int)$signal->band;
+                $info->cellId = (int)$signal->cell_id;
+                $info->pci = (int)$signal->pci;
+                $info->plmn = (int)$signal->plmn;
+                $info->rsrp = (int)$signal->rsrp;
+                $info->rsrq = (float)$signal->rsrq;
+                $info->rssi = (int)$signal->rssi;
+                $info->sinr = (float)$signal->sinr;
+                $info->txpower = (string)$signal->txpower;
+            } catch (\Exception $e) {
+                $info->error = $e->getMessage();
+                $info->errorOn = 'advanced_info';
+                return $info;
+            }
+        }
+
+        return $info;
+    }
+
     private function prepareDataForChart(DateTime $dateFrom, string $timeFormat = 'd.m H:i'): array
     {
         $data = [];
@@ -253,18 +303,19 @@ final class NetworkUsageService
         return $networkStatistics;
     }
 
-    private function getCurrentStatisticFromHuawei(NetworkUsageProviderSettings $connectionSettings)
-    {
+    private function getCurrentStatisticFromHuawei(
+        NetworkUsageProviderSettings $connectionSettings
+    ): NetworkStatistic|null {
         try {
-            $huaweiRouter = new Router();
-            $huaweiRouter->setAddress($connectionSettings->getAddress());
-            $huaweiRouter->login('admin', $connectionSettings->getPassword());
+            $router = new Router();
+            $router->setAddress($connectionSettings->getAddress());
+            $router->login('admin', $connectionSettings->getPassword());
 
             /** @var SimpleXMLElement $monthStats */
-            $monthStats = $huaweiRouter->getMonthStats();
+            $monthStats = $router->getMonthStats();
 
             /** @var SimpleXMLElement $startDate */
-            $startDate = $huaweiRouter->generalizedGet('api/monitoring/start_date');
+            $startDate = $router->generalizedGet('api/monitoring/start_date');
 
             $currentMonthDownload = (int)$monthStats->CurrentMonthDownload;
             $currentMonthUpload = (int)$monthStats->CurrentMonthUpload;

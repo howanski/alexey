@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% set breadcrumbs = [
 	{'name': 'menu_record'|localised('network')},
-	{'name': 'menu_record'|localised('network_usage')},
+	{'name': 'menu_record'|localised('network_usage'), 'href': path('network_usage')},
 	] %}
 
 {% block javascripts %}
@@ -44,12 +44,6 @@ window.location.replace(route);
 			'<div id="current_billing_frame_end"></div>',
 			rendered_form,
 			]],
-		'buttons': [
-			{
-				'href': path('network_usage_settings'),
-				'text': 'settings'|localised,
-			}
-		],
 		'no_hover': true,
 	} only
 %}
@@ -64,6 +58,16 @@ window.location.replace(route);
 			'chartSrc': path('network_usage_chart_data', {chartType: chart_type}),
 			'chartRefresh': chartRefresh,
 			'enablePausing': true,
+			'buttons': [
+				{
+					'href': path('mobile_signal'),
+					'icon': 'fas fa-signal',
+				},
+				{
+					'href': path('network_usage_settings'),
+					'icon': 'fas fa-cog',
+				},
+			],
 		} only %}
 	</div>
 {% endblock %}
