@@ -4,26 +4,37 @@
 	{'name': 'menu_record'|localised('network_usage'), 'href': path('network_usage')},
 	{'name': 'mobile_signal'|localised('network_usage'), 'href': path('mobile_signal')},
 	] %}
-{% block pageContentPrimary %}{% endblock %}
+{% block javascripts %}
+	{{ encore_entry_script_tags('gauge-chart') }}
+{% endblock %}
+{% block pageContentPrimary %}
+	<div class="flex flex-wrap items-stretch">
+		{% include "chart_gauge.html.twig" with {
+			'titleSmall': 'RSSI',
+			'titleBig': '',
+			'chartSrc': path('mobile_signal_gauge', {stat: 'rssi'}),
+			'chartRefresh': 0
+		} only %}
+	</div>
+{% endblock %}
 
 
 {% block pageContentSecondary %}
 	{% include 'table.html.twig' with {
-	'tableTitle': 'mobile_signal'|localised('network_usage'),
-	'tableHeaders': ['Property', 'Value'],
-	'tableData': [
-		['ERRORS', signal_info.error],
-		['SIGNAL STRENGTH', signal_info.signalStrengthPercent ~ ' %'],
-		['PLMN', signal_info.plmn],
-		['CELL ID', signal_info.cellId],
-		['BAND', signal_info.band],
-		['PCI', signal_info.pci],
-		['', ''],
-		['RSRQ', signal_info.rsrq ~ ' dB'],
-		['RSRP', signal_info.rsrp ~ ' dBm'],
-		['RSSI', signal_info.rssi ~ ' dBm'],
-		['SINR', signal_info.sinr ~ ' dB'],
-		['TXPOWER', signal_info.txpower],
+		'tableTitle': 'mobile_signal'|localised('network_usage'),
+		'tableHeaders': ['Property', 'Value'],
+		'tableData': [
+				['SIGNAL %', signal_info.signalStrengthPercent ~ ' %'],
+				['PLMN', signal_info.plmn],
+				['CELL ID', signal_info.cellId],
+				['BAND', signal_info.band],
+				['PCI', signal_info.pci],
+				['RSRQ', signal_info.rsrq ~ ' dB'],
+				['RSRP', signal_info.rsrp ~ ' dBm'],
+				['RSSI', signal_info.rssi ~ ' dBm'],
+				['SINR', signal_info.sinr ~ ' dB'],
+				['TXPOWER', signal_info.txpower],
 		]
 	} only %}
+	<div class="m-8">&nbsp</div>
 {% endblock %}

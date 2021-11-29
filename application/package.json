@@ -21,6 +21,7 @@
         "autoprefixer": "^10.4.0",
         "axios": "^0.24.0",
         "chart.js": "^3.5.0",
+        "chartjs-gauge": "^0.3.0",
         "fontawesome": "^5.6.3",
         "postcss": "^8.3.11",
         "postcss-import": "^14.0.2",

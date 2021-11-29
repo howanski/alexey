@@ -1,0 +1,21 @@
+<div class="w-full lg:w-6/12 xl:w-4/12 mb-12 xl:mb-0 px-4 gauge-chart-container">
+	<div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-nord0">
+		<div class="rounded-t mb-0 px-4 py-3 bg-transparent">
+			<div class="flex flex-wrap items-center">
+				<div class="relative w-full max-w-full flex-grow flex-1">
+					<h6 class="uppercase text-nord6 mb-1 text-xs font-semibold">
+						{{ titleSmall|raw }}
+					</h6>
+					<h2 class="text-nord6 text-xl font-semibold">
+						{{ titleBig|raw }}
+					</h2>
+				</div>
+			</div>
+		</div>
+		<div class="p-4 flex-auto">
+			<div class="flex items-stretch">
+				<canvas style="display: block;" class="chart-gauge" data-chart-src="{{ chartSrc }}" data-chart-refresh="{{ chartRefresh }}"></canvas>
+			</div>
+		</div>
+	</div>
+</div>

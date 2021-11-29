@@ -26,9 +26,10 @@ Encore
    * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
    */
   .addEntry("alexey", "./assets/alexey.js")
-  .addEntry("linear-chart", "./assets/linear-chart.js")
-  .addEntry("pie-chart", "./assets/pie-chart.js")
-  .addEntry("dynacard", "./assets/dynacard.js")
+  .addEntry("linear-chart", "./assets/js/charts/linear-chart.js")
+  .addEntry("pie-chart", "./assets/js/charts/pie-chart.js")
+  .addEntry("gauge-chart", "./assets/js/charts/gauge-chart.js")
+  .addEntry("dynacard", "./assets/js/dynacard.js")
 
   // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
   // .enableStimulusBridge('./assets/controllers.json')

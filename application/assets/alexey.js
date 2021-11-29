@@ -3,7 +3,7 @@ import "./css/tailwind.css";
 import "./css/flash-toast.css";
 
 import "@popperjs/core";
-import "./sidebar-menu.js"
-import "./flash-destructor.js"
-import "./secured-button.js"
-import "./ping.js"
+import "./js/sidebar-menu.js"
+import "./js/flash-destructor.js"
+import "./js/secured-button.js"
+import "./js/ping.js"
