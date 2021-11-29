@@ -26,11 +26,12 @@ final class NetworkUsageService
     public const NETWORK_USAGE_PROVIDER_NONE = 'NONE';
 
     public function __construct(
-        private EntityManagerInterface $em,
-        private SimpleSettingsService $simpleSettingsService,
-        private NetworkStatisticTimeFrameRepository $networkStatisticTimeFrameRepository,
-        private NetworkStatisticRepository $networkStatisticRepository,
         private AlexeyTranslator $translator,
+        private EntityManagerInterface $em,
+        private NetworkStatisticRepository $networkStatisticRepository,
+        private NetworkStatisticTimeFrameRepository $networkStatisticTimeFrameRepository,
+        private SimpleCacheService $simpleCacheService,
+        private SimpleSettingsService $simpleSettingsService,
     ) {
     }
 
@@ -170,17 +171,19 @@ final class NetworkUsageService
         return $dynaCard;
     }
 
-    public function getMobileSignalInfo(): MobileSignalInfo
+    public function getMobileSignalInfo($router = null): MobileSignalInfo
     {
-        $info = new MobileSignalInfo();
+        $info = new MobileSignalInfo($this->simpleCacheService);
         $info->fetchedAt = new DateTime('now');
         $connectionSettings = $this->getConnectionSettings();
         $type = $connectionSettings->getProviderType();
         if ($type === self::NETWORK_USAGE_PROVIDER_HUAWEI) {
             try {
-                $router = new Router();
-                $router->setAddress($connectionSettings->getAddress());
-                $router->login('admin', $connectionSettings->getPassword());
+                if (false === ($router instanceof Router)) {
+                    $router = new Router();
+                    $router->setAddress($connectionSettings->getAddress());
+                    $router->login('admin', $connectionSettings->getPassword());
+                }
             } catch (\Exception $e) {
                 $info->error = $e->getMessage();
                 $info->errorOn = 'login';
@@ -331,6 +334,11 @@ final class NetworkUsageService
             $stat->setDataUploadedInFrame($currentMonthUpload);
             $timeFrame = $this->getTimeFrame($monthStart, $monthEnd, $trafficMaxLimit);
             $stat->setTimeFrame($timeFrame);
+
+            $mobileStat = $this->getMobileSignalInfo(router: $router);
+            if (strlen($mobileStat->error) === 0) {
+                $mobileStat->save();
+            }
 
             return $stat;
         } catch (\Exception) {

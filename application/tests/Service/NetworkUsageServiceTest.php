@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\NetworkStatisticTimeFrame;
 use App\Repository\NetworkStatisticRepository;
 use App\Repository\NetworkStatisticTimeFrameRepository;
+use App\Service\SimpleCacheService;
 
 final class NetworkUsageServiceTest extends TestCase
 {
@@ -34,9 +35,10 @@ final class NetworkUsageServiceTest extends TestCase
 
         $service = new NetworkUsageService(
             em: $em,
-            simpleSettingsService: $simpleSettingsService,
-            networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
             networkStatisticRepository: $networkStatisticRepository,
+            networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
+            simpleCacheService: $this->createMock(originalClassName: SimpleCacheService::class),
+            simpleSettingsService: $simpleSettingsService,
             translator: $translator,
         );
 
@@ -71,9 +73,10 @@ final class NetworkUsageServiceTest extends TestCase
 
         $service = new NetworkUsageService(
             em: $em,
-            simpleSettingsService: $simpleSettingsService,
-            networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
             networkStatisticRepository: $networkStatisticRepository,
+            networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
+            simpleCacheService: $this->createMock(originalClassName: SimpleCacheService::class),
+            simpleSettingsService: $simpleSettingsService,
             translator: $translator,
         );
 
@@ -124,9 +127,10 @@ final class NetworkUsageServiceTest extends TestCase
 
         $service = new NetworkUsageService(
             em: $em,
-            simpleSettingsService: $simpleSettingsService,
-            networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
             networkStatisticRepository: $networkStatisticRepository,
+            networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
+            simpleCacheService: $this->createMock(originalClassName: SimpleCacheService::class),
+            simpleSettingsService: $simpleSettingsService,
             translator: $translator,
         );
 
@@ -176,9 +180,10 @@ final class NetworkUsageServiceTest extends TestCase
         $networkStatisticRepository->method('getLatestOne')->willReturn($networkStatistic);
         $service = new NetworkUsageService(
             em: $em,
-            simpleSettingsService: $simpleSettingsService,
-            networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
             networkStatisticRepository: $networkStatisticRepository,
+            networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
+            simpleCacheService: $this->createMock(originalClassName: SimpleCacheService::class),
+            simpleSettingsService: $simpleSettingsService,
             translator: $translator,
         );
 
