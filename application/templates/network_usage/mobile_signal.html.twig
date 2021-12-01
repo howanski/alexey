@@ -50,7 +50,6 @@
 {% block pageContentSecondary %}
 	{% include 'table.html.twig' with {
 		'tableTitle': 'mobile_signal'|localised('network_usage'),
-		'tableHeaders': ['Property', 'Value'],
 		'tableData': [
 				['PLMN', '<div id="plmn"></div>'],
 				['CELL ID', '<div id="cellId"></div>'],
