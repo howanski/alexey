@@ -17,40 +17,40 @@ final class GaussianGauge
     private float $value;
     private float $minValue = 0.0;
 
+    private array $bonusPayload = [];
+
     public function __construct(
         float $value,
         float $optimum,
         float $greenZoneWidth,
         float $yellowZoneWidth,
     ) {
-        if ($optimum < 0) {
-            $optimum *= -1;
-            $value *= -1;
-        }
-        if ($value < $this->minValue) {
-            $this->minValue = $value;
-        }
+
         $this->greenRight = $optimum + $greenZoneWidth;
         $this->yellowLeft = $optimum - $greenZoneWidth;
         $this->redLeft = $this->yellowLeft - $yellowZoneWidth;
         $this->yellowRight = $this->greenRight + $yellowZoneWidth;
-        $this->redRight = $this->yellowRight + $this->redLeft;
+        $this->redRight = $this->yellowRight + abs($this->redLeft);
 
-        if ($this->redLeft < 0) {
-            $offset = 0 - $this->redLeft;
-            $this->greenRight += $offset;
-            $this->yellowLeft += $offset;
-            $this->redLeft += $offset;
-            $this->yellowRight += $offset;
-            $this->redRight += $offset;
-            $value += $offset;
+        $this->minValue = $optimum - ($this->redRight - $optimum);
+        if ($value < $this->minValue) {
+            $this->minValue = $value;
+        }
+        if ($this->redLeft < $this->minValue) {
+            $this->minValue = $this->redLeft;
         }
         $this->value = $value;
+    }
+
+    public function setBonusPayload(array $payload)
+    {
+        $this->bonusPayload = $payload;
     }
 
     public function getXmlResponse(): JsonResponse
     {
         $data = [
+            'labels' => ['', '', '', '', ''],
             'datasets' => [[
                 'value' => $this->value,
                 'minValue' => $this->minValue,
@@ -63,8 +63,9 @@ final class GaussianGauge
                 ],
                 'backgroundColor' => ['#bf616a', '#ebcb8b', '#a3be8c', '#ebcb8b', '#bf616a'],
                 'borderColor' => ['#2e3440', '#2e3440', '#2e3440', '#2e3440', '#2e3440'],
-                'borderWidth' => [0, 0, 0, 0, 0],
+                'borderWidth' => [2, 2, 2, 2, 2],
             ]],
+            'bonusPayload' => $this->bonusPayload,
         ];
 
         return new JsonResponse(data: $data);

@@ -11,9 +11,37 @@
 	<div class="flex flex-wrap items-stretch">
 		{% include "chart_gauge.html.twig" with {
 			'titleSmall': 'RSSI',
-			'titleBig': '',
+			'titleBig': '<div id="rssi"></div>',
 			'chartSrc': path('mobile_signal_gauge', {stat: 'rssi'}),
-			'chartRefresh': 0
+			'chartRefresh': 20
+		} only %}
+
+		{% include "chart_gauge.html.twig" with {
+			'titleSmall': 'RSRQ',
+			'titleBig': '<div id="rsrq"></div>',
+			'chartSrc': path('mobile_signal_gauge', {stat: 'rsrq'}),
+			'chartRefresh': 20
+		} only %}
+
+		{% include "chart_gauge.html.twig" with {
+			'titleSmall': 'RSRP',
+			'titleBig': '<div id="rsrp"></div>',
+			'chartSrc': path('mobile_signal_gauge', {stat: 'rsrp'}),
+			'chartRefresh': 20
+		} only %}
+
+		{% include "chart_gauge.html.twig" with {
+			'titleSmall': 'SINR',
+			'titleBig': '<div id="sinr"></div>',
+			'chartSrc': path('mobile_signal_gauge', {stat: 'sinr'}),
+			'chartRefresh': 20
+		} only %}
+
+		{% include "chart_gauge.html.twig" with {
+			'titleSmall': 'SIGNAL',
+			'titleBig': '<div id="signalStrengthPercent"></div>',
+			'chartSrc': path('mobile_signal_gauge', {stat: 'signal'}),
+			'chartRefresh': 20
 		} only %}
 	</div>
 {% endblock %}
@@ -24,16 +52,11 @@
 		'tableTitle': 'mobile_signal'|localised('network_usage'),
 		'tableHeaders': ['Property', 'Value'],
 		'tableData': [
-				['SIGNAL %', signal_info.signalStrengthPercent ~ ' %'],
-				['PLMN', signal_info.plmn],
-				['CELL ID', signal_info.cellId],
-				['BAND', signal_info.band],
-				['PCI', signal_info.pci],
-				['RSRQ', signal_info.rsrq ~ ' dB'],
-				['RSRP', signal_info.rsrp ~ ' dBm'],
-				['RSSI', signal_info.rssi ~ ' dBm'],
-				['SINR', signal_info.sinr ~ ' dB'],
-				['TXPOWER', signal_info.txpower],
+				['PLMN', '<div id="plmn"></div>'],
+				['CELL ID', '<div id="cellId"></div>'],
+				['BAND', '<div id="band"></div>'],
+				['PCI', '<div id="pci"></div>'],
+				['TXPOWER', '<div id="txpower"></div>'],
 		]
 	} only %}
 	<div class="m-8">&nbsp</div>

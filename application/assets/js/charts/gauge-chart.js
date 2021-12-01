@@ -41,7 +41,6 @@ function updateChartData(elem, src) {
         .then(function (response) {
             // handle success
             let responseData = response.data;
-            console.log(responseData);
             let chartId = elem.getAttribute("data-chart-id");
             if (null === chartId) {
                 chartId = getUnusedRandomChatId();
@@ -57,32 +56,11 @@ function updateChartData(elem, src) {
             } else {
                 // refresh already built chart
                 let storedChart = chartStorage[chartId];
-
-                let datasetKeysArray = Object.keys(responseData.datasets);
-                let index = 0;
-                let visibilityIndexes = [];
-                for (const datasetKey of datasetKeysArray) {
-                    let isDatasetHidden =
-                        storedChart.getDatasetMeta(index).hidden;
-                    if (isDatasetHidden) {
-                        visibilityIndexes[index] = false;
-                    } else {
-                        visibilityIndexes[index] = true;
-                    }
-                    index = index + 1;
-                }
-
-                storedChart.data.labels = responseData.labels;
                 storedChart.data.datasets = prepareDatasets(
                     responseData.datasets
                 );
 
-                index = 0;
-                for (const visibility of visibilityIndexes) {
-                    storedChart.setDatasetVisibility(index, visibility);
-                    index = index + 1;
-                }
-                storedChart.update("none");
+                storedChart.update(false);
             }
             updateBonusPayload(responseData.bonusPayload);
         })

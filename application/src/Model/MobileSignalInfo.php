@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use App\Class\GaussianGauge;
 use App\Service\SimpleCacheService;
 use DateTime;
+use Symfony\Component\HttpFoundation\Response;
 
 final class MobileSignalInfo
 {
@@ -64,5 +66,68 @@ final class MobileSignalInfo
             data: $data,
             validTo: $timeValid,
         );
+    }
+
+    public function getAjaxGaugeData(string $gauge): Response
+    {
+        #https://www.speedcheck.org/pl/wiki/rssi/
+        #https://i0.wp.com/www.cablefree.net/wp-content/uploads/2016/04/LTE-RF-Conditions.png
+        // TODO: bonusPayload
+        $config = [
+            'rssi' => [
+                'value' => $this->rssi,
+                'optimum' => -30,
+                'greenZoneWidth' => 37,
+                'yellowZoneWidth' => 13,
+            ],
+            'rsrq' => [
+                'value' => $this->rsrq,
+                'optimum' => -10,
+                'greenZoneWidth' => 5,
+                'yellowZoneWidth' => 5,
+            ],
+            'rsrp' => [
+                'value' => $this->rsrp,
+                'optimum' => -80,
+                'greenZoneWidth' => 10,
+                'yellowZoneWidth' => 10,
+            ],
+            'sinr' => [
+                'value' => $this->sinr,
+                'optimum' => 20,
+                'greenZoneWidth' => 7,
+                'yellowZoneWidth' => 13,
+            ],
+            'signal' => [
+                'value' => $this->signalStrengthPercent,
+                'optimum' => 100,
+                'greenZoneWidth' => 30,
+                'yellowZoneWidth' => 20,
+            ],
+        ];
+
+        $gauge = new GaussianGauge(
+            value: $config[$gauge]['value'],
+            optimum: $config[$gauge]['optimum'],
+            greenZoneWidth: $config[$gauge]['greenZoneWidth'],
+            yellowZoneWidth: $config[$gauge]['yellowZoneWidth'],
+        );
+
+        $gauge->setBonusPayload(
+            [
+                'rsrq' => $this->rsrq . ' dB',
+                'sinr' => $this->sinr . ' dB',
+                'band' => $this->band,
+                'cellId' => $this->cellId,
+                'pci' => $this->pci,
+                'plmn' => $this->plmn,
+                'rsrp' => $this->rsrp . ' dBm',
+                'rssi' => $this->rssi . ' dBm',
+                'signalStrengthPercent' => $this->signalStrengthPercent . ' %',
+                'txpower' => $this->txpower,
+            ]
+        );
+
+        return $gauge->getXmlResponse();
     }
 }
