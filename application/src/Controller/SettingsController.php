@@ -4,28 +4,31 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Form\UserSettingsType;
-use App\Service\SimpleCacheService;
 use App\Class\OpenWeatherOneApiResponse;
+use App\Entity\User;
 use App\EventSubscriber\UserLocaleSubscriber;
 use App\Form\SystemSettingsType;
+use App\Form\UserSettingsType;
 use App\Model\SystemSettings;
 use App\Service\AlexeyTranslator;
+use App\Service\SimpleCacheService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 // TODO: Too much logic, move some garbage to service
 final class SettingsController extends AbstractController
 {
     #[Route('/settings/user', name: 'settings_user')]
     public function settingsUser(
-        Request $request,
         AlexeyTranslator $translator,
+        EntityManagerInterface $em,
+        Request $request,
         SimpleCacheService $cacheService,
     ): Response {
+        /** @var User $user */
         $user = $this->getUser();
         $settings = [
             'locale' => $user->getLocale(),
@@ -41,7 +44,6 @@ final class SettingsController extends AbstractController
             $settings = $form->getData();
             $user->setLocale($settings['locale']);
             $user->setEmail(strval($settings['email']));
-            $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
             $cacheService->invalidateCache(OpenWeatherOneApiResponse::WEATHER_CACHE_KEY);

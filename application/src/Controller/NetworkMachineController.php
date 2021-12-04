@@ -10,6 +10,7 @@ use App\Form\NetworkMachineType;
 use App\Message\AsyncJob;
 use App\Repository\NetworkMachineRepository;
 use App\Service\AlexeyTranslator;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,14 +29,13 @@ final class NetworkMachineController extends AbstractController
     }
 
     #[Route('/new', name: 'network_machine_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, AlexeyTranslator $translator): Response
+    public function new(Request $request, AlexeyTranslator $translator, EntityManagerInterface $entityManager): Response
     {
         $networkMachine = new NetworkMachine();
         $form = $this->createForm(NetworkMachineType::class, $networkMachine);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($networkMachine);
             $entityManager->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
@@ -57,13 +57,17 @@ final class NetworkMachineController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'network_machine_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, NetworkMachine $networkMachine, AlexeyTranslator $translator): Response
-    {
+    public function edit(
+        AlexeyTranslator $translator,
+        EntityManagerInterface $em,
+        NetworkMachine $networkMachine,
+        Request $request,
+    ): Response {
         $form = $this->createForm(NetworkMachineType::class, $networkMachine);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute('network_machine_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -75,10 +79,12 @@ final class NetworkMachineController extends AbstractController
     }
 
     #[Route('/{id}', name: 'network_machine_delete', methods: ['POST'])]
-    public function delete(Request $request, NetworkMachine $networkMachine): Response
-    {
+    public function delete(
+        EntityManagerInterface $entityManager,
+        NetworkMachine $networkMachine,
+        Request $request,
+    ): Response {
         if ($this->isCsrfTokenValid('delete' . $networkMachine->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($networkMachine);
             $entityManager->flush();
         }

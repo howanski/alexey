@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Service\MoneyService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,7 +24,9 @@ final class MoneyGraphController extends AbstractController
     public function data(MoneyService $service, Request $request): Response
     {
         if ($request->isXmlHttpRequest()) {
-            $data = $service->getDataForChart(user: $this->getUser());
+            /** @var User $user */
+            $user = $this->getUser();
+            $data = $service->getDataForChart(user: $user);
             return new JsonResponse($data);
         } else {
             return $this->redirectToRoute(route: 'dashboard');
@@ -34,7 +37,9 @@ final class MoneyGraphController extends AbstractController
     public function forecastData(MoneyService $service, Request $request): Response
     {
         if ($request->isXmlHttpRequest()) {
-            $data = $service->getDataForForecastChart(user: $this->getUser());
+            /** @var User $user */
+            $user = $this->getUser();
+            $data = $service->getDataForForecastChart(user: $user);
             return new JsonResponse($data);
         } else {
             return $this->redirectToRoute(route: 'dashboard');

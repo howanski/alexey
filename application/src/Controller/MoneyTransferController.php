@@ -13,6 +13,7 @@ use App\Service\AlexeyTranslator;
 use App\Service\MoneyService;
 use DateTime;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,8 +56,13 @@ final class MoneyTransferController extends AbstractController
     }
 
     #[Route('/new', name: 'money_transfer_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, AlexeyTranslator $translator, MoneyService $service): Response
-    {
+    public function new(
+        Request $request,
+        AlexeyTranslator $translator,
+        MoneyService $service,
+        EntityManagerInterface $entityManager,
+    ): Response {
+        /** @var User $user */
         $user = $this->getUser();
         $moneyTransfer = new MoneyTransfer($user);
         $form = $this->createForm(
@@ -69,7 +75,6 @@ final class MoneyTransferController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($moneyTransfer);
             $entityManager->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
@@ -97,6 +102,7 @@ final class MoneyTransferController extends AbstractController
     #[Route('/{id}/edit', name: 'money_transfer_edit', methods: ['GET', 'POST'])]
     public function edit(
         AlexeyTranslator $translator,
+        EntityManagerInterface $em,
         MoneyService $service,
         MoneyTransfer $moneyTransfer,
         Request $request,
@@ -115,7 +121,7 @@ final class MoneyTransferController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -127,14 +133,17 @@ final class MoneyTransferController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'money_transfer_delete', methods: ['POST'])]
-    public function delete(Request $request, MoneyTransfer $moneyTransfer, AlexeyTranslator $translator): Response
-    {
+    public function delete(
+        AlexeyTranslator $translator,
+        EntityManagerInterface $entityManager,
+        MoneyTransfer $moneyTransfer,
+        Request $request,
+    ): Response {
         $user = $this->getUser();
         if (false === ($user === $moneyTransfer->getUser())) {
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
         if ($this->isCsrfTokenValid('delete' . $moneyTransfer->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($moneyTransfer);
             $entityManager->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
@@ -146,10 +155,11 @@ final class MoneyTransferController extends AbstractController
 
     #[Route('/{id}/split', name: 'money_transfer_split', methods: ['GET', 'POST'])]
     public function split(
+        AlexeyTranslator $translator,
+        EntityManagerInterface $em,
+        MoneyService $service,
         MoneyTransfer $moneyTransfer,
         Request $request,
-        AlexeyTranslator $translator,
-        MoneyService $service
     ): Response {
         $user = $this->getUser();
         if (false === ($user === $moneyTransfer->getUser())) {
@@ -175,7 +185,6 @@ final class MoneyTransferController extends AbstractController
             /**
              * @var EntityManager $em
              */
-            $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction();
             try { //TODO: move to service
                 $user = $moneyTransfer->getUser();

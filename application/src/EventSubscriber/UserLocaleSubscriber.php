@@ -41,7 +41,7 @@ final class UserLocaleSubscriber implements EventSubscriberInterface
         $session->set(self::USER_LOCALE, $userLocale);
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => [

@@ -24,7 +24,7 @@ final class GaussianGauge
         private float $optimum,
         float $greenZoneWidth,
         float $yellowZoneWidth,
-        private bool $leftHalf = false,
+        private bool $leftHalf,
     ) {
         if (true === $leftHalf) {
             $fraction = ($greenZoneWidth + $yellowZoneWidth) * 0.3;

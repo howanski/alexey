@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\MoneyNode;
+use App\Entity\User;
 use App\Form\MoneyNodeSettingsType;
 use App\Form\MoneyNodeType;
 use App\Model\MoneyNodeSettings;
 use App\Repository\MoneyNodeRepository;
 use App\Service\AlexeyTranslator;
 use App\Service\SimpleSettingsService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,11 +27,13 @@ final class MoneyNodeController extends AbstractController
         SimpleSettingsService $simpleSettingsService,
         int $groupId = null,
     ): Response {
-        $settings = new MoneyNodeSettings($this->getUser());
+        /** @var User $user */
+        $user = $this->getUser();
+        $settings = new MoneyNodeSettings($user);
         $settings->selfConfigure($simpleSettingsService);
         return $this->render('money_node/index.html.twig', [
             'money_nodes' => $moneyNodeRepository->getAllUserNodes(
-                user: $this->getUser(),
+                user: $user,
                 groupId: $groupId,
             ),
             'node_group' => $groupId,
@@ -42,9 +46,12 @@ final class MoneyNodeController extends AbstractController
         Request $request,
         AlexeyTranslator $translator,
         SimpleSettingsService $simpleSettingsService,
+        EntityManagerInterface $entityManager,
     ): Response {
-        $moneyNode = new MoneyNode($this->getUser());
-        $settings = new MoneyNodeSettings($this->getUser());
+        /** @var User $user */
+        $user = $this->getUser();
+        $moneyNode = new MoneyNode($user);
+        $settings = new MoneyNodeSettings($user);
         $settings->selfConfigure($simpleSettingsService);
         $form = $this->createForm(type: MoneyNodeType::class, data: $moneyNode, options: [
             'node_group_choices' => $settings->getChoices(),
@@ -52,7 +59,6 @@ final class MoneyNodeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($moneyNode);
             $entityManager->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
@@ -75,7 +81,9 @@ final class MoneyNodeController extends AbstractController
     public function show(MoneyNode $moneyNode, SimpleSettingsService $simpleSettingsService): Response
     {
         //TODO: check user
-        $settings = new MoneyNodeSettings($this->getUser());
+        /** @var User $user */
+        $user = $this->getUser();
+        $settings = new MoneyNodeSettings($user);
         $settings->selfConfigure($simpleSettingsService);
         return $this->render('money_node/show.html.twig', [
             'money_node' => $moneyNode,
@@ -89,9 +97,12 @@ final class MoneyNodeController extends AbstractController
         MoneyNode $moneyNode,
         AlexeyTranslator $translator,
         SimpleSettingsService $simpleSettingsService,
+        EntityManagerInterface $em,
     ): Response {
         //TODO: check user
-        $settings = new MoneyNodeSettings($this->getUser());
+        /** @var User $user */
+        $user = $this->getUser();
+        $settings = new MoneyNodeSettings($user);
         $settings->selfConfigure($simpleSettingsService);
         $form = $this->createForm(type: MoneyNodeType::class, data: $moneyNode, options: [
             'node_group_choices' => $settings->getChoices(),
@@ -99,7 +110,7 @@ final class MoneyNodeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute(
                 route: 'money_node_index',
@@ -117,13 +128,16 @@ final class MoneyNodeController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'money_node_delete', methods: ['POST'])]
-    public function delete(Request $request, MoneyNode $moneyNode, AlexeyTranslator $translator): Response
-    {
+    public function delete(
+        Request $request,
+        MoneyNode $moneyNode,
+        AlexeyTranslator $translator,
+        EntityManagerInterface $entityManager
+    ): Response {
         // TODO: SECURITY!
         $groupId = $moneyNode->getNodeGroup();
         if (true === $moneyNode->canBeDeleted()) {
             if ($this->isCsrfTokenValid('delete' . $moneyNode->getId(), $request->request->get('_token'))) {
-                $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($moneyNode);
                 $entityManager->flush();
                 $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
@@ -142,7 +156,9 @@ final class MoneyNodeController extends AbstractController
         SimpleSettingsService $simpleSettingsService,
         AlexeyTranslator $translator,
     ): Response {
-        $settings = new MoneyNodeSettings($this->getUser());
+        /** @var User $user */
+        $user = $this->getUser();
+        $settings = new MoneyNodeSettings($user);
         $settings->selfConfigure($simpleSettingsService);
         $form = $this->createForm(
             MoneyNodeSettingsType::class,
