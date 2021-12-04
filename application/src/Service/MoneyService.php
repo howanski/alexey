@@ -304,10 +304,12 @@ final class MoneyService
     private function getForecastChanges(User $user): array
     {
         $result = [];
+        $weeksLookingBack = 25;
+        $weeksInFuture = 25;
         $allNodes = $this->moneyNodeRepository->getAllUserNodes(user: $user, groupId: null);
         $amountDate = new \DateTime('today');
         $window = new \DateInterval('P7D');
-        $bigWindow = new \DateInterval('P' . intval(7 * 20) . 'D');
+        $bigWindow = new \DateInterval('P' . $weeksLookingBack . 'W');
 
 
 
@@ -329,9 +331,9 @@ final class MoneyService
             }
         }
 
-        $weeklyGrowth = round(($currentAmount - $historicalAmount) / 20, 2);
+        $weeklyGrowth = ($currentAmount - $historicalAmount) / $weeksLookingBack;
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < $weeksInFuture; $i++) {
             $result[] = [
                 'date' => $amountDate->format('d.m'),
                 'amount' => round(num: $currentAmount, precision: 2),
