@@ -110,6 +110,7 @@ final class MobileSignalInfo
             optimum: $config[$gauge]['optimum'],
             greenZoneWidth: $config[$gauge]['greenZoneWidth'],
             yellowZoneWidth: $config[$gauge]['yellowZoneWidth'],
+            leftHalf: true,
         );
 
         $gauge->setBonusPayload(

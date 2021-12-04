@@ -21,11 +21,16 @@ final class GaussianGauge
 
     public function __construct(
         float $value,
-        float $optimum,
+        private float $optimum,
         float $greenZoneWidth,
         float $yellowZoneWidth,
+        private bool $leftHalf = false,
     ) {
-        $fraction = ($greenZoneWidth + $yellowZoneWidth) * 0.6;
+        if (true === $leftHalf) {
+            $fraction = ($greenZoneWidth + $yellowZoneWidth) * 0.3;
+        } else {
+            $fraction = ($greenZoneWidth + $yellowZoneWidth) * 0.6;
+        }
 
         $this->greenRight = $optimum + $greenZoneWidth;
         $this->yellowLeft = $optimum - $greenZoneWidth;
@@ -37,6 +42,11 @@ final class GaussianGauge
         if ($value < $this->minValue) {
             $this->minValue = $value;
         }
+
+        if ($value > $this->optimum) {
+            $this->optimum = $value;
+        }
+
         $this->value = $value;
     }
 
@@ -47,24 +57,44 @@ final class GaussianGauge
 
     public function getXmlResponse(): JsonResponse
     {
-        $data = [
-            'labels' => ['', '', '', '', ''],
-            'datasets' => [[
-                'value' => $this->value,
-                'minValue' => $this->minValue,
-                'data' => [
-                    $this->redLeft,
-                    $this->yellowLeft,
-                    $this->greenRight,
-                    $this->yellowRight,
-                    $this->redRight,
-                ],
-                'backgroundColor' => ['#bf616a', '#ebcb8b', '#a3be8c', '#ebcb8b', '#bf616a'],
-                'borderColor' => ['#2e3440', '#2e3440', '#2e3440', '#2e3440', '#2e3440'],
-                'borderWidth' => [2, 2, 2, 2, 2],
-            ]],
-            'bonusPayload' => $this->bonusPayload,
-        ];
+        if (true === $this->leftHalf) {
+            $data = [
+                'labels' => ['', '', '', '', ''],
+                'datasets' => [[
+                    'value' => $this->value,
+                    'minValue' => $this->minValue,
+                    'data' => [
+                        $this->redLeft,
+                        $this->yellowLeft,
+                        $this->optimum,
+                    ],
+                    'backgroundColor' => ['#bf616a', '#ebcb8b', '#a3be8c'],
+                    'borderColor' => ['#2e3440', '#2e3440', '#2e3440'],
+                    'borderWidth' => [2, 2, 2],
+                ]],
+                'bonusPayload' => $this->bonusPayload,
+            ];
+        } else {
+            $data = [
+                'labels' => ['', '', '', '', ''],
+                'datasets' => [[
+                    'value' => $this->value,
+                    'minValue' => $this->minValue,
+                    'data' => [
+                        $this->redLeft,
+                        $this->yellowLeft,
+                        $this->greenRight,
+                        $this->yellowRight,
+                        $this->redRight,
+                    ],
+                    'backgroundColor' => ['#bf616a', '#ebcb8b', '#a3be8c', '#ebcb8b', '#bf616a'],
+                    'borderColor' => ['#2e3440', '#2e3440', '#2e3440', '#2e3440', '#2e3440'],
+                    'borderWidth' => [2, 2, 2, 2, 2],
+                ]],
+                'bonusPayload' => $this->bonusPayload,
+            ];
+        }
+
 
         return new JsonResponse(data: $data);
     }
