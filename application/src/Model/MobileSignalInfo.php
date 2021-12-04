@@ -72,24 +72,23 @@ final class MobileSignalInfo
     {
         #https://www.speedcheck.org/pl/wiki/rssi/
         #https://i0.wp.com/www.cablefree.net/wp-content/uploads/2016/04/LTE-RF-Conditions.png
-        // TODO: bonusPayload
         $config = [
             'rssi' => [
                 'value' => $this->rssi,
                 'optimum' => -30,
                 'greenZoneWidth' => 37,
-                'yellowZoneWidth' => 13,
+                'yellowZoneWidth' => 23,
             ],
             'rsrq' => [
                 'value' => $this->rsrq,
-                'optimum' => -10,
-                'greenZoneWidth' => 5,
+                'optimum' => -5,
+                'greenZoneWidth' => 10,
                 'yellowZoneWidth' => 5,
             ],
             'rsrp' => [
                 'value' => $this->rsrp,
-                'optimum' => -80,
-                'greenZoneWidth' => 10,
+                'optimum' => -70,
+                'greenZoneWidth' => 20,
                 'yellowZoneWidth' => 10,
             ],
             'sinr' => [

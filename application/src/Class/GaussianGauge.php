@@ -25,19 +25,17 @@ final class GaussianGauge
         float $greenZoneWidth,
         float $yellowZoneWidth,
     ) {
+        $fraction = ($greenZoneWidth + $yellowZoneWidth) * 0.6;
 
         $this->greenRight = $optimum + $greenZoneWidth;
         $this->yellowLeft = $optimum - $greenZoneWidth;
         $this->redLeft = $this->yellowLeft - $yellowZoneWidth;
+        $this->minValue = $this->redLeft - $fraction;
         $this->yellowRight = $this->greenRight + $yellowZoneWidth;
-        $this->redRight = $this->yellowRight + abs($this->redLeft);
+        $this->redRight = $this->yellowRight + $fraction;
 
-        $this->minValue = $optimum - ($this->redRight - $optimum);
         if ($value < $this->minValue) {
             $this->minValue = $value;
-        }
-        if ($this->redLeft < $this->minValue) {
-            $this->minValue = $this->redLeft;
         }
         $this->value = $value;
     }
