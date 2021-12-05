@@ -6,6 +6,10 @@
 	]
 %}
 
+{% block javascripts %}
+	{{ encore_entry_script_tags('forms-js') }}
+{% endblock %}
+
 {% block pageContentPrimary %}
 	{% include 'table.html.twig' with {
 		'tableTitle': money_node.name,
@@ -19,6 +23,7 @@
 		],
 	} only %}
 {% endblock %}
+
 {% block pageContentSecondary %}
 	{% set action_buttons = [
         {

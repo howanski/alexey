@@ -4,6 +4,10 @@
 	]
 %}
 
+{% block javascripts %}
+	{{ encore_entry_script_tags('forms-js') }}
+{% endblock %}
+
 {% block pageContentPrimary %}
 	<div class="justify-center -my-4 flex flex-wrap">
 		{% for pill in pills %}

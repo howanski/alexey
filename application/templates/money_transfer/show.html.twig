@@ -6,6 +6,10 @@
 	]
 %}
 
+{% block javascripts %}
+	{{ encore_entry_script_tags('forms-js') }}
+{% endblock %}
+
 {% block pageContentPrimary %}
 	{% set sourcenode %}
 	{{ money_transfer.sourceNode.name }}
@@ -34,6 +38,7 @@
         ],
     } only %}
 {% endblock %}
+
 {% block pageContentSecondary %}
 	{% set buttons = [
         {

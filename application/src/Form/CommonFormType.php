@@ -10,6 +10,10 @@ use Symfony\Component\Form\AbstractType;
 
 abstract class CommonFormType extends AbstractType
 {
+    public const STANDARD_INPUT_CLASSES = '' .
+        'border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow' .
+        ' focus:outline-none focus:ring w-full';
+
     private $translationModule = null;
 
     public function __construct(

@@ -16,7 +16,6 @@ function clickSecureBtn(event) {
     };
 
     fetch(url, fetchOptions)
-      .then(this.handleErrors)
       .then((response) => {
         if (response.redirected) {
           location.href = response.url;

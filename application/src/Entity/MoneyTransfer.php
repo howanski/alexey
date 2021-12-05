@@ -78,10 +78,21 @@ class MoneyTransfer
         return $this->operationDate;
     }
 
+    public function getOperationDateString(): string
+    {
+        return $this->getOperationDate()->format('d.m.Y');
+    }
+
     public function setOperationDate(\DateTimeInterface $operationDate): self
     {
         $this->operationDate = $operationDate;
         return $this;
+    }
+
+    public function setOperationDateString(string $operationDate): self
+    {
+        $date = new \DateTime($operationDate);
+        return $this->setOperationDate($date);
     }
 
     public function getAmount(): float

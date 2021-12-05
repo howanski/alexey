@@ -70,6 +70,7 @@ final class MoneyTransferController extends AbstractController
             data: $moneyTransfer,
             options: [
                 'money_node_choices' => $service->getMoneyNodeChoicesForForm($user),
+                'locale' => $request->getLocale(),
             ],
         );
         $form->handleRequest($request);
@@ -116,6 +117,7 @@ final class MoneyTransferController extends AbstractController
             data: $moneyTransfer,
             options: [
                 'money_node_choices' => $service->getMoneyNodeChoicesForForm($user),
+                'locale' => $request->getLocale(),
             ]
         );
         $form->handleRequest($request);

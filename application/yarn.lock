@@ -4938,6 +4938,11 @@ uuid@^8.3.0:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
+vanillajs-datepicker@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/vanillajs-datepicker/-/vanillajs-datepicker-1.1.4.tgz#247a5969739ca17895ae53e30218293e230e6cad"
+  integrity sha512-XJhvRx+VqtRjqrPlgNCQntLpCntFKPMBd8ahxZhLkvrWX0bNdpP3kz5j13L2Q0xfTAY/QMfQtVZvBvRF0NilcA==
+
 vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"

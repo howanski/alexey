@@ -7,6 +7,9 @@
 	]
 %}
 
+{% block javascripts %}
+	{{ encore_entry_script_tags('forms-js') }}
+{% endblock %}
 
 {% block pageContentPrimary %}
 	{% include 'form.html.twig' with {
