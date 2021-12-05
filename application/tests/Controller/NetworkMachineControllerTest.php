@@ -120,6 +120,28 @@ final class NetworkMachineControllerTest extends ControllerTestStub
     /**
      * @depends testWake
      */
+    public function testDynaCard(int $machineId): int
+    {
+        $client = $this->getClientWithLoggedInUser();
+        $client->request('GET', '/network/machines/' . $machineId . '/card-data');
+        $this->assertResponseRedirects(expectedLocation: '/');
+        return $machineId;
+    }
+
+    /**
+     * @depends testDynaCard
+     */
+    public function testDynaCardTwo(int $machineId): int
+    {
+        $client = $this->getClientWithLoggedInUser(forAjaxRequest: true);
+        $client->request('GET', '/network/machines/' . $machineId . '/card-data');
+        $this->assertResponseIsSuccessful();
+        return $machineId;
+    }
+
+    /**
+     * @depends testDynaCardTwo
+     */
     public function testDelete(int $machineId): void
     {
         $client = $this->getClientWithLoggedInUser();

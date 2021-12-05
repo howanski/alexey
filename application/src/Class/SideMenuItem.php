@@ -35,11 +35,6 @@ final class SideMenuItem
         return $this->destination;
     }
 
-    public function haveChildren(): bool
-    {
-        return sizeof($this->getChildren()) > 0;
-    }
-
     public function getChildren(): array
     {
         return $this->children;

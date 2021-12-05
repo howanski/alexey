@@ -92,6 +92,7 @@ class MoneyTransfer
     public function setOperationDateString(string $operationDate): self
     {
         $date = new \DateTime($operationDate);
+        $date->setTime(0, 0, 0, 0);
         return $this->setOperationDate($date);
     }
 
