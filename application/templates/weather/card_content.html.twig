@@ -5,9 +5,12 @@
 {% else %}
 	{% set icon_background = 'nord10' %}
 {% endif %}
-{% set bottom_data = weather.temperature ~ ' °C' %}
-{% if (weather.rain + weather.snow) > 0  %}
-	{% set bottom_data = bottom_data ~ ' (' ~ 'rain_or_snow'|localised('weather')|lower ~ ': ' ~ (weather.rain + weather.snow) ~ 'mm)' %}
+{% set bottom_data = '<i class="far fa-arrow-alt-circle-down"></i> ' ~ weather.temperature_detailed.min ~ ' <i class="far fa-arrow-alt-circle-up"></i> ' ~ weather.temperature_detailed.max ~ ' °C' %}
+{% if weather.snow > 0  %}
+	{% set bottom_data = bottom_data ~ ' <i class="far fa-snowflake"></i> ' ~ weather.snow ~ ' mm' %}
+{% endif %}
+{% if weather.rain > 0  %}
+	{% set bottom_data = bottom_data ~ ' <i class="fas fa-cloud-rain"></i> ' ~ weather.rain ~ ' mm' %}
 {% endif %}
 {% include 'card_content.html.twig' with {
     'iconClass': 'far fa-eye',
