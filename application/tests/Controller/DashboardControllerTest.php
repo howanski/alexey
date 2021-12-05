@@ -11,10 +11,30 @@ final class DashboardControllerTest extends ControllerTestStub
         $this->testSecurityEnabled(path: '/');
     }
 
+    public function testAccessPing(): void
+    {
+        $this->testSecurityEnabled(path: '/ping');
+    }
+
     public function testDashboard()
     {
         $client = $this->getClientWithLoggedInUser();
         $client->request('GET', '/');
+        $this->assertResponseIsSuccessful();
+    }
+
+    public function testPing()
+    {
+        $client = $this->getClientWithLoggedInUser();
+        $client->request('GET', '/ping');
+        $this->assertResponseRedirects(expectedLocation: '/');
+    }
+
+    public function testPingJson()
+    {
+        $client = $this->getClientWithLoggedInUser(forAjaxRequest: true);
+        $client->setServerParameter(key: 'HTTP_X-Requested-With', value: 'XMLHttpRequest');
+        $client->request('GET', '/ping');
         $this->assertResponseIsSuccessful();
     }
 }

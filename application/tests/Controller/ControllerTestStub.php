@@ -11,12 +11,15 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class ControllerTestStub extends WebTestCase
 {
-    protected function getClientWithLoggedInUser(string $username = 'test_user'): KernelBrowser
+    protected function getClientWithLoggedInUser(string $username = 'test_user', $forAjaxRequest = false): KernelBrowser
     {
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByUsername($username);
         $client->loginUser($testUser);
+        if (true === $forAjaxRequest) {
+            $client->setServerParameter(key: 'HTTP_X-Requested-With', value: 'XMLHttpRequest');
+        }
         return $client;
     }
 
