@@ -336,7 +336,12 @@ final class NetworkUsageService
             $stat->setTimeFrame($timeFrame);
 
             $mobileStat = $this->getMobileSignalInfo(router: $router);
-            if (strlen($mobileStat->error) === 0) {
+            if (
+                strlen($mobileStat->error) === 0
+                && $mobileStat->rsrq < 0
+                && $mobileStat->rssi < 0
+                && $mobileStat->rsrp < 0
+            ) {
                 $mobileStat->save();
             }
 
