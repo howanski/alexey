@@ -2486,6 +2486,11 @@ fastq@^1.6.0:
   dependencies:
     reusify "^1.0.4"
 
+favico.js@^0.3.10:
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/favico.js/-/favico.js-0.3.10.tgz#80586e27a117f24a8d51c18a99bdc714d4339301"
+  integrity sha1-gFhuJ6EX8kqNUcGKmb3HFNQzkwE=
+
 faye-websocket@^0.11.3:
   version "0.11.4"
   resolved "https://registry.yarnpkg.com/faye-websocket/-/faye-websocket-0.11.4.tgz#7f0d9275cfdd86a1c963dc8b65fcc451edcbb1da"

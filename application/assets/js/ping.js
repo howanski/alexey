@@ -1,20 +1,27 @@
 import axios from "axios";
+const Favico = require("favico.js");
 
 const goodHeart = document.querySelector(".app-heartrate-ok");
 const badHeart = document.querySelector(".app-heartrate-bad");
 
 let heartState = "good";
 
+let iconBadge = new Favico({
+    animation: "popFade",
+});
+
 function goodPing() {
     heartState = "good";
     goodHeart.style.display = "";
     badHeart.style.display = "none";
+    iconBadge.reset();
 }
 
 function badPing() {
     heartState = "bad";
     goodHeart.style.display = "none";
     badHeart.style.display = "";
+    iconBadge.badge("!");
 }
 
 function ping() {
