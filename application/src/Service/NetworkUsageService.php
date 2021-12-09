@@ -9,10 +9,10 @@ use App\Entity\NetworkStatistic;
 use App\Entity\NetworkStatisticTimeFrame;
 use App\Form\NetworkChartType;
 use App\Model\MobileSignalInfo;
-use App\Model\NetworkUsageProviderSettings;
 use App\Model\TransmissionSettings;
 use App\Repository\NetworkStatisticRepository;
 use App\Repository\NetworkStatisticTimeFrameRepository;
+use App\Service\NetworkUsageProviderSettings;
 use App\Service\SimpleSettingsService;
 use DateInterval;
 use DateTime;
@@ -30,6 +30,7 @@ final class NetworkUsageService
         private EntityManagerInterface $em,
         private NetworkStatisticRepository $networkStatisticRepository,
         private NetworkStatisticTimeFrameRepository $networkStatisticTimeFrameRepository,
+        private NetworkUsageProviderSettings $networkUsageProviderSettings,
         private SimpleCacheService $simpleCacheService,
         private SimpleSettingsService $simpleSettingsService,
     ) {
@@ -51,11 +52,10 @@ final class NetworkUsageService
 
     public function getCurrentStatistic(): NetworkStatistic|null
     {
-        $connectionSettings = $this->getConnectionSettings();
-        $type = $connectionSettings->getProviderType();
+        $type = $this->networkUsageProviderSettings->getProviderType();
         $stat = null;
         if ($type === self::NETWORK_USAGE_PROVIDER_HUAWEI) {
-            $stat = $this->getCurrentStatisticFromHuawei($connectionSettings);
+            $stat = $this->getCurrentStatisticFromHuawei();
         } elseif ($type === '' || $type === self::NETWORK_USAGE_PROVIDER_NONE) {
             // No settings, no work, great!
         } else {
@@ -68,18 +68,6 @@ final class NetworkUsageService
     {
         $latest = $this->networkStatisticRepository->getLatestOne();
         return $latest;
-    }
-
-    public function getConnectionSettings(): NetworkUsageProviderSettings
-    {
-        $networkSettings = new NetworkUsageProviderSettings();
-        $networkSettings->selfConfigure($this->simpleSettingsService);
-        return $networkSettings;
-    }
-
-    public function saveConnectionSettings(NetworkUsageProviderSettings $settings): void
-    {
-        $settings->selfPersist($this->simpleSettingsService);
     }
 
     public function getDataForChart(string $chartDataType, string $locale): array
@@ -115,6 +103,10 @@ final class NetworkUsageService
             $chdata = $this->prepareDataForChart($billingStart);
         }
 
+        $chdata['bonusPayload']['current_traffic_left'] = 0;
+        $chdata['bonusPayload']['current_transfer_rate_left'] = 0;
+        $chdata['bonusPayload']['current_transfer_rate'] = 0;
+        $chdata['bonusPayload']['current_billing_frame_end'] = 0;
 
         $latestStat = $this->getLatestStatistic();
         if ($latestStat instanceof NetworkStatistic) {
@@ -126,11 +118,6 @@ final class NetworkUsageService
                 = $latestStat->getTotalSpeedFromReferencePointReadable();
             $chdata['bonusPayload']['current_billing_frame_end']
                 = $latestStat->getTimeFrame()->getBillingFrameEndReadable($locale);
-        } else {
-            $chdata['bonusPayload']['current_traffic_left'] = 0;
-            $chdata['bonusPayload']['current_transfer_rate_left'] = 0;
-            $chdata['bonusPayload']['current_transfer_rate'] = 0;
-            $chdata['bonusPayload']['current_billing_frame_end'] = 0;
         }
 
         try {
@@ -153,12 +140,14 @@ final class NetworkUsageService
     {
         $networkStatistics = $this->getLatestStatistic();
         $headerValue = '';
-        if ($property === 'optimal_speed') {
-            $headerValue = $networkStatistics->getTransferRateLeftReadable(4);
-        } elseif ($property === 'traffic_left') {
-            $headerValue = $networkStatistics->getTrafficLeftReadable(4);
-        } elseif ($property === 'billing_window_end') {
-            $headerValue = $networkStatistics->getTimeFrame()->getBillingFrameEndReadable(locale: $locale);
+        if ($networkStatistics instanceof NetworkStatistic) {
+            if ($property === 'optimal_speed') {
+                $headerValue = $networkStatistics->getTransferRateLeftReadable(4);
+            } elseif ($property === 'traffic_left') {
+                $headerValue = $networkStatistics->getTrafficLeftReadable(4);
+            } elseif ($property === 'billing_window_end') {
+                $headerValue = $networkStatistics->getTimeFrame()->getBillingFrameEndReadable(locale: $locale);
+            }
         }
         $dynaCard = new DynamicCard();
         $dynaCard->setHeaderText(
@@ -175,14 +164,13 @@ final class NetworkUsageService
     {
         $info = new MobileSignalInfo($this->simpleCacheService);
         $info->fetchedAt = new DateTime('now');
-        $connectionSettings = $this->getConnectionSettings();
-        $type = $connectionSettings->getProviderType();
+        $type = $this->networkUsageProviderSettings->getProviderType();
         if ($type === self::NETWORK_USAGE_PROVIDER_HUAWEI) {
             try {
                 if (false === ($router instanceof Router)) {
                     $router = new Router();
-                    $router->setAddress($connectionSettings->getAddress());
-                    $router->login('admin', $connectionSettings->getPassword());
+                    $router->setAddress($this->networkUsageProviderSettings->getAddress());
+                    $router->login('admin', $this->networkUsageProviderSettings->getPassword());
                 }
             } catch (\Exception $e) {
                 $info->error = $e->getMessage();
@@ -306,13 +294,12 @@ final class NetworkUsageService
         return $networkStatistics;
     }
 
-    private function getCurrentStatisticFromHuawei(
-        NetworkUsageProviderSettings $connectionSettings
-    ): NetworkStatistic|null {
+    private function getCurrentStatisticFromHuawei(): NetworkStatistic|null
+    {
         try {
             $router = new Router();
-            $router->setAddress($connectionSettings->getAddress());
-            $router->login('admin', $connectionSettings->getPassword());
+            $router->setAddress($this->networkUsageProviderSettings->getAddress());
+            $router->login('admin', $this->networkUsageProviderSettings->getPassword());
 
             /** @var SimpleXMLElement $monthStats */
             $monthStats = $router->getMonthStats();

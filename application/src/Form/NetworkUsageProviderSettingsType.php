@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Form\CommonFormType;
-use App\Model\NetworkUsageProviderSettings;
+use App\Service\NetworkUsageProviderSettings;
 use App\Service\NetworkUsageService;
 use App\Service\SimpleSettingsService;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

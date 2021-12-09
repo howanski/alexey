@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\NetworkMachine;
-use App\Service\WeatherService;
-use App\Service\SimpleSettingsService;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\NetworkMachineRepository;
+use App\Service\NetworkUsageProviderSettings;
+use App\Service\SimpleSettingsService;
+use App\Service\WeatherService;
+use Doctrine\ORM\EntityManagerInterface;
 
 final class DashboardService
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private NetworkUsageService $networkUsageService,
         private WeatherService $weatherService,
+        private NetworkUsageProviderSettings $networkUsageProviderSettings,
     ) {
     }
 
@@ -26,10 +27,8 @@ final class DashboardService
         $networkMachineRepository = $this->getNetworkMachineRepository();
         $dashboardData['machines'] = $networkMachineRepository->findBy(['showOnDashboard' => true]);
 
-
-        $networkUsageSettings = $this->networkUsageService->getConnectionSettings();
         $showNetworkUsageOnDashboard =
-            ($networkUsageSettings->getShowOnDashboard() === SimpleSettingsService::UNIVERSAL_TRUTH);
+            ($this->networkUsageProviderSettings->getShowOnDashboard() === SimpleSettingsService::UNIVERSAL_TRUTH);
         if (true === $showNetworkUsageOnDashboard) {
             $dashboardData['network_statistic'] = true;
         }

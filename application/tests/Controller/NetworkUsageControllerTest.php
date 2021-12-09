@@ -17,4 +17,11 @@ final class NetworkUsageControllerTest extends ControllerTestStub
         $client->request('GET', '/network/usage/info');
         $this->assertResponseIsSuccessful();
     }
+
+    public function testDynacard()
+    {
+        $client = $this->getClientWithLoggedInUser(forAjaxRequest: true);
+        $client->request('GET', '/network/usage/card-data/traffic_left');
+        $this->assertResponseIsSuccessful();
+    }
 }

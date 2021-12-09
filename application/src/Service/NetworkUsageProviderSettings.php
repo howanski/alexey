@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Model;
+namespace App\Service;
 
 use App\Service\SimpleSettingsService;
 
@@ -21,9 +21,15 @@ final class NetworkUsageProviderSettings
 
     private string $showOnDashboard;
 
-    public function selfConfigure(SimpleSettingsService $simpleSettingsService): void
+    public function __construct(
+        private SimpleSettingsService $simpleSettingsService
+    ) {
+        $this->selfConfigure();
+    }
+
+    private function selfConfigure(): void
     {
-        $settingsArray = $simpleSettingsService->getSettings(
+        $settingsArray = $this->simpleSettingsService->getSettings(
             keys: [
                 self::PROVIDER_TYPE,
                 self::PROVIDER_ADDRESS,
@@ -38,9 +44,9 @@ final class NetworkUsageProviderSettings
         $this->setShowOnDashboard(strval($settingsArray[self::SHOW_ON_DASHBOARD]));
     }
 
-    public function selfPersist(SimpleSettingsService $simpleSettingsService)
+    public function selfPersist()
     {
-        $simpleSettingsService->saveSettings(
+        $this->simpleSettingsService->saveSettings(
             settings: [
                 self::PROVIDER_TYPE => $this->getProviderType(),
                 self::PROVIDER_ADDRESS => $this->getAddress(),

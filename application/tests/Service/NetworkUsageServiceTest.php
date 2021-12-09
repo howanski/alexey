@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\NetworkStatisticTimeFrame;
 use App\Repository\NetworkStatisticRepository;
 use App\Repository\NetworkStatisticTimeFrameRepository;
+use App\Service\NetworkUsageProviderSettings;
 use App\Service\SimpleCacheService;
 
 final class NetworkUsageServiceTest extends TestCase
@@ -33,10 +34,13 @@ final class NetworkUsageServiceTest extends TestCase
         $returnObj = new NetworkStatistic();
         $networkStatisticRepository->method('getLatestOne')->willReturn($returnObj);
 
+        $networkUsageProviderSettings = $this->createMock(originalClassName: NetworkUsageProviderSettings::class);
+
         $service = new NetworkUsageService(
             em: $em,
             networkStatisticRepository: $networkStatisticRepository,
             networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
+            networkUsageProviderSettings: $networkUsageProviderSettings,
             simpleCacheService: $this->createMock(originalClassName: SimpleCacheService::class),
             simpleSettingsService: $simpleSettingsService,
             translator: $translator,
@@ -46,60 +50,6 @@ final class NetworkUsageServiceTest extends TestCase
             expected: $returnObj,
             actual: $service->getLatestStatistic(),
             message: 'Wrong entity provided',
-        );
-    }
-
-    public function testGetConnectionSettings(): void
-    {
-        $em = $this->createMock(originalClassName: EntityManagerInterface::class);
-        $simpleSettingsService = $this->createMock(originalClassName: SimpleSettingsService::class);
-        $networkStatisticTimeFrameRepository =
-            $this->createMock(originalClassName: NetworkStatisticTimeFrameRepository::class);
-        $networkStatisticRepository = $this->createMock(originalClassName: NetworkStatisticRepository::class);
-        $translator = $this->createMock(originalClassName: AlexeyTranslator::class);
-        $translatorFunc = function (string $string) {
-            return 'translated_' . $string;
-        };
-        $translator->method('translateString')->willReturnCallback($translatorFunc);
-
-        $returnObj = [
-            'NETWORK_USAGE_PROVIDER_TYPE' => 'XX',
-            'NETWORK_USAGE_PROVIDER_ADDRESS' => 'XXX',
-            'NETWORK_USAGE_PROVIDER_PASSWORD' => 'XXXX',
-            'NETWORK_USAGE_SHOW_ON_DASHBOARD' => 'XXXXX',
-        ];
-
-        $simpleSettingsService->method('getSettings')->willReturn($returnObj);
-
-        $service = new NetworkUsageService(
-            em: $em,
-            networkStatisticRepository: $networkStatisticRepository,
-            networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
-            simpleCacheService: $this->createMock(originalClassName: SimpleCacheService::class),
-            simpleSettingsService: $simpleSettingsService,
-            translator: $translator,
-        );
-
-        $actualSettings = $service->getConnectionSettings();
-
-        $this->assertEquals(
-            expected: 'XX',
-            actual: $actualSettings->getProviderType(),
-        );
-
-        $this->assertEquals(
-            expected: 'XXX',
-            actual: $actualSettings->getAddress(),
-        );
-
-        $this->assertEquals(
-            expected: 'XXXX',
-            actual: $actualSettings->getPassword(),
-        );
-
-        $this->assertEquals(
-            expected: 'XXXXX',
-            actual: $actualSettings->getShowOnDashboard(),
         );
     }
 
@@ -125,10 +75,13 @@ final class NetworkUsageServiceTest extends TestCase
 
         $simpleSettingsService->method('getSettings')->willReturn($settingsArray);
 
+        $networkUsageProviderSettings = $this->createMock(originalClassName: NetworkUsageProviderSettings::class);
+
         $service = new NetworkUsageService(
             em: $em,
             networkStatisticRepository: $networkStatisticRepository,
             networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
+            networkUsageProviderSettings: $networkUsageProviderSettings,
             simpleCacheService: $this->createMock(originalClassName: SimpleCacheService::class),
             simpleSettingsService: $simpleSettingsService,
             translator: $translator,
@@ -178,10 +131,14 @@ final class NetworkUsageServiceTest extends TestCase
         $networkStatistic->setReferencePoint($networkStatisticOld);
 
         $networkStatisticRepository->method('getLatestOne')->willReturn($networkStatistic);
+
+        $networkUsageProviderSettings = $this->createMock(originalClassName: NetworkUsageProviderSettings::class);
+
         $service = new NetworkUsageService(
             em: $em,
             networkStatisticRepository: $networkStatisticRepository,
             networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
+            networkUsageProviderSettings: $networkUsageProviderSettings,
             simpleCacheService: $this->createMock(originalClassName: SimpleCacheService::class),
             simpleSettingsService: $simpleSettingsService,
             translator: $translator,
