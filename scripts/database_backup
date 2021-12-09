@@ -4,10 +4,10 @@ echo "Creating backup..."
 gzip --best backup_all_databases_current.sql
 mv backup_all_databases_current.sql.gz backup_before_$(date +%Y_%m_%d_%H_%M_%S).sql.gz > /dev/null
 docker exec alexey-mysql sh -c 'exec mysqldump --all-databases -uroot -p"$MYSQL_ROOT_PASSWORD"' > backup_all_databases_current.sql
-if [ $(ls | wc -l) -gt 10 ]; then
+if [ $(ls | wc -l) -gt 30 ]; then
     rm "$(ls -t | tail -1)"
 fi
-if [ $(ls | wc -l) -gt 10 ]; then
+if [ $(ls | wc -l) -gt 30 ]; then
     rm "$(ls -t | tail -1)"
 fi
 echo "Backup finished"
