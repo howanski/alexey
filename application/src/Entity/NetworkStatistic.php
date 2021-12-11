@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use DateTime;
-use App\Class\HHelpers;
+use App\Class\Interwebz;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\NetworkStatisticRepository;
 use DivisionByZeroError;
@@ -124,7 +124,7 @@ class NetworkStatistic
 
     public function getDownloadSpeedFromReferencePointReadable(): string
     {
-        return HHelpers::formatBytes((int)$this->getDownloadSpeedFromReferencePoint()) . '/s';
+        return Interwebz::formatBytes((int)$this->getDownloadSpeedFromReferencePoint()) . '/s';
     }
 
     // Upload
@@ -141,7 +141,7 @@ class NetworkStatistic
 
     public function getUploadSpeedFromReferencePointReadable(): string
     {
-        return HHelpers::formatBytes((int)$this->getUploadSpeedFromReferencePoint()) . '/s';
+        return Interwebz::formatBytes((int)$this->getUploadSpeedFromReferencePoint()) . '/s';
     }
 
     // Download + Upload
@@ -153,7 +153,7 @@ class NetworkStatistic
 
     public function getTotalTrafficFromReferencePointReadable(): string
     {
-        return HHelpers::formatBytes($this->getTotalTrafficFromReferencePoint());
+        return Interwebz::formatBytes($this->getTotalTrafficFromReferencePoint());
     }
 
     public function getTotalSpeedFromReferencePoint(): float
@@ -163,7 +163,7 @@ class NetworkStatistic
 
     public function getTotalSpeedFromReferencePointReadable(): string
     {
-        return HHelpers::formatBytes($this->getTotalSpeedFromReferencePoint()) . '/s';
+        return Interwebz::formatBytes($this->getTotalSpeedFromReferencePoint()) . '/s';
     }
 
     public function getTrafficLeft(): int
@@ -174,7 +174,7 @@ class NetworkStatistic
 
     public function getTrafficLeftReadable(int $precision = 2): string
     {
-        return HHelpers::formatBytes($this->getTrafficLeft(), $precision);
+        return Interwebz::formatBytes($this->getTrafficLeft(), $precision);
     }
 
     public function getTransferRateLeft(): float
@@ -188,6 +188,6 @@ class NetworkStatistic
 
     public function getTransferRateLeftReadable(int $precision = 2): string
     {
-        return HHelpers::formatBytes((int)$this->getTransferRateLeft(), $precision) . '/s';
+        return Interwebz::formatBytes((int)$this->getTransferRateLeft(), $precision) . '/s';
     }
 }

@@ -40,6 +40,9 @@ app:
         settings: Ustawienia
         wake: Obudź
         you_sure_delete: "Na pewno chcesz to usunąć?"
+    crawler:
+      strings:
+        menu_record: 'Crawler'
     dashboard:
       strings:
         menu_record: Sterownia

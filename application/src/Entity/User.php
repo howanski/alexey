@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\SimpleSetting;
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -47,12 +48,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 254, options: ['default' => ''])]
     private string $email = '';
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RedditChannel::class, orphanRemoval: true)]
+    private $redditChannels;
+
     public function __construct()
     {
         $this->settings = new ArrayCollection();
         $this->caches = new ArrayCollection();
         $this->moneyNodes = new ArrayCollection();
         $this->moneyTransfers = new ArrayCollection();
+        $this->redditChannels = new ArrayCollection();
     }
 
     public function getId(): int
@@ -146,34 +151,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getSettings(): ArrayCollection|array
+    public function getSettings(): Collection
     {
         return $this->settings;
     }
 
-    public function setSettings(array|ArrayCollection $settings): self
-    {
-        $this->settings = $settings;
-        return $this;
-    }
-
-    public function getCaches(): ArrayCollection
+    public function getCaches(): Collection
     {
         return $this->caches;
     }
 
-    public function setCaches(array|ArrayCollection $caches): self
-    {
-        $this->caches = $caches;
-        return $this;
-    }
 
-    public function getMoneyTransfers(): ArrayCollection
+    public function getMoneyTransfers(): Collection
     {
         return $this->moneyTransfers;
     }
 
-    public function getMoneyNodes(): ArrayCollection
+    public function getMoneyNodes(): Collection
     {
         return $this->moneyNodes;
     }
@@ -187,5 +181,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->email = $email;
         return $this;
+    }
+
+    public function getRedditChannels(): Collection
+    {
+        return $this->redditChannels;
     }
 }

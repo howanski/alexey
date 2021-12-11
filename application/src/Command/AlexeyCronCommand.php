@@ -21,10 +21,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class AlexeyCronCommand extends Command
 {
     private const DEFAULT_JOBS = [
-        AsyncJob::TYPE_PING_ALL_MACHINES => 30,
-        AsyncJob::TYPE_UPDATE_NETWORK_STATS => 30,
-        // AsyncJob::TYPE_TRANSMISSION_SPEED_ADJUST => 50, Moved after stat update
         AsyncJob::TYPE_CLEANUP_NETWORK_STATS => 600,
+        AsyncJob::TYPE_PING_ALL_MACHINES => 30,
+        AsyncJob::TYPE_UPDATE_CRAWLER => 600,
+        AsyncJob::TYPE_UPDATE_NETWORK_STATS => 30,
     ];
 
     public function __construct(

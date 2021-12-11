@@ -40,6 +40,9 @@ app:
         settings: Settings
         wake: Wake
         you_sure_delete: "Are you sure you want to delete this item?"
+    crawler:
+      strings:
+        menu_record: 'Crawler'
     dashboard:
       strings:
         menu_record: Dashboard

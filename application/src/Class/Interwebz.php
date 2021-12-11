@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Class;
 
-// Howanski's Helpers
-final class HHelpers
+use SimpleXMLElement;
+
+// Nice things copy-pasted from the interwebz
+final class Interwebz
 {
     public static function formatBytes(int|float $bytes, int $precision = 2, bool $asPowerOfTens = false): string
     {
@@ -22,5 +24,12 @@ final class HHelpers
         }
 
         return round($bytes, $precision) . ' ' . $units[$power];
+    }
+
+    public static function simpleXmlToArray(SimpleXMLElement $xml): array
+    {
+        $json = json_encode($xml);
+        $array = json_decode($json, true);
+        return $array;
     }
 }

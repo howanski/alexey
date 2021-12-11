@@ -1,5 +1,0 @@
-#!/bin/bash
-clear
-rm -rf ../var/qa-results/*
-echo "Test result directory clean"
-echo ""

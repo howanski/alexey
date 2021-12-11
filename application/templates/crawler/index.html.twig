@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('crawler')},
+	]
+%}
+{% set locale = app.request.locale %}
+
+{% block javascripts %}{% endblock %}
+
+{% block pageContentPrimary %}
+	{% if filter == 'nsfw' %}
+		{% set filter_toggle_path = path('crawler_index', {filter: ''}) %}
+		{% set filter_toggle_name = 'NSFW OFF' %}
+		{% set filter_toggle_icons = 'fas fa-user-shield' %}
+		{% set filter_toggle_color = 'nord14' %}
+	{% else %}
+		{% set filter_toggle_path = path('crawler_index', {filter: 'nsfw'}) %}
+		{% set filter_toggle_name = 'NSFW ON' %}
+		{% set filter_toggle_icons = 'fas fa-dumpster-fire' %}
+		{% set filter_toggle_color = 'nord12' %}
+	{% endif %}
+	{% set action_buttons = [
+        {
+            'color': filter_toggle_color,
+            'href': filter_toggle_path,
+            'name': filter_toggle_name,
+            'icon': filter_toggle_icons
+       },
+		{
+            'color': 'nord10',
+            'href': path('crawler_reddit_channel_new'),
+            'name': '',
+            'icon': 'fas fa-plus-circle'
+       }
+	] %}
+	{% include 'entity_actions_row.html.twig' with {
+		'buttons': action_buttons,
+	} only %}
+{% endblock %}
+
+{% block pageContentSecondary %}
+	{% for feed in feeds %}
+		{% set table_data = [] %}
+		{% for post in feed.posts %}
+			{% set row %}
+			<a href="{{ post.uriOld }}" target="_blank">{{ post.title }}</a>
+			{% endset %}
+			{% set actions %}
+			<button class="fas fa-unlink inline-unlinker" data-unlink-path="{{ path('crawler_reddit_post_dismiss', {id: post.id}) }}" data-unlink-parent="tr"></button>
+			{% endset %}
+			{% set table_data = table_data|merge([{
+			'time': post.publishTimereadable(locale),
+			'actions': actions,
+			'row': row
+		}]) %}
+		{% endfor %}
+		{% set feed_name = '/r/' ~ feed.name %}
+		{% set title %}
+		<a href="https://old.reddit.com{{ feed_name }}" target="_blank">{{ feed_name }}</a>
+		{% endset %}
+		{% include 'table.html.twig' with {
+			'tableTitle': title,
+			'tableData': table_data,
+			'buttons': [
+				{
+					'href': path('crawler_reddit_channel_drop', {id: feed.id}),
+					'text': '<i class="far fa-trash-alt text-nord12"></i>'
+				}
+			]
+		} only %}
+	{% endfor %}
+{% endblock %}

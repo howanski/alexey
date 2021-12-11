@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Class\HHelpers;
+use App\Class\Interwebz;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -71,7 +71,7 @@ class NetworkStatisticTimeFrame
 
     public function getBillingFrameDataLimitReadable(): string
     {
-        return HHelpers::formatBytes($this->getBillingFrameDataLimit());
+        return Interwebz::formatBytes($this->getBillingFrameDataLimit());
     }
 
     public function setBillingFrameDataLimit(int $billingFrameDataLimit): self

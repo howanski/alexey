@@ -45,28 +45,28 @@ final class AlexeySideMenuProviderTest extends TestCase
         );
 
         $this->assertEquals(
-            expected: 4,
+            expected: 5,
             actual: sizeof($menu),
             message: '---!---> Main menu items count changed',
         );
 
         $menuConstruction = [
             [
-                'icon' => 'fa-yin-yang',
+                'icon' => 'fas fa-yin-yang',
                 'isActive' => false,
                 'name' => 'trans_menu_record',
                 'destination' => '/dashboard',
                 'children' => [],
             ],
             [
-                'icon' => 'fa-cloud-sun',
+                'icon' => 'fas fa-cloud-sun',
                 'isActive' => false,
                 'name' => 'trans_menu_record',
                 'destination' => '/weather',
                 'children' => [],
             ],
             [
-                'icon' => 'fa-wifi',
+                'icon' => 'fas fa-wifi',
                 'isActive' => false,
                 'name' => 'trans_menu_record',
                 'destination' => '/network',
@@ -86,6 +86,13 @@ final class AlexeySideMenuProviderTest extends TestCase
                     [],
                     [],
                 ],
+            ],
+            [
+                'icon' => 'fab fa-reddit-alien',
+                'isActive' => false,
+                'name' => 'trans_menu_record',
+                'destination' => '/crawler_index',
+                'children' => [],
             ],
         ];
 

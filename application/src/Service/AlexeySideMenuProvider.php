@@ -51,7 +51,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'dashboard'
             ),
             destination: $route,
-            icon: 'fa-yin-yang',
+            icon: 'fas fa-yin-yang',
             isActive: $this->isActiveRoute($route),
             children: [],
         );
@@ -63,7 +63,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'weather'
             ),
             destination: $route,
-            icon: 'fa-cloud-sun',
+            icon: 'fas fa-cloud-sun',
             isActive: $this->isActiveRoute($route),
             children: [],
         );
@@ -71,6 +71,18 @@ final class AlexeySideMenuProvider extends AbstractExtension
         $sideMenu = $this->addNetworkMenuRecords($sideMenu);
 
         $sideMenu = $this->addMoneyMenuRecords($sideMenu);
+
+        $route = $this->router->generate('crawler_index');
+        $sideMenu[] = new SideMenuItem(
+            name: $this->translator->translateString(
+                translationId: 'menu_record',
+                module: 'crawler'
+            ),
+            destination: $route,
+            icon: 'fab fa-reddit-alien',
+            isActive: $this->isActiveRoute($route),
+            children: [],
+        );
 
         return $sideMenu;
     }
@@ -102,7 +114,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'network_machines'
             ),
             destination: $route,
-            icon: 'fa-robot',
+            icon: 'fas fa-robot',
             isActive: $this->isActiveRoute($route),
             children: [],
         );
@@ -114,7 +126,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'network_usage'
             ),
             destination: $route,
-            icon: 'fa-tachometer-alt',
+            icon: 'fas fa-tachometer-alt',
             isActive: $this->isActiveRoute($route),
             children: [],
         );
@@ -126,7 +138,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'network_usage'
             ),
             destination: $route,
-            icon: 'fa-cloud-download-alt',
+            icon: 'fas fa-cloud-download-alt',
             isActive: $this->isActiveRoute($route),
             children: [],
         );
@@ -139,7 +151,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'network'
             ),
             destination: $route,
-            icon: 'fa-wifi',
+            icon: 'fas fa-wifi',
             isActive: $this->isActiveRoute($route),
             children: [
                 $networkMachines,
@@ -164,7 +176,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'money'
             ),
             destination: $route,
-            icon: 'fa-hand-holding-usd',
+            icon: 'fas fa-hand-holding-usd',
             isActive: $this->isActiveRoute($route),
             children: [],
         );
@@ -175,7 +187,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 translationId: 'menu_record_transfers',
                 module: 'money'
             ),
-            icon: 'fa-exchange-alt',
+            icon: 'fas fa-exchange-alt',
             destination: $route,
             isActive: $this->isActiveRoute($route),
             children: [],
@@ -187,7 +199,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 translationId: 'menu_record_graphs',
                 module: 'money'
             ),
-            icon: 'fa-chart-line',
+            icon: 'fas fa-chart-line',
             destination: $route,
             isActive: $this->isActiveRoute($route),
             children: [],

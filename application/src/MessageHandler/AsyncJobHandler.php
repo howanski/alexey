@@ -8,6 +8,7 @@ use App\Message\AsyncJob;
 use App\Service\NetworkUsageService;
 use App\Service\TransmissionService;
 use App\Service\NetworkMachineService;
+use App\Service\RedditReader;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -17,6 +18,7 @@ final class AsyncJobHandler implements MessageHandlerInterface
         private MessageBusInterface $bus,
         private NetworkMachineService $networkMachineService,
         private NetworkUsageService $networkUsageService,
+        private RedditReader $redditReader,
         private TransmissionService $transmissionService,
     ) {
     }
@@ -51,6 +53,9 @@ final class AsyncJobHandler implements MessageHandlerInterface
                     wakeDestination: $payload['wakeDestination'],
                     macAddress: $payload['macAddress'],
                 );
+                break;
+            case AsyncJob::TYPE_UPDATE_CRAWLER:
+                $this->redditReader->refreshAllChannels();
                 break;
         }
     }
