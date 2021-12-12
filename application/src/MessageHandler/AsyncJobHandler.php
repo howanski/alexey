@@ -57,6 +57,12 @@ final class AsyncJobHandler implements MessageHandlerInterface
             case AsyncJob::TYPE_UPDATE_CRAWLER:
                 $this->redditReader->refreshAllChannels();
                 break;
+            case AsyncJob::TYPE_UPDATE_CRAWLER_CHANNEL:
+                $this->redditReader->refreshChannelById(id: $payload['id']);
+                break;
+            case AsyncJob::TYPE_UPDATE_CRAWLER_POST:
+                $this->redditReader->updatePostThumbnail(postId: $payload['id']);
+                break;
         }
     }
 }

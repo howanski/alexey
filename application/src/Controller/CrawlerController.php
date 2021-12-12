@@ -73,7 +73,10 @@ final class CrawlerController extends AbstractController
             $em->persist($channel);
             $em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
-            $message = new AsyncJob(jobType: AsyncJob::TYPE_UPDATE_CRAWLER, payload: []);
+            $message = new AsyncJob(
+                jobType: AsyncJob::TYPE_UPDATE_CRAWLER_CHANNEL,
+                payload: ['id' => $channel->getId()],
+            );
             $bus->dispatch($message);
             return $this->redirectToRoute('crawler_index', [], Response::HTTP_SEE_OTHER);
         }

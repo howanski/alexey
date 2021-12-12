@@ -13,6 +13,8 @@ final class AsyncJob
     public const TYPE_CLEANUP_NETWORK_STATS = 'cleanup_network_stats';
     public const TYPE_WAKE_ON_LAN = 'wake_on_lan';
     public const TYPE_UPDATE_CRAWLER = 'update_crawler';
+    public const TYPE_UPDATE_CRAWLER_CHANNEL = 'update_crawler_channel';
+    public const TYPE_UPDATE_CRAWLER_POST = 'update_crawler_post';
 
     public function __construct(
         private string $jobType,
