@@ -20,4 +20,23 @@ final class RedditPostRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, RedditPost::class);
     }
+
+    public function cleanup()
+    {
+        $oldTime = date('Y-m-d', strtotime('-1 month'));
+        $connection = $this->getEntityManager()->getConnection();
+        $sql =
+            'DELETE reddit_post ' .
+            'FROM reddit_post ' .
+            'WHERE reddit_post.seen = :seen ' .
+            'AND reddit_post.touched < :ago;';
+        $count = $connection->executeStatement(
+            sql: $sql,
+            params: [
+                'seen' => true,
+                'ago' => $oldTime,
+            ],
+        );
+        return $count;
+    }
 }

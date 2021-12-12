@@ -51,6 +51,7 @@ final class RedditReader
         foreach ($channels as $channel) {
             $this->refreshChannelIfNeeded($channel);
         }
+        $this->postRepository->cleanup();
     }
 
     public function getChannelDataForView(RedditChannel $channel)

@@ -160,6 +160,7 @@ app:
           cron_job_cleanup_network_stats: "Sprzatanie przestarzalych statystyk sieci"
           cron_job_ping: "Monitorowanie stanu urzadzen sieciowych"
           cron_job_update_network_stats: "Zbieranie statystyk sieci"
+          cron_job_update_crawler: "Aktualizacja crawlera reddit"
         labels:
           cron_jobs: "Procesy w tle"
           is_cron_active: "Uruchamiaj ten proces w tle"

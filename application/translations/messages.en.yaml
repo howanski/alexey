@@ -160,6 +160,7 @@ app:
           cron_job_cleanup_network_stats: "Cleanup obsolete network statistics"
           cron_job_ping: "Monitor network machines state"
           cron_job_update_network_stats: "Gather network statistics"
+          cron_job_update_crawler: "Update reddit crawler data"
         labels:
           cron_jobs: "Background jobs"
           is_cron_active: "Run this job in background"
