@@ -110,23 +110,4 @@ final class CrawlerController extends AbstractController
             return $this->redirectToRoute('crawler_index', [], Response::HTTP_SEE_OTHER);
         }
     }
-
-    #[Route('/reddit/channel/force-update-all/{filter}', name: 'crawler_reddit_channel_update_all')]
-    public function forceUpdate(
-        EntityManagerInterface $em,
-        MessageBusInterface $bus,
-        RedditChannelRepository $repo,
-        string $filter = '',
-    ) {
-        $channels = $repo->findAll();
-        $date = new DateTime('2000-01-01');
-        foreach ($channels as $channel) {
-            $channel->setLastFetch($date);
-            $em->persist($channel);
-        }
-        $em->flush();
-        $message = new AsyncJob(jobType: AsyncJob::TYPE_UPDATE_CRAWLER, payload: []);
-        $bus->dispatch($message);
-        return $this->redirectToRoute('crawler_index', ['filter' => $filter], Response::HTTP_SEE_OTHER);
-    }
 }
