@@ -128,7 +128,6 @@ final class RedditReader
             $channel->setLastFetch($now);
             $this->em->persist($channel);
             $this->em->flush();
-            $this->em->refresh($channel);
         }
     }
 }

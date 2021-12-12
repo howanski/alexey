@@ -31,7 +31,20 @@
             'href': path('crawler_reddit_channel_new'),
             'name': '',
             'icon': 'fas fa-plus-circle'
+       },
+		{
+            'color': 'nord10',
+            'href': path('crawler_index', {filter: filter}),
+            'name': '',
+            'icon': 'fas fa-sync'
+       },
+		{
+            'color': 'nord13',
+            'href': path('crawler_reddit_channel_update_all', {filter: filter}),
+            'name': '',
+            'icon': 'fas fa-sync'
        }
+	   
 	] %}
 	{% include 'entity_actions_row.html.twig' with {
 		'buttons': action_buttons,
