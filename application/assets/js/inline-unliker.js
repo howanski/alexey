@@ -8,12 +8,33 @@ function clickUnlinkBtn(event) {
     parent.classList.add("alert-toast-out");
 
     setTimeout(() => {
+        let replace = data.unhideReplacement;
+        if (replace == "true") {
+            let replacementContainerSelector = data.replacementContainer;
+            if (replacementContainerSelector) {
+                let replacementContainer = elem.closest(
+                    replacementContainerSelector
+                );
+                if (replacementContainer) {
+                    let replacerSelector = data.replacementSelector;
+                    if (replacerSelector) {
+                        let replacer =
+                            replacementContainer.querySelector(
+                                replacerSelector
+                            );
+                        if (replacer) {
+                            replacer.classList.remove("hidden");
+                        }
+                    }
+                }
+            }
+        }
         parent.remove();
     }, 900);
 
     let url = data.unlinkPath;
- 
-    var fetchOptions = {
+
+    let fetchOptions = {
         method: "POST",
     };
 
