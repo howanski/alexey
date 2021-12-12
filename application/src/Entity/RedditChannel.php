@@ -10,8 +10,10 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: RedditChannelRepository::class)]
+#[UniqueEntity(fields: ['user', 'name'])]
 class RedditChannel
 {
     #[ORM\Id]
@@ -31,11 +33,6 @@ class RedditChannel
 
     #[ORM\OneToMany(mappedBy: 'channel', targetEntity: RedditPost::class, orphanRemoval: true)]
     private $posts;
-
-    #[ORM\Column(type: 'simple_array')]
-    private $coverage = ['year', 'month', 'week', 'all'];
-    // TODO: after crawler gets daemonised there's no need to fetch monhly+
-
 
     #[ORM\Column(type: 'boolean')]
     private $nsfw = false;
@@ -89,18 +86,6 @@ class RedditChannel
     public function getPosts(): Collection
     {
         return $this->posts;
-    }
-
-    public function getCoverage(): array
-    {
-        return $this->coverage;
-    }
-
-    public function setCoverage(array $coverage): self
-    {
-        $this->coverage = $coverage;
-
-        return $this;
     }
 
     public function getNsfw(): bool

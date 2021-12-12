@@ -9,13 +9,15 @@ use Carbon\Carbon;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: RedditPostRepository::class)]
+#[UniqueEntity(fields: ['uri', 'channel'])]
 class RedditPost
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'bigint')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -24,7 +26,7 @@ class RedditPost
     #[ORM\Column(type: 'boolean')]
     private $seen = false;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 2048)]
     private $thumbnail = '';
 
     #[ORM\ManyToOne(targetEntity: RedditChannel::class, inversedBy: 'posts')]
@@ -48,7 +50,7 @@ class RedditPost
 
     public function getId(): int
     {
-        return $this->id;
+        return intval($this->id);
     }
 
     public function getUri(): string

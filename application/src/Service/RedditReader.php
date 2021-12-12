@@ -76,11 +76,19 @@ final class RedditReader
     {
         $now = new \DateTime('now');
         $hour = new DateInterval('PT1H');
+        $month = new DateInterval('P1M');
         $hourAgo = clone ($now);
+        $monthAgo = clone ($now);
         $hourAgo->sub($hour);
+        $monthAgo->sub($month);
         $lastFetched = $channel->getLastFetch();
         if ($lastFetched < $hourAgo) {
-            foreach ($channel->getCoverage() as $time) {
+            if ($lastFetched < $monthAgo) {
+                $coverage = ['year', 'month', 'week', 'all'];
+            } else {
+                $coverage = ['week'];
+            }
+            foreach ($coverage as $time) {
                 $uri = $this->getChannelUri(channelName: $channel->getName(), time: $time);
                 $data = $this->fetch($uri);
                 $castedData = Interwebz::simpleXmlToArray($data);
@@ -95,6 +103,20 @@ final class RedditReader
                             $persistedPost->setUri($uri);
                         }
                         $persistedPost->setTitle($post['title']);
+
+                        if (strlen($persistedPost->getThumbnail()) < 1) {
+                            $details = Interwebz::simpleXmlToArray($this->fetch($uri . '.rss'));
+                            if (array_key_exists(key: 'entry', array: $details)) {
+                                $details = $details['entry'];
+                                if (array_key_exists(key: 0, array: $details)) {
+                                    $details = $details[0];
+                                    if (array_key_exists(key: 'content', array: $details)) {
+                                        $details = $details['content'];
+                                        $persistedPost->setThumbnail($details);
+                                    }
+                                }
+                            }
+                        }
                         $published = new DateTime($post['published']);
                         $persistedPost->setPublished($published);
                         $persistedPost->setTouched($now);

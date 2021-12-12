@@ -45,9 +45,12 @@ final class CrawlerController extends AbstractController
     #[Route('/reddit/post/dismiss/{id}', name: 'crawler_reddit_post_dismiss', methods: ['POST'])]
     public function dismiss(RedditPost $post, EntityManagerInterface $em)
     {
-        $post->setSeen(true);
-        $em->persist($post);
-        $em->flush();
+        $user = $this->getUser();
+        if ($user === $post->getChannel()->getUser()) {
+            $post->setSeen(true);
+            $em->persist($post);
+            $em->flush();
+        }
         return new JsonResponse('ok');
     }
 
@@ -82,8 +85,25 @@ final class CrawlerController extends AbstractController
     #[Route('/reddit/channel/drop/{id}', name: 'crawler_reddit_channel_drop')]
     public function dropChannel(RedditChannel $channel, EntityManagerInterface $em)
     {
-        $em->remove($channel);
-        $em->flush();
+        $user = $this->getUser();
+        if ($user === $channel->getUser()) {
+            $em->remove($channel);
+            $em->flush();
+        }
+
         return $this->redirectToRoute('crawler_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/reddit/post/preview/{id}', name: 'crawler_reddit_post_preview')]
+    public function thumbnail(RedditPost $post)
+    {
+        $user = $this->getUser();
+        if ($user === $post->getChannel()->getUser()) {
+            return $this->render('crawler/preview.html.twig', [
+                'post' => $post,
+            ]);
+        } else {
+            return $this->redirectToRoute('crawler_index', [], Response::HTTP_SEE_OTHER);
+        }
     }
 }
