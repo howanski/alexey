@@ -61,7 +61,7 @@
 			{% set actions %}
 			<button class="fas fa-unlink inline-unlinker" data-unlink-path="{{ path('crawler_reddit_post_dismiss', {id: post.id}) }}" data-unlink-parent="tr"></button>
 			{% if post.thumbnail|length > 0 %}
-				<a class="ml-4" href="{{ path('crawler_reddit_post_preview', {id:post.id}) }}" target="_blank">
+				<a class="ml-4" href="{{ path('crawler_reddit_post_preview', {id: post.id}) }}" target="_blank">
 					<i class="fas fa-external-link-alt"></i>
 				</a>
 			{% endif %}

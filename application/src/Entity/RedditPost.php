@@ -26,7 +26,7 @@ class RedditPost
     #[ORM\Column(type: 'boolean')]
     private $seen = false;
 
-    #[ORM\Column(type: 'string', length: 2048)]
+    #[ORM\Column(type: 'text')]
     private $thumbnail = '';
 
     #[ORM\ManyToOne(targetEntity: RedditChannel::class, inversedBy: 'posts')]
