@@ -124,7 +124,10 @@ final class RedditReader
                         $persistedPost->setTouched($now);
                         $this->em->persist($persistedPost);
                         $this->em->flush();
-                        if (strlen($persistedPost->getThumbnail()) < 1) {
+                        if (
+                            strlen($persistedPost->getThumbnail()) < 1
+                            && $persistedPost->getSeen() === false
+                        ) {
                             $message = new AsyncJob(
                                 jobType: AsyncJob::TYPE_UPDATE_CRAWLER_POST,
                                 payload: ['id' => $persistedPost->getId()],
