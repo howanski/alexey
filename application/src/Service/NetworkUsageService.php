@@ -147,7 +147,12 @@ final class NetworkUsageService
         $headerValue = '';
         if ($networkStatistics instanceof NetworkStatistic) {
             if ($property === 'optimal_speed') {
-                $headerValue = $networkStatistics->getTransferRateLeftReadable(4);
+                $transmissionSettings = new TransmissionSettings();
+                $transmissionSettings->selfConfigure($this->simpleSettingsService);
+                $headerValue = $networkStatistics->getTransferRateLeftReadable(
+                    precision: 4,
+                    frameWidth: $transmissionSettings->getTargetFrame()
+                );
             } elseif ($property === 'traffic_left') {
                 $headerValue = $networkStatistics->getTrafficLeftReadable(4);
             } elseif ($property === 'billing_window_end') {
