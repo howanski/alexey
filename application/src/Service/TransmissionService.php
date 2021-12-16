@@ -51,7 +51,9 @@ final class TransmissionService
         $throttled = 0;
         $stat = $this->networkUsageService->getLatestStatistic();
         if ($stat instanceof NetworkStatistic) {
-            $throttled = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft());
+            $throttled = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft(
+                $this->settings->getTargetFrame()
+            ));
         }
         $mockedProbingTime = new \DateTime('now');
         $window = new \DateInterval('PT1H');
@@ -59,7 +61,9 @@ final class TransmissionService
         $chartPoints = 0;
         if ($throttled < intval($this->settings->getTargetSpeed())) {
             while ($throttled < intval($this->settings->getTargetSpeed())) {
-                $throttled = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft());
+                $throttled = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft(
+                    $this->settings->getTargetFrame()
+                ));
                 $stat->setProbingTime($mockedProbingTime);
                 $stat->setDataUploadedInFrame($stat->getDataUploadedInFrame() + $throttled * 1024 * 3600);
                 $mockedProbingTime->add($window);
@@ -72,7 +76,9 @@ final class TransmissionService
             }
         } else {
             while ($throttled > intval($this->settings->getTargetSpeed())) {
-                $throttled = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft());
+                $throttled = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft(
+                    $this->settings->getTargetFrame()
+                ));
                 $stat->setProbingTime($mockedProbingTime);
                 $stat->setDataUploadedInFrame($stat->getDataUploadedInFrame() + $throttled * 1024 * 3600);
                 $mockedProbingTime->add($window);
@@ -145,7 +151,9 @@ final class TransmissionService
                 $client = $transmission->getclient();
                 $client->authenticate($this->settings->getUser(), $this->settings->getPassword());
                 $session = $transmission->getSession();
-                $proposedSpeed = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft());
+                $proposedSpeed = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft(
+                    $this->settings->getTargetFrame()
+                ));
                 $session->setDownloadSpeedLimit($proposedSpeed);
                 $session->setAltSpeedDown($proposedSpeed);
                 $session->save();

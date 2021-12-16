@@ -70,6 +70,7 @@ app:
           host: Host
           provider_type: "Dostawca informacji o sieci"
           target_speed: "Docelowa prędkość"
+          throttling_frame: "Dławienie - punkt odniesienia"
           throttling_enabled: "Dławienie włączone"
           transmission_user: Użytkownik
         values:
@@ -93,6 +94,9 @@ app:
           provider_type:
             hilink: "Huawei (HiLink)"
             off: Wyłączony
+          throttling_frame:
+            day: "Koniec dnia"
+            full: "Obecny okres taryfowy"
       strings:
         billing_window_end: "Koniec okresu taryfowego"
         changes_in_time: "Zmiany w czasie"

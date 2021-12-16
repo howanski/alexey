@@ -116,7 +116,7 @@ final class NetworkUsageService
             $chdata['bonusPayload']['current_transfer_rate_left']
                 = $latestStat->getTransferRateLeftReadable(4);
             $chdata['bonusPayload']['current_transfer_rate_left_midnight']
-                = $latestStat->getTransferRateLeftReadable(4, 'day');
+                = $latestStat->getTransferRateLeftReadable(4, TransmissionSettings::TARGET_SPEED_FRAME_DAY);
             $chdata['bonusPayload']['current_transfer_rate']
                 = $latestStat->getTotalSpeedFromReferencePointReadable();
             $chdata['bonusPayload']['current_billing_frame_end']
@@ -128,7 +128,9 @@ final class NetworkUsageService
             $transmissionSettings->selfConfigure($this->simpleSettingsService);
             $stat = $this->getLatestStatistic();
             $throttling = ($stat instanceof NetworkStatistic) ? $transmissionSettings->getProposedThrottleSpeed(
-                speedLeft: $this->getLatestStatistic()->getTransferRateLeft()
+                speedLeft: $this->getLatestStatistic()->getTransferRateLeft(
+                    $transmissionSettings->getTargetFrame()
+                )
             ) : 0;
             $throttling .= ' kB/s';
         } catch (\Exception $e) {
@@ -282,7 +284,8 @@ final class NetworkUsageService
             $labels[] = $stat->getProbingTime()->format($timeFormat);
             $datasets['speed_relative']['data'][] = round(($stat->getTotalSpeedFromReferencePoint() / 1024), 4);
             $datasets['speed_left']['data'][] = round(($stat->getTransferRateLeft() / 1024), 4);
-            $datasets['speed_left_midnight']['data'][] = round(($stat->getTransferRateLeft('day') / 1024), 4);
+            $datasets['speed_left_midnight']['data'][] =
+                round(($stat->getTransferRateLeft(TransmissionSettings::TARGET_SPEED_FRAME_DAY) / 1024), 4);
         }
         $data['labels'] = $labels;
         $data['datasets'] = $datasets;

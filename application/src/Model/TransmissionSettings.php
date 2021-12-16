@@ -16,10 +16,14 @@ final class TransmissionSettings
     public const MAX_AGGRESSION = 20;
     private const MIN_AGGRESSION = 2;
 
+    public const TARGET_SPEED_FRAME_DAY = 'day';
+    public const TARGET_SPEED_FRAME_FULL = 'full';
+
     private const HOST = 'TRANSMISSION_HOST';
     private const USER = 'TRANSMISSION_USER';
     private const PASSWORD = 'TRANSMISSION_PASSWORD';
     private const TARGET_SPEED = 'TRANSMISSION_TARGET_SPEED';
+    private const TARGET_SPEED_FRAME = 'TRANSMISSION_TARGET_SPEED_FRAME';
     private const TARGET_SPEED_BUMPING = 'TRANSMISSION_TARGET_SPEED_BUMPING';
     private const AGGRESSION = 'TRANSMISSION_AGGRESSION';
     private const AGGRESSION_ADAPT = 'TRANSMISSION_AGGRESSION_ADAPT';
@@ -32,6 +36,8 @@ final class TransmissionSettings
     private string $password;
 
     private string $targetSpeed;
+
+    private string $targetFrame;
 
     private string $algorithmAggression;
 
@@ -50,6 +56,7 @@ final class TransmissionSettings
                 self::USER,
                 self::PASSWORD,
                 self::TARGET_SPEED,
+                self::TARGET_SPEED_FRAME,
                 self::TARGET_SPEED_BUMPING,
                 self::AGGRESSION,
                 self::AGGRESSION_ADAPT,
@@ -61,6 +68,7 @@ final class TransmissionSettings
         $this->setUser(strval($settingsArray[self::USER]));
         $this->setPassword(strval($settingsArray[self::PASSWORD]));
         $this->setTargetSpeed(strval($settingsArray[self::TARGET_SPEED]));
+        $this->setTargetFrame(strval($settingsArray[self::TARGET_SPEED_FRAME]));
         $this->setAllowSpeedBump(strval($settingsArray[self::TARGET_SPEED_BUMPING]));
         $this->setAlgorithmAggression(strval($settingsArray[self::AGGRESSION]));
         $this->setAggressionAdapt(strval($settingsArray[self::AGGRESSION_ADAPT]));
@@ -75,6 +83,7 @@ final class TransmissionSettings
                 self::USER => $this->getUser(),
                 self::PASSWORD => $this->getPassword(),
                 self::TARGET_SPEED => $this->getTargetSpeed(),
+                self::TARGET_SPEED_FRAME => $this->getTargetFrame(),
                 self::TARGET_SPEED_BUMPING => $this->getAllowSpeedBump(),
                 self::AGGRESSION => $this->getAlgorithmAggression(),
                 self::AGGRESSION_ADAPT => $this->getAggressionAdapt(),
@@ -191,6 +200,17 @@ final class TransmissionSettings
     public function setAllowSpeedBump(string $allowSpeedBump): self
     {
         $this->allowSpeedBump = $allowSpeedBump;
+        return $this;
+    }
+
+    public function getTargetFrame(): string
+    {
+        return strval($this->targetFrame);
+    }
+
+    public function setTargetFrame(string $targetFrame): self
+    {
+        $this->targetFrame = $targetFrame;
         return $this;
     }
 }

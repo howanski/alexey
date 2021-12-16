@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use DateTime;
 use App\Class\Interwebz;
+use App\Model\TransmissionSettings;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\NetworkStatisticRepository;
 use DivisionByZeroError;
@@ -199,10 +200,10 @@ class NetworkStatistic
         return Interwebz::formatBytes($this->getTrafficLeft(), $precision);
     }
 
-    public function getTransferRateLeft($frameWidth = 'month'): float
+    public function getTransferRateLeft($frameWidth = TransmissionSettings::TARGET_SPEED_FRAME_FULL): float
     {
         try {
-            if ('day' === $frameWidth) {
+            if (TransmissionSettings::TARGET_SPEED_FRAME_DAY === $frameWidth) {
                 return ($this->getTrafficLeftTillMidnight() / $this->getTimeLeftTillMidnight());
             } else {
                 return ($this->getTrafficLeft() / $this->getTimeLeftTillFrameEnd());
@@ -212,8 +213,10 @@ class NetworkStatistic
         }
     }
 
-    public function getTransferRateLeftReadable(int $precision = 2, $frameWidth = 'month'): string
-    {
+    public function getTransferRateLeftReadable(
+        int $precision = 2,
+        $frameWidth = TransmissionSettings::TARGET_SPEED_FRAME_FULL
+    ): string {
         return Interwebz::formatBytes((int)$this->getTransferRateLeft($frameWidth), $precision) . '/s';
     }
 }

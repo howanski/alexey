@@ -70,6 +70,7 @@ app:
           host: Host
           provider_type: "Provider type"
           target_speed: "Target speed"
+          throttling_frame: "Throttling reference point"
           throttling_enabled: "Throttling enabled"
           transmission_user: User
         values:
@@ -93,6 +94,9 @@ app:
           provider_type:
             hilink: "Huawei (HiLink)"
             off: "Off"
+          throttling_frame:
+            day: "Day"
+            full: "Current billing frame"
       strings:
         billing_window_end: "Billing window end"
         changes_in_time: "Changes in time"

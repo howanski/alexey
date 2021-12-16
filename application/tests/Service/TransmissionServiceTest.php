@@ -39,6 +39,7 @@ final class TransmissionServiceTest extends TestCase
             'TRANSMISSION_TARGET_SPEED_BUMPING' => 'yy',
             'TRANSMISSION_AGGRESSION' => 'tt',
             'TRANSMISSION_AGGRESSION_ADAPT' => 'trt',
+            'TRANSMISSION_TARGET_SPEED_FRAME' => 'xxx',
         ];
         $simpleSettingsService->method('getSettings')->willReturn($settings);
 

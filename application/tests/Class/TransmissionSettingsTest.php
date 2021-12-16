@@ -23,6 +23,7 @@ final class TransmissionSettingsTest extends TestCase
             'TRANSMISSION_TARGET_SPEED_BUMPING' => 'SET_6',
             'TRANSMISSION_AGGRESSION' => '7',
             'TRANSMISSION_AGGRESSION_ADAPT' => 'SET_8',
+            'TRANSMISSION_TARGET_SPEED_FRAME' => 'SET_9',
         ];
         $simpleSettingsService->method('getSettings')->willReturn($settingsArray);
 
@@ -66,6 +67,11 @@ final class TransmissionSettingsTest extends TestCase
         $this->assertEquals(
             expected: 'SET_8',
             actual: $settings->getAggressionAdapt(),
+        );
+
+        $this->assertEquals(
+            expected: 'SET_9',
+            actual: $settings->getTargetFrame(),
         );
     }
 }

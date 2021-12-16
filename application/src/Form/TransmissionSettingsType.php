@@ -34,6 +34,15 @@ final class TransmissionSettingsType extends CommonFormType
         }
         ksort($choicesAggresionAdapt);
 
+        $choicesThrottlingFrame = [];
+        $frames = [
+            TransmissionSettings::TARGET_SPEED_FRAME_FULL,
+            TransmissionSettings::TARGET_SPEED_FRAME_DAY,
+        ];
+        foreach ($frames as $key) {
+            $choicesThrottlingFrame[$this->getValueTrans(field: 'throttling_frame', value: $key)] = $key;
+        }
+
         $builder
             ->add(child: 'host', type: TextType::class, options: [
                 'label' => $this->getLabelTrans(label: 'host'),
@@ -93,10 +102,19 @@ final class TransmissionSettingsType extends CommonFormType
                     new NotBlank()
                 ],
             ])
+            ->add('targetFrame', ChoiceType::class, [
+                'choices' => $choicesThrottlingFrame,
+                'label' => $this->getLabelTrans(label: 'throttling_frame'),
+                'priority' => -7,
+                'required' => true,
+                'constraints' => [
+                    new NotBlank()
+                ],
+            ])
             ->add('isActive', ChoiceType::class, [
                 'choices' => $this->falseTruthChoices(fieldName: 'is_active'),
                 'label' => $this->getLabelTrans(label: 'throttling_enabled'),
-                'priority' => -7,
+                'priority' => -8,
                 'required' => true,
                 'constraints' => [
                     new NotBlank()
