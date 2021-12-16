@@ -105,6 +105,7 @@ final class NetworkUsageService
 
         $chdata['bonusPayload']['current_traffic_left'] = 0;
         $chdata['bonusPayload']['current_transfer_rate_left'] = 0;
+        $chdata['bonusPayload']['current_transfer_rate_left_midnight'] = 0;
         $chdata['bonusPayload']['current_transfer_rate'] = 0;
         $chdata['bonusPayload']['current_billing_frame_end'] = 0;
 
@@ -114,6 +115,8 @@ final class NetworkUsageService
                 = $latestStat->getTrafficLeftReadable(4);
             $chdata['bonusPayload']['current_transfer_rate_left']
                 = $latestStat->getTransferRateLeftReadable(4);
+            $chdata['bonusPayload']['current_transfer_rate_left_midnight']
+                = $latestStat->getTransferRateLeftReadable(4, 'day');
             $chdata['bonusPayload']['current_transfer_rate']
                 = $latestStat->getTotalSpeedFromReferencePointReadable();
             $chdata['bonusPayload']['current_billing_frame_end']
@@ -251,6 +254,24 @@ final class NetworkUsageService
             'pointBorderWidth' => 2,
             'data' => [],
         ];
+        $datasets['speed_left_midnight'] = [
+            'label' => $this->translator->translateString(
+                translationId: 'optimal_speed_midnight',
+                module: 'network_usage',
+            ) . ' (kB/s)',
+            'lineTension' => 0.3,
+            'backgroundColor' => 'rgba(42, 79, 11, 0.05)',
+            'borderColor' => 'rgba(42, 79, 11, 1)',
+            'pointRadius' => 3,
+            'pointBackgroundColor' => 'rgba(42, 79, 11, 1)',
+            'pointBorderColor' => 'rgba(42, 79, 11, 1)',
+            'pointHoverRadius' => 3,
+            'pointHoverBackgroundColor' => 'rgba(42, 79, 11, 1)',
+            'pointHoverBorderColor' => 'rgba(42, 79, 11, 1)',
+            'pointHitRadius' => 10,
+            'pointBorderWidth' => 2,
+            'data' => [],
+        ];
         $now = new DateTime('now');
         $networkStatistics = $this->getPreparedEntitiesForChart($dateFrom, $now);
 
@@ -261,6 +282,7 @@ final class NetworkUsageService
             $labels[] = $stat->getProbingTime()->format($timeFormat);
             $datasets['speed_relative']['data'][] = round(($stat->getTotalSpeedFromReferencePoint() / 1024), 4);
             $datasets['speed_left']['data'][] = round(($stat->getTransferRateLeft() / 1024), 4);
+            $datasets['speed_left_midnight']['data'][] = round(($stat->getTransferRateLeft('day') / 1024), 4);
         }
         $data['labels'] = $labels;
         $data['datasets'] = $datasets;

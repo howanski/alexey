@@ -102,6 +102,14 @@ class NetworkStatistic
         return ($endTime - $startTime);
     }
 
+    private function getTimeLeftTillMidnight(): int
+    {
+        $probingTimeClone = clone $this->getProbingTime();
+        $probingTimeClone->setTime(23, 59, 59);
+        $midnight = $probingTimeClone->getTimestamp();
+        return $midnight - $this->getProbingTime()->getTimestamp();
+    }
+
     // seconds passed
     public function getTimePassedFromReferencePoint(): int
     {
@@ -172,22 +180,40 @@ class NetworkStatistic
             ($this->getDataUploadedInFrame() + $this->getDataDownloadedInFrame()));
     }
 
+    private function getTrafficLeftTillMidnight(): int
+    {
+        $packageSize = $this->getTimeFrame()->getBillingFrameDataLimit();
+        $packageEnd = $this->getTimeFrame()->getBillingFrameEnd()->getTimestamp();
+        $packageStart = $this->getTimeFrame()->getBillingFrameStart()->getTimestamp();
+        $packageLength =  $packageEnd - $packageStart;
+        $continuumDensity = $packageSize / $packageLength;
+        $timeTillMidnight = $this->getTimeLeftTillMidnight();
+        $timeTillFrameEnd = $this->getTimeLeftTillFrameEnd();
+        $timeFromMidnightToFrameEnd = $timeTillFrameEnd - $timeTillMidnight;
+        $packageFromMidnightToFrameEnd = (int)($timeFromMidnightToFrameEnd * $continuumDensity);
+        return $this->getTrafficLeft() - $packageFromMidnightToFrameEnd;
+    }
+
     public function getTrafficLeftReadable(int $precision = 2): string
     {
         return Interwebz::formatBytes($this->getTrafficLeft(), $precision);
     }
 
-    public function getTransferRateLeft(): float
+    public function getTransferRateLeft($frameWidth = 'month'): float
     {
         try {
-            return ($this->getTrafficLeft() / $this->getTimeLeftTillFrameEnd());
+            if ('day' === $frameWidth) {
+                return ($this->getTrafficLeftTillMidnight() / $this->getTimeLeftTillMidnight());
+            } else {
+                return ($this->getTrafficLeft() / $this->getTimeLeftTillFrameEnd());
+            }
         } catch (DivisionByZeroError) {
             return 0;
         }
     }
 
-    public function getTransferRateLeftReadable(int $precision = 2): string
+    public function getTransferRateLeftReadable(int $precision = 2, $frameWidth = 'month'): string
     {
-        return Interwebz::formatBytes((int)$this->getTransferRateLeft(), $precision) . '/s';
+        return Interwebz::formatBytes((int)$this->getTransferRateLeft($frameWidth), $precision) . '/s';
     }
 }

@@ -101,6 +101,7 @@ app:
         menu_record: "Network usage"
         mobile_signal: "Mobile signal"
         optimal_speed: "Optimal speed"
+        optimal_speed_midnight: "Optimal speed till midnight"
         outside_traffic: "Outside traffic"
         throttling_by_optimal_speed: "Throttling by optimal speed"
         throttling: Throttling

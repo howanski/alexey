@@ -101,6 +101,7 @@ app:
         menu_record: "Zużycie sieci"
         mobile_signal: "Sygnał komórkowy"
         optimal_speed: "Optymalna prędkość"
+        optimal_speed_midnight: "Optymalna prędkość do końca dnia"
         outside_traffic: "Ruch zewnętrzny"
         throttling_by_optimal_speed: "Dławiene wg. optymalnej prędkości"
         throttling: Dławienie
