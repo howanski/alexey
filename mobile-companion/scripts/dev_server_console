@@ -1,0 +1,2 @@
+#!/bin/bash
+docker exec -it -w /home/node/app alexey-companion /bin/bash

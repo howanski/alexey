@@ -1,0 +1,6 @@
+#!/bin/bash
+echo stopping...
+docker stop alexey-companion
+echo removing...
+docker rm alexey-companion
+echo clear!
