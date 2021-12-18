@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\ApiDevice;
@@ -12,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ApiDevice[]    findAll()
  * @method ApiDevice[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ApiDeviceRepository extends ServiceEntityRepository
+final class ApiDeviceRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

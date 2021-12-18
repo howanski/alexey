@@ -20,9 +20,17 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CustomCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 
-class ApiAuthenticator extends AbstractAuthenticator
+final class ApiAuthenticator extends AbstractAuthenticator
 {
     private const SECRET_HEADER = 'X-ALEXEY-SECRET';
+    private const CORS_PRE_FLIGHT = 'Access-Control-Request-Headers';
+    private const CORS_HEADERS = [
+        'Access-Control-Allow-Origin' => '*',
+    ];
+    private const CORS_HEADERS_FULL = [
+        'Access-Control-Allow-Origin' => '*',
+        'Access-Control-Allow-Headers' => self::SECRET_HEADER,
+    ];
 
     public function __construct(
         private EntityManagerInterface $em,
@@ -30,7 +38,7 @@ class ApiAuthenticator extends AbstractAuthenticator
     ) {
     }
 
-    public function supports(Request $request): ?bool
+    public function supports(Request $request): bool
     {
         return true;
     }
@@ -58,6 +66,12 @@ class ApiAuthenticator extends AbstractAuthenticator
                 $this->denyApiAccess();
             }
         } else {
+            if (
+                $request->headers->has(self::CORS_PRE_FLIGHT)
+                && strtolower(self::SECRET_HEADER) === strtolower($request->headers->get(self::CORS_PRE_FLIGHT))
+            ) {
+                $this->denyApiAccess(message: 'Shut up, preflight!', statusCode: 200);
+            }
             $this->denyApiAccess();
         }
     }
@@ -72,13 +86,24 @@ class ApiAuthenticator extends AbstractAuthenticator
         return null;
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
+        $code = $exception->getCode();
         $data = [
             'message' => strval($exception->getMessage()),
-            'code' => $exception->getCode(),
+            'code' => $code,
         ];
 
-        return new JsonResponse(data: $data, status: intval($exception->getCode()));
+        if (200 === $code) {
+            $headers = self::CORS_HEADERS_FULL;
+        } else {
+            $headers = self::CORS_HEADERS;
+        }
+
+        return new JsonResponse(
+            data: $data,
+            status: $code,
+            headers: $headers,
+        );
     }
 }
