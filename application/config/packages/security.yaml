@@ -16,6 +16,11 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        mobile:
+            pattern: ^/api
+            stateless: true
+            custom_authenticators:
+                - App\Security\ApiAuthenticator
         main:
             lazy: true
             provider: app_user_provider
