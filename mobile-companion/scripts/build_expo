@@ -1,0 +1,8 @@
+#!/bin/bash
+clear
+echo "----------------------------------------------"
+echo "----------------------------------------------"
+echo "------- [ STARTING BUILD ON EXPO.DEV ] -------"
+echo "----------------------------------------------"
+echo "----------------------------------------------"
+docker exec -it -w /home/node/app alexey-companion expo build:android
