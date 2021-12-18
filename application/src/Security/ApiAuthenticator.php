@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Security;
 
+use App\Entity\ApiDevice;
+use App\Repository\ApiDeviceRepository;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,12 +16,18 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CustomCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 
 class ApiAuthenticator extends AbstractAuthenticator
 {
-    public function __construct()
-    {
+    private const SECRET_HEADER = 'X-ALEXEY-SECRET';
+
+    public function __construct(
+        private EntityManagerInterface $em,
+        private ApiDeviceRepository $deviceRepository,
+    ) {
     }
 
     public function supports(Request $request): ?bool
@@ -26,10 +37,32 @@ class ApiAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $this->deny('Not implemented yet');
+        $secret = $request->headers->get(key: self::SECRET_HEADER, default: 'NOT_PROVIDED_ANY_SECRET');
+        $apiDevice = $this->deviceRepository->findOneBy(criteria: ['secret' => $secret]);
+        if ($apiDevice instanceof ApiDevice) {
+            try {
+                $noMoreChecksNeeded = function ($credentials, $user) {
+                    return true;
+                };
+                $now = new DateTime('now');
+                $apiDevice->setLastRequest($now);
+                $this->em->persist($apiDevice);
+                $this->em->flush();
+
+                $user = $apiDevice->getUser();
+                $username = $user->getUserIdentifier();
+                $badge = new UserBadge(userIdentifier: $username);
+                $credentials = new CustomCredentials($noMoreChecksNeeded, $user);
+                return new Passport(userBadge: $badge, credentials: $credentials);
+            } catch (Exception) {
+                $this->denyApiAccess();
+            }
+        } else {
+            $this->denyApiAccess();
+        }
     }
 
-    private function deny(string $message, int $statusCode = 401)
+    private function denyApiAccess(string $message = 'Access denied.', int $statusCode = 401)
     {
         throw new CustomUserMessageAuthenticationException(message: $message, code: $statusCode);
     }

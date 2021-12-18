@@ -16,7 +16,7 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        mobile:
+        api:
             pattern: ^/api
             stateless: true
             custom_authenticators:
