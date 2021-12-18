@@ -195,9 +195,16 @@ class NetworkStatistic
         return $this->getTrafficLeft() - $packageFromMidnightToFrameEnd;
     }
 
-    public function getTrafficLeftReadable(int $precision = 2): string
-    {
-        return Interwebz::formatBytes($this->getTrafficLeft(), $precision);
+    public function getTrafficLeftReadable(
+        int $precision = 2,
+        string $frameWidth = TransmissionSettings::TARGET_SPEED_FRAME_FULL,
+    ): string {
+        if (TransmissionSettings::TARGET_SPEED_FRAME_DAY === $frameWidth) {
+            $value = $this->getTrafficLeftTillMidnight();
+        } else {
+            $value = $this->getTrafficLeft();
+        }
+        return Interwebz::formatBytes($value, $precision);
     }
 
     public function getTransferRateLeft($frameWidth = TransmissionSettings::TARGET_SPEED_FRAME_FULL): float

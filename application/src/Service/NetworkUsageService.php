@@ -143,6 +143,7 @@ final class NetworkUsageService
 
     public function getDynacard(string $property, string $locale): DynamicCard
     {
+        // TODO: move transmissionSettings to constructor
         $networkStatistics = $this->getLatestStatistic();
         $headerValue = '';
         if ($networkStatistics instanceof NetworkStatistic) {
@@ -154,7 +155,12 @@ final class NetworkUsageService
                     frameWidth: $transmissionSettings->getTargetFrame()
                 );
             } elseif ($property === 'traffic_left') {
-                $headerValue = $networkStatistics->getTrafficLeftReadable(4);
+                $transmissionSettings = new TransmissionSettings();
+                $transmissionSettings->selfConfigure($this->simpleSettingsService);
+                $headerValue = $networkStatistics->getTrafficLeftReadable(
+                    precision: 4,
+                    frameWidth: $transmissionSettings->getTargetFrame(),
+                );
             } elseif ($property === 'billing_window_end') {
                 $headerValue = $networkStatistics->getTimeFrame()->getBillingFrameEndReadable(locale: $locale);
             }
