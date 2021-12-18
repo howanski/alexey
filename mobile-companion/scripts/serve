@@ -1,16 +1,7 @@
 #!/bin/bash
-cd ../docker
-clear
-echo "----------------------------------------------"
-echo "------ [ RUNNING COMPANION DEV SERVER ] ------"
-echo "----------------------------------------------"
-sleep 3
-docker-compose build --pull --parallel --no-cache --force-rm
-docker-compose up --detach
 docker exec -it -w /home/node/app alexey-companion yarn install
 docker exec -d -w /home/node/app alexey-companion ./serve
 echo "----------------------------------------------"
-echo "------------- [ DEV SERVER UP! ] -------------"
 echo "----------------------------------------------"
 echo "---- [ BUNDLER:  http://localhost:19002 ] ----"
 echo "----------------------------------------------"
