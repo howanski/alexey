@@ -42,6 +42,9 @@ class RedditPost
     #[ORM\Column(type: 'datetime')]
     private $touched;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $user = '';
+
     public function __construct()
     {
         $this->published = new DateTime('now');
@@ -148,5 +151,16 @@ class RedditPost
         $new = 'https://www.reddit.com/';
         $old = 'https://old.reddit.com/';
         return str_replace(search: $new, replace: $old, subject: $uri);
+    }
+
+    public function getUser(): string
+    {
+        return strval($this->user);
+    }
+
+    public function setUser(string $user): self
+    {
+        $this->user = $user;
+        return $this;
     }
 }

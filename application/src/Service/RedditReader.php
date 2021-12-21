@@ -118,6 +118,11 @@ final class RedditReader
                             $persistedPost->setUri($uri);
                         }
                         $persistedPost->setTitle($post['title']);
+                        if (array_key_exists(key: 'author', array: $post)) {
+                            if (array_key_exists(key: 'name', array: $post['author'])) {
+                                $persistedPost->setUser(strval($post['author']['name']));
+                            }
+                        }
 
                         $published = new DateTime($post['published']);
                         $persistedPost->setPublished($published);
