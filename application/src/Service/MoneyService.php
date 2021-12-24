@@ -15,7 +15,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class MoneyService
 {
-
     public function __construct(
         private AlexeyTranslator $translator,
         private MoneyNodeRepository $moneyNodeRepository,

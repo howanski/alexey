@@ -24,7 +24,7 @@ final class MoneyTransferTest extends TestCase
             ->setSourceNode($src)
             ->setTargetNode($target)
             ->setOperationDate($today)
-            ->setOperationDateString($today->format('d.m.y'))
+            ->setOperationDateString($today->format('d.m.Y'))
             ;
 
         $this->assertEquals(expected: $today, actual: $entity->getOperationDate());

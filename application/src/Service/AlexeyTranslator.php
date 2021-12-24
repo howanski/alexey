@@ -11,7 +11,6 @@ use Symfony\Component\Intl\Exception\MissingResourceException;
 
 final class AlexeyTranslator extends AbstractExtension
 {
-
     public const DEFAULT_TRANSLATION_MODULE = 'common';
 
     public function __construct(

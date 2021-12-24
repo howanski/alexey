@@ -22,7 +22,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 )]
 final class AlexeyCreateUserCommand extends Command
 {
-
     public function __construct(
         private EntityManagerInterface $em,
         private UserRepository $userRepository,

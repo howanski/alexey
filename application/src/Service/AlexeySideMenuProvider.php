@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class AlexeySideMenuProvider extends AbstractExtension
 {
-
     private ?Request $currentRequest;
 
     private ?string $currentRoute;
