@@ -54,7 +54,7 @@
 			{% set actions %}
 			<button class="fas fa-unlink inline-unlinker" data-unlink-path="{{ path('crawler_reddit_post_dismiss', {id: post.id}) }}" data-unlink-parent="tr" data-unhide-replacement="true" data-replacement-container="tbody" data-replacement-selector="tr.hidden"></button>
 			{% if post.user|length > 0 %}
-				<a class="ml-4" href="https://old.reddit.com{{ post.user }}?sort=top" target="_blank">
+				<a class="ml-4" href="{{ post.uriUserOld }}" target="_blank">
 					{{ post.user }}
 				</a>
 			{% endif %}

@@ -153,6 +153,13 @@ class RedditPost
         return str_replace(search: $new, replace: $old, subject: $uri);
     }
 
+    public function getUriUserOld(): string
+    {
+        $user = $this->getUser();
+        $user = str_replace(search: '/u/', replace: '', subject: $user);
+        return 'https://old.reddit.com/user/' . $user . '/submitted/';
+    }
+
     public function getUser(): string
     {
         return strval($this->user);
