@@ -9,7 +9,7 @@
 
 {% block pageContentPrimary %}
 	{% if filter == 'nsfw' %}
-		{% set filter_toggle_path = path('crawler_index', {filter: ''}) %}
+		{% set filter_toggle_path = path('crawler_index', {filter: '*'}) %}
 		{% set filter_toggle_name = 'NSFW OFF' %}
 		{% set filter_toggle_icons = 'fas fa-user-shield' %}
 		{% set filter_toggle_color = 'nord14' %}
@@ -79,7 +79,7 @@
 			'tableData': table_data,
 			'buttons': [
 				{
-					'href': path('crawler_reddit_channel_drop', {id: feed.id}),
+					'href': path('crawler_reddit_channel_drop', {id: feed.id, filter: filter}),
 					'text': '<i class="far fa-trash-alt text-nord12"></i>'
 				}
 			],

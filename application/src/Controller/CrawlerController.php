@@ -28,7 +28,7 @@ final class CrawlerController extends AbstractController
     public function index(
         RedditReader $reader,
         RedditChannelRepository $repository,
-        string $filter = '',
+        string $filter = '*',
     ): Response {
         /** @var User $user */
         $user = $this->getUser();
@@ -86,8 +86,8 @@ final class CrawlerController extends AbstractController
         ]);
     }
 
-    #[Route('/reddit/channel/drop/{id}', name: 'crawler_reddit_channel_drop')]
-    public function dropChannel(RedditChannel $channel, EntityManagerInterface $em)
+    #[Route('/reddit/channel/drop/{id}/{filter}', name: 'crawler_reddit_channel_drop')]
+    public function dropChannel(RedditChannel $channel, string $filter, EntityManagerInterface $em)
     {
         $user = $this->getUser();
         if ($user === $channel->getUser()) {
@@ -95,7 +95,7 @@ final class CrawlerController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('crawler_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('crawler_index', ['filter' => $filter], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/reddit/post/preview/{id}', name: 'crawler_reddit_post_preview')]
