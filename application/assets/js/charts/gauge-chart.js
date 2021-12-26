@@ -16,7 +16,7 @@ function createChart(elem, labels, datasets) {
                 display: false,
             },
             needle: {
-                color: '#4c566a'
+                color: "#4c566a",
             },
             responsive: true,
         },
@@ -105,5 +105,7 @@ function createChartOnElem(elem) {
     updateChartData(elem, dataSource);
 }
 
-let charts = document.querySelectorAll(".chart-gauge");
-Array.from(charts).map(createChartOnElem);
+window.addEventListener("load", (event) => {
+    let charts = document.querySelectorAll(".chart-gauge");
+    Array.from(charts).map(createChartOnElem);
+});

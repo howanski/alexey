@@ -50,5 +50,7 @@ function refreshCard(elem) {
         });
 }
 
-let dynacards = document.querySelectorAll(".dynacard");
-Array.from(dynacards).map(manageDynacard);
+window.addEventListener("load", (event) => {
+    let dynacards = document.querySelectorAll(".dynacard");
+    Array.from(dynacards).map(manageDynacard);
+});

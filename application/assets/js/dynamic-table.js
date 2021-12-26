@@ -21,5 +21,7 @@ function fetchBody(elem) {
         });
 }
 
-let dynaTables = document.querySelectorAll("[data-table-body-url]");
-Array.from(dynaTables).map(fetchBody);
+window.addEventListener('load', (event) => {
+    let dynaTables = document.querySelectorAll("[data-table-body-url]");
+    Array.from(dynaTables).map(fetchBody);
+});

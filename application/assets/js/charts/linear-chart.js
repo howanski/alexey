@@ -177,8 +177,10 @@ function createChartOnElem(elem) {
     updateChartData(elem, dataSource);
 }
 
-let charts = document.querySelectorAll(".chart-linear");
-Array.from(charts).map(createChartOnElem);
+window.addEventListener("load", (event) => {
+    let charts = document.querySelectorAll(".chart-linear");
+    Array.from(charts).map(createChartOnElem);
+});
 
 function clickPlay(event) {
     event.preventDefault();
@@ -247,12 +249,16 @@ function makeRefreshBtnClickable(elem) {
     elem.addEventListener("click", clickRefresh);
 }
 
-let chartPlayBtns = document.querySelectorAll(".linear-chart-play-button");
-let chartPauseBtns = document.querySelectorAll(".linear-chart-pause-button");
-let chartRefreshBtns = document.querySelectorAll(
-    ".linear-chart-force-refresh-button"
-);
+window.addEventListener("load", (event) => {
+    let chartPlayBtns = document.querySelectorAll(".linear-chart-play-button");
+    let chartPauseBtns = document.querySelectorAll(
+        ".linear-chart-pause-button"
+    );
+    let chartRefreshBtns = document.querySelectorAll(
+        ".linear-chart-force-refresh-button"
+    );
 
-Array.from(chartPlayBtns).map(makePlayBtnClickable);
-Array.from(chartPauseBtns).map(makePauseBtnClickable);
-Array.from(chartRefreshBtns).map(makeRefreshBtnClickable);
+    Array.from(chartPlayBtns).map(makePlayBtnClickable);
+    Array.from(chartPauseBtns).map(makePauseBtnClickable);
+    Array.from(chartRefreshBtns).map(makeRefreshBtnClickable);
+});

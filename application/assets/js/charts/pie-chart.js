@@ -17,7 +17,7 @@ function createChart(elem, labels, datasets) {
                     display: true,
                     position: "bottom",
                     labels: {
-                        color: "#eceff4"
+                        color: "#eceff4",
                     },
                 },
                 title: {
@@ -131,6 +131,7 @@ function createChartOnElem(elem) {
     }
     updateChartData(elem, dataSource);
 }
-
-let charts = document.querySelectorAll(".chart-pie");
-Array.from(charts).map(createChartOnElem);
+window.addEventListener("load", (event) => {
+    let charts = document.querySelectorAll(".chart-pie");
+    Array.from(charts).map(createChartOnElem);
+});

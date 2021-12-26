@@ -14,5 +14,7 @@ function initDatePicker(elem) {
     });
 }
 
-let datePickerInputs = document.querySelectorAll(".datepicker-target");
-Array.from(datePickerInputs).map(initDatePicker);
+window.addEventListener("load", (event) => {
+    let datePickerInputs = document.querySelectorAll(".datepicker-target");
+    Array.from(datePickerInputs).map(initDatePicker);
+});
