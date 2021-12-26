@@ -45,7 +45,12 @@ function clickUnlinkBtn(event) {
 
 function addListener(elem) {
     elem.addEventListener("click", clickUnlinkBtn);
+    elem.classList.remove("inline-unlinker");
 }
 
-let secureButtons = document.querySelectorAll(".inline-unlinker");
-Array.from(secureButtons).map(addListener);
+function run() {
+    let unlinkers = document.querySelectorAll(".inline-unlinker");
+    Array.from(unlinkers).map(addListener);
+}
+
+setInterval(run, 2000);

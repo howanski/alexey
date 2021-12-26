@@ -14,7 +14,12 @@ function clickUnfoldBtn(event) {
 
 function addListener(elem) {
     elem.addEventListener("click", clickUnfoldBtn);
+    elem.classList.remove("table-unfolder");
 }
 
-let unfolders = document.querySelectorAll(".table-unfolder");
-Array.from(unfolders).map(addListener);
+function run(){
+    let unfolders = document.querySelectorAll(".table-unfolder");
+    Array.from(unfolders).map(addListener);
+}
+
+setInterval(run, 2000);

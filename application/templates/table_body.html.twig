@@ -1,0 +1,42 @@
+{% if no_hover is not defined %}
+	{% set no_hover = false %}
+{% endif %}
+{% set light = 'nord4' %}
+{% set dark = 'nord0' %}
+{% if foldable is not defined %}
+	{% set foldable = false %}
+{% endif %}
+{% if foldable_limit is not defined %}
+	{% set foldable_limit = 5 %}
+{% endif %}
+{% if hide_columns is not defined %}
+	{% set hide_columns = [] %}
+{% endif %}
+{% for table_row in tableData %}
+	{% set colspan_count = 0 %}
+	<tr class="{% if not no_hover %}hover:bg-{{ dark }} hover:text-{{ light }}{% endif %}{% if foldable and loop.index > foldable_limit %} hidden{% endif %}">
+		{% for cell in table_row %}
+			{% if loop.index not in hide_columns %}
+				{% set colspan_count = colspan_count + 1 %}
+				<td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+					{{ cell|raw }}
+				</td>
+			{% endif %}
+		{% endfor %}
+	</tr>
+	{% if foldable and loop.index > foldable_limit and loop.last %}
+		<tr>
+			<td colspan="{{ colspan_count }}" class="border-t-0 px-6 align-middle border-l-0 text-2xl border-r-0 whitespace-nowrap p-4">
+				<button class="fas fa-ellipsis-h table-unfolder animate-pulse"></button>
+			</td>
+		</tr>
+	{% endif %}
+{% else %}
+	<tr>
+		<td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+			---
+			{{ 'empty_data'|localised }}
+			---
+		</td>
+	</tr>
+{% endfor %}

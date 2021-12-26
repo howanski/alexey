@@ -6,15 +6,6 @@
 {% endif %}
 {% set light = 'nord4' %}
 {% set dark = 'nord0' %}
-{% if no_hover is not defined %}
-	{% set no_hover = false %}
-{% endif %}
-{% if foldable is not defined %}
-	{% set foldable = false %}
-{% endif %}
-{% if foldable_limit is not defined %}
-	{% set foldable_limit = 5 %}
-{% endif %}
 <div class="flex flex-wrap">
 	<div class="w-full xl:w-{{ max_width }}/12 mb-12 xl:mb-0 px-4">
 		<div class="relative flex flex-col min-w-0 break-words bg-{{ light }} w-full mb-6 shadow-lg rounded">
@@ -53,36 +44,19 @@
 							</tr>
 						</thead>
 					{% endif %}
-					<tbody>
-						{% for table_row in tableData %}
-							{% set colspan_count = 0 %}
-							<tr class="{% if not no_hover %}hover:bg-{{ dark }} hover:text-{{ light }}{% endif %}{% if foldable and loop.index > foldable_limit %} hidden{% endif %}">
-								{% for cell in table_row %}
-									{% if loop.index not in hide_columns %}
-										{% set colspan_count = colspan_count + 1 %}
-										<td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-											{{ cell|raw }}
-										</td>
-									{% endif %}
-								{% endfor %}
-							</tr>
-							{% if foldable and loop.index > foldable_limit and loop.last %}
-								<tr>
-									<td colspan="{{ colspan_count }}" class="border-t-0 px-6 align-middle border-l-0 text-2xl border-r-0 whitespace-nowrap p-4">
-										<button class="fas fa-ellipsis-h table-unfolder animate-pulse"></button>
-									</td>
-								</tr>
-							{% endif %}
-						{% else %}
+					{% if tableDataUrl is defined and tableDataUrl %}
+						<tbody data-table-body-url="{{ tableDataUrl }}">
 							<tr>
-								<td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-									---
-									{{ 'empty_data'|localised }}
-									---
+								<td class="border-t-0 px-6 align-middle border-l-0 text-2xl border-r-0 whitespace-nowrap p-4">
+									<i class="fas fa-sync-alt animate-spin"></i>
 								</td>
 							</tr>
-						{% endfor %}
-					</tbody>
+						</tbody>
+					{% else %}
+						<tbody>
+							{% include 'table_body.html.twig' %}
+						</tbody>
+					{% endif %}
 				</table>
 			</div>
 		</div>
