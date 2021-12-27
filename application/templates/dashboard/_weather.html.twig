@@ -5,7 +5,7 @@
 	{% set placeholder_weather_data_big %}
 	{% include 'placeholder_text_loading.html.twig' with {'loadingText': 'daily'|localised('weather') ~ '...'} only %}
 	{% endset %}
-	{% for weather_days_ahead in 0..5 %}
+	{% for weather_days_ahead in 0..2 %}
 		{% include 'card.html.twig' with {
             'iconClass': 'fas fa-cloud-sun-rain',
             'iconBg': 'nord10',
