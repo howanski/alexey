@@ -22,4 +22,4 @@ function run(){
     Array.from(unfolders).map(addListener);
 }
 
-setInterval(run, 2000);
+setInterval(run, 1000);
