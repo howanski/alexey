@@ -23,7 +23,7 @@ export default function App() {
             <Button
                 onPress={() => {
                     setMainResult("--- 😅 ---");
-                    fetch(serverUri + "/api/", {
+                    fetch(serverUri + "/api/dashboard", {
                         method: "GET",
                         headers: { "X-ALEXEY-SECRET": serverSecret },
                     })

@@ -1,0 +1,13 @@
+#!/bin/bash
+rm -f ../build/alexey.der.crt
+clear
+echo "---------------------"
+echo "Generating DER cert to build directory..."
+openssl x509 -inform PEM -outform DER -in ../../docker/entrails/nginx/ssl/alexey.crt -out ../build/alexey.der.crt
+echo "---------------------"
+echo "-------ANDROID-------"
+echo "---------------------"
+echo "Put the alexey.der.crt onto the SD Card of your Android device (usually to internal one)."
+echo "Go to Settings / Security / Credential storage and select “Install from device storage”."
+echo "The .crt file will be detected and you will be prompted to enter a certificate name."
+echo "After importing the certificate, you will find it in Settings / Security / Credential storage / Trusted credentials / User."
