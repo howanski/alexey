@@ -5,7 +5,7 @@ function clickUnlinkBtn(event) {
 
     let parentSelector = data.unlinkParent;
     let parent = elem.closest(parentSelector);
-    parent.classList.add("alert-toast-out");
+    parent.classList.add("alert-toast-out-inplace");
 
     setTimeout(() => {
         let replace = data.unhideReplacement;
@@ -30,7 +30,7 @@ function clickUnlinkBtn(event) {
             }
         }
         parent.remove();
-    }, 900);
+    }, 500);
 
     let url = data.unlinkPath;
 
@@ -53,4 +53,4 @@ function run() {
     Array.from(unlinkers).map(addListener);
 }
 
-setInterval(run, 2000);
+setInterval(run, 1000);
