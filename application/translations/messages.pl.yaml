@@ -31,6 +31,7 @@ app:
         ip_or_url: IP/URL
         logout: Wyloguj
         mac_address: "Adres MAC"
+        mobile_devices: "Urządzenia mobilne"
         name: Nazwa
         new: Nowy
         save: Zapisz
@@ -178,6 +179,7 @@ app:
             pl: Polski
       strings:
         menu_record: Ustawienia
+        mobile_api_settings: "Aplikacja mobilna"
         system_settings: "Ustawienia systemowe"
         user_settings: "Ustawienia użytkownika"
     weather:

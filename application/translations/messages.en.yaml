@@ -31,6 +31,7 @@ app:
         ip_or_url: IP/URL
         logout: Logout
         mac_address: "MAC Address"
+        mobile_devices: "Mobile devices"
         name: Name
         new: New
         save: Save
@@ -178,6 +179,7 @@ app:
             pl: Polish
       strings:
         menu_record: Settings
+        mobile_api_settings: "Companion App"
         system_settings: "System settings"
         user_settings: "User settings"
     weather:

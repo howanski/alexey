@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'mobile_api_settings'|localised('settings'), 'href': path('api_local_settings')},
+	]
+%}
+
+{# {% block javascripts %}
+	{{ encore_entry_script_tags('qr-manager') }}
+{% endblock %} #}
+
+{% block pageContentPrimary %}
+	<div class="flex justify-center">
+		<div>
+			<img src="{{ path('api_show_qr') }}"></img>
+		</div>
+	</div>
+{% endblock %}
+
+{% block pageContentSecondary %}
+	{% set table_data = {} %}
+	{% for device in devices %}
+		{% set actions %}
+		{# {% include 'table_action_button.html.twig' with {
+			'href': path('dashboard', {'id': device.id}),
+			'name': 'delete'|localised,
+		} only %} #}
+        {# {% include 'table_action_button.html.twig' with {
+			'href': path('dashboard', {'id': device.id}),
+			'name': 'edit'|localised,
+		} only %} #}
+		{% endset %}
+
+		{% set table_data = table_data|merge([{
+			'last_request': device.lastRequest|date('Y-m-d H:i:s'),
+            'name': device.name,
+			'actions': actions,
+		}]) %}
+	{% endfor %}
+	{% include 'table.html.twig' with {
+		'tableTitle': 'mobile_devices'|localised,
+		'tableHeaders': [
+			'last_seen'|localised('network_machines'),
+			'name'|localised,
+            'actions'|localised,
+		],
+		'tableData': table_data,
+	} only %}
+{% endblock %}

@@ -12,6 +12,7 @@
         "doctrine/doctrine-bundle": "^2.5",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.10",
+        "endroid/qr-code": "^4.4",
         "geerlingguy/ping": "^1.2",
         "if0xx/huawei-hilink-api": "^0.1.0",
         "nesbot/carbon": "^2.53",
@@ -74,7 +75,12 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "symfony/flex": true,
+            "symfony/runtime": true
+        }
     },
     "autoload": {
         "psr-4": {

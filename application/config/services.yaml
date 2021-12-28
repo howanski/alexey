@@ -20,6 +20,9 @@ services:
       - "../src/Entity/"
       - "../src/Kernel.php"
       - "../src/Tests/"
+  App\Service\MobileApiManager:
+    arguments:
+      $salt: '%env(APP_SECRET)%'
   App\Service\AlexeySideMenuProvider:
     tags: ["twig.extension"]
   App\Service\AlexeyTranslator:
