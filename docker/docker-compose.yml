@@ -52,6 +52,7 @@ services:
             - database
         volumes:
             - ./../application:/var/www/html
+            - ./entrails/nginx/ngrok:/ngrok
         restart: always
         logging:
           driver: json-file
@@ -63,11 +64,16 @@ services:
     nginx:
         env_file:
             - .env
-        image: nginx
+        build:
+            context: ./entrails/nginx
+            dockerfile: Dockerfile
         container_name: "alexey-nginx"
+        expose:
+            - 4040
         ports:
             - 80:80
             - 443:443
+            #- 127.0.0.1:4040:4040
         networks:
             - network
         restart: always
@@ -77,6 +83,8 @@ services:
         volumes:
             - ./../application:/var/www/html
             - ./entrails/nginx/vhosts:/etc/nginx/vhost.d
+            - ./entrails/nginx/ngrok:/ngrok
+            - ./entrails/nginx/supervisor:/etc/supervisor/conf.d
             - ./entrails/nginx/nginx.conf:/etc/nginx/nginx.conf
             - ./entrails/nginx/ssl:/etc/nginx/ssl
         logging:
