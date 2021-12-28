@@ -1,0 +1,15 @@
+#!/bin/bash
+yarn install
+cd android
+rm -rf app/build/outputs/apk
+echo "1st pass... (because it likes to die...)"
+sleep 3
+./gradlew assembleRelease
+echo "2nd pass..."
+sleep 3
+./gradlew assembleRelease
+echo "moving stuff..."
+rm -rf /app-build/apk
+cp -r app/build/outputs/apk /app-build/
+echo "done"
+# bash

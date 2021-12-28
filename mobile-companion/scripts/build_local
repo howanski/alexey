@@ -1,0 +1,14 @@
+#!/bin/bash
+clear
+echo "----------------------------------------------"
+echo "----------------------------------------------"
+echo "------ [ STARTING BUILD ON LOCALHOST ] -------"
+echo "----------------------------------------------"
+echo "----------------------------------------------"
+
+echo "NOT YET IMPLEMENTED"
+exit;
+
+docker pull reactnativecommunity/react-native-android:5.2
+clear
+docker run --rm -it -w /app-src -v $(pwd)/../application:/app-src -v $(pwd)/../build:/app-build reactnativecommunity/react-native-android:5.2 ./build
