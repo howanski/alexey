@@ -68,12 +68,9 @@ services:
             context: ./entrails/nginx
             dockerfile: Dockerfile
         container_name: "alexey-nginx"
-        expose:
-            - 4040
         ports:
             - 80:80
             - 443:443
-            #- 127.0.0.1:4040:4040
         networks:
             - network
         restart: always
