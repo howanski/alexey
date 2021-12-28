@@ -6,6 +6,8 @@ namespace App\Security;
 
 use App\Entity\ApiDevice;
 use App\Repository\ApiDeviceRepository;
+use App\Repository\UserRepository;
+use App\Service\MobileApiManager;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -35,6 +37,8 @@ final class ApiAuthenticator extends AbstractAuthenticator
     public function __construct(
         private EntityManagerInterface $em,
         private ApiDeviceRepository $deviceRepository,
+        private UserRepository $userRepository,
+        private MobileApiManager $apiManager,
     ) {
     }
 
@@ -47,12 +51,12 @@ final class ApiAuthenticator extends AbstractAuthenticator
     {
         $secret = $request->headers->get(key: self::SECRET_HEADER, default: 'NOT_PROVIDED_ANY_SECRET');
         $apiDevice = $this->deviceRepository->findOneBy(criteria: ['secret' => $secret]);
+        $now = new DateTime('now');
+        $noMoreChecksNeeded = function ($credentials, $user) {
+            return true;
+        };
         if ($apiDevice instanceof ApiDevice) {
             try {
-                $noMoreChecksNeeded = function ($credentials, $user) {
-                    return true;
-                };
-                $now = new DateTime('now');
                 $apiDevice->setLastRequest($now);
                 $this->em->persist($apiDevice);
                 $this->em->flush();
@@ -66,6 +70,24 @@ final class ApiAuthenticator extends AbstractAuthenticator
                 $this->denyApiAccess();
             }
         } else {
+            foreach ($this->userRepository->findAll() as $user) {
+                $userToken = $this->apiManager->generateUserToken($user);
+                if (hash_equals($userToken, $secret)) {
+                    $apiDevice = new ApiDevice();
+                    $apiDevice->setSecret($secret);
+                    $apiDevice->setLastRequest($now);
+                    $apiDevice->setUser($user);
+                    $apiDevice->resetPermissions();
+                    $apiDevice->setName('--- ' . $now->format('Y-m-d H:i:s') . ' ---');
+                    $this->em->persist($apiDevice);
+                    $this->em->flush();
+
+                    $username = $user->getUserIdentifier();
+                    $badge = new UserBadge(userIdentifier: $username);
+                    $credentials = new CustomCredentials($noMoreChecksNeeded, $user);
+                    return new Passport(userBadge: $badge, credentials: $credentials);
+                }
+            }
             if (
                 $request->headers->has(self::CORS_PRE_FLIGHT)
                 && strtolower(self::SECRET_HEADER) === strtolower($request->headers->get(self::CORS_PRE_FLIGHT))
