@@ -31,6 +31,7 @@ Encore
   .addEntry("gauge-chart", "./assets/js/charts/gauge-chart.js")
   .addEntry("dynacard", "./assets/js/dynacard.js")
   .addEntry("forms-js", "./assets/js/forms.js")
+  .addEntry("qr-manager", "./assets/js/qr-manager.js")
 
   // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
   // .enableStimulusBridge('./assets/controllers.json')

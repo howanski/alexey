@@ -4,14 +4,14 @@
 	]
 %}
 
-{# {% block javascripts %}
+{% block javascripts %}
 	{{ encore_entry_script_tags('qr-manager') }}
-{% endblock %} #}
+{% endblock %}
 
 {% block pageContentPrimary %}
 	<div class="flex justify-center">
-		<div>
-			<img src="{{ path('api_show_qr') }}"></img>
+		<div style="min-height: 300px;">
+			<img id="qrToken" src="{{ path('api_show_qr') }}" data-device-count="{{ device_count }}" data-device-count-url="{{ device_count_url }}"></img>
 		</div>
 	</div>
 {% endblock %}
@@ -20,14 +20,14 @@
 	{% set table_data = {} %}
 	{% for device in devices %}
 		{% set actions %}
-		{# {% include 'table_action_button.html.twig' with {
-			'href': path('dashboard', {'id': device.id}),
+		{% include 'table_action_button.html.twig' with {
+			'href': path('api_device_drop', {'id': device.id}),
 			'name': 'delete'|localised,
-		} only %} #}
-        {# {% include 'table_action_button.html.twig' with {
-			'href': path('dashboard', {'id': device.id}),
+		} only %}
+        {% include 'table_action_button.html.twig' with {
+			'href': path('api_device_edit', {'id': device.id}),
 			'name': 'edit'|localised,
-		} only %} #}
+		} only %}
 		{% endset %}
 
 		{% set table_data = table_data|merge([{

@@ -1,5 +1,9 @@
 app:
   modules:
+    api:
+      forms:
+        labels:
+          name: 'Nazwa'
     common:
       flashes:
         saved: "Pomyślnie zapisano"

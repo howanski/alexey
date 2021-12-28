@@ -1,5 +1,9 @@
 app:
   modules:
+    api:
+      forms:
+        labels:
+          name: 'Name'
     common:
       flashes:
         saved: "Successfully saved"

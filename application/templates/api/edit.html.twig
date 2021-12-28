@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+		{'name': 'mobile_api_settings'|localised('settings'), 'href': path('api_local_settings')},
+	]
+%}
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('forms-js') }}
+{% endblock %}
+
+{% block pageContentPrimary %}
+	{% include 'form.html.twig' with {
+		'form': form,
+		'additionalButtons': [
+			{
+				'color': 'nord10',
+				'href': path('api_local_settings'),
+				'name': 'cancel'|localised,
+				'icon': 'fas fa-undo'
+			}
+		],
+	} only %}
+{% endblock %}
+
+{% block pageContentSecondary %}{% endblock %}
