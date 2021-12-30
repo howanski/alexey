@@ -157,7 +157,7 @@ class RedditPost
     {
         $user = $this->getUser();
         $user = str_replace(search: '/u/', replace: '', subject: $user);
-        return 'https://old.reddit.com/user/' . $user . '/submitted/';
+        return 'https://old.reddit.com/user/' . $user . '/submitted/?sort=top';
     }
 
     public function getUser(): string
