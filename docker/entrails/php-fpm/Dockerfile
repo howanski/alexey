@@ -2,6 +2,7 @@ FROM dockerwest/php-symfony:8.0
 COPY prepare-command.sh /prepare-command.sh
 COPY sources.list /etc/apt/sources.list
 COPY xdebug.ini /etc/php/8.0/mods-available/xdebug.ini
+COPY www.conf /etc/php/8.0/fpm/pool.d/www.conf
 ADD supervisor /etc/supervisor/conf.d/
 RUN apt-get --allow-releaseinfo-change update > /dev/null
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - > /dev/null
