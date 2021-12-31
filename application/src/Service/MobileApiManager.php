@@ -72,9 +72,9 @@ final class MobileApiManager
     public function getFullConnectionCredentials(User $user): string
     {
         $connectionData = [
-            'server' => $this->tunnel->getCurrentTunnel(),
-            'token' => $this->generateUserToken($user),
-            'path' => $this->router->generate(
+            'serverUri' => $this->tunnel->getCurrentTunnel(),
+            'accessToken' => $this->generateUserToken($user),
+            'defaultPath' => $this->router->generate(
                 name: 'api',
                 parameters: [
                     'function' => MobileApi::API_FUNCTION_DASHBOARD,

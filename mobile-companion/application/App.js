@@ -1,72 +1,152 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Button } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BarCodeScanner } from "expo-barcode-scanner";
 
 export default function App() {
-    const [hasPermission, setHasPermission] = useState(null);
-    const [serverUri, setServerUri] = useState("");
-    const [serverSecret, setServerSecret] = useState("");
-    const [defaultPath, setDefaultPath] = useState("");
-    const [serverResponseCode, setServerResponseCode] = useState(401);
-    const [serverResponseMessage, setServerResponseMessage] = useState("XYZ");
+    const [hasCemeraPermission, setHasCameraPermision] = useState(null);
     const [freezeScanner, setFreezeScanner] = useState(false);
+    const [accessToken, setAccessToken] = useState(false);
+    const [serverUri, setServerUri] = useState(false);
+    const [defaultPath, setDefaultPath] = useState(false);
+    const [needsScan, setNeedsScan] = useState(true);
+    const [lastResponseCode, setLastResponseCode] = useState(0);
     useEffect(() => {
         (async () => {
             const { status } = await BarCodeScanner.requestPermissionsAsync();
-            setHasPermission(status === "granted");
+            setHasCameraPermision(status === "granted");
         })();
     }, []);
+
+    const persistToken = async (value) => {
+        await AsyncStorage.setItem("accessToken", value);
+        setAccessToken(value);
+        setupRescanNeeded();
+    };
+
+    const retrieveToken = async () => {
+        const value = await AsyncStorage.getItem("accessToken");
+        setAccessToken(value);
+        setupRescanNeeded();
+    };
+
+    const persistServerUri = async (value) => {
+        await AsyncStorage.setItem("serverUri", value);
+        setServerUri(value);
+        setupRescanNeeded();
+    };
+
+    const retrieveServerUri = async () => {
+        const value = await AsyncStorage.getItem("serverUri");
+        setServerUri(value);
+        setupRescanNeeded();
+    };
+
+    const persistDefaultPath = async (value) => {
+        await AsyncStorage.setItem("defaultPath", value);
+        setDefaultPath(value);
+        setupRescanNeeded();
+    };
+
+    const retrieveDefaultPath = async () => {
+        const value = await AsyncStorage.getItem("defaultPath");
+        setDefaultPath(value);
+        setupRescanNeeded();
+    };
+
+    const setupRescanNeeded = async () => {
+        setNeedsScan(!(defaultPath && serverUri && accessToken));
+    };
+
+    const fetchServerState = () => {
+        let fullPath = serverUri + defaultPath;
+        console.log("-- STORED CREDENTIALS --");
+        console.log(fullPath);
+        console.log(accessToken);
+        console.log("-- STORED CREDENTIALS END --");
+        if (fullPath && accessToken) {
+            setFreezeScanner(true);
+            fetch(fullPath, {
+                method: "GET",
+                headers: { "X-ALEXEY-SECRET": accessToken },
+            })
+                .then((response) => response.json())
+                .then((jsonResponse) => {
+                    console.log("--- SERVER RESPONSE ---");
+                    console.log(jsonResponse);
+                    console.log("--- SERVER RESPONSE END ---");
+                    if (jsonResponse.code === 200) {
+                        setNeedsScan(false);
+                    } else if(jsonResponse.code === 401) {
+                        console.log('odrzut');
+                        persistToken('');
+                    }
+                    setLastResponseCode(jsonResponse.code);
+                    setFreezeScanner(false);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    console.log('END OF RESPONSE ERROR');
+                    setNeedsScan(true);
+                });
+        } else {
+            setFreezeScanner(false);
+            setNeedsScan(true);
+        }
+    };
 
     const handleBarCodeScanned = ({ type, data }) => {
         if (!freezeScanner) {
             let obj = JSON.parse(data);
-            setServerUri(obj.server);
-            setServerSecret(obj.token);
-            setDefaultPath(obj.path);
-            let fullPath = serverUri + defaultPath;
-            console.log(fullPath);
-            if (fullPath) {
-                setFreezeScanner(true);
-                fetch(fullPath, {
-                    method: "GET",
-                    headers: { "X-ALEXEY-SECRET": serverSecret },
-                })
-                    .then((response) => response.json())
-                    .then((jsonResponse) => {
-                        setServerResponseCode(jsonResponse.code);
-                        setServerResponseMessage(jsonResponse.message);
-
-                        // setServerResponseObject(jsonResponse);
-                        console.log(jsonResponse);
-                        setFreezeScanner(false);
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    });
-            } else {
-                setFreezeScanner(false);
+            console.log("---- QR DATA ----");
+            console.log(obj);
+            console.log("---- QR DATA END ----");
+            //
+            if (obj.accessToken) {
+                persistToken(obj.accessToken);
             }
+            if (obj.serverUri) {
+                persistServerUri(obj.serverUri);
+            }
+            if (obj.defaultPath) {
+                persistDefaultPath(obj.defaultPath);
+            }
+            //
+            fetchServerState();
         }
     };
 
-    if (hasPermission === null) {
+    if (hasCemeraPermission === null) {
         return <Text>Requesting for camera permission</Text>;
     }
-    if (hasPermission === false) {
+    if (hasCemeraPermission === false) {
         return <Text>No access to camera</Text>;
     }
 
+    retrieveToken();
+    retrieveServerUri();
+    retrieveDefaultPath();
+    console.log("Needs scan =");
+    console.log(needsScan);
+    if (lastResponseCode === 0) {
+        setLastResponseCode(999);
+        fetchServerState();
+    }
+    // fetchServerState(); //TODO: resolve re-render looping
+
     return (
         <View style={styles.container}>
-            {serverResponseCode == 401 && (
+            {needsScan && (
                 <BarCodeScanner
                     onBarCodeScanned={handleBarCodeScanned}
                     style={StyleSheet.absoluteFillObject}
                 />
             )}
-            {!(serverResponseCode === 401) && (
-                <Text style={styles.text}>{serverResponseMessage}</Text>
-            )}
+            <Text style={styles.text}>{accessToken}</Text>
+            <Text style={styles.text}>{serverUri}</Text>
+            <Text style={styles.text}>{defaultPath}</Text>
+            <Text style={styles.text}>{lastResponseCode}</Text>
+            <Button title="refresh" onPress={fetchServerState}></Button>
         </View>
     );
 }
