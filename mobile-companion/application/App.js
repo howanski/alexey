@@ -7,7 +7,7 @@ export default function App() {
     const [accessToken, setAccessToken] = useState(false);
     const [defaultPath, setDefaultPath] = useState(false);
     const [freezeScanner, setFreezeScanner] = useState(false);
-    const [hasCemeraPermission, setHasCameraPermision] = useState(null);
+    const [hasCameraPermission, setHasCameraPermision] = useState(null);
     const [lastResponseCode, setLastResponseCode] = useState(0);
     const [needsScan, setNeedsScan] = useState(true);
     const [responseUi, setResponseUi] = useState([]);
@@ -147,7 +147,7 @@ export default function App() {
     }
 
     if (needsScan) {
-        if (hasCemeraPermission === null) {
+        if (hasCameraPermission === null) {
             return (
                 <View style={styles.container}>
                     <Text style={styles.textResponse}>
@@ -156,7 +156,7 @@ export default function App() {
                 </View>
             );
         }
-        if (hasCemeraPermission === false) {
+        if (hasCameraPermission === false) {
             return (
                 <View style={styles.container}>
                     <Text style={styles.textRed}>No access to camera</Text>
