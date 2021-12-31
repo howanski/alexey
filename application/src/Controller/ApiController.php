@@ -26,7 +26,7 @@ final class ApiController extends AbstractController
         return $api->processFunction(
             user: $user,
             functionName: $function,
-            parameters: [],
+            parameters: $request->query->all(),
         );
     }
 }
