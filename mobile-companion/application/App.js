@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Text, View, ScrollView, StyleSheet, Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 
 export default function App() {
     const [accessToken, setAccessToken] = useState(false);
@@ -100,6 +101,9 @@ export default function App() {
                             fetchPath(path);
                         }, jsonResponse.autoRefresh);
                         setTimeoutId(tmId);
+                        activateKeepAwake();
+                    } else {
+                        deactivateKeepAwake();
                     }
                     setLastResponseCode(jsonResponse.code);
                     setFreezeScanner(false);
