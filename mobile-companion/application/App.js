@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Button, Pressable } from "react-native";
+import { Text, View, ScrollView, StyleSheet, Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BarCodeScanner } from "expo-barcode-scanner";
 
@@ -68,7 +68,7 @@ export default function App() {
     };
 
     const fetchPath = async (path) => {
-        if (timeoutId){
+        if (timeoutId) {
             clearTimeout(timeoutId);
             setTimeoutId(false);
         }
@@ -150,9 +150,7 @@ export default function App() {
         if (hasCameraPermission === null) {
             return (
                 <View style={styles.container}>
-                    <Text style={styles.textResponse}>
-                        Requesting for camera permission...
-                    </Text>
+                    <Text style={styles.textResponse}></Text>
                 </View>
             );
         }
@@ -176,36 +174,40 @@ export default function App() {
     return (
         <View style={styles.container}>
             {transactionInProgress && (
-                <Text style={styles.textCorner}>...</Text>
+                <Text style={styles.textCorner}>{"<--->"}</Text>
             )}
             {!transactionInProgress && <Text style={styles.textCorner}></Text>}
-
-            {responseUi.map((uiElem, prop) => {
-                if (uiElem) {
-                    if (uiElem.type === "txt") {
-                        return (
-                            <Text style={styles.textResponse} key={prop}>
-                                {uiElem.value}
-                            </Text>
-                        );
-                    } else if (uiElem.type === "btn") {
-                        return (
-                            <Pressable
-                                key={prop}
-                                style={styles.button}
-                                onPress={() => fetchPath(uiElem.path)}
-                            >
-                                <Text style={styles.buttonText}>
-                                    {uiElem.name}
+            <ScrollView
+                style={styles.scrollContainer}
+                contentContainerStyle={styles.scrollContainerParent}
+            >
+                {responseUi.map((uiElem, prop) => {
+                    if (uiElem) {
+                        if (uiElem.type === "txt") {
+                            return (
+                                <Text style={styles.textResponse} key={prop}>
+                                    {uiElem.value}
                                 </Text>
-                            </Pressable>
-                        );
-                    } else {
-                        console.log(uiElem);
-                        console.log("Unknown elem type " + uiElem.type);
+                            );
+                        } else if (uiElem.type === "btn") {
+                            return (
+                                <Pressable
+                                    key={prop}
+                                    style={styles.button}
+                                    onPress={() => fetchPath(uiElem.path)}
+                                >
+                                    <Text style={styles.buttonText}>
+                                        {uiElem.name}
+                                    </Text>
+                                </Pressable>
+                            );
+                        } else {
+                            console.log(uiElem);
+                            console.log("Unknown elem type " + uiElem.type);
+                        }
                     }
-                }
-            })}
+                })}
+            </ScrollView>
             <Pressable style={styles.button} onPress={fetchDefaultPath}>
                 <Text style={styles.buttonText}>Home</Text>
             </Pressable>
@@ -220,6 +222,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#434c5e",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    scrollContainer: {
+        flex: 1,
+        backgroundColor: "#434c5e",
+    },
+    scrollContainerParent: {
         alignItems: "center",
         justifyContent: "center",
     },
