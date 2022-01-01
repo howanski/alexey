@@ -16,9 +16,9 @@ class NetworkMachine
     public const STATUS_REACHABLE = 2;
 
     private const STATUSES_READABLE = [
-        self::STATUS_UNKNOWN => '?',
-        self::STATUS_UNREACHABLE => 'Unreachable',
-        self::STATUS_REACHABLE => 'Visible',
+        self::STATUS_UNKNOWN => 'unknown',
+        self::STATUS_UNREACHABLE => 'unreachable',
+        self::STATUS_REACHABLE => 'visible',
     ];
 
     #[ORM\Id]

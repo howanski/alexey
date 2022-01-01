@@ -16,22 +16,25 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class MobileApi
 {
-
     public function __construct(
+        private AlexeyTranslator $translator,
         private MessageBusInterface $bus,
         private NetworkMachineRepository $networkMachineRepository,
         private RouterInterface $router,
+        private WeatherService $weatherService,
     ) {
     }
 
     public const API_FUNCTION_DASHBOARD = 'dashboard';
     private const API_FUNCTION_MACHINES = 'machines';
     private const API_FUNCTION_MACHINE_WAKE = 'machineWake';
+    private const API_FUNCTION_WEATHER = 'weather';
 
     private const API_FUNCTIONS = [
         self::API_FUNCTION_DASHBOARD => 'getDashboard',
         self::API_FUNCTION_MACHINES => 'getMachines',
         self::API_FUNCTION_MACHINE_WAKE => 'wakeMachine',
+        self::API_FUNCTION_WEATHER => 'getWeather',
     ];
 
     public function processFunction(
@@ -39,6 +42,7 @@ final class MobileApi
         string $functionName,
         array $parameters = [],
     ): JsonResponse {
+        $this->translator->forceLocale($user->getLocale());
         try {
             return call_user_func(
                 [
@@ -59,11 +63,20 @@ final class MobileApi
     private function getDashboard(User $user, array $parameters): JsonResponse
     {
         $response = new ApiResponse();
-        $response->addText('Hi, ' . $user->getUserIdentifier() . ' !');
-        $response->addText('');
+        $response->addText(
+            $this->translator->translateString(
+                translationId: 'hi',
+                module: 'common'
+            ) .
+            ', ' . $user->getUserIdentifier() . ' !'
+        );
+        $response->addSpacer();
 
         $response->addButton(
-            name: 'Machines',
+            name: $this->translator->translateString(
+                translationId: 'menu_record',
+                module: 'network_machines'
+            ),
             path: $this->router->generate(
                 name: 'api',
                 parameters: [
@@ -71,21 +84,42 @@ final class MobileApi
                 ]
             )
         );
-        $response->addText('');
+
+        $response->addButton(
+            name: $this->translator->translateString(
+                translationId: 'menu_record',
+                module: 'weather'
+            ),
+            path: $this->router->generate(
+                name: 'api',
+                parameters: [
+                    'function' => self::API_FUNCTION_WEATHER
+                ]
+            )
+        );
         return $response->toResponse();
     }
 
     private function getMachines(User $user, array $parameters)
     {
         $response = new ApiResponse();
-        $machines = $this->networkMachineRepository->findBy(['showOnDashboard' => true]);
+        $machines = $this->networkMachineRepository->getNameOrdered();
         /** @var NetworkMachine $machine */
         foreach ($machines as $machine) {
-            $response->addText($machine->getName() . ': ' . $machine->getStatusReadable() . ' - '
-                . $machine->getLastSeenReadable($user->getLocale()));
+            $response->addText($machine->getName());
+            $response->addText(
+                $this->translator->translateString(
+                    translationId: strtolower($machine->getStatusReadable()),
+                    module: 'network_machines'
+                )
+            );
+            $response->addText($machine->getLastSeenReadable($user->getLocale()));
             if ($machine->canBeWoken()) {
                 $response->addButton(
-                    name: 'Wake',
+                    name: $this->translator->translateString(
+                        translationId: 'wake',
+                        module: 'network_machines'
+                    ),
                     path: $this->router->generate(
                         name: 'api',
                         parameters: [
@@ -95,9 +129,9 @@ final class MobileApi
                     )
                 );
             }
+            $response->addSpacer();
         }
         $response->setRefreshInSeconds(15);
-        $response->addText('');
 
         return $response->toResponse();
     }
@@ -121,10 +155,16 @@ final class MobileApi
 
         $this->bus->dispatch($message);
 
-        $response->addText('Signal sent');
+        $response->addText($this->translator->translateFlash(
+            translationId: 'signal_dispatched',
+            module: 'common'
+        ));
         $response->addText('');
         $response->addButton(
-            name: '<- Back',
+            name: '<- ' . $this->translator->translateString(
+                translationId: 'back',
+                module: 'common'
+            ),
             path: $this->router->generate(
                 name: 'api',
                 parameters: [
@@ -132,7 +172,27 @@ final class MobileApi
                 ]
             )
         );
-        $response->addText('');
+        $response->addSpacer();
+
+        return $response->toResponse();
+    }
+
+    private function getWeather(User $user, array $parameters): JsonResponse
+    {
+        $response = new ApiResponse();
+
+
+        $forecast = $this->weatherService->getWeather()->getWeatherReadable($user->getLocale());
+        foreach ($forecast['daily'] as $weatherDay) {
+            $response->addText($this->translator->translateTime(
+                value: $weatherDay['date'],
+                timeUnit: 'day',
+                type: 'long'
+            ));
+            $response->addText($weatherDay['weather']);
+            $response->addText($weatherDay['temperature'] . ' °C');
+            $response->addSpacer();
+        }
 
         return $response->toResponse();
     }

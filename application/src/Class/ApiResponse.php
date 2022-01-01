@@ -50,6 +50,11 @@ final class ApiResponse
         return $this;
     }
 
+    public function addSpacer(): self
+    {
+        return $this->addText('                              ');
+    }
+
     public function addButton(string $name, string $path): self
     {
         $this->ui[] = [

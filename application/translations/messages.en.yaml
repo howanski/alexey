@@ -23,14 +23,15 @@ app:
       strings:
         actions: Actions
         add: Add
-        back: Back
         back_to_list: "Back to list"
+        back: Back
         cancel: Cancel
         chart_type: "Chart type"
         comment: Comment
         delete: Delete
         edit: Edit
         empty_data: "Nothing found"
+        hi: "Hi"
         id: ID
         ip_or_url: IP/URL
         logout: Logout
@@ -39,10 +40,13 @@ app:
         name: Name
         new: New
         save: Save
+        settings: Settings
         show: Show
         simulation: Simulation
         status: Status
-        settings: Settings
+        unknown: "?"
+        unreachable: Unreachable
+        visible: Visible
         wake: Wake
         you_sure_delete: "Are you sure you want to delete this item?"
     crawler:

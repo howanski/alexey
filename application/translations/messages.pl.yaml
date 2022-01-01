@@ -23,14 +23,15 @@ app:
       strings:
         actions: Akcje
         add: Dodaj
-        back: Wstecz
         back_to_list: "Wróć do listy"
+        back: Wstecz
         cancel: Anuluj
         chart_type: "Typ wykresu"
         comment: Komentarz
         delete: Usuń
         edit: Edytuj
         empty_data: "Brak wpisów"
+        hi: "Cześć"
         id: ID
         ip_or_url: IP/URL
         logout: Wyloguj
@@ -39,10 +40,13 @@ app:
         name: Nazwa
         new: Nowy
         save: Zapisz
+        settings: Ustawienia
         show: Pokaż
         simulation: Symulacja
         status: Status
-        settings: Ustawienia
+        unknown: "?"
+        unreachable: Nieosiągalna
+        visible: Widoczna
         wake: Obudź
         you_sure_delete: "Na pewno chcesz to usunąć?"
     crawler:

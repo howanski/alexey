@@ -20,4 +20,12 @@ final class NetworkMachineRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, NetworkMachine::class);
     }
+
+    public function getNameOrdered(): array
+    {
+        return $this->createQueryBuilder('nm')
+        ->orderBy('nm.name', 'ASC')
+        ->getQuery()
+        ->getResult();
+    }
 }

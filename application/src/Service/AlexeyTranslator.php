@@ -13,9 +13,16 @@ final class AlexeyTranslator extends AbstractExtension
 {
     public const DEFAULT_TRANSLATION_MODULE = 'common';
 
+    private $forcedLocale = null;
+
     public function __construct(
         private TranslatorInterface $translator,
     ) {
+    }
+
+    public function forceLocale(string $locale)
+    {
+        $this->forcedLocale = $locale;
     }
 
     public function getFilters(): array
@@ -35,7 +42,7 @@ final class AlexeyTranslator extends AbstractExtension
     ): string {
         $translationId = strtolower('app.time.' . $timeUnit . '.' . $type . '.' . $value);
         if ($this->isTranslated($translationId)) {
-            return $this->translator->trans($translationId);
+            return $this->translator->trans(id: $translationId, locale: $this->forcedLocale);
         }
         throw new MissingResourceException(
             message: 'Time translation ' . $translationId . ' not found! Example: ' . $translationId,
@@ -47,11 +54,11 @@ final class AlexeyTranslator extends AbstractExtension
         // TODO: refactor to common methods
         $fullId = 'app.modules.' . $module . '.flashes.' . $translationId;
         if ($this->isTranslated($fullId)) {
-            return $this->translator->trans($fullId);
+            return $this->translator->trans(id: $fullId, locale: $this->forcedLocale);
         }
         $commonId = 'app.modules.' . self::DEFAULT_TRANSLATION_MODULE . '.flashes.' . $translationId;
         if ($this->isTranslated($commonId)) {
-            return $this->translator->trans($commonId);
+            return $this->translator->trans(id: $commonId, locale: $this->forcedLocale);
         }
         throw new MissingResourceException(
             message: 'Flash ' . $translationId
@@ -63,11 +70,11 @@ final class AlexeyTranslator extends AbstractExtension
     {
         $fullId = 'app.modules.' . $module . '.strings.' . $translationId;
         if ($this->isTranslated($fullId)) {
-            return $this->translator->trans($fullId);
+            return $this->translator->trans(id: $fullId, locale: $this->forcedLocale);
         }
         $commonId = 'app.modules.' . self::DEFAULT_TRANSLATION_MODULE . '.strings.' . $translationId;
         if ($this->isTranslated($commonId)) {
-            return $this->translator->trans($commonId);
+            return $this->translator->trans(id: $commonId, locale: $this->forcedLocale);
         }
         throw new MissingResourceException(
             message: 'String ' . $translationId
@@ -84,7 +91,7 @@ final class AlexeyTranslator extends AbstractExtension
             . $label);
 
         if ($this->isTranslated($translationId)) {
-            return $this->translator->trans($translationId);
+            return $this->translator->trans(id: $translationId, locale: $this->forcedLocale);
         }
 
         $translationCommonId = strtolower('app.modules.'
@@ -93,7 +100,7 @@ final class AlexeyTranslator extends AbstractExtension
             . $label);
 
         if ($this->isTranslated($translationCommonId)) {
-            return $this->translator->trans($translationCommonId);
+            return $this->translator->trans(id: $translationCommonId, locale: $this->forcedLocale);
         }
 
         throw new MissingResourceException(
@@ -110,7 +117,7 @@ final class AlexeyTranslator extends AbstractExtension
             . $value);
 
         if ($this->isTranslated($translationId)) {
-            return $this->translator->trans($translationId);
+            return $this->translator->trans(id: $translationId, locale: $this->forcedLocale);
         }
 
         $translationCommonId = strtolower('app.modules.'
@@ -120,7 +127,7 @@ final class AlexeyTranslator extends AbstractExtension
 
 
         if ($this->isTranslated($translationCommonId)) {
-            return $this->translator->trans($translationCommonId);
+            return $this->translator->trans(id: $translationCommonId, locale: $this->forcedLocale);
         }
         throw new MissingResourceException(
             message: 'Value ' . $value . ' for field ' . $field
@@ -137,7 +144,7 @@ final class AlexeyTranslator extends AbstractExtension
             . $field);
 
         if ($this->isTranslated($translationId)) {
-            return $this->translator->trans($translationId);
+            return $this->translator->trans(id: $translationId, locale: $this->forcedLocale);
         }
 
         $translationCommonId = strtolower('app.modules.'
@@ -146,7 +153,7 @@ final class AlexeyTranslator extends AbstractExtension
             . $field);
 
         if ($this->isTranslated($translationCommonId)) {
-            return $this->translator->trans($translationCommonId);
+            return $this->translator->trans(id: $translationCommonId, locale: $this->forcedLocale);
         }
 
         throw new MissingResourceException(
@@ -157,7 +164,7 @@ final class AlexeyTranslator extends AbstractExtension
 
     private function isTranslated(string $string): bool
     {
-        $translated = $this->translator->trans($string);
+        $translated = $this->translator->trans(id: $string, locale: $this->forcedLocale);
         return !($translated === $string);
     }
 }
