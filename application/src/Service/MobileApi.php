@@ -6,9 +6,12 @@ namespace App\Service;
 
 use App\Class\ApiResponse;
 use App\Entity\NetworkMachine;
+use App\Entity\NetworkStatistic;
 use App\Entity\User;
 use App\Message\AsyncJob;
+use App\Model\TransmissionSettings;
 use App\Repository\NetworkMachineRepository;
+use App\Repository\NetworkStatisticRepository;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -20,7 +23,9 @@ final class MobileApi
         private AlexeyTranslator $translator,
         private MessageBusInterface $bus,
         private NetworkMachineRepository $networkMachineRepository,
+        private NetworkStatisticRepository $networkStatisticRepository,
         private RouterInterface $router,
+        private SimpleSettingsService $simpleSettingsService,
         private WeatherService $weatherService,
     ) {
     }
@@ -29,12 +34,14 @@ final class MobileApi
     private const API_FUNCTION_MACHINES = 'machines';
     private const API_FUNCTION_MACHINE_WAKE = 'machineWake';
     private const API_FUNCTION_WEATHER = 'weather';
+    private const API_FUNCTION_NETWORK_USAGE = 'networkUsage';
 
     private const API_FUNCTIONS = [
         self::API_FUNCTION_DASHBOARD => 'getDashboard',
         self::API_FUNCTION_MACHINES => 'getMachines',
         self::API_FUNCTION_MACHINE_WAKE => 'wakeMachine',
         self::API_FUNCTION_WEATHER => 'getWeather',
+        self::API_FUNCTION_NETWORK_USAGE => 'getNetworkUsage',
     ];
 
     public function processFunction(
@@ -68,7 +75,7 @@ final class MobileApi
                 translationId: 'hi',
                 module: 'common'
             ) .
-            ', ' . $user->getUserIdentifier() . ' !'
+                ', ' . $user->getUserIdentifier() . ' !'
         );
         $response->addSpacer();
 
@@ -97,6 +104,20 @@ final class MobileApi
                 ]
             )
         );
+
+        $response->addButton(
+            name: $this->translator->translateString(
+                translationId: 'menu_record',
+                module: 'network_usage'
+            ),
+            path: $this->router->generate(
+                name: 'api',
+                parameters: [
+                    'function' => self::API_FUNCTION_NETWORK_USAGE
+                ]
+            )
+        );
+
         return $response->toResponse();
     }
 
@@ -194,6 +215,48 @@ final class MobileApi
             $response->addSpacer();
         }
 
+        return $response->toResponse();
+    }
+
+    private function getNetworkUsage(User $user, array $parameters): JsonResponse
+    {
+        $response = new ApiResponse();
+        $response->addSpacer();
+        $transmissionSettings = new TransmissionSettings();
+        $transmissionSettings->selfConfigure($this->simpleSettingsService);
+
+        $networkStatistic = $this->networkStatisticRepository->getLatestOne();
+        if ($networkStatistic instanceof NetworkStatistic) {
+            $label = $this->translator->translateString(translationId: 'optimal_speed', module: 'network_usage');
+            $value = $networkStatistic->getTransferRateLeftReadable(
+                precision: 4,
+                frameWidth: $transmissionSettings->getTargetFrame()
+            );
+            $response->addText($label);
+            $response->addText($value);
+            $response->addSpacer();
+
+
+            $label = $this->translator->translateString(translationId: 'traffic_left', module: 'network_usage');
+            $value = $networkStatistic->getTrafficLeftReadable(
+                precision: 4,
+                frameWidth: $transmissionSettings->getTargetFrame(),
+            );
+            $response->addText($label);
+            $response->addText($value);
+            $response->addSpacer();
+
+
+            $label = $this->translator->translateString(translationId: 'current_speed', module: 'network_usage');
+            $value = $networkStatistic->getTotalSpeedFromReferencePointReadable();
+            $response->addText($label);
+            $response->addText($value);
+            $response->addSpacer();
+        } else {
+            $response->addText(':(');
+        }
+
+        $response->setRefreshInSeconds(15);
         return $response->toResponse();
     }
 }
