@@ -161,7 +161,7 @@ export default function App() {
         if (hasCameraPermission === false) {
             return (
                 <View style={styles.container}>
-                    <Text style={styles.textRed}>No access to camera</Text>
+                    <Text style={styles.textRed}>No access to camera :(</Text>
                 </View>
             );
         }
@@ -171,7 +171,7 @@ export default function App() {
                     onBarCodeScanned={handleBarCodeScanned}
                     style={StyleSheet.absoluteFillObject}
                 />
-                <Text style={styles.textResponse}>... SCAN QR ...</Text>
+                <Text style={styles.textResponse}></Text>
             </View>
         );
     }

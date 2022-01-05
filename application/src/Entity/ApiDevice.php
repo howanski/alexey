@@ -118,4 +118,9 @@ class ApiDevice
         $this->permissions = array_values($perms);
         return $this;
     }
+
+    public function hasPermission(string $permission): bool
+    {
+        return in_array(needle: $permission, haystack: $this->getPermissions());
+    }
 }

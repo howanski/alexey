@@ -6,6 +6,8 @@ namespace App\Form;
 
 use App\Entity\ApiDevice;
 use App\Form\CommonFormType;
+use App\Service\MobileApi;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -20,6 +22,11 @@ final class ApiDeviceType extends CommonFormType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $permChoices = [];
+        foreach (MobileApi::API_PERMISSIONS as $perm) {
+            $permChoices[$this->getValueTrans(field: 'permissions', value: $perm)] = $perm;
+        }
+
         $builder
             ->add(child: 'name', options: [
                 'label' => $this->getLabelTrans(label: 'name'),
@@ -29,6 +36,12 @@ final class ApiDeviceType extends CommonFormType
                     new NotBlank(),
                     new NotNull(),
                 ],
+            ])
+            ->add(child: 'permissions', type: ChoiceType::class, options: [
+                'label' => $this->getLabelTrans(label: 'permissions'),
+                'choices' => $permChoices,
+                'multiple' => true,
+                'expanded' => true,
             ]);
     }
 

@@ -24,7 +24,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 
 final class ApiAuthenticator extends AbstractAuthenticator
 {
-    private const SECRET_HEADER = 'X-ALEXEY-SECRET';
+    public const SECRET_HEADER = 'X-ALEXEY-SECRET';
     private const CORS_PRE_FLIGHT = 'Access-Control-Request-Headers';
     private const CORS_HEADERS = [
         'Access-Control-Allow-Origin' => '*',

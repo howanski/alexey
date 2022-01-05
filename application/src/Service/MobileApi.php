@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Class\ApiResponse;
+use App\Entity\ApiDevice;
 use App\Entity\NetworkMachine;
 use App\Entity\NetworkStatistic;
 use App\Entity\User;
@@ -19,6 +20,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class MobileApi
 {
+    private ApiDevice $currentDevice;
+
     public function __construct(
         private AlexeyTranslator $translator,
         private MessageBusInterface $bus,
@@ -44,11 +47,19 @@ final class MobileApi
         self::API_FUNCTION_NETWORK_USAGE => 'getNetworkUsage',
     ];
 
+    public const API_PERMISSIONS = [
+        self::API_FUNCTION_MACHINES,
+        self::API_FUNCTION_WEATHER,
+        self::API_FUNCTION_NETWORK_USAGE,
+    ];
+
     public function processFunction(
         User $user,
+        ApiDevice $currentDevice,
         string $functionName,
         array $parameters = [],
     ): JsonResponse {
+        $this->currentDevice = $currentDevice;
         $this->translator->forceLocale($user->getLocale());
         try {
             return call_user_func(
@@ -67,6 +78,11 @@ final class MobileApi
         }
     }
 
+    private function canRun(string $functionName): bool
+    {
+        return $this->currentDevice->hasPermission($functionName);
+    }
+
     private function getDashboard(User $user, array $parameters): JsonResponse
     {
         $response = new ApiResponse();
@@ -79,50 +95,69 @@ final class MobileApi
         );
         $response->addSpacer();
 
-        $response->addButton(
-            name: $this->translator->translateString(
-                translationId: 'menu_record',
-                module: 'network_machines'
-            ),
-            path: $this->router->generate(
-                name: 'api',
-                parameters: [
-                    'function' => self::API_FUNCTION_MACHINES
-                ]
-            )
-        );
+        $hasAnyPermission = false;
 
-        $response->addButton(
-            name: $this->translator->translateString(
-                translationId: 'menu_record',
-                module: 'weather'
-            ),
-            path: $this->router->generate(
-                name: 'api',
-                parameters: [
-                    'function' => self::API_FUNCTION_WEATHER
-                ]
-            )
-        );
+        if ($this->canRun(self::API_FUNCTION_MACHINES)) {
+            $hasAnyPermission = true;
+            $response->addButton(
+                name: $this->translator->translateString(
+                    translationId: 'menu_record',
+                    module: 'network_machines'
+                ),
+                path: $this->router->generate(
+                    name: 'api',
+                    parameters: [
+                        'function' => self::API_FUNCTION_MACHINES
+                    ]
+                )
+            );
+        }
 
-        $response->addButton(
-            name: $this->translator->translateString(
-                translationId: 'menu_record',
-                module: 'network_usage'
-            ),
-            path: $this->router->generate(
-                name: 'api',
-                parameters: [
-                    'function' => self::API_FUNCTION_NETWORK_USAGE
-                ]
-            )
-        );
+        if ($this->canRun(self::API_FUNCTION_WEATHER)) {
+            $hasAnyPermission = true;
+            $response->addButton(
+                name: $this->translator->translateString(
+                    translationId: 'menu_record',
+                    module: 'weather'
+                ),
+                path: $this->router->generate(
+                    name: 'api',
+                    parameters: [
+                        'function' => self::API_FUNCTION_WEATHER
+                    ]
+                )
+            );
+        }
+
+        if ($this->canRun(self::API_FUNCTION_NETWORK_USAGE)) {
+            $hasAnyPermission = true;
+            $response->addButton(
+                name: $this->translator->translateString(
+                    translationId: 'menu_record',
+                    module: 'network_usage'
+                ),
+                path: $this->router->generate(
+                    name: 'api',
+                    parameters: [
+                        'function' => self::API_FUNCTION_NETWORK_USAGE
+                    ]
+                )
+            );
+        }
+
+        if (false === $hasAnyPermission) {
+            $response->addText($this->translator->translateString('setup_permissions', 'api'));
+            $response->addSpacer();
+        }
 
         return $response->toResponse();
     }
 
     private function getMachines(User $user, array $parameters)
     {
+        if (false === $this->canRun(self::API_FUNCTION_MACHINES)) {
+            return $this->getDashboard($user, $parameters);
+        }
         $response = new ApiResponse();
         $machines = $this->networkMachineRepository->getNameOrdered();
         /** @var NetworkMachine $machine */
@@ -159,6 +194,9 @@ final class MobileApi
 
     private function wakeMachine(User $user, array $parameters)
     {
+        if (false === $this->canRun(self::API_FUNCTION_MACHINES)) {
+            return $this->getDashboard($user, $parameters);
+        }
         $response = new ApiResponse();
 
         $machineId = $parameters['id'];
@@ -200,8 +238,10 @@ final class MobileApi
 
     private function getWeather(User $user, array $parameters): JsonResponse
     {
+        if (false === $this->canRun(self::API_FUNCTION_WEATHER)) {
+            return $this->getDashboard($user, $parameters);
+        }
         $response = new ApiResponse();
-
 
         $forecast = $this->weatherService->getWeather()->getWeatherReadable($user->getLocale());
         foreach ($forecast['daily'] as $weatherDay) {
@@ -220,6 +260,9 @@ final class MobileApi
 
     private function getNetworkUsage(User $user, array $parameters): JsonResponse
     {
+        if (false === $this->canRun(self::API_FUNCTION_NETWORK_USAGE)) {
+            return $this->getDashboard($user, $parameters);
+        }
         $response = new ApiResponse();
         $response->addSpacer();
         $transmissionSettings = new TransmissionSettings();

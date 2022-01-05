@@ -4,6 +4,14 @@ app:
       forms:
         labels:
           name: 'Nazwa'
+          permissions: 'Uprawnienia'
+        values:
+          permissions:
+            machines: 'Dostęp do urządzeń sieciowych'
+            weather: 'Dostęp do pogody'
+            networkusage: 'Dostęp do zużycia sieci'
+      strings:
+        setup_permissions: 'Skonfiguruj uprawnienia urządzenia.'
     common:
       flashes:
         saved: "Pomyślnie zapisano"
