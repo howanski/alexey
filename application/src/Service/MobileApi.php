@@ -33,24 +33,31 @@ final class MobileApi
     ) {
     }
 
-    public const API_FUNCTION_DASHBOARD = 'dashboard';
-    private const API_FUNCTION_MACHINES = 'machines';
+    private const API_FUNCTION_FINANCES = 'finances';
+    private const API_FUNCTION_FINANCES_NODES_LIST = 'financeNodeList';
+    private const API_FUNCTION_FINANCES_TRANSFER_LIST = 'financeTransferList';
     private const API_FUNCTION_MACHINE_WAKE = 'machineWake';
-    private const API_FUNCTION_WEATHER = 'weather';
+    private const API_FUNCTION_MACHINES = 'machines';
     private const API_FUNCTION_NETWORK_USAGE = 'networkUsage';
+    private const API_FUNCTION_WEATHER = 'weather';
+    public const API_FUNCTION_DASHBOARD = 'dashboard';
 
     private const API_FUNCTIONS = [
         self::API_FUNCTION_DASHBOARD => 'getDashboard',
-        self::API_FUNCTION_MACHINES => 'getMachines',
+        self::API_FUNCTION_FINANCES => 'getFinances',
+        self::API_FUNCTION_FINANCES_NODES_LIST => 'getMoneyNodesList',
+        self::API_FUNCTION_FINANCES_TRANSFER_LIST => 'getMoneyTransfersList',
         self::API_FUNCTION_MACHINE_WAKE => 'wakeMachine',
-        self::API_FUNCTION_WEATHER => 'getWeather',
+        self::API_FUNCTION_MACHINES => 'getMachines',
         self::API_FUNCTION_NETWORK_USAGE => 'getNetworkUsage',
+        self::API_FUNCTION_WEATHER => 'getWeather',
     ];
 
     public const API_PERMISSIONS = [
+        self::API_FUNCTION_FINANCES,
         self::API_FUNCTION_MACHINES,
-        self::API_FUNCTION_WEATHER,
         self::API_FUNCTION_NETWORK_USAGE,
+        self::API_FUNCTION_WEATHER,
     ];
 
     public function processFunction(
@@ -72,7 +79,7 @@ final class MobileApi
             );
         } catch (Exception $e) {
             $errorResponse = new ApiResponse();
-            $errorResponse->setCode($e->getCode());
+            $errorResponse->setCode(500);
             $errorResponse->setMessage($e->getMessage());
             return $errorResponse->toResponse();
         }
@@ -81,6 +88,22 @@ final class MobileApi
     private function canRun(string $functionName): bool
     {
         return $this->currentDevice->hasPermission($functionName);
+    }
+
+    private function apiFunctionPath(string $function, $parameters = []): string
+    {
+        $allParams = [
+            'function' => $function,
+        ];
+
+        foreach ($parameters as $paramName => $paramValue) {
+            $allParams[$paramName] = $paramValue;
+        }
+
+        return $this->router->generate(
+            name: 'api',
+            parameters: $allParams,
+        );
     }
 
     private function getDashboard(User $user, array $parameters): JsonResponse
@@ -104,12 +127,7 @@ final class MobileApi
                     translationId: 'menu_record',
                     module: 'network_machines'
                 ),
-                path: $this->router->generate(
-                    name: 'api',
-                    parameters: [
-                        'function' => self::API_FUNCTION_MACHINES
-                    ]
-                )
+                path: $this->apiFunctionPath(self::API_FUNCTION_MACHINES),
             );
         }
 
@@ -120,12 +138,7 @@ final class MobileApi
                     translationId: 'menu_record',
                     module: 'weather'
                 ),
-                path: $this->router->generate(
-                    name: 'api',
-                    parameters: [
-                        'function' => self::API_FUNCTION_WEATHER
-                    ]
-                )
+                path: $this->apiFunctionPath(self::API_FUNCTION_WEATHER),
             );
         }
 
@@ -136,12 +149,18 @@ final class MobileApi
                     translationId: 'menu_record',
                     module: 'network_usage'
                 ),
-                path: $this->router->generate(
-                    name: 'api',
-                    parameters: [
-                        'function' => self::API_FUNCTION_NETWORK_USAGE
-                    ]
-                )
+                path: $this->apiFunctionPath(self::API_FUNCTION_NETWORK_USAGE),
+            );
+        }
+
+        if ($this->canRun(self::API_FUNCTION_FINANCES)) {
+            $hasAnyPermission = true;
+            $response->addButton(
+                name: $this->translator->translateString(
+                    translationId: 'menu_record',
+                    module: 'money'
+                ),
+                path: $this->apiFunctionPath(self::API_FUNCTION_FINANCES),
             );
         }
 
@@ -153,7 +172,7 @@ final class MobileApi
         return $response->toResponse();
     }
 
-    private function getMachines(User $user, array $parameters)
+    private function getMachines(User $user, array $parameters): JsonResponse
     {
         if (false === $this->canRun(self::API_FUNCTION_MACHINES)) {
             return $this->getDashboard($user, $parameters);
@@ -176,13 +195,9 @@ final class MobileApi
                         translationId: 'wake',
                         module: 'network_machines'
                     ),
-                    path: $this->router->generate(
-                        name: 'api',
-                        parameters: [
-                            'function' => self::API_FUNCTION_MACHINE_WAKE,
-                            'id' => $machine->getId(),
-                        ]
-                    )
+                    path: $this->apiFunctionPath(self::API_FUNCTION_MACHINE_WAKE, [
+                        'id' => $machine->getId(),
+                    ]),
                 );
             }
             $response->addSpacer();
@@ -192,7 +207,7 @@ final class MobileApi
         return $response->toResponse();
     }
 
-    private function wakeMachine(User $user, array $parameters)
+    private function wakeMachine(User $user, array $parameters): JsonResponse
     {
         if (false === $this->canRun(self::API_FUNCTION_MACHINES)) {
             return $this->getDashboard($user, $parameters);
@@ -218,18 +233,13 @@ final class MobileApi
             translationId: 'signal_dispatched',
             module: 'common'
         ));
-        $response->addText('');
+        $response->addSpacer();
         $response->addButton(
             name: '<- ' . $this->translator->translateString(
                 translationId: 'back',
                 module: 'common'
             ),
-            path: $this->router->generate(
-                name: 'api',
-                parameters: [
-                    'function' => self::API_FUNCTION_MACHINES
-                ]
-            )
+            path: $this->apiFunctionPath(self::API_FUNCTION_MACHINES),
         );
         $response->addSpacer();
 
@@ -300,6 +310,72 @@ final class MobileApi
         }
 
         $response->setRefreshInSeconds(15);
+        return $response->toResponse();
+    }
+
+    private function getFinances(User $user, array $parameters): JsonResponse
+    {
+        if (false === $this->canRun(self::API_FUNCTION_FINANCES)) {
+            return $this->getDashboard($user, $parameters);
+        }
+        $response = new ApiResponse();
+        $response->addText($this->translator->translateString(
+            translationId: 'menu_record',
+            module: 'money'
+        ));
+        $response->addSpacer();
+        $response->addButton(
+            name: $this->translator->translateString(
+                translationId: 'menu_record_nodes',
+                module: 'money'
+            ),
+            path: $this->apiFunctionPath(self::API_FUNCTION_FINANCES_NODES_LIST),
+        );
+
+        $response->addButton(
+            name: $this->translator->translateString(
+                translationId: 'menu_record_transfers',
+                module: 'money'
+            ),
+            path: $this->apiFunctionPath(self::API_FUNCTION_FINANCES_TRANSFER_LIST),
+        );
+        $response->addSpacer();
+        return $response->toResponse();
+    }
+
+    private function getMoneyNodesList(User $user, array $parameters): JsonResponse
+    {
+        if (false === $this->canRun(self::API_FUNCTION_FINANCES)) {
+            return $this->getDashboard($user, $parameters);
+        }
+        $response = new ApiResponse();
+        $response->addText('TODO');
+        $response->addButton(
+            name: '<- ' . $this->translator->translateString(
+                translationId: 'back',
+                module: 'common'
+            ),
+            path: $this->apiFunctionPath(self::API_FUNCTION_FINANCES),
+        );
+        $response->addSpacer();
+        return $response->toResponse();
+    }
+
+    private function getMoneyTransfersList(User $user, array $parameters): JsonResponse
+    {
+        if (false === $this->canRun(self::API_FUNCTION_FINANCES)) {
+            return $this->getDashboard($user, $parameters);
+        }
+        $response = new ApiResponse();
+        $response->addText('TODO');
+        $response->addButton(
+            name: '<- ' . $this->translator->translateString(
+                translationId: 'back',
+                module: 'common'
+            ),
+            path: $this->apiFunctionPath(self::API_FUNCTION_FINANCES),
+        );
+        $response->addSpacer();
         return $response->toResponse();
     }
 }

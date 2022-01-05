@@ -7,9 +7,10 @@ app:
           permissions: 'Uprawnienia'
         values:
           permissions:
+            finances: 'Dostęp do finansów'
             machines: 'Dostęp do urządzeń sieciowych'
-            weather: 'Dostęp do pogody'
             networkusage: 'Dostęp do zużycia sieci'
+            weather: 'Dostęp do pogody'
       strings:
         setup_permissions: 'Skonfiguruj uprawnienia urządzenia.'
     common:

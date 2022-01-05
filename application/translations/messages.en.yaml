@@ -7,9 +7,10 @@ app:
           permissions: 'Permissions'
         values:
           permissions:
+            finances: 'Access finances'
             machines: 'Access network machines'
-            weather: 'Access weather'
             networkusage: 'Access network usage'
+            weather: 'Access weather'
       strings:
         setup_permissions: 'Please setup device permissions.'
     common:
