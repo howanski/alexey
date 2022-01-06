@@ -52,7 +52,7 @@ final class MobileApiManager
         $whirpoolOne =
             $user->getId() .
             $user->getEmail() .
-            intval(time() / 86400) .
+            floor(time() / 60) .
             strval($this->deviceRepository->countMyDevices($user));
 
         $whirpoolTwo = '';

@@ -11,7 +11,12 @@
 {% block pageContentPrimary %}
 	<div class="flex justify-center">
 		<div style="min-height: 300px;">
-			<img id="qrToken" src="{{ path('api_show_qr') }}" data-device-count="{{ device_count }}" data-device-count-url="{{ device_count_url }}"></img>
+			<img id="qrToken" src="{{ path('api_show_qr') }}" data-current-token="{{ token }}" data-token-check-url="{{ token_check_url }}"></img>
+		</div>
+	</div>
+	<div class="flex justify-center">
+		<div class="w-full rounded-full mt-2" style="max-width: 290px;">
+			<div id="qrBar" class="bg-nord4 text-xs font-medium text-nord0 text-center p-0.5 leading-none rounded-full" style="width: 100%;"></div>
 		</div>
 	</div>
 {% endblock %}

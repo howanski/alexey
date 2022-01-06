@@ -21,15 +21,16 @@ use Symfony\Component\Routing\Annotation\Route;
 final class ApiSettingsController extends AbstractController
 {
     #[Route('/settings', name: 'api_local_settings')]
-    public function index(ApiDeviceRepository $repo): Response
+    public function index(ApiDeviceRepository $repo, MobileApiManager $manager): Response
     {
         /** @var User $user */
         $user = $this->getUser();
+        $token = $manager->generateUserToken($user);
 
         return $this->render('api/index.html.twig', [
             'devices' => $repo->getMyDevices($user),
-            'device_count' => $repo->countMyDevices($user),
-            'device_count_url' => $this->generateUrl('api_device_count'),
+            'token' => $token,
+            'token_check_url' => $this->generateUrl('api_my_token'),
         ]);
     }
 
@@ -50,6 +51,15 @@ final class ApiSettingsController extends AbstractController
         $response->setContent($fileContent);
 
         return $response;
+    }
+
+    #[Route('/token', name: 'api_my_token')]
+    public function myToken(MobileApiManager $manager)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $token = $manager->generateUserToken($user);
+        return new JsonResponse(data: $token);
     }
 
     #[Route('/device/edit/{id}', name: 'api_device_edit')]
@@ -92,17 +102,5 @@ final class ApiSettingsController extends AbstractController
         }
 
         return $this->redirectToRoute('api_local_settings');
-    }
-
-    #[Route('/device/count', name: 'api_device_count')]
-    public function countMyDevices(ApiDeviceRepository $repo, Request $request)
-    {
-        if (false === $request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('api_local_settings');
-        }
-        /** @var User $user */
-        $user = $this->getUser();
-        $count = $repo->countMyDevices($user);
-        return new JsonResponse(data: $count);
     }
 }

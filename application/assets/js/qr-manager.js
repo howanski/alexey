@@ -1,6 +1,7 @@
 import axios from "axios";
-let deviceCount = 0;
-let deviceCountUrl = "";
+let currentToken = 0;
+let tokenCheckUrl = "";
+let qrBar = null;
 
 function checkCount() {
     const instance = axios.create({
@@ -8,11 +9,11 @@ function checkCount() {
         headers: { "X-Requested-With": "XMLHttpRequest" },
     });
     instance
-        .get(deviceCountUrl)
+        .get(tokenCheckUrl)
         .then(function (response) {
             if (response.status == 200) {
                 let responseData = response.data;
-                if (responseData != deviceCount) {
+                if (responseData != currentToken) {
                     window.location.reload(true);
                 }
             }
@@ -21,9 +22,21 @@ function checkCount() {
         .then(function () {});
 }
 
+function manageTimeOut() {
+    let now = new Date();
+    let secondsMarker = now.getSeconds();
+    let percent = 100 - (secondsMarker / 60) * 100;
+    qrBar.style = "width: " + percent + "%;";
+    if (percent > 99) {
+        window.location.reload(true);
+    }
+}
+
 window.addEventListener("load", (event) => {
     let qr = document.querySelector("#qrToken");
-    deviceCount = qr.dataset.deviceCount;
-    deviceCountUrl = qr.dataset.deviceCountUrl;
+    qrBar = document.querySelector("#qrBar");
+    currentToken = qr.dataset.currentToken;
+    tokenCheckUrl = qr.dataset.tokenCheckUrl;
     setInterval(checkCount, 3000);
+    setInterval(manageTimeOut, 1000);
 });
