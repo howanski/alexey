@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Text, View, ScrollView, StyleSheet, Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+import { activateKeepAwake, deactivateKeepAwake } from "expo-keep-awake";
 
 export default function App() {
     const [accessToken, setAccessToken] = useState(false);
@@ -63,12 +63,17 @@ export default function App() {
     };
 
     const logout = () => {
-        persistToken("");
         persistServerUri("");
         persistDefaultPath("");
     };
 
     const fetchPath = async (path) => {
+        if (!serverUri) {
+            return;
+        }
+        if (!accessToken) {
+            return;
+        }
         if (timeoutId) {
             clearTimeout(timeoutId);
             setTimeoutId(false);
@@ -85,8 +90,6 @@ export default function App() {
                 .then((jsonResponse) => {
                     if (jsonResponse.code === 401) {
                         persistToken("");
-                        persistServerUri("");
-                        persistDefaultPath("");
                     }
                     if (jsonResponse.ui) {
                         setResponseUi(jsonResponse.ui);
@@ -126,16 +129,17 @@ export default function App() {
         if (!freezeScanner) {
             try {
                 let obj = JSON.parse(data);
-                if (obj.accessToken) {
+                if (obj.accessToken && !accessToken) {
                     persistToken(obj.accessToken);
                 }
-                if (obj.serverUri) {
+                if (obj.serverUri && !serverUri) {
                     persistServerUri(obj.serverUri);
                 }
-                if (obj.defaultPath) {
+                if (obj.defaultPath && !defaultPath) {
                     persistDefaultPath(obj.defaultPath);
                 }
-                fetchDefaultPath();
+                setResponseUi([]);
+                setLastResponseCode(0);
             } catch {
                 console.log("Scanner failed");
             }
@@ -145,7 +149,7 @@ export default function App() {
     retrieveToken();
     retrieveServerUri();
     retrieveDefaultPath();
-    if (lastResponseCode === 0) {
+    if (lastResponseCode === 0 && serverUri && defaultPath && accessToken) {
         setLastResponseCode(999);
         fetchDefaultPath();
     }
