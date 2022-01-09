@@ -195,8 +195,12 @@ app:
           is_cron_active: "Uruchamiaj ten proces w tle"
           locale: Język
           run_cron_every: "Przerwa pomiędzy uruchomieniami (sekundy)"
+          tunneling_allowed: "Zezwól na dostęp przeglądarki przez tunel"
           your_email: "Twój email"
         values:
+          allow_tunneling:
+            allow: "Zezwól"
+            disallow: "Zabroń"
           locale:
             en: Angielski
             pl: Polski

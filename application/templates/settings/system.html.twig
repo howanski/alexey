@@ -19,6 +19,27 @@
 {% endblock %}
 
 {% block pageContentSecondary %}
+	<div class="flex flex-wrap">
+		<div class="container mx-auto px-4">
+			<div class="flex flex-wrap justify-center">
+				<div class="w-full lg:w-10/12 px-4">
+					<div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-nord0">
+						<div class="flex-auto p-5 lg:p-10 text-nord4">
+							<p class="leading-relaxed mt-0 mb-4">
+								Tunnel: {{ tunnel }}
+							</p>
+							<div class="text-center mt-0 flex flex-wrap justify-center">
+								<a href="{{ tunnel }}" target="_blank" class="bg-nord5 text-nord1 hover:bg-nord1 hover:text-nord5 text-xl font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1" style="transition: all 0.15s ease 0s;">
+									<i class="fas fa-directions"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	{% include 'form.html.twig' with {
 		'form': form,
 		'additionalButtons': [

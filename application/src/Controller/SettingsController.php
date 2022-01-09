@@ -12,6 +12,8 @@ use App\Form\UserSettingsType;
 use App\Model\SystemSettings;
 use App\Service\AlexeyTranslator;
 use App\Service\SimpleCacheService;
+use App\Service\SimpleSettingsService;
+use App\Service\TunnelInfoProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,9 +61,14 @@ final class SettingsController extends AbstractController
     }
 
     #[Route('/settings/system', name: 'settings_system')]
-    public function settingsSystem(EntityManagerInterface $em, AlexeyTranslator $t, Request $request): Response
-    {
-        $settings = new SystemSettings(em: $em, translator: $t);
+    public function settingsSystem(
+        AlexeyTranslator $t,
+        EntityManagerInterface $em,
+        Request $request,
+        SimpleSettingsService $ss,
+        TunnelInfoProvider $tunnelInfoProvider,
+    ): Response {
+        $settings = new SystemSettings(em: $em, translator: $t, simpleSettingsService: $ss);
         $form = $this->createForm(
             SystemSettingsType::class,
             $settings
@@ -79,6 +86,7 @@ final class SettingsController extends AbstractController
         return $this->renderForm('settings/system.html.twig', [
             'form' => $form,
             'pills' => $this->getMenuPills(false),
+            'tunnel' => $tunnelInfoProvider->getCurrentTunnel(),
         ]);
     }
 

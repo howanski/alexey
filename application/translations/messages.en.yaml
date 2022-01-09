@@ -195,8 +195,12 @@ app:
           is_cron_active: "Run this job in background"
           locale: Locale
           run_cron_every: "Break between runs (seconds)"
+          tunneling_allowed: "Allow browser access via tunnel"
           your_email: "Your email"
         values:
+          allow_tunneling:
+            allow: "Allow"
+            disallow: "Disallow"
           locale:
             en: English
             pl: Polish
