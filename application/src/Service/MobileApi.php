@@ -421,7 +421,7 @@ final class MobileApi
         $tunnelSetup = $this->simpleSettingsService->getSettings([SystemSettings::TUNNELING_ALLOWED], null);
         $tunnelSetup = $tunnelSetup[SystemSettings::TUNNELING_ALLOWED];
         $tunnelAllowed = ($tunnelSetup === SimpleSettingsService::UNIVERSAL_TRUTH);
-        if ($tunnelAllowed) {
+        if (true === $tunnelAllowed) {
             $response->addButton(
                 name: $this->translator->translateString(
                     translationId: 'turn_off',
