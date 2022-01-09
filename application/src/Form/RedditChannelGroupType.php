@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Entity\RedditChannel;
 use App\Entity\RedditChannelGroup;
 use App\Form\CommonFormType;
-use App\Repository\RedditChannelGroupRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 
-final class RedditChannelType extends CommonFormType
+final class RedditChannelGroupType extends CommonFormType
 {
     protected function init(): void
     {
@@ -23,38 +21,26 @@ final class RedditChannelType extends CommonFormType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $user = $options['user'];
         $builder
             ->add(child: 'name', options: [
-                'label' => '/r/',
+                'label' => $this->getLabelTrans('name'),
                 'priority' => 0,
                 'required' => true,
                 'constraints' => [
                     new NotBlank(),
                     new NotNull(),
                 ],
-                'disabled' => !$options['isNew'],
             ])
-            ->add(child: 'channelGroup', type: EntityType::class, options: [
-                'class' => RedditChannelGroup::class,
-                'label' => $this->getLabelTrans('channelGroup'),
-                'choice_label' => 'name',
+            ->add(child: 'orderNumber', type: NumberType::class, options: [
+                'label' => $this->getLabelTrans('orderNumber'),
                 'priority' => -1,
-                'query_builder' => function (RedditChannelGroupRepository $er) use ($user) {
-                    return $er->getMineBuilder($user);
-                },
-                'expanded' => false,
-                'required' => false,
-                'placeholder' => '---'
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => RedditChannel::class,
-            'user' => null,
-            'isNew' => false,
+            'data_class' => RedditChannelGroup::class,
         ]);
     }
 }

@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('crawler'), 'href': path('crawler_index', {filter: '*'})},
+	{'name': 'groups'|localised('crawler')},
+	]
+%}
+{% set locale = app.request.locale %}
+
+{% block javascripts %}{% endblock %}
+
+{% block pageContentPrimary %}
+	{% set table_data = {} %}
+	{% for group in groups %}
+		{% set actions = '<a href="' ~ path('crawler_index', {'filter': group.name}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'show'|localised ~ ' ( ' ~ group.channelCount ~ ' )</a>' %}
+		{% set actions = actions ~ ' <a href="' ~ path('crawler_reddit_channel_groups_edit', {'id': group.id}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'edit'|localised ~ '</a>' %}
+		{% set actions = actions ~ ' <a href="' ~ path('crawler_reddit_channel_groups_delete', {'id': group.id}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'delete'|localised ~ '</a>' %}
+		{% set table_data = table_data|merge([{
+			'name': group.name,
+			'actions': actions
+		}]) %}
+	{% endfor %}
+	{% include 'table.html.twig' with {
+		'tableTitle': 'groups'|localised('crawler'),
+		'tableHeaders': [
+			'name'|localised,
+			'actions'|localised,
+			],
+		'tableData': table_data,
+		'buttons': [{'href': path('crawler_reddit_channel_groups_new'), text: 'add'|localised}]
+	} only %}
+{% endblock %}
+
+{% block pageContentSecondary %}{% endblock %}

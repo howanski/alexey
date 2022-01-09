@@ -59,7 +59,13 @@ app:
         wake: Wake
         you_sure_delete: "Are you sure you want to delete this item?"
     crawler:
+      forms:
+        labels:
+          channelgroup: "Group"
+          name: "Name"
+          ordernumber: "Order number"
       strings:
+        groups: "Groups"
         menu_record: 'Crawler'
     dashboard:
       strings:

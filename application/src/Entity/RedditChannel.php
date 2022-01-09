@@ -34,8 +34,8 @@ class RedditChannel
     #[ORM\OneToMany(mappedBy: 'channel', targetEntity: RedditPost::class, orphanRemoval: true)]
     private $posts;
 
-    #[ORM\Column(type: 'boolean')]
-    private $nsfw = false;
+    #[ORM\ManyToOne(targetEntity: RedditChannelGroup::class, inversedBy: 'channels')]
+    private $channelGroup;
 
     public function __construct()
     {
@@ -88,14 +88,15 @@ class RedditChannel
         return $this->posts;
     }
 
-    public function getNsfw(): bool
+    public function getChannelGroup()
     {
-        return $this->nsfw;
+        return $this->channelGroup;
     }
 
-    public function setNsfw(bool $nsfw): self
+    public function setChannelGroup($channelGroup): self
     {
-        $this->nsfw = $nsfw;
+        $this->channelGroup = $channelGroup;
+
         return $this;
     }
 }

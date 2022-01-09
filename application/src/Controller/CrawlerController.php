@@ -1,14 +1,18 @@
 <?php
 
+// TODO: split controller into smaller chunks & maybe it's time to start using voters?
 declare(strict_types=1);
 
 namespace App\Controller;
 
 use App\Entity\RedditChannel;
+use App\Entity\RedditChannelGroup;
 use App\Entity\RedditPost;
 use App\Entity\User;
+use App\Form\RedditChannelGroupType;
 use App\Form\RedditChannelType;
 use App\Message\AsyncJob;
+use App\Repository\RedditChannelGroupRepository;
 use App\Repository\RedditChannelRepository;
 use App\Service\AlexeyTranslator;
 use App\Service\RedditReader;
@@ -28,6 +32,7 @@ final class CrawlerController extends AbstractController
     public function index(
         RedditReader $reader,
         RedditChannelRepository $repository,
+        RedditChannelGroupRepository $groupRepository,
         string $filter = '*',
     ): Response {
         /** @var User $user */
@@ -41,7 +46,8 @@ final class CrawlerController extends AbstractController
         return $this->render('crawler/index.html.twig', [
             'feeds' => $feeds,
             'filter' => $filter,
-            'touchStamp' => $batchUnlinkOlderThan->getTimestamp()
+            'touchStamp' => $batchUnlinkOlderThan->getTimestamp(),
+            'groups' => $groupRepository->getMine($user),
         ]);
     }
 
@@ -91,7 +97,7 @@ final class CrawlerController extends AbstractController
         $user = $this->getUser();
         $channel = new RedditChannel();
         $channel->setUser($user);
-        $form = $this->createForm(RedditChannelType::class, $channel);
+        $form = $this->createForm(RedditChannelType::class, $channel, ['user' => $user, 'isNew' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -103,11 +109,50 @@ final class CrawlerController extends AbstractController
                 payload: ['id' => $channel->getId()],
             );
             $bus->dispatch($message);
-            return $this->redirectToRoute('crawler_index', ['filter' => '*'], Response::HTTP_SEE_OTHER);
+            $filter = '*';
+            if ($channel->getChannelGroup() instanceof RedditChannelGroup) {
+                $filter = $channel->getChannelGroup()->getName();
+            }
+            return $this->redirectToRoute('crawler_index', ['filter' => $filter], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('crawler/new.html.twig', [
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/reddit/channel/edit/{id}', name: 'crawler_reddit_channel_edit')]
+    public function edit(
+        Request $request,
+        RedditChannel $channel,
+        EntityManagerInterface $em,
+        AlexeyTranslator $translator,
+    ) {
+        /** @var User $user */
+        $user = $this->getUser();
+        if (false === ($user === $channel->getUser())) {
+            return $this->redirectToRoute('crawler_index', ['filter' => '*'], Response::HTTP_SEE_OTHER);
+        }
+        $form = $this->createForm(RedditChannelType::class, $channel, ['user' => $user, 'isNew' => false]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($channel);
+            $em->flush();
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+
+            return $this->redirectToRoute('crawler_index', ['filter' => '*'], Response::HTTP_SEE_OTHER);
+        }
+
+        $filter = '*';
+        if ($channel->getChannelGroup() instanceof RedditChannelGroup) {
+            $filter = $channel->getChannelGroup()->getName();
+        }
+
+        return $this->renderForm('crawler/edit.html.twig', [
+            'form' => $form,
+            'channel' => $channel,
+            'activeFilter' => $filter,
         ]);
     }
 
@@ -153,5 +198,94 @@ final class CrawlerController extends AbstractController
         } else {
             return $this->redirectToRoute('crawler_index', ['filter' => '*'], Response::HTTP_SEE_OTHER);
         }
+    }
+
+    #[Route('/reddit/channel/groups', name: 'crawler_reddit_channel_groups')]
+    public function groupsList(RedditChannelGroupRepository $repo)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        return $this->render('crawler/groups_list.html.twig', [
+            'groups' => $repo->getMine($user),
+        ]);
+    }
+
+    #[Route('/reddit/channel/groups/edit/{id}', name: 'crawler_reddit_channel_groups_edit')]
+    public function groupsEdit(
+        RedditChannelGroup $group,
+        AlexeyTranslator $translator,
+        EntityManagerInterface $em,
+        Request $request,
+    ) {
+        /** @var User $user */
+        $user = $this->getUser();
+        if (false === ($user === $group->getUser())) {
+            return $this->redirectToRoute('crawler_reddit_channel_groups', [], Response::HTTP_SEE_OTHER);
+        }
+        $form = $this->createForm(RedditChannelGroupType::class, $group);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($group);
+            $em->flush();
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+
+            return $this->redirectToRoute('crawler_reddit_channel_groups', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('crawler/groups_edit.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/reddit/channel/groups/new', name: 'crawler_reddit_channel_groups_new')]
+    public function groupsNew(
+        AlexeyTranslator $translator,
+        EntityManagerInterface $em,
+        Request $request,
+    ) {
+        /** @var User $user */
+        $user = $this->getUser();
+        $group = new RedditChannelGroup();
+
+        $group->setUser($user);
+
+        $form = $this->createForm(RedditChannelGroupType::class, $group);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($group);
+            $em->flush();
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+
+            return $this->redirectToRoute('crawler_reddit_channel_groups', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('crawler/groups_edit.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/reddit/channel/groups/delete/{id}', name: 'crawler_reddit_channel_groups_delete')]
+    public function groupsDelete(
+        RedditChannelGroup $group,
+        AlexeyTranslator $translator,
+        EntityManagerInterface $em,
+    ) {
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($group->getUser() === $user) {
+            /** @var RedditChannel $channel */
+            foreach ($group->getChannels() as $channel) {
+                $channel->setChannelGroup(null);
+                $em->persist($channel);
+            }
+            $em->flush();
+            $em->remove($group);
+            $em->flush();
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
+        }
+
+        return $this->redirectToRoute('crawler_reddit_channel_groups', [], Response::HTTP_SEE_OTHER);
     }
 }

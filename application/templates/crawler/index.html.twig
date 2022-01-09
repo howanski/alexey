@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% set breadcrumbs = [
-	{'name': 'menu_record'|localised('crawler')},
+	{'name': 'menu_record'|localised('crawler'), 'href': path('crawler_index', {filter: '*'})},
 	]
 %}
 {% set locale = app.request.locale %}
@@ -8,23 +8,21 @@
 {% block javascripts %}{% endblock %}
 
 {% block pageContentPrimary %}
-	{% if filter == 'nsfw' %}
-		{% set filter_toggle_path = path('crawler_index', {filter: '*'}) %}
-		{% set filter_toggle_name = 'NSFW OFF' %}
-		{% set filter_toggle_icons = 'fas fa-user-shield' %}
-		{% set filter_toggle_color = 'nord14' %}
-	{% else %}
-		{% set filter_toggle_path = path('crawler_index', {filter: 'nsfw'}) %}
-		{% set filter_toggle_name = 'NSFW ON' %}
-		{% set filter_toggle_icons = 'fas fa-dumpster-fire' %}
-		{% set filter_toggle_color = 'nord12' %}
-	{% endif %}
+	<div class="justify-center my-2 flex flex-wrap">
+		{% for group in groups %}
+			{% if group.channelCount > 0 %}
+				<a class="{% if group.name is same as filter %}bg-nord9{% else %}bg-nord1{% endif %} py-1 my-1 px-4 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none mr-2" href="{{ path('crawler_index', {filter: group.name}) }}">
+					{{ group.name }}
+				</a>
+			{% endif %}
+		{% endfor %}
+	</div>
 	{% set action_buttons = [
         {
-            'color': filter_toggle_color,
-            'href': filter_toggle_path,
-            'name': filter_toggle_name,
-            'icon': filter_toggle_icons
+            'color': 'nord10',
+            'href': path('crawler_reddit_channel_groups'),
+            'name': '',
+            'icon': 'fas fa-layer-group'
        },
 		{
             'color': 'nord10',
@@ -58,8 +56,8 @@
 					'text': '<i class="fas fa-unlink inline-unlinker" data-unlink-path="' ~ path('crawler_reddit_channel_dismiss', {id: feed.id, touchStamp: touchStamp}) ~ '" data-unlink-parent=".table-parent-node" data-unhide-replacement="false"></i>'
 				},
 				{
-					'href': path('crawler_reddit_channel_drop', {id: feed.id, filter: filter}),
-					'text': '<i class="far fa-trash-alt text-nord12"></i>'
+					'href': path('crawler_reddit_channel_edit', {id: feed.id}),
+					'text': '<i class="far fa-edit"></i>'
 				}
 			],
 			'foldable': true,

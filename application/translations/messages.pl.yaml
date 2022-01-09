@@ -59,7 +59,13 @@ app:
         wake: Obudź
         you_sure_delete: "Na pewno chcesz to usunąć?"
     crawler:
+      forms:
+        labels:
+          channelgroup: "Grupa"
+          name: "Nazwa"
+          ordernumber: "Numer porządkowy"
       strings:
+        groups: "Grupy"
         menu_record: 'Crawler'
     dashboard:
       strings:

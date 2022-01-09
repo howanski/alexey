@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('crawler')},
+	]
+%}
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('forms-js') }}
+{% endblock %}
+
+
+{% block pageContentPrimary %}
+		{% set secure_buttons = [{
+			'color': 'nord11',
+			'name': 'delete'|localised,
+			'icon': 'fas fa-trash',
+			'action': path('crawler_reddit_channel_drop', {'id': channel.id, filter: activeFilter}),
+			'csrf': csrf_token('delete' ~ channel.id),
+			'confirmation': 'you_sure_delete'|localised
+		}] %}
+	{% include 'form.html.twig' with {
+		'form': form,
+		'additionalButtons': [
+			{
+				'color': 'nord10',
+				'href': path('crawler_index', {filter: activeFilter}),
+				'name': 'back_to_list'|localised,
+				'icon': 'fas fa-undo'
+			}
+		],
+		'additionalSecuredButtons': secure_buttons
+	} only %}
+{% endblock %}
+
+{% block pageContentSecondary %}{% endblock %}

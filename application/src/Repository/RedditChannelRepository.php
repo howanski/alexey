@@ -26,10 +26,14 @@ final class RedditChannelRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('c')
             ->distinct(true);
-        $nsfw = ($filter === 'nsfw');
-        if (false === $nsfw) {
-            $qb->andWhere('c.nsfw = :nsfw')
-                ->setParameter('nsfw', $nsfw);
+        $qb->andWhere('c.user = :user')
+            ->setParameter('user', $user);
+        $qb->leftJoin('c.channelGroup', 'channelGroup');
+        if ($filter === '*') {
+            $qb->andWhere('channelGroup IS NULL');
+        } else {
+            $qb->andWhere('channelGroup.name = :groupName')
+                ->setParameter('groupName', $filter);
         }
         $qb->orderBy('c.name', 'ASC');
 
