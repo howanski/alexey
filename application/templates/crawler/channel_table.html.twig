@@ -1,7 +1,8 @@
 {% set table_data = [] %}
 {% for post in feed.posts %}
+    {% set has_thumbnail = post.thumbnail|length > 0 %}
     {% set row %}
-    <a href="{{ post.uriOld }}" target="_blank">{{ post.title }}</a>
+    <a href="{{ post.uriOld }}" {% if not has_thumbnail %}class="crawler-external-link" {% endif %}target="_blank">{{ post.title }}</a>
     {% endset %}
     {% set actions %}
     <button class="fas fa-unlink inline-unlinker" data-unlink-path="{{ path('crawler_reddit_post_dismiss', {id: post.id}) }}" data-unlink-parent="tr" data-unhide-replacement="true" data-replacement-container="tbody" data-replacement-selector="tr.hidden"></button>
@@ -10,8 +11,8 @@
             {{ post.user }}
         </a>
     {% endif %}
-    {% if post.thumbnail|length > 0 %}
-        <a class="ml-4" href="{{ path('crawler_reddit_post_preview', {id: post.id}) }}" target="_blank">
+    {% if has_thumbnail %}
+        <a class="ml-4 crawler-external-link" href="{{ path('crawler_reddit_post_preview', {id: post.id}) }}" target="_blank">
             <i class="fas fa-external-link-alt"></i>
         </a>
     {% endif %}

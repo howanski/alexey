@@ -32,6 +32,7 @@ Encore
   .addEntry("dynacard", "./assets/js/dynacard.js")
   .addEntry("forms-js", "./assets/js/forms.js")
   .addEntry("qr-manager", "./assets/js/qr-manager.js")
+  .addEntry("addon-crawler", "./assets/js/addon-crawler.js")
 
   // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
   // .enableStimulusBridge('./assets/controllers.json')
