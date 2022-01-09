@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: RedditChannelGroupRepository::class)]
 #[UniqueEntity(fields: ['user', 'name'])]
-final class RedditChannelGroup
+class RedditChannelGroup
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
