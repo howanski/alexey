@@ -10,6 +10,7 @@ app:
             finances: 'Dostęp do finansów'
             machines: 'Dostęp do urządzeń sieciowych'
             networkusage: 'Dostęp do zużycia sieci'
+            tunnel: 'Zarządzanie tunelem'
             weather: 'Dostęp do pogody'
       strings:
         setup_permissions: 'Skonfiguruj uprawnienia urządzenia.'
@@ -53,6 +54,8 @@ app:
         show: Pokaż
         simulation: Symulacja
         status: Status
+        turn_off: "Wyłącz"
+        turn_on: "Włącz"
         unknown: "?"
         unreachable: Nieosiągalna
         visible: Widoczna
@@ -205,6 +208,7 @@ app:
             en: Angielski
             pl: Polski
       strings:
+        manage_tunnel: "Zarządzaj tunelem"
         menu_record: Ustawienia
         mobile_api_settings: "Aplikacja mobilna"
         system_settings: "Ustawienia systemowe"

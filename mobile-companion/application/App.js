@@ -1,3 +1,4 @@
+// TODO: import tunnel-config file (URI ONLY!) which needs to be sent by mail when tunnel changes
 import React, { useState, useEffect } from "react";
 import { Text, View, ScrollView, StyleSheet, Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";

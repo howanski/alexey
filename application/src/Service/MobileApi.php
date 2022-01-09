@@ -10,6 +10,7 @@ use App\Entity\NetworkMachine;
 use App\Entity\NetworkStatistic;
 use App\Entity\User;
 use App\Message\AsyncJob;
+use App\Model\SystemSettings;
 use App\Model\TransmissionSettings;
 use App\Repository\NetworkMachineRepository;
 use App\Repository\NetworkStatisticRepository;
@@ -18,6 +19,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\RouterInterface;
 
+// TODO: Yeah, that's really bloated as I want features right away when I think of them
+// so when the "time comes" it has to be cleared up, not mentioning about tests...
 final class MobileApi
 {
     private ApiDevice $currentDevice;
@@ -29,6 +32,7 @@ final class MobileApi
         private NetworkStatisticRepository $networkStatisticRepository,
         private RouterInterface $router,
         private SimpleSettingsService $simpleSettingsService,
+        private TunnelInfoProvider $tunnelInfoProvider,
         private WeatherService $weatherService,
     ) {
     }
@@ -40,6 +44,7 @@ final class MobileApi
     private const API_FUNCTION_MACHINES = 'machines';
     private const API_FUNCTION_NETWORK_USAGE = 'networkUsage';
     private const API_FUNCTION_WEATHER = 'weather';
+    private const API_FUNCTION_TUNNEL = 'tunnel';
     public const API_FUNCTION_DASHBOARD = 'dashboard';
 
     private const API_FUNCTIONS = [
@@ -50,6 +55,7 @@ final class MobileApi
         self::API_FUNCTION_MACHINE_WAKE => 'wakeMachine',
         self::API_FUNCTION_MACHINES => 'getMachines',
         self::API_FUNCTION_NETWORK_USAGE => 'getNetworkUsage',
+        self::API_FUNCTION_TUNNEL => 'manageTunnel',
         self::API_FUNCTION_WEATHER => 'getWeather',
     ];
 
@@ -57,6 +63,7 @@ final class MobileApi
         self::API_FUNCTION_FINANCES,
         self::API_FUNCTION_MACHINES,
         self::API_FUNCTION_NETWORK_USAGE,
+        self::API_FUNCTION_TUNNEL,
         self::API_FUNCTION_WEATHER,
     ];
 
@@ -161,6 +168,17 @@ final class MobileApi
                     module: 'money'
                 ),
                 path: $this->apiFunctionPath(self::API_FUNCTION_FINANCES),
+            );
+        }
+
+        if ($this->canRun(self::API_FUNCTION_TUNNEL)) {
+            $hasAnyPermission = true;
+            $response->addButton(
+                name: $this->translator->translateString(
+                    translationId: 'manage_tunnel',
+                    module: 'settings'
+                ),
+                path: $this->apiFunctionPath(self::API_FUNCTION_TUNNEL),
             );
         }
 
@@ -375,6 +393,56 @@ final class MobileApi
             ),
             path: $this->apiFunctionPath(self::API_FUNCTION_FINANCES),
         );
+        $response->addSpacer();
+        return $response->toResponse();
+    }
+
+    private function manageTunnel(User $user, array $parameters): JsonResponse
+    {
+        if (false === $this->canRun(self::API_FUNCTION_TUNNEL)) {
+            return $this->getDashboard($user, $parameters);
+        }
+        $response = new ApiResponse();
+        $response->addSpacer();
+        $response->addText($this->tunnelInfoProvider->getCurrentTunnel());
+        $response->addSpacer();
+
+        //TODO: some sort of voter if user can change this setting
+        if (array_key_exists(key: 'allow', array: $parameters)) {
+            $newSetting = $parameters['allow'];
+            $this->simpleSettingsService->saveSettings(
+                [
+                    SystemSettings::TUNNELING_ALLOWED => $newSetting,
+                ],
+                null
+            );
+        }
+
+        $tunnelSetup = $this->simpleSettingsService->getSettings([SystemSettings::TUNNELING_ALLOWED], null);
+        $tunnelSetup = $tunnelSetup[SystemSettings::TUNNELING_ALLOWED];
+        $tunnelAllowed = ($tunnelSetup === SimpleSettingsService::UNIVERSAL_TRUTH);
+        if ($tunnelAllowed) {
+            $response->addButton(
+                name: $this->translator->translateString(
+                    translationId: 'turn_off',
+                    module: 'common'
+                ),
+                path: $this->apiFunctionPath(self::API_FUNCTION_TUNNEL, [
+                    'allow' => SimpleSettingsService::UNIVERSAL_FALSE,
+                ]),
+            );
+        } else {
+            $response->addButton(
+                name: $this->translator->translateString(
+                    translationId: 'turn_on',
+                    module: 'common'
+                ),
+                path: $this->apiFunctionPath(self::API_FUNCTION_TUNNEL, [
+                    'allow' => SimpleSettingsService::UNIVERSAL_TRUTH,
+                ]),
+            );
+        }
+
         $response->addSpacer();
         return $response->toResponse();
     }

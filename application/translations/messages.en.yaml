@@ -10,6 +10,7 @@ app:
             finances: 'Access finances'
             machines: 'Access network machines'
             networkusage: 'Access network usage'
+            tunnel: 'Access tunnel management'
             weather: 'Access weather'
       strings:
         setup_permissions: 'Please setup device permissions.'
@@ -53,6 +54,8 @@ app:
         show: Show
         simulation: Simulation
         status: Status
+        turn_off: "Turn off"
+        turn_on: "Turn on"
         unknown: "?"
         unreachable: Unreachable
         visible: Visible
@@ -205,6 +208,7 @@ app:
             en: English
             pl: Polish
       strings:
+        manage_tunnel: "Manage tunnel"
         menu_record: Settings
         mobile_api_settings: "Companion App"
         system_settings: "System settings"
