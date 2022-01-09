@@ -55,6 +55,9 @@
 			'tableDataUrl': path('crawler_reddit_channel_table', {id: feed.id}),
 			'buttons': [
 				{
+					'text': '<i class="fas fa-unlink inline-unlinker" data-unlink-path="' ~ path('crawler_reddit_channel_dismiss', {id: feed.id, touchStamp: touchStamp}) ~ '" data-unlink-parent=".table-parent-node" data-unhide-replacement="false"></i>'
+				},
+				{
 					'href': path('crawler_reddit_channel_drop', {id: feed.id, filter: filter}),
 					'text': '<i class="far fa-trash-alt text-nord12"></i>'
 				}

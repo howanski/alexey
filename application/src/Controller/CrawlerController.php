@@ -12,6 +12,7 @@ use App\Message\AsyncJob;
 use App\Repository\RedditChannelRepository;
 use App\Service\AlexeyTranslator;
 use App\Service\RedditReader;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,9 +37,11 @@ final class CrawlerController extends AbstractController
         foreach ($myRedditChannels as $channel) {
             $feeds[] = $reader->getChannelDataForView($channel);
         }
+        $batchUnlinkOlderThan = new DateTime('now');
         return $this->render('crawler/index.html.twig', [
             'feeds' => $feeds,
             'filter' => $filter,
+            'touchStamp' => $batchUnlinkOlderThan->getTimestamp()
         ]);
     }
 
@@ -49,6 +52,29 @@ final class CrawlerController extends AbstractController
         if ($user === $post->getChannel()->getUser()) {
             $post->setSeen(true);
             $em->persist($post);
+            $em->flush();
+        }
+        return new JsonResponse('ok');
+    }
+
+    #[Route(
+        path: '/reddit/post/dismiss-channel/{id}/{touchStamp}',
+        name: 'crawler_reddit_channel_dismiss',
+        methods: ['POST'],
+    )]
+    public function dismissAll(RedditChannel $channel, int $touchStamp, EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
+        if ($user === $channel->getUser()) {
+            $timeBorder = new DateTime();
+            $timeBorder->setTimestamp($touchStamp);
+            /** @var RedditPost $post */
+            foreach ($channel->getPosts() as $post) {
+                if ($post->getTouched() < $timeBorder) {
+                    $post->setSeen(true);
+                    $em->persist($post);
+                }
+            }
             $em->flush();
         }
         return new JsonResponse('ok');

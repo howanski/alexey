@@ -7,7 +7,7 @@ import "@popperjs/core";
 import "./js/sidebar-menu.js"
 import "./js/flash-destructor.js"
 import "./js/ping.js"
-import "./js/inline-unliker.js"
+import "./js/inline-unlinker.js"
 import "./js/table-unfolder.js"
 import "./js/dynamic-table.js"
 import "./js/top-scroller.js"

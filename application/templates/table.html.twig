@@ -6,7 +6,7 @@
 {% endif %}
 {% set light = 'nord4' %}
 {% set dark = 'nord0' %}
-<div class="flex flex-wrap">
+<div class="flex flex-wrap table-parent-node">
 	<div class="w-full xl:w-{{ max_width }}/12 mb-12 xl:mb-0 px-4">
 		<div class="relative flex flex-col min-w-0 break-words bg-{{ light }} w-full mb-6 shadow-lg rounded">
 			<div class="rounded-t mb-0 px-4 py-3 border-0">
@@ -21,9 +21,15 @@
 					<div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
 						{% if buttons is defined %}
 							{% for button in buttons %}
-								<a class="bg-nord2 text-{{ light }} hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1" style="transition:all .15s ease" href="{{ button.href }}">
-									{{ button.text|raw }}
-								</a>
+								{% if button.href is defined %}
+									<a class="bg-nord2 text-{{ light }} hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1" style="transition:all .15s ease" href="{{ button.href }}">
+										{{ button.text|raw }}
+									</a>
+								{% else %}
+									<button class="bg-nord2 text-{{ light }} hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1" style="transition:all .15s ease">
+										{{ button.text|raw }}
+									</button>
+								{% endif %}
 							{% endfor %}
 						{% endif %}
 					</div>
