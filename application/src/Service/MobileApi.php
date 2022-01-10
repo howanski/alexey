@@ -431,6 +431,14 @@ final class MobileApi
                     'allow' => SimpleSettingsService::UNIVERSAL_FALSE,
                 ]),
             );
+            $response->addSpacer();
+            $response->addLink(
+                name: $this->translator->translateString(
+                    translationId: 'open_in_browser',
+                    module: 'api'
+                ),
+                path: $this->tunnelInfoProvider->getCurrentTunnel(),
+            );
         } else {
             $response->addButton(
                 name: $this->translator->translateString(

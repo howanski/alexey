@@ -14,6 +14,7 @@ app:
             weather: 'Access weather'
       strings:
         setup_permissions: 'Please setup device permissions.'
+        open_in_browser: "Open in browser"
     common:
       flashes:
         saved: "Successfully saved"

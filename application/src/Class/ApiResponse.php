@@ -14,6 +14,7 @@ final class ApiResponse
 
     private const UI_ELEMENT_TEXT = 'txt';
     private const UI_ELEMENT_BUTTON = 'btn';
+    private const UI_ELEMENT_LINK = 'lnk';
 
     private int $code = 200;
 
@@ -59,6 +60,17 @@ final class ApiResponse
     {
         $this->ui[] = [
             'type' => self::UI_ELEMENT_BUTTON,
+            'name' => $name,
+            'path' => $path,
+        ];
+
+        return $this;
+    }
+
+    public function addLink(string $name, string $path): self
+    {
+        $this->ui[] = [
+            'type' => self::UI_ELEMENT_LINK,
             'name' => $name,
             'path' => $path,
         ];

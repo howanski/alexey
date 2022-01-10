@@ -4,6 +4,7 @@ import { Text, View, ScrollView, StyleSheet, Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { activateKeepAwake, deactivateKeepAwake } from "expo-keep-awake";
+import { openURL } from 'expo-linking';
 
 export default function App() {
     const [accessToken, setAccessToken] = useState(false);
@@ -210,6 +211,18 @@ export default function App() {
                                     </Text>
                                 </Pressable>
                             );
+                        } else if (uiElem.type === "lnk") {
+                            return (
+                                <Pressable
+                                    key={prop}
+                                    style={styles.buttonBlue}
+                                    onPress={() => openURL(uiElem.path)}
+                                >
+                                    <Text style={styles.buttonText}>
+                                        {uiElem.name}
+                                    </Text>
+                                </Pressable>
+                            );
                         } else {
                             console.log(uiElem);
                             console.log("Unknown elem type " + uiElem.type);
@@ -264,6 +277,16 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         elevation: 3,
         backgroundColor: "black",
+    },
+    buttonBlue: {
+        alignItems: "center",
+        justifyContent: "center",
+        paddingVertical: 12,
+        paddingHorizontal: 32,
+        margin: 5,
+        borderRadius: 4,
+        elevation: 3,
+        backgroundColor: "#5e81ac",
     },
     buttonText: {
         fontSize: 16,
