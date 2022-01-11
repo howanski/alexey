@@ -10,3 +10,4 @@ parameters:
         - "#on an unknown class if0xx#"
     excludePaths:
         - src/Security/ApiAuthenticator
+        - src/Security/OtpAuthenticator

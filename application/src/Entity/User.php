@@ -48,6 +48,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 254, options: ['default' => ''])]
     private string $email = '';
 
+    #[ORM\Column(type: 'string', length: 15, options: ['default' => ''])]
+    private string $otp = '';
+
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: RedditChannel::class, orphanRemoval: true)]
     private $redditChannels;
 
@@ -186,5 +189,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRedditChannels(): Collection
     {
         return $this->redditChannels;
+    }
+
+    public function getOtp(): string
+    {
+        return $this->otp;
+    }
+
+    public function setOtp(string $otp): self
+    {
+        $this->otp = $otp;
+        return $this;
     }
 }

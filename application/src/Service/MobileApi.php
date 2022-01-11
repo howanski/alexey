@@ -30,6 +30,7 @@ final class MobileApi
         private MessageBusInterface $bus,
         private NetworkMachineRepository $networkMachineRepository,
         private NetworkStatisticRepository $networkStatisticRepository,
+        private OtpManager $otpManager,
         private RouterInterface $router,
         private SimpleSettingsService $simpleSettingsService,
         private TunnelInfoProvider $tunnelInfoProvider,
@@ -432,12 +433,17 @@ final class MobileApi
                 ]),
             );
             $response->addSpacer();
+            $otp = $this->otpManager->getNewOtp($user);
+            $response->addText('OTP: ' . $otp);
             $response->addLink(
                 name: $this->translator->translateString(
                     translationId: 'open_in_browser',
                     module: 'api'
                 ),
-                path: $this->tunnelInfoProvider->getCurrentTunnel(),
+                path: $this->tunnelInfoProvider->getCurrentTunnel() .
+                    $this->router->generate(name: 'otp_login', parameters: [
+                        'otp' => $otp,
+                    ]),
             );
         } else {
             $response->addButton(

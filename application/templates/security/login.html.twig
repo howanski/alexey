@@ -20,17 +20,20 @@
 										</div>
 									{% endif %}
 									<form method="post">
-										<div class="relative w-full mb-3">
-											<label class="block uppercase text-nord4 text-xs font-bold mb-2 mt-3" for="grid-password">Username</label>
-											<input type="text" value="{{ last_username }}" name="username" class="border-0 px-3 py-3 placeholder-gray-400 text-nord4 bg-nord3 rounded text-sm shadow focus:outline-none focus:ring w-full" id="inputUsername" style="transition: all 0.15s ease 0s;" placeholder="Enter your username..." required autofocus>
+										<div class="flex flex-wrap flex-row-reverse w-full mb-3 mt-6">
+											<a href="{{ path('otp_login') }}" class="bg-nord3 text-nord6 hover:bg-nord9 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 " style="transition: all 0.15s ease 0s;">
+												<i class="fas fa-key"></i>
+											</a>
 										</div>
 										<div class="relative w-full mb-3">
-											<label class="block uppercase text-nord4 text-xs font-bold mb-2" for="grid-password">Password</label>
+											<input type="text" value="{{ last_username }}" name="username" class="border-0 px-3 py-3 placeholder-gray-400 text-nord4 bg-nord3 rounded text-sm shadow focus:outline-none focus:ring w-full" id="inputUsername" style="transition: all 0.15s ease 0s;" placeholder="Enter your username..." required>
+										</div>
+										<div class="relative w-full mb-3">
 											<input type="password" name="password" class="border-0 px-3 py-3 placeholder-gray-400 text-nord4 bg-nord3 rounded text-sm shadow focus:outline-none focus:ring w-full" placeholder="Password" style="transition: all 0.15s ease 0s;"/>
 										</div>
 										<div class="text-center mt-6">
 											<button class="bg-nord3 text-nord6 hover:bg-nord9 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full" type="submit" style="transition: all 0.15s ease 0s;">
-												Sign In
+												<i class="fas fa-sign-in-alt"></i>
 											</button>
 										</div>
 										<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">

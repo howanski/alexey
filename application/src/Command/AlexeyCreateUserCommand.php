@@ -7,6 +7,7 @@ namespace App\Command;
 use App\Entity\User;
 use Doctrine\ORM\EntityManager;
 use App\Repository\UserRepository;
+use App\Service\OtpManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
@@ -18,7 +19,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsCommand(
     name: 'alexey:user:new',
-    description: 'Create new user',
+    description: 'Create new ADMIN user',
 )]
 final class AlexeyCreateUserCommand extends Command
 {
@@ -26,6 +27,7 @@ final class AlexeyCreateUserCommand extends Command
         private EntityManagerInterface $em,
         private UserRepository $userRepository,
         private UserPasswordHasherInterface $passwordHasher,
+        private OtpManager $otpManager,
     ) {
         parent::__construct();
     }
@@ -53,8 +55,10 @@ final class AlexeyCreateUserCommand extends Command
         $user = new User();
         $user->setUsername($username);
         $user->setPassword($this->passwordHasher->hashPassword($user, $password));
+        $user->setRoles(['ROLE_ADMIN']);
         $this->em->persist($user);
         $this->em->flush();
+        $this->otpManager->scrambleAllOtps();
         $output->writeln('------ [ USER ' . $username . ' CREATED ] ------');
         return Command::SUCCESS;
     }

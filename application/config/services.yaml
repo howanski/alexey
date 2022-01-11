@@ -23,6 +23,9 @@ services:
   App\Service\MobileApiManager:
     arguments:
       $salt: '%env(APP_SECRET)%'
+  App\Service\OtpManager:
+    arguments:
+      $salt: '%env(APP_SECRET)%'
   App\Service\AlexeySideMenuProvider:
     tags: ["twig.extension"]
   App\Service\AlexeyTranslator:
