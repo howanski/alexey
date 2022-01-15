@@ -7,7 +7,6 @@ app:
           permissions: 'Uprawnienia'
         values:
           permissions:
-            finances: 'Dostęp do finansów'
             machines: 'Dostęp do urządzeń sieciowych'
             networkusage: 'Dostęp do zużycia sieci'
             tunnel: 'Zarządzanie tunelem'

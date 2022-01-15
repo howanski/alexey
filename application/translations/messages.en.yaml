@@ -7,7 +7,6 @@ app:
           permissions: 'Permissions'
         values:
           permissions:
-            finances: 'Access finances'
             machines: 'Access network machines'
             networkusage: 'Access network usage'
             tunnel: 'Access tunnel management'

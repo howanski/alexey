@@ -38,9 +38,6 @@ final class MobileApi
     ) {
     }
 
-    private const API_FUNCTION_FINANCES = 'finances';
-    private const API_FUNCTION_FINANCES_NODES_LIST = 'financeNodeList';
-    private const API_FUNCTION_FINANCES_TRANSFER_LIST = 'financeTransferList';
     private const API_FUNCTION_MACHINE_WAKE = 'machineWake';
     private const API_FUNCTION_MACHINES = 'machines';
     private const API_FUNCTION_NETWORK_USAGE = 'networkUsage';
@@ -50,9 +47,6 @@ final class MobileApi
 
     private const API_FUNCTIONS = [
         self::API_FUNCTION_DASHBOARD => 'getDashboard',
-        self::API_FUNCTION_FINANCES => 'getFinances',
-        self::API_FUNCTION_FINANCES_NODES_LIST => 'getMoneyNodesList',
-        self::API_FUNCTION_FINANCES_TRANSFER_LIST => 'getMoneyTransfersList',
         self::API_FUNCTION_MACHINE_WAKE => 'wakeMachine',
         self::API_FUNCTION_MACHINES => 'getMachines',
         self::API_FUNCTION_NETWORK_USAGE => 'getNetworkUsage',
@@ -61,7 +55,6 @@ final class MobileApi
     ];
 
     public const API_PERMISSIONS = [
-        self::API_FUNCTION_FINANCES,
         self::API_FUNCTION_MACHINES,
         self::API_FUNCTION_NETWORK_USAGE,
         self::API_FUNCTION_TUNNEL,
@@ -158,17 +151,6 @@ final class MobileApi
                     module: 'network_usage'
                 ),
                 path: $this->apiFunctionPath(self::API_FUNCTION_NETWORK_USAGE),
-            );
-        }
-
-        if ($this->canRun(self::API_FUNCTION_FINANCES)) {
-            $hasAnyPermission = true;
-            $response->addButton(
-                name: $this->translator->translateString(
-                    translationId: 'menu_record',
-                    module: 'money'
-                ),
-                path: $this->apiFunctionPath(self::API_FUNCTION_FINANCES),
             );
         }
 
@@ -329,72 +311,6 @@ final class MobileApi
         }
 
         $response->setRefreshInSeconds(15);
-        return $response->toResponse();
-    }
-
-    private function getFinances(User $user, array $parameters): JsonResponse
-    {
-        if (false === $this->canRun(self::API_FUNCTION_FINANCES)) {
-            return $this->getDashboard($user, $parameters);
-        }
-        $response = new ApiResponse();
-        $response->addText($this->translator->translateString(
-            translationId: 'menu_record',
-            module: 'money'
-        ));
-        $response->addSpacer();
-        $response->addButton(
-            name: $this->translator->translateString(
-                translationId: 'menu_record_nodes',
-                module: 'money'
-            ),
-            path: $this->apiFunctionPath(self::API_FUNCTION_FINANCES_NODES_LIST),
-        );
-
-        $response->addButton(
-            name: $this->translator->translateString(
-                translationId: 'menu_record_transfers',
-                module: 'money'
-            ),
-            path: $this->apiFunctionPath(self::API_FUNCTION_FINANCES_TRANSFER_LIST),
-        );
-        $response->addSpacer();
-        return $response->toResponse();
-    }
-
-    private function getMoneyNodesList(User $user, array $parameters): JsonResponse
-    {
-        if (false === $this->canRun(self::API_FUNCTION_FINANCES)) {
-            return $this->getDashboard($user, $parameters);
-        }
-        $response = new ApiResponse();
-        $response->addText('TODO');
-        $response->addButton(
-            name: '<- ' . $this->translator->translateString(
-                translationId: 'back',
-                module: 'common'
-            ),
-            path: $this->apiFunctionPath(self::API_FUNCTION_FINANCES),
-        );
-        $response->addSpacer();
-        return $response->toResponse();
-    }
-
-    private function getMoneyTransfersList(User $user, array $parameters): JsonResponse
-    {
-        if (false === $this->canRun(self::API_FUNCTION_FINANCES)) {
-            return $this->getDashboard($user, $parameters);
-        }
-        $response = new ApiResponse();
-        $response->addText('TODO');
-        $response->addButton(
-            name: '<- ' . $this->translator->translateString(
-                translationId: 'back',
-                module: 'common'
-            ),
-            path: $this->apiFunctionPath(self::API_FUNCTION_FINANCES),
-        );
-        $response->addSpacer();
         return $response->toResponse();
     }
 
