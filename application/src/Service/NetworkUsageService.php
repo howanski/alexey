@@ -105,18 +105,17 @@ final class NetworkUsageService
 
         $chdata['bonusPayload']['current_traffic_left'] = 0;
         $chdata['bonusPayload']['current_transfer_rate_left'] = 0;
-        $chdata['bonusPayload']['current_transfer_rate_left_midnight'] = 0;
         $chdata['bonusPayload']['current_transfer_rate'] = 0;
         $chdata['bonusPayload']['current_billing_frame_end'] = 0;
 
         $latestStat = $this->getLatestStatistic();
         if ($latestStat instanceof NetworkStatistic) {
             $chdata['bonusPayload']['current_traffic_left']
-                = $latestStat->getTrafficLeftReadable(4);
+                = $latestStat->getTrafficLeftReadable(4) . ' | ' .
+                $latestStat->getTrafficLeftReadable(4, TransmissionSettings::TARGET_SPEED_FRAME_DAY);
             $chdata['bonusPayload']['current_transfer_rate_left']
-                = $latestStat->getTransferRateLeftReadable(4);
-            $chdata['bonusPayload']['current_transfer_rate_left_midnight']
-                = $latestStat->getTransferRateLeftReadable(4, TransmissionSettings::TARGET_SPEED_FRAME_DAY);
+                = $latestStat->getTransferRateLeftReadable(4) . ' | ' .
+                $latestStat->getTransferRateLeftReadable(4, TransmissionSettings::TARGET_SPEED_FRAME_DAY);
             $chdata['bonusPayload']['current_transfer_rate']
                 = $latestStat->getTotalSpeedFromReferencePointReadable();
             $chdata['bonusPayload']['current_billing_frame_end']
