@@ -4,7 +4,7 @@ import { Text, View, ScrollView, StyleSheet, Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { activateKeepAwake, deactivateKeepAwake } from "expo-keep-awake";
-import { openURL } from 'expo-linking';
+import * as Linking from "expo-linking";
 
 export default function App() {
     const [accessToken, setAccessToken] = useState(false);
@@ -216,7 +216,7 @@ export default function App() {
                                 <Pressable
                                     key={prop}
                                     style={styles.buttonBlue}
-                                    onPress={() => openURL(uiElem.path)}
+                                    onPress={() => Linking.openURL(uiElem.path)}
                                 >
                                     <Text style={styles.buttonText}>
                                         {uiElem.name}
