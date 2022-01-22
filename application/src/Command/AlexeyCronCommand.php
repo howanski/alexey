@@ -25,6 +25,7 @@ final class AlexeyCronCommand extends Command
         AsyncJob::TYPE_PING_ALL_MACHINES => 30,
         AsyncJob::TYPE_UPDATE_CRAWLER => 600,
         AsyncJob::TYPE_UPDATE_NETWORK_STATS => 30,
+        AsyncJob::TYPE_CHECK_TUNNEL_CHANGE => 120,
     ];
 
     public function __construct(

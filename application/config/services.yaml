@@ -20,19 +20,29 @@ services:
       - "../src/Entity/"
       - "../src/Kernel.php"
       - "../src/Tests/"
-  App\Service\MobileApiManager:
-    arguments:
-      $salt: '%env(APP_SECRET)%'
-  App\Service\OtpManager:
-    arguments:
-      $salt: '%env(APP_SECRET)%'
-  App\Service\AlexeySideMenuProvider:
-    tags: ["twig.extension"]
-  App\Service\AlexeyTranslator:
-    tags: ["twig.extension"]
+
   App\Command\AlexeyCronCommand:
     arguments:
       $kernelEnv: "%kernel.environment%"
+
+  App\Service\AlexeySideMenuProvider:
+    tags: ["twig.extension"]
+
+  App\Service\AlexeyTranslator:
+    tags: ["twig.extension"]
+
+  App\Service\MailerService:
+    arguments:
+      $emailFromDefault: "%env(MAILER_FROM)%"
+      $kernelEnv: "%kernel.environment%"
+
+  App\Service\MobileApiManager:
+    arguments:
+      $salt: "%env(APP_SECRET)%"
+
+  App\Service\OtpManager:
+    arguments:
+      $salt: "%env(APP_SECRET)%"
 
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones

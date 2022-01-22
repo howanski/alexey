@@ -9,6 +9,7 @@ use App\Service\NetworkUsageService;
 use App\Service\TransmissionService;
 use App\Service\NetworkMachineService;
 use App\Service\RedditReader;
+use App\Service\TunnelInfoProvider;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -20,6 +21,7 @@ final class AsyncJobHandler implements MessageHandlerInterface
         private NetworkUsageService $networkUsageService,
         private RedditReader $redditReader,
         private TransmissionService $transmissionService,
+        private TunnelInfoProvider $tunnelInfoProvider,
     ) {
     }
 
@@ -62,6 +64,9 @@ final class AsyncJobHandler implements MessageHandlerInterface
                 break;
             case AsyncJob::TYPE_UPDATE_CRAWLER_POST:
                 $this->redditReader->updatePostThumbnail(postId: $payload['id']);
+                break;
+            case AsyncJob::TYPE_CHECK_TUNNEL_CHANGE:
+                $this->tunnelInfoProvider->reactOnChanges();
                 break;
         }
     }
