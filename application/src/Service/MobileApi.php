@@ -283,8 +283,13 @@ final class MobileApi
         if ($networkStatistic instanceof NetworkStatistic) {
             $label = $this->translator->translateString(translationId: 'optimal_speed', module: 'network_usage');
             $value = $networkStatistic->getTransferRateLeftReadable(
-                precision: 4,
-                frameWidth: $transmissionSettings->getTargetFrame()
+                precision: 3,
+                frameWidth: TransmissionSettings::TARGET_SPEED_FRAME_FULL
+            );
+            $value .= ' | ';
+            $value .= $networkStatistic->getTransferRateLeftReadable(
+                precision: 3,
+                frameWidth: TransmissionSettings::TARGET_SPEED_FRAME_DAY
             );
             $response->addText($label);
             $response->addText($value);
@@ -293,8 +298,13 @@ final class MobileApi
 
             $label = $this->translator->translateString(translationId: 'traffic_left', module: 'network_usage');
             $value = $networkStatistic->getTrafficLeftReadable(
-                precision: 4,
-                frameWidth: $transmissionSettings->getTargetFrame(),
+                precision: 3,
+                frameWidth: TransmissionSettings::TARGET_SPEED_FRAME_FULL,
+            );
+            $value .= ' | ';
+            $value .= $networkStatistic->getTrafficLeftReadable(
+                precision: 3,
+                frameWidth: TransmissionSettings::TARGET_SPEED_FRAME_DAY,
             );
             $response->addText($label);
             $response->addText($value);
