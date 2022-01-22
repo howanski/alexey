@@ -1,6 +1,5 @@
-// TODO: import tunnel-config file (URI ONLY!) which needs to be sent by mail when tunnel changes
 import React, { useState, useEffect } from "react";
-import { Text, View, ScrollView, StyleSheet, Pressable } from "react-native";
+import { Text, View, ScrollView, StyleSheet, Pressable, TextInput } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { activateKeepAwake, deactivateKeepAwake } from "expo-keep-awake";
@@ -15,8 +14,10 @@ export default function App() {
     const [needsScan, setNeedsScan] = useState(true);
     const [responseUi, setResponseUi] = useState([]);
     const [serverUri, setServerUri] = useState(false);
+    const [tmpServerUri, setTmpServerUri] = useState(false);
     const [timeoutId, setTimeoutId] = useState(false);
     const [transactionInProgress, setTransactionInProgress] = useState(false);
+    const [settingsOpened, setSettingsOpened] = useState(false);
     useEffect(() => {
         (async () => {
             const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -67,6 +68,18 @@ export default function App() {
     const logout = () => {
         persistServerUri("");
         persistDefaultPath("");
+        persistToken("");
+        setSettingsOpened(false);
+    };
+
+    const toggleSettings = () => {
+        setTmpServerUri(serverUri);
+        setSettingsOpened(!settingsOpened);
+    };
+
+    const saveSettings = () => {
+        persistServerUri(tmpServerUri);
+        setSettingsOpened(false);
     };
 
     const fetchPath = async (path) => {
@@ -156,6 +169,46 @@ export default function App() {
         fetchDefaultPath();
     }
 
+    if (settingsOpened){
+        return (
+            <View style={styles.container}>
+                <ScrollView
+                    style={styles.scrollContainer}
+                    contentContainerStyle={styles.scrollContainerParent}
+                >
+                <Text style={styles.textResponse}>
+                </Text>
+                <Text style={styles.textResponse}>
+                    --- Settings ---
+                </Text>
+                <Text style={styles.textResponse}>
+                </Text>
+                <Text style={styles.textResponse}>
+                    Server URI:
+                </Text>
+                <TextInput
+                    style={styles.input}
+                    value={tmpServerUri}
+                    onChangeText={setTmpServerUri}
+                />
+                <Text style={styles.textResponse}>
+                </Text>
+                <Text style={styles.textResponse}>
+                </Text>
+                <Pressable style={styles.button} onPress={logout}>
+                    <Text style={styles.buttonText}>Logout now!</Text>
+                </Pressable>
+                </ScrollView>
+                <Pressable style={styles.button} onPress={saveSettings}>
+                    <Text style={styles.buttonText}>Save</Text>
+                </Pressable>
+                <Pressable style={styles.button} onPress={toggleSettings}>
+                    <Text style={styles.buttonText}>Cancel</Text>
+                </Pressable>
+            </View>
+        );
+    }
+
     if (needsScan) {
         if (hasCameraPermission === null) {
             return (
@@ -233,8 +286,8 @@ export default function App() {
             <Pressable style={styles.button} onPress={fetchDefaultPath}>
                 <Text style={styles.buttonText}>Home</Text>
             </Pressable>
-            <Pressable style={styles.button} onPress={logout}>
-                <Text style={styles.buttonText}>Logout</Text>
+            <Pressable style={styles.button} onPress={toggleSettings}>
+                <Text style={styles.buttonText}>Settings</Text>
             </Pressable>
         </View>
     );
@@ -296,8 +349,9 @@ const styles = StyleSheet.create({
         color: "white",
     },
     input: {
-        color: "#cf0a3b",
-        height: 40,
+        color: "#d8dee9",
+        height: 50,
+        width: '100%',
         borderColor: "gray",
         borderWidth: 1,
     },
