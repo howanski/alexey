@@ -50,13 +50,15 @@ final class TunnelInfoProvider
             }
         }
 
-        $cacheLength = new \DateTime('+1 month');
-        $this->simpleCacheService->cacheData(
-            key: self::CACHE_KEY,
-            data: [
-                self::CACHE_KEY => $newTunnelAddress,
-            ],
-            validTo: $cacheLength,
-        );
+        if (strlen($newTunnelAddress) > 1) {
+            $cacheLength = new \DateTime('+1 month');
+            $this->simpleCacheService->cacheData(
+                key: self::CACHE_KEY,
+                data: [
+                    self::CACHE_KEY => $newTunnelAddress,
+                ],
+                validTo: $cacheLength,
+            );
+        }
     }
 }
