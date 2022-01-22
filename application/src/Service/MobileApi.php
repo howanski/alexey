@@ -79,7 +79,7 @@ final class MobileApi
                 $parameters,
             );
         } catch (Exception $e) {
-            $errorResponse = new ApiResponse();
+            $errorResponse = new ApiResponse($user->getLocale());
             $errorResponse->setCode(500);
             $errorResponse->setMessage($e->getMessage());
             return $errorResponse->toResponse();
@@ -109,7 +109,7 @@ final class MobileApi
 
     private function getDashboard(User $user, array $parameters): JsonResponse
     {
-        $response = new ApiResponse();
+        $response = new ApiResponse($user->getLocale());
         $response->addText(
             $this->translator->translateString(
                 translationId: 'hi',
@@ -178,7 +178,7 @@ final class MobileApi
         if (false === $this->canRun(self::API_FUNCTION_MACHINES)) {
             return $this->getDashboard($user, $parameters);
         }
-        $response = new ApiResponse();
+        $response = new ApiResponse($user->getLocale());
         $machines = $this->networkMachineRepository->getNameOrdered();
         /** @var NetworkMachine $machine */
         foreach ($machines as $machine) {
@@ -213,7 +213,7 @@ final class MobileApi
         if (false === $this->canRun(self::API_FUNCTION_MACHINES)) {
             return $this->getDashboard($user, $parameters);
         }
-        $response = new ApiResponse();
+        $response = new ApiResponse($user->getLocale());
 
         $machineId = $parameters['id'];
 
@@ -252,7 +252,7 @@ final class MobileApi
         if (false === $this->canRun(self::API_FUNCTION_WEATHER)) {
             return $this->getDashboard($user, $parameters);
         }
-        $response = new ApiResponse();
+        $response = new ApiResponse($user->getLocale());
 
         $forecast = $this->weatherService->getWeather()->getWeatherReadable($user->getLocale());
         foreach ($forecast['daily'] as $weatherDay) {
@@ -274,7 +274,7 @@ final class MobileApi
         if (false === $this->canRun(self::API_FUNCTION_NETWORK_USAGE)) {
             return $this->getDashboard($user, $parameters);
         }
-        $response = new ApiResponse();
+        $response = new ApiResponse($user->getLocale());
         $response->addSpacer();
         $transmissionSettings = new TransmissionSettings();
         $transmissionSettings->selfConfigure($this->simpleSettingsService);
@@ -329,7 +329,7 @@ final class MobileApi
         if (false === $this->canRun(self::API_FUNCTION_TUNNEL)) {
             return $this->getDashboard($user, $parameters);
         }
-        $response = new ApiResponse();
+        $response = new ApiResponse($user->getLocale());
         $response->addSpacer();
         $response->addText($this->tunnelInfoProvider->getCurrentTunnel());
         $response->addSpacer();

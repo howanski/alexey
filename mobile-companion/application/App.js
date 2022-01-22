@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, ScrollView, StyleSheet, Pressable, TextInput } from "react-native";
+import {
+    Text,
+    View,
+    ScrollView,
+    StyleSheet,
+    Pressable,
+    TextInput,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { activateKeepAwake, deactivateKeepAwake } from "expo-keep-awake";
@@ -14,6 +21,7 @@ export default function App() {
     const [needsScan, setNeedsScan] = useState(true);
     const [responseUi, setResponseUi] = useState([]);
     const [serverUri, setServerUri] = useState(false);
+    const [userLocale, setUserLocale] = useState("en");
     const [tmpServerUri, setTmpServerUri] = useState(false);
     const [timeoutId, setTimeoutId] = useState(false);
     const [transactionInProgress, setTransactionInProgress] = useState(false);
@@ -59,6 +67,20 @@ export default function App() {
         const value = await AsyncStorage.getItem("defaultPath");
         setDefaultPath(value);
         setupRescanNeeded();
+    };
+
+    const persistUserLocale = async (value) => {
+        if (value) {
+            await AsyncStorage.setItem("userLocale", value);
+            setUserLocale(value);
+        }
+    };
+
+    const retrieveUserLocale = async () => {
+        const value = await AsyncStorage.getItem("userLocale");
+        if (value) {
+            setUserLocale(value);
+        }
     };
 
     const setupRescanNeeded = async () => {
@@ -123,6 +145,9 @@ export default function App() {
                     } else {
                         deactivateKeepAwake();
                     }
+                    if (jsonResponse.loc && jsonResponse.loc != userLocale) {
+                        persistUserLocale(jsonResponse.loc);
+                    }
                     setLastResponseCode(jsonResponse.code);
                     setFreezeScanner(false);
                     setTransactionInProgress(false);
@@ -164,46 +189,41 @@ export default function App() {
     retrieveToken();
     retrieveServerUri();
     retrieveDefaultPath();
+    retrieveUserLocale();
     if (lastResponseCode === 0 && serverUri && defaultPath && accessToken) {
         setLastResponseCode(999);
         fetchDefaultPath();
     }
 
-    if (settingsOpened){
+    if (settingsOpened) {
         return (
             <View style={styles.container}>
                 <ScrollView
                     style={styles.scrollContainer}
                     contentContainerStyle={styles.scrollContainerParent}
                 >
-                <Text style={styles.textResponse}>
-                </Text>
-                <Text style={styles.textResponse}>
-                    --- Settings ---
-                </Text>
-                <Text style={styles.textResponse}>
-                </Text>
-                <Text style={styles.textResponse}>
-                    Server URI:
-                </Text>
-                <TextInput
-                    style={styles.input}
-                    value={tmpServerUri}
-                    onChangeText={setTmpServerUri}
-                />
-                <Text style={styles.textResponse}>
-                </Text>
-                <Text style={styles.textResponse}>
-                </Text>
-                <Pressable style={styles.button} onPress={logout}>
-                    <Text style={styles.buttonText}>Logout now!</Text>
-                </Pressable>
+                    <Text style={styles.textResponse}></Text>
+                    <Text style={styles.textResponse}>--- {strings[userLocale].settings} ---</Text>
+                    <Text style={styles.textResponse}></Text>
+                    <Text style={styles.textResponse}>{strings[userLocale].serverUri}:</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={tmpServerUri}
+                        onChangeText={setTmpServerUri}
+                    />
+                    <Text style={styles.textResponse}></Text>
+                    <Text style={styles.textResponse}></Text>
+                    <Pressable style={styles.button} onPress={logout}>
+                        <Text style={styles.buttonText}>{strings[userLocale].logoutNow}</Text>
+                    </Pressable>
                 </ScrollView>
                 <Pressable style={styles.button} onPress={saveSettings}>
-                    <Text style={styles.buttonText}>Save</Text>
+                    <Text style={styles.buttonText}>
+                        {strings[userLocale].save}
+                    </Text>
                 </Pressable>
                 <Pressable style={styles.button} onPress={toggleSettings}>
-                    <Text style={styles.buttonText}>Cancel</Text>
+                    <Text style={styles.buttonText}>{strings[userLocale].cancel}</Text>
                 </Pressable>
             </View>
         );
@@ -220,7 +240,7 @@ export default function App() {
         if (hasCameraPermission === false) {
             return (
                 <View style={styles.container}>
-                    <Text style={styles.textRed}>No access to camera :(</Text>
+                    <Text style={styles.textRed}>{strings[userLocale].noCameraAccess}</Text>
                 </View>
             );
         }
@@ -284,14 +304,35 @@ export default function App() {
                 })}
             </ScrollView>
             <Pressable style={styles.button} onPress={fetchDefaultPath}>
-                <Text style={styles.buttonText}>Home</Text>
+                <Text style={styles.buttonText}>{strings[userLocale].home}</Text>
             </Pressable>
             <Pressable style={styles.button} onPress={toggleSettings}>
-                <Text style={styles.buttonText}>Settings</Text>
+                <Text style={styles.buttonText}>{strings[userLocale].settings}</Text>
             </Pressable>
         </View>
     );
 }
+
+const strings = {
+    en: {
+        cancel: "Cancel",
+        home: "Home",
+        logoutNow: "Logout",
+        noCameraAccess: "No access to camera :(",
+        save: "Save",
+        settings: "Settings",
+        serverUri: "Server URI",
+    },
+    pl: {
+        cancel: "Anuluj",
+        home: "Menu główne",
+        logoutNow: "Wyloguj",
+        noCameraAccess: "Brak dostępu do aparatu :(",
+        save: "Zapisz",
+        settings: "Ustawienia",
+        serverUri: "Adres serwera",
+    },
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -351,7 +392,7 @@ const styles = StyleSheet.create({
     input: {
         color: "#d8dee9",
         height: 50,
-        width: '100%',
+        width: "100%",
         borderColor: "gray",
         borderWidth: 1,
     },

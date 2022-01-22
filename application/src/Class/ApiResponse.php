@@ -24,6 +24,11 @@ final class ApiResponse
 
     private array $ui = [];
 
+    public function __construct(
+        private string $userLocale,
+    ) {
+    }
+
     public function setMessage(string $message): self
     {
         $this->message = $message;
@@ -86,6 +91,7 @@ final class ApiResponse
                 'message' => $this->message,
                 'autoRefresh' => $this->autoRefresh,
                 'ui' => $this->ui,
+                'loc' => $this->userLocale
             ],
             status: $this->code,
             headers: self::CORS_HEADERS,
