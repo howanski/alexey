@@ -18,6 +18,7 @@
     {% endif %}
     {% endset %}
     {% set table_data = table_data|merge([{
+        'loop': loop.index ~ '. ',
         'time': post.publishTimereadable(locale),
         'actions': actions,
         'row': row
