@@ -10,7 +10,16 @@ function fetchBody(elem) {
         .then(function (response) {
             // handle success
             let responseData = response.data;
-            elem.innerHTML = responseData;
+            if (responseData === "autoclose") {
+                elem.innerHTML = '';
+                let parent = elem.closest(".table-parent-node");
+                parent.classList.add("alert-toast-out-inplace-slow");
+                setTimeout(() => {
+                    parent.remove();
+                }, 3000);
+            } else {
+                elem.innerHTML = responseData;
+            }
         })
         .catch(function (error) {
             // handle error
@@ -21,7 +30,7 @@ function fetchBody(elem) {
         });
 }
 
-window.addEventListener('load', (event) => {
+window.addEventListener("load", (event) => {
     let dynaTables = document.querySelectorAll("[data-table-body-url]");
     Array.from(dynaTables).map(fetchBody);
 });

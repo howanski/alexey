@@ -19,6 +19,13 @@
   z-index: 1000;
 }
 
+.alert-toast-out-inplace-slow {
+  -webkit-animation: fade-out 3s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: fade-out 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  z-index: 1000;
+}
+
 @-webkit-keyframes slide-in-right {
   0% {
     -webkit-transform: translateX(1000px);

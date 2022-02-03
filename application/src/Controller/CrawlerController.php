@@ -186,13 +186,18 @@ final class CrawlerController extends AbstractController
     {
         $user = $this->getUser();
         if ($request->isXmlHttpRequest() && $user === $channel->getUser()) {
-            $render = $this->renderView(
-                view: 'crawler/channel_table.html.twig',
-                parameters: [
-                    'feed' => $reader->getChannelDataForView($channel),
-                    'locale' => $request->getLocale(),
-                ],
-            );
+            $channelData = $reader->getChannelDataForView($channel);
+            if ($channelData['posts']) {
+                $render = $this->renderView(
+                    view: 'crawler/channel_table.html.twig',
+                    parameters: [
+                        'feed' => $channelData,
+                        'locale' => $request->getLocale(),
+                    ],
+                );
+            } else {
+                $render = 'autoclose';
+            }
 
             return new JsonResponse(data: $render);
         } else {
