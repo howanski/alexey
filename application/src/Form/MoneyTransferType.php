@@ -25,6 +25,31 @@ final class MoneyTransferType extends CommonFormType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $sourceChoices = [];
+        $targetChoices = [];
+
+        foreach ($options['money_node_choices'] as $groupName => $groupContents) {
+            $sourceGroup = [];
+            $targetGroup = [];
+            /** @var MoneyNode $node */
+            foreach ($groupContents as $node) {
+                if ($node->canBeTransferSource()) {
+                    $sourceGroup[] = $node;
+                }
+                if ($node->canBeTransferTarget()) {
+                    $targetGroup[] = $node;
+                }
+            }
+            if (count($sourceGroup) > 0) {
+                $sourceChoices[$groupName] = $sourceGroup;
+            }
+            if (count($targetGroup) > 0) {
+                $targetChoices[$groupName] = $targetGroup;
+            }
+        }
+        ksort($sourceChoices);
+        ksort($targetChoices);
+
         $builder
             ->add(child: 'operationDateString', type: TextType::class, options: [
                 'label' => $this->getLabelTrans(label: 'operation_date'),
@@ -60,9 +85,8 @@ final class MoneyTransferType extends CommonFormType
                 'priority' => -3,
                 'required' => true,
                 'class' => MoneyNode::class,
-                'choices' => $options['money_node_choices'],
+                'choices' => $sourceChoices,
                 'choice_label' => 'name',
-
                 'constraints' => [
                     new NotBlank(),
                 ],
@@ -72,9 +96,8 @@ final class MoneyTransferType extends CommonFormType
                 'priority' => -4,
                 'required' => true,
                 'class' => MoneyNode::class,
-                'choices' => $options['money_node_choices'],
+                'choices' => $targetChoices,
                 'choice_label' => 'name',
-
                 'constraints' => [
                     new NotBlank(),
                 ],

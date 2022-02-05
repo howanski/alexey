@@ -116,7 +116,13 @@ final class MoneyTransferController extends AbstractController
             type: MoneyTransferType::class,
             data: $moneyTransfer,
             options: [
-                'money_node_choices' => $service->getMoneyNodeChoicesForForm($user),
+                'money_node_choices' => $service->getMoneyNodeChoicesForForm(
+                    user: $user,
+                    includeNodes: [
+                        $moneyTransfer->getSourceNode(),
+                        $moneyTransfer->getTargetNode(),
+                    ],
+                ),
                 'locale' => $request->getLocale(),
             ]
         );
@@ -178,7 +184,13 @@ final class MoneyTransferController extends AbstractController
             data: $initialData,
             options: [
                 'source' => $moneyTransfer,
-                'money_node_choices' => $service->getMoneyNodeChoicesForForm($user),
+                'money_node_choices' => $service->getMoneyNodeChoicesForForm(
+                    user: $user,
+                    includeNodes: [
+                        $moneyTransfer->getSourceNode(),
+                        $moneyTransfer->getTargetNode(),
+                    ],
+                ),
             ],
         );
         $form->handleRequest(request: $request);
@@ -200,10 +212,10 @@ final class MoneyTransferController extends AbstractController
                 $formData = $form->getData();
 
                 $primaryTargetNode = $formData['targetNodePrimary'];
-                $primaryAmount = $formData['amountPrimary'];
+                $primaryAmount = round(intval($formData['amountPrimary'] * 100) / 100, 2);
 
                 $secondaryTargetNode = $formData['targetNodeSecondary'];
-                $secondaryAmount = $sumOfAmounts - $primaryAmount;
+                $secondaryAmount = round((intval($sumOfAmounts * 100) - intval($primaryAmount * 100)) / 100, 2);
 
                 $newTransferPrimary = new MoneyTransfer($user);
                 $newTransferPrimary->setAmount($primaryAmount);

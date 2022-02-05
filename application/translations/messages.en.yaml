@@ -168,6 +168,7 @@ app:
           node_type: "Node type"
           notes: "Notes"
           operation_date: "Operation date"
+          selectable: "Show on transfer forms"
           source_node: "Source node"
           target_node: "Target node"
           target_node_rest_of_split: "Target node for rest of split money"

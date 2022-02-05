@@ -27,6 +27,24 @@ final class MoneyNodeRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('mn')
             ->andWhere('mn.user = :user')
             ->setParameter('user', $user->getId())
+            ->orderBy('mn.selectable', 'DESC')
+            ->addOrderBy('mn.name', 'ASC');
+        if (is_integer($groupId)) {
+            $qb->andWhere('mn.nodeGroup = :groupId')
+                ->setParameter('groupId', $groupId);
+        }
+        return $qb
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getSelectableUserNodes(User $user, $groupId): array
+    {
+        $qb = $this->createQueryBuilder('mn')
+            ->andWhere('mn.user = :user')
+            ->andWhere('mn.selectable = :selectable')
+            ->setParameter('user', $user->getId())
+            ->setParameter('selectable', true)
             ->orderBy('mn.name', 'ASC');
         if (is_integer($groupId)) {
             $qb->andWhere('mn.nodeGroup = :groupId')

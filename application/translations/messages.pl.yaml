@@ -168,6 +168,7 @@ app:
           node_type: "Typ węzła"
           notes: "Notatki"
           operation_date: "Data wykonania"
+          selectable: "Pokaż na formularzach przelewów"
           source_node: "Węzeł źródłowy"
           target_node: "Węzeł docelowy"
           target_node_rest_of_split: "Węzeł na resztę z podziału kwoty"

@@ -24,12 +24,18 @@ final class MoneyService
     ) {
     }
 
-    public function getMoneyNodeChoicesForForm(User $user)
+    public function getMoneyNodeChoicesForForm(User $user, array $includeNodes = [])
     {
         $choices = [];
         $settings = new MoneyNodeSettings($user);
         $settings->selfConfigure($this->simpleSettingsService);
-        $allNodes = $this->moneyNodeRepository->getAllUserNodes(user: $user, groupId: null);
+        $allNodes = $this->moneyNodeRepository->getSelectableUserNodes(user: $user, groupId: null);
+        foreach ($includeNodes as $includeNode) {
+            if ($includeNode && !in_array(needle: $includeNode, haystack: $allNodes)) {
+                $allNodes[] = $includeNode;
+            }
+        }
+
         /** @var MoneyNode $node */
         foreach ($allNodes as $node) {
             $groupName = $settings->getGroupName(

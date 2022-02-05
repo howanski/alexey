@@ -74,6 +74,9 @@ class MoneyNode
     #[ORM\OrderBy(['operationDate' => 'DESC', 'comment' => 'ASC'])]
     private $outgoingTransfers;
 
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => true])]
+    private bool $selectable = true;
+
     public function __construct(User $user)
     {
         $this->user = $user;
@@ -143,6 +146,16 @@ class MoneyNode
         );
     }
 
+    public function canBeTransferSource(): bool
+    {
+        return false === ($this->getNodeType() === self::NODE_TYPE_BLACK_HOLE);
+    }
+
+    public function canBeTransferTarget(): bool
+    {
+        return false === ($this->getNodeType() === self::NODE_TYPE_INCOME_SOURCE);
+    }
+
     public function getBalance($onDate): float
     {
         $balance = 0.0;
@@ -202,6 +215,17 @@ class MoneyNode
     public function setNodeGroup(int $nodeGroup): self
     {
         $this->nodeGroup = $nodeGroup;
+        return $this;
+    }
+
+    public function getSelectable(): bool
+    {
+        return $this->selectable;
+    }
+
+    public function setSelectable(bool $selectable): self
+    {
+        $this->selectable = $selectable;
         return $this;
     }
 }

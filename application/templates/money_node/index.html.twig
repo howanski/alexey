@@ -40,9 +40,14 @@
 			{% set balance = money_node.balance(null) %}
 		{% endif %}
 
+		{% if money_node.selectable %}
+			{% set visibility_icon = '<i class="far fa-eye"></i> ' %}
+		{% else %}
+			{% set visibility_icon = '<i class="far fa-eye-slash"></i> ' %}
+		{% endif %}
 
 		{% set table_data = table_data|merge([{
-			'name': money_node.name,
+			'name': visibility_icon ~ money_node.name,
 			'node_type': money_node.typeCode|localisedFormValue('node_type', 'money'),
 			'node_group': settings.groupName(money_node.nodeGroup),
 			'balance': balance,

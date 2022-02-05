@@ -11,6 +11,13 @@
 {% endblock %}
 
 {% block pageContentPrimary %}
+
+	{% if money_node.selectable %}
+		{% set visibility_icon = '<i class="far fa-eye"></i> ' %}
+	{% else %}
+		{% set visibility_icon = '<i class="far fa-eye-slash"></i> ' %}
+	{% endif %}
+
 	{% include 'table.html.twig' with {
 		'tableTitle': money_node.name,
 		'tableData': [
@@ -19,6 +26,7 @@
 			['node_type'|localisedFormLabel('money'), money_node.typeCode|localisedFormValue('node_type', 'money')],
 			['node_group'|localisedFormLabel('money'), settings.groupName(money_node.nodeGroup)],
 			['balance'|localised('money'), money_node.balance(null)],
+			['selectable'|localisedFormLabel('money'), visibility_icon],
 			['notes'|localisedFormLabel('money'), money_node.notes],
 		],
 	} only %}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\MoneyNode;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -62,6 +63,11 @@ final class MoneyNodeType extends CommonFormType
                 'constraints' => [
                     new NotBlank()
                 ],
+            ])
+            ->add(child: 'selectable', type: CheckboxType::class, options: [
+                'label' => $this->getLabelTrans(label: 'selectable'),
+                'priority' => -4,
+                'required' => false,
             ]);
     }
 

@@ -33,13 +33,29 @@ final class MoneyTransferSplitType extends CommonFormType
         if (!($splitSource instanceof MoneyTransfer) || is_null($splitSource->getId())) {
             throw new InvalidArgumentException('Wrongly specified MoneyTransfer split source.');
         }
+
+        $targetChoices = [];
+        foreach ($options['money_node_choices'] as $groupName => $groupContents) {
+            $targetGroup = [];
+            /** @var MoneyNode $node */
+            foreach ($groupContents as $node) {
+                if ($node->canBeTransferTarget()) {
+                    $targetGroup[] = $node;
+                }
+            }
+            if (count($targetGroup) > 0) {
+                $targetChoices[$groupName] = $targetGroup;
+            }
+        }
+        ksort($targetChoices);
+
         $builder
             ->add(child: 'targetNodePrimary', type: EntityType::class, options: [
                 'label' => $this->getLabelTrans(label: 'target_node'),
                 'priority' => 0,
                 'required' => true,
                 'class' => MoneyNode::class,
-                'choices' => $options['money_node_choices'],
+                'choices' => $targetChoices,
                 'choice_label' => 'name',
                 'constraints' => [
                     new NotBlank(),
@@ -59,7 +75,7 @@ final class MoneyTransferSplitType extends CommonFormType
                 'priority' => -2,
                 'required' => true,
                 'class' => MoneyNode::class,
-                'choices' => $options['money_node_choices'],
+                'choices' => $targetChoices,
                 'choice_label' => 'name',
                 'constraints' => [
                     new NotBlank(),
