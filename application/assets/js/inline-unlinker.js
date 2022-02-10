@@ -1,5 +1,4 @@
 function clickUnlinkBtn(event) {
-    event.preventDefault();
     let elem = event.currentTarget;
     let data = elem.dataset;
 
