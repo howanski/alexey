@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use App\Entity\Currency;
 use App\Entity\MoneyNode;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -64,9 +66,20 @@ final class MoneyNodeType extends CommonFormType
                     new NotBlank()
                 ],
             ])
+            ->add(child: 'currency', type: EntityType::class, options: [
+                'label' => $this->getLabelTrans(label: 'currency'),
+                'class' => Currency::class,
+                'priority' => -4,
+                'required' => true,
+                'choice_label' => 'code',
+                'choices' => $options['currencies'],
+                'constraints' => [
+                    new NotBlank()
+                ],
+            ])
             ->add(child: 'selectable', type: CheckboxType::class, options: [
                 'label' => $this->getLabelTrans(label: 'selectable'),
-                'priority' => -4,
+                'priority' => -5,
                 'required' => false,
             ]);
     }
@@ -77,7 +90,8 @@ final class MoneyNodeType extends CommonFormType
             'data_class' => MoneyNode::class,
             'node_group_choices' => [
                 '---' => 0,
-            ]
+            ],
+            'currencies' => [],
         ]);
     }
 }

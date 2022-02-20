@@ -77,6 +77,9 @@ class MoneyNode
     #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => true])]
     private bool $selectable = true;
 
+    #[ORM\ManyToOne(targetEntity: Currency::class, inversedBy: 'moneyNodes')]
+    private $currency;
+
     public function __construct(User $user)
     {
         $this->user = $user;
@@ -226,6 +229,26 @@ class MoneyNode
     public function setSelectable(bool $selectable): self
     {
         $this->selectable = $selectable;
+        return $this;
+    }
+
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    public function getCurrencyCode()
+    {
+        $currency = $this->getCurrency();
+        if ($currency instanceof Currency) {
+            return $currency->getCode();
+        }
+        return '???';
+    }
+
+    public function setCurrency(Currency $currency): self
+    {
+        $this->currency = $currency;
         return $this;
     }
 }

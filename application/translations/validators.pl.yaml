@@ -1,0 +1,5 @@
+app:
+  validation:
+    money_transfer_split:
+      currency_mismatch: "Nie można podzielić na różne waluty"
+   

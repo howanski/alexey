@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('money')},
+	{'name': 'menu_record_nodes'|localised('money')},
+	{'name': 'currencies'|localised('money')},
+	]
+%}
+
+
+{% block pageContentPrimary %}{% endblock %}
+
+{% block pageContentSecondary %}
+	{% set table_data = [] %}
+	{% for currency in currencies %}
+		{% set actions %}
+		{% endset %}
+		{% set table_data = table_data|merge([{
+			'currency_code': currency.code,
+			'actions': actions
+		}]) %}
+	{% endfor %}
+
+	{% include 'table.html.twig' with {
+		'tableTitle': 'currencies'|localised('money'),
+		'tableHeaders': [
+			'currency_code'|localised('money'),
+			'actions'|localised,
+		],
+		'tableData': table_data,
+		'buttons': [
+			{'href': path('currency_new'), text: 'add'|localised},
+		],
+	} only %}
+{% endblock %}

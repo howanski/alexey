@@ -142,6 +142,8 @@ app:
         amount_after_exchange: "Kwota po wymianie"
         amount: Kwota
         balance: Saldo
+        currencies: Waluty
+        currency_code: "Kod waluty"
         forecast: Prognoza
         exchange_rate: "Kurs wymiany"
         income: "Dochody"
@@ -164,6 +166,8 @@ app:
         labels:
           amount: Kwota
           exchange_rate: "Kurs wymiany"
+          currency: Waluta
+          currency_code: "Kod waluty"
           name: Nazwa
           node_type: "Typ węzła"
           notes: "Notatki"

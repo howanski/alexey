@@ -27,6 +27,7 @@
 		{% set hide_columns = [3] %}
 	{% endif %}
 	{% set table_data = {} %}
+	{% set sums_by_currency = [] %}
 
 	{% for money_node in money_nodes %}
 		{% set actions %}
@@ -37,7 +38,14 @@
 		{% if money_node.isEdgeType %}
 			{% set balance = '' %}
 		{% else %}
-			{% set balance = money_node.balance(null) %}
+			{% set currency_code = money_node.currencyCode %}
+			{% set currency_amount = money_node.balance(null) %}
+			{% set balance = currency_amount ~ ' ' ~ currency_code %}
+			{% if sums_by_currency[currency_code] is defined %}
+				{% set sums_by_currency = sums_by_currency|merge({(currency_code): currency_amount + sums_by_currency[currency_code]}) %}
+			{% else %}
+				{% set sums_by_currency = sums_by_currency|merge({(currency_code): currency_amount}) %}
+			{% endif %}
 		{% endif %}
 
 		{% if money_node.selectable %}
@@ -55,6 +63,20 @@
 		}]) %}
 	{% endfor %}
 
+	{% set summary_row = '' %}
+	{% for c_code, c_amount in sums_by_currency %}
+		{% set summary_row = summary_row ~ c_amount ~ ' ' ~ c_code ~ '<br>' %}
+	{% endfor %}
+	{% if summary_row|length > 0 %}
+		{% set table_data = table_data|merge([{
+			'name': '----',
+			'node_type': '----',
+			'node_group': '----',
+			'balance': summary_row,
+			'actions': '----'
+		}]) %}
+	{% endif %}
+
 	{% include 'table.html.twig' with {
 		'tableTitle': 'menu_record_nodes'|localised('money'),
 		'tableHeaders': [
@@ -68,6 +90,7 @@
 		'buttons': [
 			{'href': path('money_node_new'), text: 'add'|localised},
 			{'href': path('money_node_settings'), text: 'settings'|localised},
+			{'href': path('currencies'), text: 'currencies'|localised('money')},
 		],
 		'hide_columns': hide_columns,
 	} only %}

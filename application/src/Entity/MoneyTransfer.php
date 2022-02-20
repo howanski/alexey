@@ -112,6 +112,14 @@ class MoneyTransfer
 
     public function getExchangeRate(): float
     {
+        if ($this->getSourceNode()->getCurrency() && $this->getTargetNode()->getCurrency()) {
+            if (
+                $this->getSourceNode()->getCurrency()
+                === $this->getTargetNode()->getCurrency()
+            ) {
+                return 1.0;
+            }
+        }
         return $this->exchangeRate;
     }
 

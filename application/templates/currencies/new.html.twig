@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('money')},
+	{'name': 'menu_record_nodes'|localised('money')},
+	{'name': 'currencies'|localised('money')},
+	{'name': 'new'|localised},
+	]
+%}
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('forms-js') }}
+{% endblock %}
+
+
+{% block pageContentPrimary %}
+	{% include 'form.html.twig' with {
+		'form': form,
+		'additionalButtons': [
+			{
+				'color': 'nord10',
+				'href': path('currencies'),
+				'name': 'back_to_list'|localised,
+				'icon': 'fas fa-undo'
+			}
+		]
+	} only %}
+{% endblock %}
+
+{% block pageContentSecondary %}{% endblock %}

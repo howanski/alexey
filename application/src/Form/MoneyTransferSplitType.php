@@ -7,7 +7,7 @@ namespace App\Form;
 use App\Entity\MoneyNode;
 use App\Form\CommonFormType;
 use App\Entity\MoneyTransfer;
-use App\Repository\MoneyNodeRepository;
+use App\Validator\MoneyTransferSplitCurrency;
 use InvalidArgumentException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -23,7 +23,6 @@ final class MoneyTransferSplitType extends CommonFormType
         $this->setTranslationModule(moduleName: 'money');
     }
 
-    // TODO: Validate all exchangeRates and currencies
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /**
@@ -55,7 +54,7 @@ final class MoneyTransferSplitType extends CommonFormType
                 'priority' => 0,
                 'required' => true,
                 'class' => MoneyNode::class,
-                'choices' => $targetChoices,
+                'choices' => [$options['source']->getTargetNode()],
                 'choice_label' => 'name',
                 'constraints' => [
                     new NotBlank(),
@@ -79,6 +78,7 @@ final class MoneyTransferSplitType extends CommonFormType
                 'choice_label' => 'name',
                 'constraints' => [
                     new NotBlank(),
+                    new MoneyTransferSplitCurrency(['currency' => $options['source']->getTargetNode()->getCurrency()]),
                 ],
             ]);
     }

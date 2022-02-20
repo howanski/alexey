@@ -176,7 +176,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
             ),
             destination: $route,
             icon: 'fas fa-hand-holding-usd',
-            isActive: $this->isActiveRoute($route),
+            isActive: $this->isActiveRoute('/money/node'),
             children: [],
         );
 

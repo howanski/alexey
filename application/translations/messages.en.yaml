@@ -142,6 +142,8 @@ app:
         amount_after_exchange: "Amount after exchange"
         amount: Amount
         balance: Balance
+        currencies: Currencies
+        currency_code: Code
         forecast: Forecast
         exchange_rate: "Exchange rate"
         income: "Income"
@@ -164,6 +166,8 @@ app:
         labels:
           amount: Amount
           exchange_rate: "Exchange rate"
+          currency: Currency
+          currency_code: "Currency code"
           name: Name
           node_type: "Node type"
           notes: "Notes"

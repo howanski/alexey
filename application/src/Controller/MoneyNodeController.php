@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Form\MoneyNodeSettingsType;
 use App\Form\MoneyNodeType;
 use App\Model\MoneyNodeSettings;
+use App\Repository\CurrencyRepository;
 use App\Repository\MoneyNodeRepository;
 use App\Service\AlexeyTranslator;
 use App\Service\SimpleSettingsService;
@@ -46,6 +47,7 @@ final class MoneyNodeController extends AbstractController
         Request $request,
         AlexeyTranslator $translator,
         SimpleSettingsService $simpleSettingsService,
+        CurrencyRepository $currencyRepository,
         EntityManagerInterface $entityManager,
     ): Response {
         /** @var User $user */
@@ -55,6 +57,7 @@ final class MoneyNodeController extends AbstractController
         $settings->selfConfigure($simpleSettingsService);
         $form = $this->createForm(type: MoneyNodeType::class, data: $moneyNode, options: [
             'node_group_choices' => $settings->getChoices(),
+            'currencies' => $currencyRepository->getUserCurrencies($user),
         ]);
         $form->handleRequest($request);
 
@@ -96,6 +99,7 @@ final class MoneyNodeController extends AbstractController
         Request $request,
         MoneyNode $moneyNode,
         AlexeyTranslator $translator,
+        CurrencyRepository $currencyRepository,
         SimpleSettingsService $simpleSettingsService,
         EntityManagerInterface $em,
     ): Response {
@@ -106,6 +110,9 @@ final class MoneyNodeController extends AbstractController
         $settings->selfConfigure($simpleSettingsService);
         $form = $this->createForm(type: MoneyNodeType::class, data: $moneyNode, options: [
             'node_group_choices' => $settings->getChoices(),
+            'currencies' => $moneyNode->getCurrency() ?
+                [$moneyNode->getCurrency()]
+                : $currencyRepository->getUserCurrencies($user),
         ]);
         $form->handleRequest($request);
 
