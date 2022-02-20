@@ -53,9 +53,14 @@
 		</a>
 		{% endset %}
 
+		{% set amount = money_transfer.amount ~ ' ' ~ money_transfer.sourceNode.currencyCode %}
+		{% if money_transfer.exchangeRate != 1.0 %}
+			{% set amount = amount ~ ' (' ~ money_transfer.exchangedAmount ~ ' ' ~ money_transfer.targetNode.currencyCode ~ ')' %}
+		{% endif %}
+
 		{% set table_data = table_data|merge([{
 			'operation_date': money_transfer.operationDate ? money_transfer.operationDate|date('Y-m-d') : '',
-			'amount': money_transfer.amount,
+			'amount': amount,
 			'source_node': sourcenode,
 			'target_node': targetnode,
 			'actions': actions,

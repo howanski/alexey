@@ -21,11 +21,10 @@
 	{% include 'table.html.twig' with {
 		'tableTitle': money_node.name,
 		'tableData': [
-			['id'|localised, money_node.id],
 			['name'|localisedFormLabel('money'), money_node.name],
 			['node_type'|localisedFormLabel('money'), money_node.typeCode|localisedFormValue('node_type', 'money')],
 			['node_group'|localisedFormLabel('money'), settings.groupName(money_node.nodeGroup)],
-			['balance'|localised('money'), money_node.balance(null)],
+			['balance'|localised('money'), money_node.balance(null) ~ ' ' ~ money_node.currencyCode],
 			['selectable'|localisedFormLabel('money'), visibility_icon],
 			['notes'|localisedFormLabel('money'), money_node.notes],
 		],
@@ -79,9 +78,14 @@
 
 		{% endset %}
 
+		{% set amount = transfer.exchangedAmount ~ ' ' ~ transfer.targetNode.currencyCode %}
+		{% if transfer.exchangeRate != 1.0 %}
+			{% set amount = amount ~ ' (' ~ transfer.amount ~ ' ' ~ transfer.sourceNode.currencyCode ~ ')' %}
+		{% endif %}
+
 		{% set table_data = table_data|merge([{
 				'operation_date': transfer.operationDate|date('Y-m-d'),
-				'amount': transfer.exchangedAmount,
+				'amount': amount,
 				'opposite_node': transfer.sourceNode.name,
 				'comment': transfer.comment,
 				'actions': actions,
@@ -117,9 +121,14 @@
 
 		{% endset %}
 
+		{% set amount = transfer.amount ~ ' ' ~ transfer.sourceNode.currencyCode %}
+		{% if transfer.exchangeRate != 1.0 %}
+			{% set amount = amount ~ ' (' ~ transfer.exchangedAmount ~ ' ' ~ transfer.targetNode.currencyCode ~ ')' %}
+		{% endif %}
+
 		{% set table_data = table_data|merge([{
 				'operation_date': transfer.operationDate|date('Y-m-d'),
-				'amount': transfer.amount,
+				'amount': amount,
 				'opposite_node': transfer.targetNode.name,
 				'comment': transfer.comment,
 				'actions': actions,

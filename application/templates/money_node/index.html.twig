@@ -36,7 +36,7 @@
 		{% endset %}
 
 		{% if money_node.isEdgeType %}
-			{% set balance = '' %}
+			{% set balance = 'N/A ' ~ money_node.currencyCode %}
 		{% else %}
 			{% set currency_code = money_node.currencyCode %}
 			{% set currency_amount = money_node.balance(null) %}

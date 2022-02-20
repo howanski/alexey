@@ -52,9 +52,9 @@
 			'tableData': [
                 ['id'|localised, money_transfer.id],
                 ['operation_date'|localisedFormLabel('money'), money_transfer.operationDate ? money_transfer.operationDate|date('Y-m-d') : ''],
-                ['amount'|localisedFormLabel('money'), money_transfer.amount],
+                ['amount'|localisedFormLabel('money'), money_transfer.amount ~ ' ' ~ money_transfer.sourceNode.currencyCode],
                 ['exchange_rate'|localisedFormLabel('money'), money_transfer.exchangeRate],
-                ['amount_after_exchange'|localised('money'), money_transfer.exchangedAmount],
+                ['amount_after_exchange'|localised('money'), money_transfer.exchangedAmount ~ ' ' ~ money_transfer.targetNode.currencyCode],
                 ['source_node'|localisedFormLabel('money'), sourcenode],
                 ['target_node'|localisedFormLabel('money'), targetnode],
                 ['comment'|localisedFormLabel('money'), money_transfer.comment],
