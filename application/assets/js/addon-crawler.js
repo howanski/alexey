@@ -3,7 +3,9 @@ function clickMassOpenBtn(event) {
     let elem = event.currentTarget;
     let parentTable = elem.closest(".table-parent-node");
     let externalLinks = parentTable.querySelectorAll(".crawler-external-link");
-    Array.from(externalLinks).map(function (elem) {
+    externalLinks = Array.from(externalLinks);
+    externalLinks = externalLinks.slice(0, 10);
+    externalLinks.map(function (elem) {
         elem.click();
     });
 }
