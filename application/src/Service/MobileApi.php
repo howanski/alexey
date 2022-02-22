@@ -263,6 +263,7 @@ final class MobileApi
             ));
             $response->addText($weatherDay['weather']);
             $response->addText($weatherDay['temperature'] . ' °C');
+            $response->addText(round($weatherDay['wind_speed'] * 3.6) . ' km/h');
             $response->addSpacer();
         }
 
