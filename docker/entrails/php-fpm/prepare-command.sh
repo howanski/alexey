@@ -1,6 +1,6 @@
 #!/bin/bash
 cd /var/www/html
-rm -rf var/cache
+rm -rf var
 rm -rf public/build
 XDEBUG_MODE=off composer install
 XDEBUG_MODE=off yarn install
@@ -15,8 +15,7 @@ done
 
 XDEBUG_MODE=off php bin/console doctrine:migration:migrate
 
-setfacl -dR -m u:www-data:rwX /var/www/html
-setfacl -R -m u:www-data:rwX /var/www/html
+chown -R 1000:1000 /var/www/html/
 
 nohup supervisord
 
