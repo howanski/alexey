@@ -25,6 +25,7 @@ abstract class ControllerTestStub extends WebTestCase
 
     protected function getEntityManager(): EntityManager
     {
+        self::bootKernel();
         $container = static::getContainer();
         $em = $container->get('doctrine.orm.default_entity_manager');
         return $em;
