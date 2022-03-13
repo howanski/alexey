@@ -40,7 +40,7 @@ final class CrawlerController extends AbstractController
         $myRedditChannels = $repository->getMyChannels(user: $user, filter: $filter);
         $feeds = [];
         foreach ($myRedditChannels as $channel) {
-            $feeds[] = $reader->getChannelDataForView($channel);
+            $feeds[] = $reader->getChannelDataForView($channel, 1);
         }
         $batchUnlinkOlderThan = new DateTime('now');
         return $this->render('crawler/index.html.twig', [
@@ -184,15 +184,20 @@ final class CrawlerController extends AbstractController
     #[Route('/reddit/channel/table/{id}', name: 'crawler_reddit_channel_table')]
     public function channelTable(RedditChannel $channel, RedditReader $reader, Request $request)
     {
+        $limit = 30;
         $user = $this->getUser();
         if ($request->isXmlHttpRequest() && $user === $channel->getUser()) {
-            $channelData = $reader->getChannelDataForView($channel);
+            $channelData = $reader->getChannelDataForView($channel, $limit);
             if ($channelData['posts']) {
                 $render = $this->renderView(
                     view: 'crawler/channel_table.html.twig',
                     parameters: [
                         'feed' => $channelData,
                         'locale' => $request->getLocale(),
+                        'have_more_posts' => (count($channelData['posts']) >= $limit),
+                        'filter' => $channel->getChannelGroup() ?
+                            $channel->getChannelGroup()->getName() :
+                            '*',
                     ],
                 );
             } else {

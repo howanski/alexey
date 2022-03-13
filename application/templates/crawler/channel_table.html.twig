@@ -24,6 +24,17 @@
         'row': row
     }]) %}
 {% endfor %}
+{% if have_more_posts %}
+    {% set reload_btn %}
+      <a href="{{ path('crawler_index', {filter: filter}) }}"><i class="fas fa-sync"></i></a>
+    {% endset %}
+    {% set table_data = table_data|merge([{
+        'loop': reload_btn,
+        'time': reload_btn,
+        'actions': reload_btn,
+        'row': reload_btn
+    }]) %}
+{% endif %}
 
 {% include 'table_body.html.twig' with {
     'tableData': table_data,

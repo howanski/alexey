@@ -61,17 +61,13 @@ final class RedditReader
         }
     }
 
-    public function getChannelDataForView(RedditChannel $channel)
+    public function getChannelDataForView(RedditChannel $channel, int $limit = 100)
     {
-        $posts = $this->postRepository->findBy(
-            criteria: [
-                'channel' => $channel,
-                'seen' => false,
-            ],
-            orderBy: [
-                'published' => 'DESC'
-            ],
+        $posts = $this->postRepository->getUnseen(
+            channel: $channel,
+            limit: $limit,
         );
+
         return [
             'name' => $channel->getName(),
             'id' => $channel->getId(),

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\RedditChannel;
 use App\Entity\RedditPost;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -38,5 +39,18 @@ final class RedditPostRepository extends ServiceEntityRepository
             ],
         );
         return $count;
+    }
+
+    public function getUnseen(RedditChannel $channel, int $limit = 100)
+    {
+        return $this->createQueryBuilder('rp')
+            ->andWhere('rp.channel = :channel')
+            ->setParameter('channel', $channel)
+            ->andWhere('rp.seen = :notseen')
+            ->setParameter('notseen', false)
+            ->setMaxResults($limit)
+            ->addOrderBy('rp.published', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }
