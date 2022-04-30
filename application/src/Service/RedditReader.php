@@ -18,6 +18,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class RedditReader
 {
+    private const TOP_POSTS_LIMIT = 20;
+
     public function __construct(
         private EntityManagerInterface $em,
         private MessageBusInterface $bus,
@@ -105,7 +107,12 @@ final class RedditReader
                 $castedData = Interwebz::simpleXmlToArray($data);
                 if (array_key_exists(key: 'entry', array: $castedData)) {
                     $posts = $castedData['entry'];
+                    $counter = -1;
                     foreach ($posts as $post) {
+                        $counter++;
+                        if ($counter > self::TOP_POSTS_LIMIT) {
+                            break;
+                        }
                         $uri = $post['link']['@attributes']['href'];
                         $persistedPost = $this->postRepository->findOneBy(['uri' => $uri, 'channel' => $channel]);
                         if (is_null($persistedPost)) {
