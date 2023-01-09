@@ -165,6 +165,13 @@ class RedditPost
         return strval($this->user);
     }
 
+    public function getUserName(): string
+    {
+        $user = $this->getUser();
+        $user = str_replace(search: '/u/', replace: '', subject: $user);
+        return $user;
+    }
+
     public function setUser(string $user): self
     {
         $this->user = $user;

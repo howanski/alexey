@@ -67,9 +67,12 @@ app:
           channelgroup: "Group"
           name: "Name"
           ordernumber: "Order number"
+          username: "Username"
       strings:
+        banned_users: "Banned users"
         groups: "Groups"
         menu_record: 'Crawler'
+        username: "Username"
     dashboard:
       strings:
         menu_record: Dashboard

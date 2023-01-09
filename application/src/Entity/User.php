@@ -54,6 +54,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: RedditChannel::class, orphanRemoval: true)]
     private $redditChannels;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RedditBannedPoster::class, orphanRemoval: true)]
+    private $redditBannedPosters;
+
     public function __construct()
     {
         $this->settings = new ArrayCollection();
@@ -61,6 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->moneyNodes = new ArrayCollection();
         $this->moneyTransfers = new ArrayCollection();
         $this->redditChannels = new ArrayCollection();
+        $this->redditBannedPosters = new ArrayCollection();
     }
 
     public function getId(): int
@@ -200,5 +204,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->otp = $otp;
         return $this;
+    }
+
+    public function getRedditBannedPosters(): Collection
+    {
+        return $this->redditBannedPosters;
     }
 }

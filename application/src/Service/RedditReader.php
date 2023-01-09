@@ -7,6 +7,7 @@ namespace App\Service;
 use App\Class\Interwebz;
 use App\Entity\RedditChannel;
 use App\Entity\RedditPost;
+use App\Entity\User;
 use App\Message\AsyncJob;
 use App\Repository\RedditChannelRepository;
 use App\Repository\RedditPostRepository;
@@ -94,7 +95,7 @@ final class RedditReader
         $monthAgo = clone ($now);
         $hourAgo->sub($hour);
         $monthAgo->sub($month);
-        $lastFetched = $channel->getLastFetch();
+        $lastFetched = new DateTime('yesterday');
         if ($lastFetched < $hourAgo) {
             if ($lastFetched < $monthAgo) {
                 $coverage = ['year', 'month', 'week', 'all'];
@@ -123,6 +124,10 @@ final class RedditReader
                         $persistedPost->setTitle($post['title']);
                         if (array_key_exists(key: 'author', array: $post)) {
                             if (array_key_exists(key: 'name', array: $post['author'])) {
+                                $userName = strval($post['author']['name']);
+                                if ($this->isUserBanned($userName, $channel->getUser())) {
+                                    continue;
+                                }
                                 $persistedPost->setUser(strval($post['author']['name']));
                             }
                         }
@@ -170,5 +175,17 @@ final class RedditReader
                 }
             }
         }
+    }
+
+    private function isUserBanned(string $userName, User $user): bool
+    {
+        // TODO: performance
+        $userName = str_replace(search: '/u/', replace: '', subject: $userName);
+        foreach ($user->getRedditBannedPosters() as $poster) {
+            if ($poster->getUsername() === $userName) {
+                return true;
+            }
+        }
+        return false;
     }
 }

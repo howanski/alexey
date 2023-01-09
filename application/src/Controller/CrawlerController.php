@@ -5,10 +5,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\RedditBannedPoster;
 use App\Entity\RedditChannel;
 use App\Entity\RedditChannelGroup;
 use App\Entity\RedditPost;
 use App\Entity\User;
+use App\Form\RedditBannedUserType;
 use App\Form\RedditChannelGroupType;
 use App\Form\RedditChannelType;
 use App\Message\AsyncJob;
@@ -217,6 +219,7 @@ final class CrawlerController extends AbstractController
         $user = $this->getUser();
         return $this->render('crawler/groups_list.html.twig', [
             'groups' => $repo->getMine($user),
+            'bannedUsers' => $user->getRedditBannedPosters(),
         ]);
     }
 
@@ -292,6 +295,56 @@ final class CrawlerController extends AbstractController
             }
             $em->flush();
             $em->remove($group);
+            $em->flush();
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
+        }
+
+        return $this->redirectToRoute('crawler_reddit_channel_groups', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/reddit/channel/banned-users/new/{username}', name: 'crawler_reddit_banned_user_new')]
+    public function bannedUserNew(
+        AlexeyTranslator $translator,
+        EntityManagerInterface $em,
+        Request $request,
+        string $username = null,
+    ) {
+        /** @var User $user */
+        $user = $this->getUser();
+        $bannedPoster = new RedditBannedPoster();
+
+        $bannedPoster->setUser($user);
+
+        if (is_string($username)) {
+            $bannedPoster->setUsername($username);
+        }
+
+        $form = $this->createForm(RedditBannedUserType::class, $bannedPoster);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($bannedPoster);
+            $em->flush();
+            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+
+            return $this->redirectToRoute('crawler_reddit_channel_groups', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('crawler/banned_user_edit.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/reddit/channel/banned-users/delete/{id}', name: 'crawler_reddit_banned_user_delete')]
+    public function bannedUserDelete(
+        RedditBannedPoster $poster,
+        AlexeyTranslator $translator,
+        EntityManagerInterface $em,
+    ) {
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($poster->getUser() === $user) {
+            $em->remove($poster);
             $em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
         }

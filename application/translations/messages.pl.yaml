@@ -67,9 +67,12 @@ app:
           channelgroup: "Grupa"
           name: "Nazwa"
           ordernumber: "Numer porządkowy"
+          username: "Nazwa użytkownika"
       strings:
+        banned_users: "Zablokowani użytkownicy"
         groups: "Grupy"
         menu_record: 'Crawler'
+        username: "Nazwa użytkownika"
     dashboard:
       strings:
         menu_record: Sterownia

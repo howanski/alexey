@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% set breadcrumbs = [
 	{'name': 'menu_record'|localised('crawler'), 'href': path('crawler_index', {filter: '*'})},
-	{'name': 'groups'|localised('crawler')},
+	{'name': 'groups'|localised('crawler') ~ ' + ' ~ 'banned_users'|localised('crawler'), 'href': path('crawler_reddit_channel_groups')},
 	]
 %}
 {% set locale = app.request.locale %}
@@ -30,4 +30,22 @@
 	} only %}
 {% endblock %}
 
-{% block pageContentSecondary %}{% endblock %}
+{% block pageContentSecondary %}
+	{% set table_data = {} %}
+	{% for banned_user in bannedUsers %}
+		{% set actions = '<a href="' ~ path('crawler_reddit_banned_user_delete', {'id': banned_user.id}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'delete'|localised ~ '</a>' %}
+		{% set table_data = table_data|merge([{
+			'name': banned_user.username,
+			'actions': actions
+		}]) %}
+	{% endfor %}
+	{% include 'table.html.twig' with {
+		'tableTitle': 'banned_users'|localised('crawler'),
+		'tableHeaders': [
+			'username'|localised('crawler'),
+			'actions'|localised,
+			],
+		'tableData': table_data,
+		'buttons': [{'href': path('crawler_reddit_banned_user_new'), text: 'add'|localised}]
+	} only %}
+{% endblock %}
