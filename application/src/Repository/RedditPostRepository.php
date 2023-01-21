@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\RedditBannedPoster;
 use App\Entity\RedditChannel;
 use App\Entity\RedditPost;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -41,7 +43,26 @@ final class RedditPostRepository extends ServiceEntityRepository
         return $count;
     }
 
-    public function getUnseen(RedditChannel $channel, int $limit = 100)
+    public function dropBannedPosterPosts(User $user, string $username): int
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        $sql =
+            'DELETE reddit_post ' .
+            'FROM reddit_post ' .
+            'JOIN reddit_channel rchnl ON rchnl.id = reddit_post.channel_id ' .
+            'WHERE rchnl.user_id = :user ' .
+            'AND reddit_post.user = :username;';
+        $count = $connection->executeStatement(
+            sql: $sql,
+            params: [
+                'user' => $user->getId(),
+                'username' => '/u/' . $username,
+            ],
+        );
+        return $count;
+    }
+
+    public function getUnseen(RedditChannel $channel, int $limit = 100): array
     {
         return $this->createQueryBuilder('rp')
             ->andWhere('rp.channel = :channel')

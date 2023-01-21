@@ -16,6 +16,7 @@ use App\Form\RedditChannelType;
 use App\Message\AsyncJob;
 use App\Repository\RedditChannelGroupRepository;
 use App\Repository\RedditChannelRepository;
+use App\Repository\RedditPostRepository;
 use App\Service\AlexeyTranslator;
 use App\Service\RedditReader;
 use DateTime;
@@ -326,6 +327,10 @@ final class CrawlerController extends AbstractController
             $em->persist($bannedPoster);
             $em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+
+            /** @var RedditPostRepository $postRepo */
+            $postRepo = $em->getRepository(RedditPost::class);
+            $postRepo->dropBannedPosterPosts(user: $user, username: $bannedPoster->getUsername());
 
             return $this->redirectToRoute('crawler_reddit_channel_groups', [], Response::HTTP_SEE_OTHER);
         }

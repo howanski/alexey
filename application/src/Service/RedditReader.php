@@ -95,7 +95,7 @@ final class RedditReader
         $monthAgo = clone ($now);
         $hourAgo->sub($hour);
         $monthAgo->sub($month);
-        $lastFetched = new DateTime('yesterday');
+        $lastFetched = $channel->getLastFetch();
         if ($lastFetched < $hourAgo) {
             if ($lastFetched < $monthAgo) {
                 $coverage = ['year', 'month', 'week', 'all'];
