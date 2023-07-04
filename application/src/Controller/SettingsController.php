@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Class\OpenWeatherOneApiResponse;
+use App\Entity\SimpleSetting;
 use App\Entity\User;
 use App\EventSubscriber\UserLocaleSubscriber;
 use App\Form\SystemSettingsType;
 use App\Form\UserSettingsType;
 use App\Model\SystemSettings;
 use App\Service\AlexeyTranslator;
+use App\Service\RedditReader;
 use App\Service\SimpleCacheService;
 use App\Service\SimpleSettingsService;
 use App\Service\TunnelInfoProvider;
@@ -29,12 +31,16 @@ final class SettingsController extends AbstractController
         EntityManagerInterface $em,
         Request $request,
         SimpleCacheService $cacheService,
+        SimpleSettingsService $simpleSettingsService,
     ): Response {
         /** @var User $user */
         $user = $this->getUser();
         $settings = [
             'locale' => $user->getLocale(),
             'email' => $user->getEmail(),
+            'redditUsername' => $simpleSettingsService->getSettings([
+                RedditReader::REDDIT_USERNAME
+            ], $user)[RedditReader::REDDIT_USERNAME]
         ];
         $form = $this->createForm(
             UserSettingsType::class,
@@ -46,6 +52,10 @@ final class SettingsController extends AbstractController
             $settings = $form->getData();
             $user->setLocale($settings['locale']);
             $user->setEmail(strval($settings['email']));
+            $simpleSettingsService->saveSettings(
+                [RedditReader::REDDIT_USERNAME => strval($settings['redditUsername'])],
+                $user
+            );
             $em->persist($user);
             $em->flush();
             $cacheService->invalidateCache(OpenWeatherOneApiResponse::WEATHER_CACHE_KEY);

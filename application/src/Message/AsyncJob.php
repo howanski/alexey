@@ -14,7 +14,6 @@ final class AsyncJob
     public const TYPE_WAKE_ON_LAN = 'wake_on_lan';
     public const TYPE_UPDATE_CRAWLER = 'update_crawler';
     public const TYPE_UPDATE_CRAWLER_CHANNEL = 'update_crawler_channel';
-    public const TYPE_UPDATE_CRAWLER_POST = 'update_crawler_post';
     public const TYPE_CHECK_TUNNEL_CHANGE = 'check_tunnel_change';
 
     public function __construct(

@@ -206,6 +206,7 @@ app:
           cron_jobs: "Procesy w tle"
           is_cron_active: "Uruchamiaj ten proces w tle"
           locale: Język
+          reddit_username: "Nazwa użytkownika Reddit"
           run_cron_every: "Przerwa pomiędzy uruchomieniami (sekundy)"
           tunneling_allowed: "Zezwól na dostęp przeglądarki przez tunel"
           your_email: "Twój email"

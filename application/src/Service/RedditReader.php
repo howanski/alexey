@@ -9,46 +9,36 @@ use App\Entity\RedditChannel;
 use App\Entity\RedditPost;
 use App\Entity\User;
 use App\Message\AsyncJob;
+use App\Model\SystemSettings;
 use App\Repository\RedditChannelRepository;
 use App\Repository\RedditPostRepository;
 use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Rennokki\RedditApi\App;
+use Rennokki\RedditApi\Reddit;
 use SimpleXMLElement;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class RedditReader
 {
-    private const TOP_POSTS_LIMIT = 20;
+    public const REDDIT_USERNAME = 'REDDIT_USERNAME';
+    private App $app;
 
     public function __construct(
         private EntityManagerInterface $em,
         private MessageBusInterface $bus,
         private RedditChannelRepository $channelRepository,
         private RedditPostRepository $postRepository,
+        private SimpleSettingsService $simpleSettingsService,
     ) {
-    }
 
-    private function fetch(string $uri): SimpleXMLElement
-    {
-        return simplexml_load_file($uri);
-    }
-
-    private function getChannelUri(
-        string $channelName,
-        string $sorting = 'top',
-        string $time = 'month'
-    ): string {
-        $uri = 'https://www.reddit.com/r/' . $channelName;
-        $haveSorting = strlen($sorting) > 0;
-        if ($haveSorting === true) {
-            $uri .= '/' . $sorting;
-        }
-        $uri .= '.rss';
-        if ($haveSorting === true && strlen($time) > 0) {
-            $uri .= '?t=' . $time;
-        }
-        return $uri;
+        $this->app = Reddit::app(
+            'howanski/alexey',
+            '2.0',
+            'web',
+            $this->simpleSettingsService->getSettings([self::REDDIT_USERNAME], null)[self::REDDIT_USERNAME],
+        );
     }
 
     public function refreshAllChannels(): void
@@ -82,7 +72,15 @@ final class RedditReader
     {
         $channel = $this->channelRepository->find($id);
         if ($channel instanceof RedditChannel) {
-            $this->refreshChannelIfNeeded($channel);
+            try {
+                $this->refreshChannelIfNeeded($channel);
+            } catch (\Throwable $e) {
+                $message = new AsyncJob(
+                    jobType: AsyncJob::TYPE_UPDATE_CRAWLER_CHANNEL,
+                    payload: ['id' => $channel->getId()],
+                );
+                $this->bus->dispatch($message);
+            }
         }
     }
 
@@ -103,77 +101,55 @@ final class RedditReader
                 $coverage = ['week'];
             }
             foreach ($coverage as $time) {
-                $uri = $this->getChannelUri(channelName: $channel->getName(), time: $time);
-                $data = $this->fetch($uri);
-                $castedData = Interwebz::simpleXmlToArray($data);
-                if (array_key_exists(key: 'entry', array: $castedData)) {
-                    $posts = $castedData['entry'];
-                    $counter = -1;
-                    foreach ($posts as $post) {
-                        $counter++;
-                        if ($counter > self::TOP_POSTS_LIMIT) {
-                            break;
-                        }
-                        $uri = $post['link']['@attributes']['href'];
-                        $persistedPost = $this->postRepository->findOneBy(['uri' => $uri, 'channel' => $channel]);
-                        if (is_null($persistedPost)) {
-                            $persistedPost = new RedditPost();
-                            $persistedPost->setChannel($channel);
-                            $persistedPost->setUri($uri);
-                        }
-                        $persistedPost->setTitle($post['title']);
-                        if (array_key_exists(key: 'author', array: $post)) {
-                            if (array_key_exists(key: 'name', array: $post['author'])) {
-                                $userName = strval($post['author']['name']);
-                                if ($this->isUserBanned($userName, $channel->getUser())) {
-                                    continue;
+                $subreddit = Reddit::subreddit(
+                    $channel->getName(),
+                    $this->app
+                );
+
+                $subreddit
+                    ->sort('top')
+                    ->time($time);
+
+                $posts = $subreddit->get();
+
+                foreach ($posts as $post) {
+                    $uri = 'https://old.reddit.com' . $post['permalink'];
+                    $persistedPost = $this->postRepository->findOneBy(['uri' => $uri, 'channel' => $channel]);
+                    if (is_null($persistedPost)) {
+                        $persistedPost = new RedditPost();
+                        $persistedPost->setChannel($channel);
+                        $persistedPost->setUri($uri);
+                    }
+                    $persistedPost->setTitle($post['title']);
+
+                    $userName = strval($post['author']);
+                    if ($this->isUserBanned($userName, $channel->getUser())) {
+                        continue;
+                    }
+                    $persistedPost->setUser($userName);
+                    $published = date_create()->setTimestamp((int)$post['created_utc']);
+                    $persistedPost->setPublished($published);
+                    $persistedPost->setTouched($now);
+                    $details = '';
+                    if (array_key_exists(key: 'preview', array: $post)) {
+                        if (array_key_exists(key: 'images', array: $post['preview'])) {
+                            if (array_key_exists(key: 0, array: $post['preview']['images'])) {
+                                if (array_key_exists(key: 'source', array: $post['preview']['images'][0])) {
+                                    if (array_key_exists(key: 'url', array: $post['preview']['images'][0]['source'])) {
+                                        $details = '<img src="' . $post['preview']['images'][0]['source']['url'] . '">';
+                                    }
                                 }
-                                $persistedPost->setUser(strval($post['author']['name']));
                             }
                         }
-
-                        $published = new DateTime($post['published']);
-                        $persistedPost->setPublished($published);
-                        $persistedPost->setTouched($now);
-                        $this->em->persist($persistedPost);
-                        $this->em->flush();
-                        if (
-                            strlen($persistedPost->getThumbnail()) < 1
-                            && $persistedPost->getSeen() === false
-                        ) {
-                            $message = new AsyncJob(
-                                jobType: AsyncJob::TYPE_UPDATE_CRAWLER_POST,
-                                payload: ['id' => $persistedPost->getId()],
-                            );
-                            $this->bus->dispatch($message);
-                        }
                     }
+                    $persistedPost->setThumbnail($details);
+                    $this->em->persist($persistedPost);
+                    $this->em->flush();
                 }
             }
             $channel->setLastFetch($now);
             $this->em->persist($channel);
             $this->em->flush();
-        }
-    }
-
-    public function updatePostThumbnail(int $postId): void
-    {
-        $post = $this->postRepository->find($postId);
-        if ($post instanceof RedditPost) {
-            $uri = $post->getUri();
-            $details = Interwebz::simpleXmlToArray($this->fetch($uri . '.rss'));
-            if (array_key_exists(key: 'entry', array: $details)) {
-                $details = $details['entry'];
-                if (array_key_exists(key: 0, array: $details)) {
-                    $details = $details[0];
-                    if (array_key_exists(key: 'content', array: $details)) {
-                        $details = $details['content'];
-                        $post->setThumbnail($details);
-                        $this->em->persist($post);
-                        $this->em->flush();
-                    }
-                }
-            }
         }
     }
 

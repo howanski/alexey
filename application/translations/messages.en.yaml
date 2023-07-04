@@ -206,6 +206,7 @@ app:
           cron_jobs: "Background jobs"
           is_cron_active: "Run this job in background"
           locale: Locale
+          reddit_username: "Reddit username"
           run_cron_every: "Break between runs (seconds)"
           tunneling_allowed: "Allow browser access via tunnel"
           your_email: "Your email"
