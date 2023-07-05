@@ -31,13 +31,6 @@ final class RedditReader
         private RedditPostRepository $postRepository,
         private SimpleSettingsService $simpleSettingsService,
     ) {
-
-        $this->app = Reddit::app(
-            'howanski/alexey',
-            '2.0',
-            'web',
-            $this->simpleSettingsService->getSettings([self::REDDIT_USERNAME], null)[self::REDDIT_USERNAME],
-        );
     }
 
     public function refreshAllChannels(): void
@@ -72,6 +65,12 @@ final class RedditReader
         $channel = $this->channelRepository->find($id);
         if ($channel instanceof RedditChannel) {
             try {
+                $this->app = Reddit::app(
+                    'howanski/alexey',
+                    '2.0',
+                    'web',
+                    $this->simpleSettingsService->getSettings([self::REDDIT_USERNAME], $channel->getUser())[self::REDDIT_USERNAME],
+                );
                 $this->refreshChannelIfNeeded(channel: $channel);
             } catch (\Throwable $e) {
                 $message = new AsyncJob(
