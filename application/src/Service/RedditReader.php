@@ -13,12 +13,11 @@ use App\Model\SystemSettings;
 use App\Repository\RedditChannelRepository;
 use App\Repository\RedditPostRepository;
 use DateInterval;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Rennokki\RedditApi\App;
 use Rennokki\RedditApi\Reddit;
-use SimpleXMLElement;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 final class RedditReader
 {
@@ -73,13 +72,18 @@ final class RedditReader
         $channel = $this->channelRepository->find($id);
         if ($channel instanceof RedditChannel) {
             try {
-                $this->refreshChannelIfNeeded($channel);
+                $this->refreshChannelIfNeeded(channel: $channel);
             } catch (\Throwable $e) {
                 $message = new AsyncJob(
                     jobType: AsyncJob::TYPE_UPDATE_CRAWLER_CHANNEL,
                     payload: ['id' => $channel->getId()],
                 );
-                $this->bus->dispatch($message);
+                $this->bus->dispatch(
+                    message: $message,
+                    stamps: [
+                        new DelayStamp(10000),
+                    ]
+                );
             }
         }
     }

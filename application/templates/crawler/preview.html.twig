@@ -1,4 +1,4 @@
 <title>{{ post.title }}</title>
 <a href="{{ post.uri }}" target="_blank">{{ post.title }}</a>
-{{ post.thumbnail|raw }}
+<a href="{{ post.uri }}" target="_blank">{{ post.thumbnail|raw }}</a>
 <a href="{{ path('crawler_reddit_banned_user_new', {username: post.userName}) }}">🛇 {{ post.username }} 🛇</a>
