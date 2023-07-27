@@ -47,7 +47,7 @@ final class ApiSettingsController extends AbstractController
         $response->headers->set('Cache-Control', 'no-cache');
         $response->headers->set('Content-type', 'image/png');
         $response->headers->set('Content-length', strval(strlen($fileContent)));
-        $response->sendHeaders();
+        // $response->sendHeaders();
         $response->setContent($fileContent);
 
         return $response;
