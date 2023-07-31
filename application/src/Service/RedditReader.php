@@ -14,6 +14,7 @@ use App\Repository\RedditChannelRepository;
 use App\Repository\RedditPostRepository;
 use DateInterval;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Rennokki\RedditApi\App;
 use Rennokki\RedditApi\Reddit;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -30,6 +31,7 @@ final class RedditReader
         private RedditChannelRepository $channelRepository,
         private RedditPostRepository $postRepository,
         private SimpleSettingsService $simpleSettingsService,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -83,6 +85,7 @@ final class RedditReader
                         new DelayStamp(60000),
                     ]
                 );
+                $this->logger->error('RedditReader - error fetching data for channel ' . $channel->getName() . ' :=>' . $e->getTraceAsString());
             }
         }
     }
