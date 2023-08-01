@@ -26,7 +26,7 @@ final class TunnelRequestSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         $host = $request->getHost();
-        if (is_int(strpos(haystack: $host, needle: '.ngrok.io'))) {
+        if (is_int(strpos(haystack: $host, needle: 'ngrok'))) {
             $controller = $request->get('_controller');
             if (strpos(haystack: $controller, needle: self::ALLOWED_CONTROLLER) === false) {
                 if ($this->isTunnellingAllowed()) {
