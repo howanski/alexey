@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Class\Interwebz;
 use App\Entity\RedditChannel;
 use App\Entity\RedditPost;
 use App\Entity\User;
 use App\Message\AsyncJob;
-use App\Model\SystemSettings;
 use App\Repository\RedditChannelRepository;
 use App\Repository\RedditPostRepository;
 use DateInterval;
@@ -17,7 +15,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Rennokki\RedditApi\App;
 use Rennokki\RedditApi\Reddit;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 final class RedditReader
 {
@@ -63,41 +60,34 @@ final class RedditReader
     public function refreshChannelById(int $id): void
     {
         $channel = $this->channelRepository->find($id);
+
         if ($channel instanceof RedditChannel) {
-            try {
-                $this->app = Reddit::app(
-                    'howanski/alexey',
-                    '2.0',
-                    'web',
-                    $this->simpleSettingsService->getSettings([self::REDDIT_USERNAME], $channel->getUser())[self::REDDIT_USERNAME],
-                );
-                $this->refreshChannelIfNeeded(channel: $channel);
-            } catch (\Throwable $e) {
-                $message = new AsyncJob(
-                    jobType: AsyncJob::TYPE_UPDATE_CRAWLER_CHANNEL,
-                    payload: ['id' => $channel->getId()],
-                );
-                $this->bus->dispatch(
-                    message: $message,
-                    stamps: [
-                        new DelayStamp(60000),
-                    ]
-                );
-            }
+            $this->app = Reddit::app(
+                'howanski/alexey',
+                '2.0',
+                'web',
+                $this->simpleSettingsService->getSettings([self::REDDIT_USERNAME], $channel->getUser())[self::REDDIT_USERNAME],
+            );
+
+            $this->refreshChannelIfNeeded(channel: $channel);
         }
     }
 
     private function refreshChannelIfNeeded(RedditChannel $channel): void
     {
         $now = new \DateTime('now');
-        $hour = new DateInterval('PT1H');
+        $halfDay = new DateInterval('PT12H');
         $month = new DateInterval('P1M');
-        $hourAgo = clone ($now);
+
         $monthAgo = clone ($now);
-        $hourAgo->sub($hour);
+        $halfDayAgo = clone ($now);
+
+        $halfDayAgo->sub($halfDay);
         $monthAgo->sub($month);
+
         $lastFetched = $channel->getLastFetch();
-        if ($lastFetched < $hourAgo) {
+
+        if ($lastFetched < $halfDayAgo) {
             if ($lastFetched < $monthAgo) {
                 $coverage = ['year', 'month', 'week', 'all'];
             } else {
