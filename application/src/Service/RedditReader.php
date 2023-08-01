@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Rennokki\RedditApi\App;
 use Rennokki\RedditApi\Reddit;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Throwable;
 
 final class RedditReader
 {
@@ -69,7 +70,11 @@ final class RedditReader
                 $this->simpleSettingsService->getSettings([self::REDDIT_USERNAME], $channel->getUser())[self::REDDIT_USERNAME],
             );
 
-            $this->refreshChannelIfNeeded(channel: $channel);
+            try {
+                $this->refreshChannelIfNeeded(channel: $channel);
+            } catch (Throwable) {
+                // ignore
+            }
         }
     }
 
