@@ -34,7 +34,8 @@ final class RedditReader
     public function refreshAllChannels(): void
     {
         $this->postRepository->cleanup();
-        $channels = $this->channelRepository->findAll();
+        $this->channelRepository->cleanup();
+        $channels = $this->channelRepository->findBy([], ['lastFetch' => 'ASC']);
         foreach ($channels as $channel) {
             $message = new AsyncJob(
                 jobType: AsyncJob::TYPE_UPDATE_CRAWLER_CHANNEL,

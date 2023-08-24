@@ -40,7 +40,7 @@ class RedditChannel
     public function __construct()
     {
         $this->posts = new ArrayCollection();
-        $this->lastFetch = new DateTime('last year');
+        $this->lastFetch = new DateTime('2 months ago');
     }
 
     public function getId(): int

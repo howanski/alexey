@@ -22,6 +22,25 @@ final class RedditChannelRepository extends ServiceEntityRepository
         parent::__construct($registry, RedditChannel::class);
     }
 
+    public function cleanup()
+    {
+        $oldTime = date('Y-m-d', strtotime('-3 months'));
+        $connection = $this->getEntityManager()->getConnection();
+        $sql =
+            'DELETE reddit_channel ' .
+            'FROM reddit_channel ' .
+            'LEFT JOIN reddit_post ON reddit_channel.id = reddit_post.channel_id ' .
+            'WHERE reddit_channel.last_fetch < :oldTime ' . 
+            'AND reddit_post.id IS NULL;';
+        $count = $connection->executeStatement(
+            sql: $sql,
+            params: [
+                'oldTime' => $oldTime,
+            ],
+        );
+        return $count;
+    }
+
     public function getMyChannels(User $user, string $filter)
     {
         $qb = $this->createQueryBuilder('c')
