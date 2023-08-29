@@ -119,7 +119,7 @@ final class RedditReader
                         $persistedPost->setChannel($channel);
                         $persistedPost->setUri($uri);
                     }
-                    $persistedPost->setTitle($post['title']);
+                    $persistedPost->setTitle(substr(string: $post['title'], offset: 0, length: 255));
 
                     $userName = strval($post['author']);
                     if ($this->isUserBanned($userName, $channel->getUser())) {
