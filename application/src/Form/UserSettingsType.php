@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use App\Service\SimpleSettingsService;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -61,6 +62,15 @@ final class UserSettingsType extends CommonFormType
                     'label' => $this->getLabelTrans(label: 'reddit_username'),
                     'required' => false,
                 ],
-            );
+            )
+            ->add(child: 'redditStreamAutohide', type: ChoiceType::class, options: [
+                'label' => $this->getLabelTrans('reddit_stream_autohide'),
+                'choices' => [
+                    $this->getValueTrans(field: 'reddit_stream_autohide', value: 'bool_false')
+                    => SimpleSettingsService::UNIVERSAL_FALSE,
+                    $this->getValueTrans(field: 'reddit_stream_autohide', value: 'bool_true')
+                    => SimpleSettingsService::UNIVERSAL_TRUTH,
+                ],
+            ]);
     }
 }

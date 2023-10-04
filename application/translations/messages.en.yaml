@@ -206,6 +206,7 @@ app:
           cron_jobs: "Background jobs"
           is_cron_active: "Run this job in background"
           locale: Locale
+          reddit_stream_autohide: "Hide empty reddit channels"
           reddit_username: "Reddit username"
           run_cron_every: "Break between runs (seconds)"
           tunneling_allowed: "Allow browser access via tunnel"
@@ -217,6 +218,9 @@ app:
           locale:
             en: English
             pl: Polish
+          reddit_stream_autohide:
+            bool_false: "Don't hide"
+            bool_true: "Hide automatically"
       strings:
         manage_tunnel: "Manage tunnel"
         menu_record: Settings

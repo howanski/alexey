@@ -206,6 +206,7 @@ app:
           cron_jobs: "Procesy w tle"
           is_cron_active: "Uruchamiaj ten proces w tle"
           locale: Język
+          reddit_stream_autohide: "Ukrywaj puste kanały Reddit"
           reddit_username: "Nazwa użytkownika Reddit"
           run_cron_every: "Przerwa pomiędzy uruchomieniami (sekundy)"
           tunneling_allowed: "Zezwól na dostęp przeglądarki przez tunel"
@@ -217,6 +218,9 @@ app:
           locale:
             en: Angielski
             pl: Polski
+          reddit_stream_autohide:
+            bool_false: "Nie ukrywaj"
+            bool_true: "Ukrywaj automatycznie"
       strings:
         manage_tunnel: "Zarządzaj tunelem"
         menu_record: Ustawienia

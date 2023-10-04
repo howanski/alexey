@@ -40,7 +40,10 @@ final class SettingsController extends AbstractController
             'email' => $user->getEmail(),
             'redditUsername' => $simpleSettingsService->getSettings([
                 RedditReader::REDDIT_USERNAME
-            ], $user)[RedditReader::REDDIT_USERNAME]
+            ], $user)[RedditReader::REDDIT_USERNAME],
+            'redditStreamAutohide' => $simpleSettingsService->getSettings([
+                RedditReader::REDDIT_EMPTY_STREAM_AUTOHIDE
+            ], $user)[RedditReader::REDDIT_EMPTY_STREAM_AUTOHIDE],
         ];
         $form = $this->createForm(
             UserSettingsType::class,
@@ -54,6 +57,10 @@ final class SettingsController extends AbstractController
             $user->setEmail(strval($settings['email']));
             $simpleSettingsService->saveSettings(
                 [RedditReader::REDDIT_USERNAME => strval($settings['redditUsername'])],
+                $user
+            );
+            $simpleSettingsService->saveSettings(
+                [RedditReader::REDDIT_EMPTY_STREAM_AUTOHIDE => strval($settings['redditStreamAutohide'])],
                 $user
             );
             $em->persist($user);

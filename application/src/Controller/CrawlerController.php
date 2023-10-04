@@ -19,6 +19,7 @@ use App\Repository\RedditChannelRepository;
 use App\Repository\RedditPostRepository;
 use App\Service\AlexeyTranslator;
 use App\Service\RedditReader;
+use App\Service\SimpleSettingsService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -185,12 +186,17 @@ final class CrawlerController extends AbstractController
     }
 
     #[Route('/reddit/channel/table/{id}', name: 'crawler_reddit_channel_table')]
-    public function channelTable(RedditChannel $channel, RedditReader $reader, Request $request)
-    {
+    public function channelTable(
+        RedditChannel $channel,
+        RedditReader $reader,
+        SimpleSettingsService $simpleSettingsService,
+        Request $request,
+    ): Response {
         $limit = 30;
         $user = $this->getUser();
         if ($request->isXmlHttpRequest() && $user === $channel->getUser()) {
             $channelData = $reader->getChannelDataForView($channel, $limit);
+            $autoHide = SimpleSettingsService::UNIVERSAL_TRUTH === $simpleSettingsService->getSettings([RedditReader::REDDIT_EMPTY_STREAM_AUTOHIDE], $user)[RedditReader::REDDIT_EMPTY_STREAM_AUTOHIDE];
             if ($channelData['posts']) {
                 $render = $this->renderView(
                     view: 'crawler/channel_table.html.twig',
@@ -201,6 +207,13 @@ final class CrawlerController extends AbstractController
                         'filter' => $channel->getChannelGroup() ?
                             $channel->getChannelGroup()->getName() :
                             '*',
+                    ],
+                );
+            } elseif (false === $autoHide) {
+                $render = $this->renderView(
+                    view: 'table_body.html.twig',
+                    parameters: [
+                        'tableData' => []
                     ],
                 );
             } else {

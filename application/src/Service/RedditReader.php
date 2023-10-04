@@ -20,6 +20,7 @@ use Throwable;
 final class RedditReader
 {
     public const REDDIT_USERNAME = 'REDDIT_USERNAME';
+    public const REDDIT_EMPTY_STREAM_AUTOHIDE = 'REDDIT_EMPTY_STREAM_AUTOHIDE';
     private App $app;
 
     public function __construct(
