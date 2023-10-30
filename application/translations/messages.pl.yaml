@@ -99,9 +99,10 @@ app:
           allow_target_speed_bumping: "Zezwól na podbijanie prędkości"
           host: Host
           provider_type: "Dostawca informacji o sieci"
-          target_speed: "Docelowa prędkość"
+          target_speed: "Docelowa prędkość (kB/s)"
           throttling_frame: "Dławienie - punkt odniesienia"
           throttling_enabled: "Dławienie włączone"
+          top_speed: "Maksymalna prędkość (kB/s)"
           transmission_user: Użytkownik
         values:
           aggression_adapt:

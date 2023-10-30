@@ -8,7 +8,6 @@ use App\Service\SimpleSettingsService;
 
 final class TransmissionSettings
 {
-    public const TOP_SPEED = 1024;  // 8 Mbit
     public const BOTTOM_SPEED = 5;  // minimum - transmission ignores smaller values
 
     public const ADAPT_TYPE_UP_ONLY = 'UP_ONLY';
@@ -23,6 +22,7 @@ final class TransmissionSettings
     private const USER = 'TRANSMISSION_USER';
     private const PASSWORD = 'TRANSMISSION_PASSWORD';
     private const TARGET_SPEED = 'TRANSMISSION_TARGET_SPEED';
+    private const TARGET_SPEED_MAX = 'TRANSMISSION_TARGET_SPEED_MAX';
     private const TARGET_SPEED_FRAME = 'TRANSMISSION_TARGET_SPEED_FRAME';
     private const TARGET_SPEED_BUMPING = 'TRANSMISSION_TARGET_SPEED_BUMPING';
     private const AGGRESSION = 'TRANSMISSION_AGGRESSION';
@@ -36,6 +36,8 @@ final class TransmissionSettings
     private string $password;
 
     private string $targetSpeed;
+
+    private int $targetSpeedMax;
 
     private string $targetFrame;
 
@@ -56,6 +58,7 @@ final class TransmissionSettings
                 self::USER,
                 self::PASSWORD,
                 self::TARGET_SPEED,
+                self::TARGET_SPEED_MAX,
                 self::TARGET_SPEED_FRAME,
                 self::TARGET_SPEED_BUMPING,
                 self::AGGRESSION,
@@ -68,6 +71,7 @@ final class TransmissionSettings
         $this->setUser(strval($settingsArray[self::USER]));
         $this->setPassword(strval($settingsArray[self::PASSWORD]));
         $this->setTargetSpeed(strval($settingsArray[self::TARGET_SPEED]));
+        $this->setTargetSpeedMax(topSpeed: intval($settingsArray[self::TARGET_SPEED_MAX]), allowSelfConfigure: true);
         $this->setTargetFrame(strval($settingsArray[self::TARGET_SPEED_FRAME]));
         $this->setAllowSpeedBump(strval($settingsArray[self::TARGET_SPEED_BUMPING]));
         $this->setAlgorithmAggression(strval($settingsArray[self::AGGRESSION]));
@@ -83,6 +87,7 @@ final class TransmissionSettings
                 self::USER => $this->getUser(),
                 self::PASSWORD => $this->getPassword(),
                 self::TARGET_SPEED => $this->getTargetSpeed(),
+                self::TARGET_SPEED_MAX => strval($this->getTargetSpeedMax()),
                 self::TARGET_SPEED_FRAME => $this->getTargetFrame(),
                 self::TARGET_SPEED_BUMPING => $this->getAllowSpeedBump(),
                 self::AGGRESSION => $this->getAlgorithmAggression(),
@@ -97,13 +102,14 @@ final class TransmissionSettings
         $speedLeftkB = $speedLeft / 1024;
         $targetSpeed = intval($this->getTargetSpeed());
         $aggression = intval($this->getAlgorithmAggression());
+        $topSpeed = $this->getTargetSpeedMax();
         $speed = (($speedLeftkB - $targetSpeed) * $aggression) + $targetSpeed;
         $speed = intval($speed);
         if ($speed < self::BOTTOM_SPEED) {
             $speed = self::BOTTOM_SPEED;
         }
-        if ($speed > self::TOP_SPEED) {
-            $speed = self::TOP_SPEED;
+        if ($speed > $topSpeed) {
+            $speed = $topSpeed;
         }
         return $speed;
     }
@@ -149,6 +155,20 @@ final class TransmissionSettings
     public function setTargetSpeed(string $targetSpeed): self
     {
         $this->targetSpeed = $targetSpeed;
+        return $this;
+    }
+
+    public function getTargetSpeedMax(): int
+    {
+        return $this->targetSpeedMax;
+    }
+
+    public function setTargetSpeedMax(int $topSpeed, bool $allowSelfConfigure = false): self
+    {
+        if ($allowSelfConfigure && $topSpeed < 1) {
+            $topSpeed = 1024; //8 Mbit / 1 MByte default value
+        }
+        $this->targetSpeedMax = $topSpeed;
         return $this;
     }
 

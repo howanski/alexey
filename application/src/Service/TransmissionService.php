@@ -168,7 +168,7 @@ final class TransmissionService
                             (SimpleSettingsService::UNIVERSAL_TRUTH === $this->settings->getAllowSpeedBump())
                         ) {
                             $increasedTargetSpeed = $targetSpeed + 1;
-                            if ($increasedTargetSpeed < (TransmissionSettings::TOP_SPEED / 2)) {
+                            if ($increasedTargetSpeed < ($this->settings->getTargetSpeedMax() / 2)) {
                                 $this->settings->setTargetSpeed(strval($increasedTargetSpeed));
                             }
                         }

@@ -99,9 +99,10 @@ app:
           allow_target_speed_bumping: "Allow target speed bumping"
           host: Host
           provider_type: "Provider type"
-          target_speed: "Target speed"
+          target_speed: "Target speed (kB/s)"
           throttling_frame: "Throttling reference point"
           throttling_enabled: "Throttling enabled"
+          top_speed: "Top speed (kB/s)"
           transmission_user: User
         values:
           aggression_adapt:
