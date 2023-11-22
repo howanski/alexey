@@ -13,6 +13,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.10",
         "endroid/qr-code": "^4.4",
+        "evilfreelancer/routeros-api-php": "^1.5",
         "geerlingguy/ping": "^1.2",
         "if0xx/huawei-hilink-api": "^0.1.0",
         "nesbot/carbon": "^2.53",

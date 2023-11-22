@@ -9,10 +9,13 @@ use App\Service\NetworkUsageProviderSettings;
 use App\Service\NetworkUsageService;
 use App\Service\SimpleSettingsService;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
 
 final class NetworkUsageProviderSettingsType extends CommonFormType
 {
@@ -31,7 +34,9 @@ final class NetworkUsageProviderSettingsType extends CommonFormType
                     $this->getValueTrans(field: 'provider_type', value: 'off') =>
                     NetworkUsageService::NETWORK_USAGE_PROVIDER_NONE,
                     $this->getValueTrans(field: 'provider_type', value: 'hilink') =>
-                    NetworkUsageService::NETWORK_USAGE_PROVIDER_HUAWEI
+                    NetworkUsageService::NETWORK_USAGE_PROVIDER_HUAWEI,
+                    $this->getValueTrans(field: 'provider_type', value: 'router_os') =>
+                    NetworkUsageService::NETWORK_USAGE_PROVIDER_ROUTER_OS,
                 ],
                 'required' => true,
                 'constraints' => [
@@ -54,9 +59,27 @@ final class NetworkUsageProviderSettingsType extends CommonFormType
                     new NotBlank()
                 ],
             ])
+            ->add(child: 'monthlyLimitGB', type: IntegerType::class, options: [
+                'label' => $this->getLabelTrans(label: 'monthly_limit'),
+                'priority' => -3,
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                    new GreaterThanOrEqual(1)
+                ],
+            ])
+            ->add(child: 'billingDay', type: IntegerType::class, options: [
+                'label' => $this->getLabelTrans(label: 'billing_day'),
+                'priority' => -4,
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                    new Range(min: 1, max: 31),
+                ],
+            ])
             ->add(child: 'showOnDashboard', type: ChoiceType::class, options: [
                 'label' => $this->getLabelTrans(label: 'show_on_dashboard'),
-                'priority' => -3,
+                'priority' => -5,
                 'choices' => [
                     $this->getValueTrans(field: 'show_on_dashboard', value: 'hide')
                     => SimpleSettingsService::UNIVERSAL_FALSE,

@@ -97,11 +97,13 @@ app:
           algorithm_aggression_auto_adapt: "Autoadaptacja agresji"
           algorithm_aggression: "Agresja algorytmu"
           allow_target_speed_bumping: "Zezwól na podbijanie prędkości"
+          billing_day: "Dzień miesiąca fakturowania (tylko Mikrotik)"
           host: Host
+          monthly_limit: "Limit miesięczny (GB) (tylko Mikrotik)"
           provider_type: "Dostawca informacji o sieci"
           target_speed: "Docelowa prędkość (kB/s)"
-          throttling_frame: "Dławienie - punkt odniesienia"
           throttling_enabled: "Dławienie włączone"
+          throttling_frame: "Dławienie - punkt odniesienia"
           top_speed: "Maksymalna prędkość (kB/s)"
           transmission_user: Użytkownik
         values:
@@ -125,6 +127,7 @@ app:
           provider_type:
             hilink: "Huawei (HiLink)"
             off: Wyłączony
+            router_os: "Mikrotik (Router OS 7)"
           throttling_frame:
             day: "Koniec dnia"
             full: "Obecny okres taryfowy"

@@ -18,12 +18,18 @@ use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use if0xx\HuaweiHilinkApi\Router;
+use RouterOS\Client;
+use RouterOS\Query;
 use SimpleXMLElement;
 
 final class NetworkUsageService
 {
     public const NETWORK_USAGE_PROVIDER_HUAWEI = 'HILINK';
     public const NETWORK_USAGE_PROVIDER_NONE = 'NONE';
+    public const NETWORK_USAGE_PROVIDER_ROUTER_OS = 'ROUTER_OS';
+
+    // Mikrotik issue is it hangs every 6.7-6.9 GB, setting 6.5 GB as automatic reset point
+    public const MIKROTIK_LTE_RESET = 6979321856;
 
     public function __construct(
         private AlexeyTranslator $translator,
@@ -56,6 +62,8 @@ final class NetworkUsageService
         $stat = null;
         if ($type === self::NETWORK_USAGE_PROVIDER_HUAWEI) {
             $stat = $this->getCurrentStatisticFromHuawei();
+        } elseif ($type === self::NETWORK_USAGE_PROVIDER_ROUTER_OS) {
+            $stat = $this->getCurrentStatisticFromRouterOs();
         } elseif ($type === '' || $type === self::NETWORK_USAGE_PROVIDER_NONE) {
             // No settings, no work, great!
         } else {
@@ -373,6 +381,86 @@ final class NetworkUsageService
         }
     }
 
+    public function getCurrentStatisticFromRouterOs(): NetworkStatistic|null
+    {
+        $client = new Client([
+            'host' => strval($this->networkUsageProviderSettings->getAddress()),
+            'user' => 'admin',
+            'pass' => strval($this->networkUsageProviderSettings->getPassword()),
+            // 'port' => 8728,//8729 for ssl
+        ]);
+
+        $query =
+        (new Query('/interface/print')); // byte-stats since connection established
+        $response = $client->query($query)->read();
+
+        $scheduleReset = false;
+        $totalRxBytes = 0;
+        $totalTxBytes = 0;
+        $lastUptime = null;
+
+        foreach ($response as $interfaceInfo) {
+            if ($interfaceInfo['running'] === 'true') {
+                if ($interfaceInfo['type'] === 'lte') {
+                    $lastUptime = new DateTime($interfaceInfo['last-link-up-time']);
+                    $rxBytes = (int)$interfaceInfo['rx-byte'];
+                    $txBytes = (int)$interfaceInfo['tx-byte'];
+
+                    $totalRxBytes += $rxBytes;
+                    $totalTxBytes += $txBytes;
+                }
+            }
+        }
+
+        if ($lastUptime === null) {
+            return null;
+        }
+
+        $trafficMaxLimit = $this->networkUsageProviderSettings->getMonthlyLimitGB();
+        $trafficMaxLimit *= 1024 * 1024 * 1024;
+
+        $monthStart = $this->getLastMonthResetTimeByUserDeclaration();
+        $monthEnd = clone $monthStart;
+        $monthEnd->add(new DateInterval('P1M'));
+        $monthEnd->sub(new DateInterval('PT1S'));
+        $timeFrame = $this->getTimeFrame($monthStart, $monthEnd, $trafficMaxLimit);
+
+        $latestStat = $this->networkStatisticRepository->getLatestOne(probingTimeMax: $lastUptime);
+
+        $latestStatFound = $latestStat instanceof NetworkStatistic;
+        $latestStatFromSameTimeFrame = $latestStatFound && $latestStat->getTimeFrame() === $timeFrame;
+
+        $currentMonthDownload = $totalRxBytes;
+        $currentMonthUpload = $totalTxBytes;
+
+        if ($latestStatFound) {
+            if ($latestStatFromSameTimeFrame) {
+                $currentMonthDownload += $latestStat->getDataDownloadedInFrame();
+                $currentMonthUpload += $latestStat->getDataUploadedInFrame();
+            } else {
+                $scheduleReset = true;
+                $currentMonthDownload = 0;
+                $currentMonthUpload = 0;
+            }
+        }
+
+        $stat = new NetworkStatistic();
+        $stat->setTimeFrame($timeFrame);
+        $stat->setDataDownloadedInFrame($currentMonthDownload);
+        $stat->setDataUploadedInFrame($currentMonthUpload);
+
+        if ($scheduleReset) {
+            // TODO: schedule reset of mikrotik at closest possible time:
+            // disable lte device and enable it again
+
+            // !!!! Thing is it have to be done at immediately to not let next update_network_stats CronJob run !!!
+
+            // $this->scheduleMikrotikReset();
+        }
+
+        return $stat;
+    }
+
     private function getTimeFrame(
         DateTime $frameStart,
         DateTime $frameEnd,
@@ -390,5 +478,30 @@ final class NetworkUsageService
         $timeFrame->setBillingFrameEnd($frameEnd);
         $this->em->persist($timeFrame);
         return $timeFrame;
+    }
+
+    private function getLastMonthResetTimeByUserDeclaration(): DateTime
+    {
+        $billingDay = $this->networkUsageProviderSettings->getBillingDay();
+        $now = new DateTime('now');
+        $now->setTime(0, 0);
+
+        $currentDay = intval($now->format('d'));
+
+        // TODO will crash on 30th day of month or 29th of february etc. if billing is on 31st
+        // needs some logic improvements
+        // $lastDayOfCurrentMonth = intval($now->format('t'));
+
+        if (($currentDay < $billingDay)) {
+            $now->sub(new DateInterval('P1M'));
+        }
+
+        $now->setDate(
+            year: intval($now->format('Y')),
+            month: intval($now->format('m')),
+            day: $billingDay
+        );
+
+        return $now;
     }
 }

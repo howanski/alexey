@@ -39,11 +39,15 @@ final class NetworkStatisticRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getLatestOne()
+    public function getLatestOne(DateTime $probingTimeMax = null): ?NetworkStatistic
     {
         $qb = $this->createQueryBuilder('ns')
             ->addOrderBy('ns.id', 'DESC')
             ->setMaxResults(2);
+        if ($probingTimeMax instanceof DateTime) {
+            $qb->andWhere('ns.probingTime < :probingTime')
+                ->setParameter('probingTime', $probingTimeMax);
+        }
         $qb->distinct(true);
         $result = $qb->getQuery()->getResult();
         if (is_array($result)) {
