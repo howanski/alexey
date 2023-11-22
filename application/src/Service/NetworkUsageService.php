@@ -450,12 +450,9 @@ final class NetworkUsageService
         $stat->setDataUploadedInFrame($currentMonthUpload);
 
         if ($scheduleReset) {
-            // TODO: schedule reset of mikrotik at closest possible time:
-            // disable lte device and enable it again
-
-            // !!!! Thing is it have to be done at immediately to not let next update_network_stats CronJob run !!!
-
-            // $this->scheduleMikrotikReset();
+            $query =
+            (new Query('/system/reboot'));
+            $client->query($query)->read();
         }
 
         return $stat;
