@@ -29,7 +29,7 @@ final class NetworkUsageService
     public const NETWORK_USAGE_PROVIDER_ROUTER_OS = 'ROUTER_OS';
 
     // Mikrotik issue is it hangs every 6.7-6.9 GB, setting 6.5 GB as automatic reset point
-    public const MIKROTIK_LTE_RESET = 6979321856;
+    public const MIKROTIK_LTE_RESET = 6815744;
 
     public function __construct(
         private AlexeyTranslator $translator,
