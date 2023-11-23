@@ -97,4 +97,12 @@ final class NetworkUsageController extends AbstractController
             return $this->redirectToRoute(route: 'dashboard');
         }
     }
+
+    #[Route('/force-router-reset', name: 'network_usage_force_router_reset')]
+    public function forceRouterReset(NetworkUsageService $service): Response
+    {
+        $service->resetMikrotik();
+        $this->addFlash(type: 'nord14', message: 'RESET!');
+        return $this->redirectToRoute(route: 'network_usage');
+    }
 }

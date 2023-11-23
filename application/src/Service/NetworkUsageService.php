@@ -450,12 +450,24 @@ final class NetworkUsageService
         $stat->setDataUploadedInFrame($currentMonthUpload);
 
         if ($scheduleReset) {
-            $query =
-            (new Query('/system/reboot'));
-            $client->query($query)->read();
+            $this->resetMikrotik();
         }
 
         return $stat;
+    }
+
+    public function resetMikrotik(): void
+    {
+        $client = new Client([
+            'host' => strval($this->networkUsageProviderSettings->getAddress()),
+            'user' => 'admin',
+            'pass' => strval($this->networkUsageProviderSettings->getPassword()),
+            // 'port' => 8728,//8729 for ssl
+        ]);
+
+        $query =
+        (new Query('/system/reboot'));
+        $client->query($query)->read();
     }
 
     private function getTimeFrame(

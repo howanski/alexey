@@ -11,6 +11,7 @@ use Symfony\Component\Intl\Exception\MissingResourceException;
 
 final class AlexeyTranslator extends AbstractExtension
 {
+    // TODO: move to TwigExtension dir
     public const DEFAULT_TRANSLATION_MODULE = 'common';
 
     private $forcedLocale = null;

@@ -51,6 +51,24 @@ window.location.replace(route);
 
 
 {% block pageContentSecondary %}
+
+	{% set buttons_content = [
+		{
+			'href': path('mobile_signal'),
+			'icon': 'fas fa-signal',
+		},
+		{
+			'href': path('network_usage_settings'),
+			'icon': 'fas fa-cog',
+		},
+
+	] %}
+	{% if isMikrotikRouterInUse() %}
+		{% set buttons_content = buttons_content|merge([{
+			'href': path('network_usage_force_router_reset'),
+			'icon': 'fas fa-tired',
+		}]) %}
+	{% endif %}
 	<div class="flex flex-wrap">
 		{% include 'chart_linear.html.twig' with {
 			'titleSmall': '',
@@ -58,16 +76,7 @@ window.location.replace(route);
 			'chartSrc': path('network_usage_chart_data', {chartType: chart_type}),
 			'chartRefresh': chartRefresh,
 			'enablePausing': true,
-			'buttons': [
-				{
-					'href': path('mobile_signal'),
-					'icon': 'fas fa-signal',
-				},
-				{
-					'href': path('network_usage_settings'),
-					'icon': 'fas fa-cog',
-				},
-			],
+			'buttons': buttons_content,
 		} only %}
 	</div>
 {% endblock %}

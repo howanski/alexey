@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class AlexeySideMenuProvider extends AbstractExtension
 {
+    // TODO: move to TwigExtension dir
     private ?Request $currentRequest;
 
     private ?string $currentRoute;
