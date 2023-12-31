@@ -21,6 +21,7 @@ use if0xx\HuaweiHilinkApi\Router;
 use RouterOS\Client;
 use RouterOS\Query;
 use SimpleXMLElement;
+use Throwable;
 
 final class NetworkUsageService
 {
@@ -449,11 +450,52 @@ final class NetworkUsageService
         $stat->setDataDownloadedInFrame($currentMonthDownload);
         $stat->setDataUploadedInFrame($currentMonthUpload);
 
+        $mobileStat = $this->getMobileSignalInfoMikrotik($client);
+        if ($mobileStat instanceof MobileSignalInfo) {
+            $mobileStat->save();
+        }
+
         if ($scheduleReset) {
             $this->resetMikrotik();
         }
 
         return $stat;
+    }
+
+    private function getMobileSignalInfoMikrotik(Client $client): ?MobileSignalInfo
+    {
+        $info = new MobileSignalInfo($this->simpleCacheService);
+        $info->fetchedAt = new DateTime('now');
+
+        try {
+            $query =
+            (new Query('/interface/print')); // byte-stats since connection established
+            $response = $client->query($query)->read();
+            foreach ($response as $interfaceInfo) {
+                if ($interfaceInfo['running'] === 'true') {
+                    if ($interfaceInfo['type'] === 'lte') {
+                        $query =
+                        (new Query('/interface/lte/monitor'))
+                            ->equal('.id', $interfaceInfo['.id'])
+                            ->equal('once', 'true');
+                        $response = $client->query($query)->read();
+                        $info->rsrq = (float) $response[0]['rsrq'];
+                        $info->rsrp = (int) $response[0]['rsrp'];
+                        $info->sinr = (float) $response[0]['sinr'];
+                        $info->cellId = (int) $response[0]['current-cellid'];
+                        $info->pci = (int) $response[0]['phy-cellid'];
+                        $info->band = (string) $response[0]['earfcn'];
+                        $info->rssi = 0;
+                        $info->signalStrengthPercent = 0;
+                        $info->txpower = 'CQI: ' . (string) $response[0]['cqi'];
+                    }
+                }
+            }
+        } catch (Throwable) {
+            return null;
+        }
+
+        return $info;
     }
 
     public function resetMikrotik(): void

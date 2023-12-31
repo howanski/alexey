@@ -16,7 +16,7 @@ final class MobileSignalInfo
     public DateTime $fetchedAt;
     public float $rsrq = 0; //dB
     public float $sinr = 0; //dB
-    public int $band = 0;
+    public string $band = '0';
     public int $cellId = 0;
     public int $pci = 0;
     public int $plmn = 0;
@@ -34,7 +34,7 @@ final class MobileSignalInfo
         if (sizeof($cachedData) === 10) {
             $this->rsrq = $cachedData['rsrq'];
             $this->sinr = $cachedData['sinr'];
-            $this->band = $cachedData['band'];
+            $this->band = (string) $cachedData['band'];
             $this->cellId = $cachedData['cellId'];
             $this->pci = $cachedData['pci'];
             $this->plmn = $cachedData['plmn'];
