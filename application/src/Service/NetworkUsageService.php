@@ -215,7 +215,7 @@ final class NetworkUsageService
 
             try {
                 $signal = $router->generalizedGet('api/device/signal');
-                $info->band = (int)$signal->band;
+                $info->band = (string)$signal->band;
                 $info->cellId = (int)$signal->cell_id;
                 $info->pci = (int)$signal->pci;
                 $info->plmn = (int)$signal->plmn;
@@ -519,14 +519,13 @@ final class NetworkUsageService
     ): NetworkStatisticTimeFrame {
         $timeFrame = $this->networkStatisticTimeFrameRepository->findOneBy([
             'billingFrameStart' => $frameStart,
-            'billingFrameEnd' => $frameEnd
         ]);
         if (!($timeFrame instanceof NetworkStatisticTimeFrame)) {
             $timeFrame = new NetworkStatisticTimeFrame();
+            $timeFrame->setBillingFrameEnd($frameEnd);
         }
         $timeFrame->setBillingFrameDataLimit($frameDataLimit);
         $timeFrame->setBillingFrameStart($frameStart);
-        $timeFrame->setBillingFrameEnd($frameEnd);
         $this->em->persist($timeFrame);
         return $timeFrame;
     }
