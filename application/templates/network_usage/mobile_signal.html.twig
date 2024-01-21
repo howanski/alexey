@@ -37,12 +37,14 @@
 			'chartRefresh': 20
 		} only %}
 
-		{% include "chart_gauge.html.twig" with {
-			'titleSmall': 'SIGNAL',
-			'titleBig': '<div id="signalStrengthPercent"></div>',
-			'chartSrc': path('mobile_signal_gauge', {stat: 'signal'}),
-			'chartRefresh': 20
-		} only %}
+		{% if not isMikrotikRouterInUse() %}
+			{% include "chart_gauge.html.twig" with {
+				'titleSmall': 'SIGNAL',
+				'titleBig': '<div id="signalStrengthPercent"></div>',
+				'chartSrc': path('mobile_signal_gauge', {stat: 'signal'}),
+				'chartRefresh': 20
+			} only %}
+		{% endif %}
 	</div>
 {% endblock %}
 

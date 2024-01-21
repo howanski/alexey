@@ -484,8 +484,18 @@ final class NetworkUsageService
                         $info->sinr = (float) $response[0]['sinr'];
                         $info->cellId = (int) $response[0]['current-cellid'];
                         $info->pci = (int) $response[0]['phy-cellid'];
-                        $info->band = (string) $response[0]['earfcn'];
-                        $info->rssi = 0;
+                        if (isset($response[0]['earfcn'])) {
+                            $info->band = (string) $response[0]['earfcn'];
+                        }
+                        if (isset($response[0]['primary-band'])) {
+                            $info->band = (string) $response[0]['primary-band'];
+                            if (isset($response[0]['ca-band'])) {
+                                $info->band .= ' + ' . (string) $response[0]['ca-band'];
+                            }
+                        }
+                        if (isset($response[0]['rssi'])) {
+                            $info->rssi = (int) $response[0]['rssi'];
+                        }
                         $info->signalStrengthPercent = 0;
                         $info->txpower = 'CQI: ' . (string) $response[0]['cqi'];
                     }
