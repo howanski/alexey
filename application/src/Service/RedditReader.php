@@ -136,7 +136,7 @@ final class RedditReader
                             if (array_key_exists(key: 0, array: $post['preview']['images'])) {
                                 if (array_key_exists(key: 'source', array: $post['preview']['images'][0])) {
                                     if (array_key_exists(key: 'url', array: $post['preview']['images'][0]['source'])) {
-                                        $details = '<img style="max-width:100%;" src="' . $post['preview']['images'][0]['source']['url'] . '">';
+                                        $details = '<img style="max-width:100vw;max-height: 100vh;" src="' . $post['preview']['images'][0]['source']['url'] . '">';
                                     }
                                 }
                             }
