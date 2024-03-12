@@ -93,6 +93,7 @@ final class RedditReader
         $monthAgo->sub($month);
 
         $lastFetched = $channel->getLastFetch();
+        $hasNewPosts = false;
 
         if ($lastFetched < $halfDayAgo) {
             if ($lastFetched < $monthAgo) {
@@ -115,17 +116,17 @@ final class RedditReader
                 foreach ($posts as $post) {
                     $uri = 'https://old.reddit.com' . $post['permalink'];
                     $persistedPost = $this->postRepository->findOneBy(['uri' => $uri, 'channel' => $channel]);
-                    if (is_null($persistedPost)) {
-                        $persistedPost = new RedditPost();
-                        $persistedPost->setChannel($channel);
-                        $persistedPost->setUri($uri);
-                    }
-                    $persistedPost->setTitle(substr(string: $post['title'], offset: 0, length: 255));
-
                     $userName = strval($post['author']);
                     if ($this->isUserBanned($userName, $channel->getUser())) {
                         continue;
                     }
+                    if (is_null($persistedPost)) {
+                        $persistedPost = new RedditPost();
+                        $persistedPost->setChannel($channel);
+                        $persistedPost->setUri($uri);
+                        $hasNewPosts = true;
+                    }
+                    $persistedPost->setTitle(substr(string: $post['title'], offset: 0, length: 255));
                     $persistedPost->setUser($userName);
                     $published = date_create()->setTimestamp((int)$post['created_utc']);
                     $persistedPost->setPublished($published);
@@ -147,9 +148,11 @@ final class RedditReader
                     $this->em->flush();
                 }
             }
-            $channel->setLastFetch($now);
-            $this->em->persist($channel);
-            $this->em->flush();
+            if ($hasNewPosts) {
+                $channel->setLastFetch($now);
+                $this->em->persist($channel);
+                $this->em->flush();
+            }
         }
     }
 
