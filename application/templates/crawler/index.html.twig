@@ -48,7 +48,7 @@
 	{% for feed in feeds %}
 		{% set feed_name = '/r/' ~ feed.name %}
 		{% set title %}
-		<a href="https://old.reddit.com{{ feed_name }}" target="_blank">{{ feed_name }}</a>
+		<a href="https://old.reddit.com{{ feed_name }}" target="_blank">{{ feed_name }} [{{ feed.lastFetch.format('d.m.Y') }}]</a>
 		{% endset %}
 		{% include 'table.html.twig' with {
 			'tableTitle': title,

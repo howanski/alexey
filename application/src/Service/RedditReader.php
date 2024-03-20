@@ -57,6 +57,7 @@ final class RedditReader
             'name' => $channel->getName(),
             'id' => $channel->getId(),
             'posts' => $posts,
+            'lastFetch' => $channel->getLastFetch(),
         ];
     }
 
