@@ -56,7 +56,7 @@ final class RedditPostRepository extends ServiceEntityRepository
             sql: $sql,
             params: [
                 'user' => $user->getId(),
-                'username' => '/u/' . $username,
+                'username' => $username,
             ],
         );
         return $count;
