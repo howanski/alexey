@@ -1,0 +1,2 @@
+#!/bin/bash
+docker exec -it -w /var/www/html/application_scripts alexey-php bash -c "chmod -R 777 /var/www/html/var"

@@ -128,7 +128,12 @@ class NetworkStatistic
 
     public function getDownloadSpeedFromReferencePoint(): float
     {
-        return ($this->getDataDownloadedFromReferencePoint() / $this->getTimePassedFromReferencePoint());
+        $timePassed = $this->getTimePassedFromReferencePoint();
+        if (0 !== $timePassed) {
+            return ($this->getDataDownloadedFromReferencePoint() / $timePassed);
+        }
+
+        return 0.0;
     }
 
     public function getDownloadSpeedFromReferencePointReadable(): string
