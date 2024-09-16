@@ -8,4 +8,5 @@ echo "-----------------------------------------------------"
 sleep 3
 docker-compose build --pull --parallel --no-cache --force-rm
 docker-compose up --detach
-./../scripts/fix_permissions
+echo "you may need to run ./fix_permissions script after cache warmup (minute or two), will address this issue in next fix"
+# ./../scripts/fix_permissions #TODO automate permissions fix
