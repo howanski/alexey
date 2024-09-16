@@ -8,4 +8,4 @@ echo "-----------------------------------------------------"
 sleep 3
 docker-compose build --pull --parallel --no-cache --force-rm
 docker-compose up --detach
-./fix_permissions
+./../scripts/fix_permissions
