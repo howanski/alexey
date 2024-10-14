@@ -6,5 +6,5 @@ echo "-----------------------------------------------------"
 echo "---------------- [ HAVE  PATIENCE! ] ----------------"
 echo "-----------------------------------------------------"
 sleep 3
-docker-compose build --pull --parallel --no-cache --force-rm
-docker-compose up
+docker compose build --pull --parallel --no-cache --force-rm
+docker compose up

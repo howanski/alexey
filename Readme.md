@@ -8,7 +8,7 @@ For now it serves as an experimenting field for Symfony 5 and Docker capabilitie
 
 ## Installation
 
-I love simple deployments. For development-ready instance all you need is Docker, Docker-Compose and Bash:
+I love simple deployments. For development-ready instance all you need is Docker, Docker-Compose (v2) and Bash:
 
 First of all - if you want Wake On LAN to work, you must configure network OUTSIDE containers in [docker-compose.yml](./docker/docker-compose.yml)
 
