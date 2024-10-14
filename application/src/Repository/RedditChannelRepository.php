@@ -30,7 +30,7 @@ final class RedditChannelRepository extends ServiceEntityRepository
             'DELETE reddit_channel ' .
             'FROM reddit_channel ' .
             'LEFT JOIN reddit_post ON reddit_channel.id = reddit_post.channel_id ' .
-            'WHERE reddit_channel.last_fetch < :oldTime ' . 
+            'WHERE reddit_channel.last_fetch < :oldTime ' .
             'AND reddit_post.id IS NULL;';
         $count = $connection->executeStatement(
             sql: $sql,

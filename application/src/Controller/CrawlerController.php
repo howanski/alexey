@@ -196,7 +196,11 @@ final class CrawlerController extends AbstractController
         $user = $this->getUser();
         if ($request->isXmlHttpRequest() && $user === $channel->getUser()) {
             $channelData = $reader->getChannelDataForView($channel, $limit);
-            $autoHide = SimpleSettingsService::UNIVERSAL_TRUTH === $simpleSettingsService->getSettings([RedditReader::REDDIT_EMPTY_STREAM_AUTOHIDE], $user)[RedditReader::REDDIT_EMPTY_STREAM_AUTOHIDE];
+            $autoHide = SimpleSettingsService::UNIVERSAL_TRUTH ===
+                $simpleSettingsService->getSettings(
+                    [RedditReader::REDDIT_EMPTY_STREAM_AUTOHIDE],
+                    $user
+                )[RedditReader::REDDIT_EMPTY_STREAM_AUTOHIDE];
             if ($channelData['posts']) {
                 $render = $this->renderView(
                     view: 'crawler/channel_table.html.twig',

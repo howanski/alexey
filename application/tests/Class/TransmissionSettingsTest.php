@@ -24,6 +24,7 @@ final class TransmissionSettingsTest extends TestCase
             'TRANSMISSION_AGGRESSION' => '7',
             'TRANSMISSION_AGGRESSION_ADAPT' => 'SET_8',
             'TRANSMISSION_TARGET_SPEED_FRAME' => 'SET_9',
+            'TRANSMISSION_TARGET_SPEED_MAX' => 123456,
         ];
         $simpleSettingsService->method('getSettings')->willReturn($settingsArray);
 
@@ -72,6 +73,11 @@ final class TransmissionSettingsTest extends TestCase
         $this->assertEquals(
             expected: 'SET_9',
             actual: $settings->getTargetFrame(),
+        );
+
+        $this->assertEquals(
+            expected: 123456,
+            actual: $settings->getTargetSpeedMax(),
         );
     }
 }

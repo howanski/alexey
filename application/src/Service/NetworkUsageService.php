@@ -429,13 +429,13 @@ final class NetworkUsageService
         $latestStat = $this->networkStatisticRepository->getLatestOne(probingTimeMax: $lastUptime);
 
         $latestStatFound = $latestStat instanceof NetworkStatistic;
-        $latestStatFromSameTimeFrame = $latestStatFound && $latestStat->getTimeFrame() === $timeFrame;
+        $latestStatFromSameTimeFrame = (true === $latestStatFound) && ($latestStat->getTimeFrame() === $timeFrame);
 
         $currentMonthDownload = $totalRxBytes;
         $currentMonthUpload = $totalTxBytes;
 
-        if ($latestStatFound) {
-            if ($latestStatFromSameTimeFrame) {
+        if (true === $latestStatFound) {
+            if (true === $latestStatFromSameTimeFrame) {
                 $currentMonthDownload += $latestStat->getDataDownloadedInFrame();
                 $currentMonthUpload += $latestStat->getDataUploadedInFrame();
             } else {
@@ -455,7 +455,7 @@ final class NetworkUsageService
             $mobileStat->save();
         }
 
-        if ($scheduleReset) {
+        if (true === $scheduleReset) {
             $this->resetMikrotik();
         }
 

@@ -165,7 +165,7 @@ final class TransmissionSettings
 
     public function setTargetSpeedMax(int $topSpeed, bool $allowSelfConfigure = false): self
     {
-        if ($allowSelfConfigure && $topSpeed < 1) {
+        if (true === $allowSelfConfigure && $topSpeed < 1) {
             $topSpeed = 1024; //8 Mbit / 1 MByte default value
         }
         $this->targetSpeedMax = $topSpeed;

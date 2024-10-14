@@ -129,7 +129,7 @@ class NetworkStatistic
     public function getDownloadSpeedFromReferencePoint(): float
     {
         $timePassed = $this->getTimePassedFromReferencePoint();
-        if (0 !== $timePassed) {
+        if (0 < $timePassed) {
             return ($this->getDataDownloadedFromReferencePoint() / $timePassed);
         }
 
