@@ -57,6 +57,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: RedditBannedPoster::class, orphanRemoval: true)]
     private $redditBannedPosters;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: StorageSpace::class, orphanRemoval: true)]
+    private $storageSpaces;
+
     public function __construct()
     {
         $this->settings = new ArrayCollection();
@@ -65,6 +68,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->moneyTransfers = new ArrayCollection();
         $this->redditChannels = new ArrayCollection();
         $this->redditBannedPosters = new ArrayCollection();
+        $this->storageSpaces = new ArrayCollection();
     }
 
     public function getId(): int
@@ -209,5 +213,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRedditBannedPosters(): Collection
     {
         return $this->redditBannedPosters;
+    }
+
+    public function getStorageSpaces(): Collection
+    {
+        return $this->storageSpaces;
     }
 }
