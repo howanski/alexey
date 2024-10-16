@@ -36,6 +36,9 @@ class StorageItem
     #[ORM\OneToMany(mappedBy: 'storageItem', targetEntity: StorageItemAttribute::class, orphanRemoval: true)]
     private Collection $attributes;
 
+    #[ORM\Column(type: 'integer')]
+    private int $minimalQuantity;
+
     public function __construct()
     {
         $this->stacks = new ArrayCollection();
@@ -108,6 +111,18 @@ class StorageItem
             $this->attributes[] = $attribute;
             $attribute->setStorageItem($this);
         }
+
+        return $this;
+    }
+
+    public function getMinimalQuantity(): int
+    {
+        return $this->minimalQuantity;
+    }
+
+    public function setMinimalQuantity(int $minimalQuantity): self
+    {
+        $this->minimalQuantity = $minimalQuantity;
 
         return $this;
     }
