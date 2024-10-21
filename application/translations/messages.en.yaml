@@ -231,6 +231,15 @@ app:
         mobile_api_settings: "Companion App"
         system_settings: "System settings"
         user_settings: "User settings"
+    storage:
+      forms:
+        labels:
+          name: Name
+      strings:
+        menu_record: Storage
+        storage_attributes: Attributes
+        storage_items: Items
+        storage_spaces: "Storage spaces"
     weather:
       forms:
         help:

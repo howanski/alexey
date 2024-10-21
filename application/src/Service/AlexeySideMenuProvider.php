@@ -84,6 +84,18 @@ final class AlexeySideMenuProvider extends AbstractExtension
             children: [],
         );
 
+        $route = $this->router->generate('storage_index');
+        $sideMenu[] = new SideMenuItem(
+            name: $this->translator->translateString(
+                translationId: 'menu_record',
+                module: 'storage'
+            ),
+            destination: $route,
+            icon: 'fas fa-warehouse',
+            isActive: $this->isActiveRoute($route),
+            children: [],
+        );
+
         return $sideMenu;
     }
 

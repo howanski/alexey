@@ -8,8 +8,10 @@ use App\Repository\StorageSpaceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: StorageSpaceRepository::class)]
+#[UniqueEntity(fields: ['name', 'user'])]
 class StorageSpace
 {
     #[ORM\Id]
@@ -64,5 +66,10 @@ class StorageSpace
     public function getStorageItemStacks(): Collection
     {
         return $this->storageItemStacks;
+    }
+
+    public function hasStacks(): bool
+    {
+        return $this->getStorageItemStacks()->count() > 0;
     }
 }

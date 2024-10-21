@@ -231,6 +231,15 @@ app:
         mobile_api_settings: "Aplikacja mobilna"
         system_settings: "Ustawienia systemowe"
         user_settings: "Ustawienia użytkownika"
+    storage:
+      forms:
+        labels:
+          name: Nazwa
+      strings:
+        menu_record: Magazyn
+        storage_attributes: Własności
+        storage_items: Pozycje
+        storage_spaces: Kontenery
     weather:
       forms:
         help:
