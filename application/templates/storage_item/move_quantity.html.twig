@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('storage'), 'href': path('storage_index')},
+    {'name': 'storage_items'|localised('storage'), 'href': path('storage_item_index')},
+    {'name': storageItem.name, 'href': path('storage_item_edit', {id: storageItem.id})},
+    {'name': 'move'|localised ~ ' ' ~ 'quantity'|localised('storage'), 'href': path('storage_item_edit', {id: storageItem.id})},
+	{'name': storageSpace.name, 'href': path('storage_item_edit', {id: storageItem.id})}
+	]
+%}
+
+{% set additional_buttons = [
+		{
+			'color': 'nord10',
+			'href': path('storage_item_edit', {id: storageItem.id}),
+			'name': 'back'|localised,
+			'icon': 'fas fa-undo'
+		}
+	]
+%}
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('forms-js') }}
+{% endblock %}
+
+{% block pageContentPrimary %}
+	{% include 'form.html.twig' with {
+		'form': form,
+		'additionalButtons': additional_buttons,
+	} only %}
+{% endblock %}
+
+{% block pageContentSecondary %}{% endblock %}

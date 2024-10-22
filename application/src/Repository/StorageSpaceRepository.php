@@ -7,6 +7,7 @@ namespace App\Repository;
 use App\Entity\StorageSpace;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -22,12 +23,18 @@ final class StorageSpaceRepository extends ServiceEntityRepository
         parent::__construct($registry, StorageSpace::class);
     }
 
-    public function findByUser(User $value): array
+    public function getFindByUserBuilder(User $value): QueryBuilder
     {
-        return $this->createQueryBuilder('s')
+        $qb = $this->createQueryBuilder('s')
             ->andWhere('s.user = :val')
             ->setParameter('val', $value)
-            ->orderBy('s.name', 'ASC')
+            ->orderBy('s.name', 'ASC');
+        return $qb;
+    }
+
+    public function findByUser(User $value): array
+    {
+        return $this->getFindByUserBuilder($value)
             ->getQuery()
             ->getResult()
         ;

@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('storage'), 'href': path('storage_index')},
+    {'name': 'storage_items'|localised('storage'), 'href': path('storage_item_index')}
+	]
+%}
+
+{% set additional_buttons = [
+		{
+			'color': 'nord10',
+			'href': path('storage_item_index'),
+			'name': 'back_to_list'|localised,
+			'icon': 'fas fa-undo'
+		}
+	]
+%}
+
+{% if storageItem is defined %}
+	{% set additional_buttons = additional_buttons|merge([
+			{
+				'color': 'nord12',
+				'href': path('storage_item_add_quantity', {'id': storageItem.id}),
+				'name': 'add'|localised,
+				'icon': 'fas fa-plus'
+			}
+	]) %}
+	{% set secured_buttons = [
+		{
+			'color': 'nord11',
+			'name': 'delete'|localised,
+			'icon': 'fas fa-trash',
+			'action': path('storage_item_delete', {'id': storageItem.id}),
+			'csrf': csrf_token('delete' ~ storageItem.id),
+			'confirmation': 'you_sure_delete'|localised
+		}
+	] %}
+{% else %}
+	{% set secured_buttons = [] %}
+{% endif %}
+
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('forms-js') }}
+{% endblock %}
+
+
+{% block pageContentPrimary %}
+	{% include 'form.html.twig' with {
+		'form': form,
+		'additionalButtons': additional_buttons,
+		'additionalSecuredButtons': secured_buttons
+	} only %}
+{% endblock %}
+
+{% block pageContentSecondary %}
+	{% if storageItem is defined %}
+		{% set table_data = [
+				['storage_space'|localised('storage'), 'quantity'|localised('storage'), 'actions'|localised],
+		] %}
+		{% for stack in storageItem.stacks %}
+			{% set action_row = '<a href="' ~ path('storage_item_quantity_move', {'id': stack.id}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'move'|localised ~ '</a>' %}
+			{% set action_row = action_row ~ ' <a href="' ~ path('storage_item_quantity_remove', {'id': stack.id}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'delete'|localised ~ ' ' ~ 'quantity'|localised('storage') ~ '</a>' %}
+			{% set table_data = table_data|merge([
+				[stack.storageSpace.name, stack.quantity, action_row],
+			]) %}
+		{% endfor %}
+		{% include 'table.html.twig' with {
+			'tableTitle': storageItem.name ~ ' (' ~ 'total'|localised ~ ': ' ~ storageItem.quantity ~ ' x ' ~ ('app.modules.storage.forms.values.unit_of_measure.' ~ storageItem.getUnitOfMeasureTranslationCode())|trans ~ ')',
+			'tableData': table_data,
+		} only %}
+	{% endif %}
+{% endblock %}

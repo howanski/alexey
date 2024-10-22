@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% set breadcrumbs = [
-	{'name': 'menu_record'|localised('storage'), 'href': path('storage_index', {filter: '*'})},
-    {'name': 'storage_spaces'|localised('storage'), 'href': path('storage_index', {filter: '*'})}
+	{'name': 'menu_record'|localised('storage'), 'href': path('storage_index')},
+    {'name': 'storage_spaces'|localised('storage'), 'href': path('storage_index')}
 	]
 %}
 
@@ -35,7 +35,7 @@
 		[
 			{
 				'color': 'nord10',
-				'href': path('storage_index', {filter: 'XXXX'}),
+				'href': path('storage_attributes_index'),
 				'name': 'storage_attributes'|localised('storage'),
 				'icon': 'fas fa-sliders-h'
 			}
@@ -49,13 +49,14 @@
 {% block pageContentSecondary %}
 	{% set table_data = {} %}
 	{% for storage_space in storageSpaces %}
-		{% set actions = '<a href="' ~ path('storage_item_index', {'storageSpace': storage_space.id}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'show'|localised ~ '</a>' %}
-		{% set actions = actions ~ ' <a href="' ~ path('storage_space_edit', {'id': storage_space.id}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'edit'|localised ~ '</a>' %}
-		{% if not storage_space.hasStacks() %}
+		{% set actions = ' <a href="' ~ path('storage_space_edit', {'id': storage_space.id}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'edit'|localised ~ '</a>' %}
+		{% if storage_space.hasStacks() %}
+			{% set actions = actions ~ '<a href="' ~ path('storage_item_index', {'storageSpace': storage_space.id}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'show'|localised ~ '</a>' %}
+		{% else %}
 			{% set actions = actions ~ ' <a href="' ~ path('storage_space_delete', {'id': storage_space.id}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'delete'|localised ~ '</a>' %}
 		{% endif %}
 		{% set table_data = table_data|merge([{
-			'name': storage_space.name,
+			'name': '<a href="' ~ path('storage_item_index', {'storageSpace': storage_space.id}) ~ '">' ~ storage_space.name ~ '</a>',
 			'storage_items': storage_space.getStorageItemStacks().count(),
 			'actions': actions
 		}]) %}

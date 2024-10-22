@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% set breadcrumbs = [
-	{'name': 'menu_record'|localised('storage'), 'href': path('storage_index', {filter: '*'})},
-    {'name': 'storage_spaces'|localised('storage'), 'href': path('storage_index', {filter: '*'})}
+	{'name': 'menu_record'|localised('storage'), 'href': path('storage_index')},
+    {'name': 'storage_spaces'|localised('storage'), 'href': path('storage_index')}
 	]
 %}
 

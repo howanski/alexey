@@ -46,7 +46,9 @@ app:
         ip_or_url: IP/URL
         logout: Logout
         mac_address: "MAC Address"
+        manage: "Manage"
         mobile_devices: "Mobile devices"
+        move: Move
         name: Name
         new: New
         save: Save
@@ -54,6 +56,7 @@ app:
         show: Show
         simulation: Simulation
         status: Status
+        total: Total
         turn_off: "Turn off"
         turn_on: "Turn on"
         unknown: "?"
@@ -233,13 +236,33 @@ app:
         user_settings: "User settings"
     storage:
       forms:
+        help:
+          minimal_quantity: "Select 0 if you don't need warning about reaching minimal quantity"
         labels:
+          current_quantity: "Current quantity"
+          minimal_quantity: "minimal quantity"
           name: Name
+          quantity: Quantity
+          storage_space: Storage space
+          unit: "Unit of measure"
+        values:
+          unit_of_measure:
+            box: Box
+            centimeter: Centimeter
+            gram: Gram
+            kilogram: Kg
+            liter: Liter
+            meter: Meter
+            mililiter: Mililiter
+            quantity: "Pieces"
       strings:
         menu_record: Storage
+        quantity: Quantity
         storage_attributes: Attributes
         storage_items: Items
+        storage_space: "Storage space"
         storage_spaces: "Storage spaces"
+        unit: "Unit of measure"
     weather:
       forms:
         help:

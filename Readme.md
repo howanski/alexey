@@ -9,6 +9,7 @@ Current features are:
 - storing financial details for analysis where did my money gone and how much I can expect to save by x time
 - crawling through my favourite subreddits, looking for most popular articles
 - basic acces via Android app and ability to open secure tunnel to log in via *unknown* browser using One Time Password
+- physical storage management
 
 Matter of features is still open - I've no idea what I'm gonna need/want to include in this app.
 

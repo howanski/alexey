@@ -46,7 +46,9 @@ app:
         ip_or_url: IP/URL
         logout: Wyloguj
         mac_address: "Adres MAC"
+        manage: Zarządzaj
         mobile_devices: "Urządzenia mobilne"
+        move: Przenieś
         name: Nazwa
         new: Nowy
         save: Zapisz
@@ -54,6 +56,7 @@ app:
         show: Pokaż
         simulation: Symulacja
         status: Status
+        total: Razem
         turn_off: "Wyłącz"
         turn_on: "Włącz"
         unknown: "?"
@@ -233,13 +236,33 @@ app:
         user_settings: "Ustawienia użytkownika"
     storage:
       forms:
+        help:
+          minimal_quantity: "Wybierz 0 jeśli nie potrzebujesz ostrzeżenia o osiągnięciu minimalnej ilości"
         labels:
+          current_quantity: "Ilość aktualna"
+          minimal_quantity: "Ilość minimalna"
           name: Nazwa
+          quantity: "Ilość"
+          storage_space: Kontener
+          unit: "Jednostka miary"
+        values:
+          unit_of_measure:
+            box: Opakowanie
+            centimeter: Centymetr
+            gram: Gram
+            kilogram: Kg
+            liter: Litr
+            meter: Metr
+            mililiter: Mililitr
+            quantity: "Szt."
       strings:
         menu_record: Magazyn
+        quantity: Ilość
         storage_attributes: Własności
         storage_items: Pozycje
+        storage_space: Kontener
         storage_spaces: Kontenery
+        unit: "Jednostka miary"
     weather:
       forms:
         help:

@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('storage'), 'href': path('storage_index')},
+    {'name': 'storage_items'|localised('storage'), 'href': path('storage_item_index')}
+	]
+%}
+
+{% set locale = app.request.locale %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block pageContentPrimary %}
+	{% set action_buttons = [
+        {
+            'color': 'nord10',
+            'href': path('storage_index'),
+            'name': 'storage_spaces'|localised('storage'),
+            'icon': 'fas fa-box'
+       },
+	] %}
+	{% if userHasStorageSpaces %}
+		{% set action_buttons = action_buttons|merge(
+			[
+				{
+					'color': 'nord12',
+					'href': path('storage_item_index'),
+					'name': 'storage_items'|localised('storage'),
+					'icon': 'fas fa-tools'
+				},
+			]
+		) %}
+	{% endif %}
+	{% set action_buttons = action_buttons|merge(
+		[
+			{
+				'color': 'nord10',
+				'href': path('storage_attributes_index'),
+				'name': 'storage_attributes'|localised('storage'),
+				'icon': 'fas fa-sliders-h'
+			}
+		]
+		) %}
+	{% include 'entity_actions_row.html.twig' with {
+		'buttons': action_buttons,
+	} only %}
+
+	<div class="justify-center my-2 flex flex-wrap">
+		<a class="{% if 0 == storageSpaceFilter %}bg-nord9{% else %}bg-nord1{% endif %} py-1 my-1 px-4 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none mr-2" href="{{ path('storage_item_index') }}">
+			*
+		</a>
+		{% for storage_space in storageSpaces %}
+			{% if storage_space.hasStacks() %}
+				<a class="{% if storage_space.id == storageSpaceFilter %}bg-nord9{% else %}bg-nord1{% endif %} py-1 my-1 px-4 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none mr-2" href="{{ path('storage_item_index', {storageSpace: storage_space.id}) }}">
+					{{ storage_space.name }}
+				</a>
+			{% endif %}
+		{% endfor %}
+	</div>
+{% endblock %}
+
+{% block pageContentSecondary %}
+	{% set table_data = {} %}
+	{% for storage_item in storageItems %}
+		{% set actions = '' %}
+		{% set actions = '<a href="' ~ path('storage_item_edit', {'id': storage_item.id}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'manage'|localised ~ '</a>' %}
+		{% set quantity = storage_item.quantity %}
+		{% if storage_item.minimalQuantity > 0 and storage_item.minimalQuantity >= quantity %}
+			{% set quantity = quantity ~ ' / ' ~ storage_item.minimalQuantity ~ '&nbsp&nbsp&nbsp<i class="fas fa-exclamation-circle text-red"></i>' %}
+		{% endif %}
+		{% set table_data = table_data|merge([{
+			'name': storage_item.name,
+			'quantity': quantity,
+			'unit': ('app.modules.storage.forms.values.unit_of_measure.' ~ storage_item.getUnitOfMeasureTranslationCode())|trans,
+			'storage_spaces': storage_item.storageSpacesReadable,
+			'actions': actions
+		}]) %}
+	{% endfor %}
+	{% include 'table.html.twig' with {
+		'tableTitle': 'storage_items'|localised('storage'),
+		'tableHeaders': [
+			'name'|localised,
+			'quantity'|localised('storage'),
+			'unit'|localised('storage'),
+			'storage_spaces'|localised('storage'),
+			'actions'|localised,
+			],
+		'tableData': table_data,
+		'buttons': [{'href': path('storage_item_new'), text: 'add'|localised}]
+	} only %}
+{% endblock %}

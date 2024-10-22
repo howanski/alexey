@@ -13,10 +13,35 @@ use LogicException;
 #[ORM\Entity(repositoryClass: StorageItemRepository::class)]
 class StorageItem
 {
+    public const UNIT_BOX = 'BOX';
+    public const UNIT_CENTIMETER = 'CENTIMETER';
+    public const UNIT_GRAM = 'GRAM';
+    public const UNIT_KILOGRAM = 'KILOGRAM';
+    public const UNIT_METER = 'METER';
     public const UNIT_QUANTITY = 'QUANTITY';
+    public const UNIT_VOLUME_LITER = 'LITER';
+    public const UNIT_VOLUME_MILILITER = 'MILILITER';
 
-    private const VALID_UNITS = [
+    public const VALID_UNITS = [
         self::UNIT_QUANTITY,
+        self::UNIT_BOX,
+        self::UNIT_METER,
+        self::UNIT_CENTIMETER,
+        self::UNIT_GRAM,
+        self::UNIT_KILOGRAM,
+        self::UNIT_VOLUME_LITER,
+        self::UNIT_VOLUME_MILILITER,
+    ];
+
+    public const VALID_UNITS_TRANS_CODES = [
+        self::UNIT_BOX => 'box',
+        self::UNIT_CENTIMETER => 'centimeter',
+        self::UNIT_GRAM => 'gram',
+        self::UNIT_KILOGRAM => 'kilogram',
+        self::UNIT_METER => 'meter',
+        self::UNIT_QUANTITY => 'quantity',
+        self::UNIT_VOLUME_LITER => 'liter',
+        self::UNIT_VOLUME_MILILITER => 'mililiter',
     ];
 
     #[ORM\Id]
@@ -89,6 +114,11 @@ class StorageItem
         return $this->unitOfMeasure;
     }
 
+    public function getUnitOfMeasureTranslationCode(): string
+    {
+        return self::VALID_UNITS_TRANS_CODES[$this->getUnitOfMeasure()];
+    }
+
     public function setUnitOfMeasure(string $unitOfMeasure): self
     {
         if (!in_array(needle: $unitOfMeasure, haystack: self::VALID_UNITS)) {
@@ -125,5 +155,29 @@ class StorageItem
         $this->minimalQuantity = $minimalQuantity;
 
         return $this;
+    }
+
+    public function getQuantity(): int
+    {
+        $totalQuantity = 0;
+        /** @var StorageItemStack $stack */
+        foreach ($this->getStacks() as $stack) {
+            $totalQuantity += $stack->getQuantity();
+        }
+        return $totalQuantity;
+    }
+
+    public function getStorageSpacesReadable(): string
+    {
+        $spaces = [];
+        /** @var StorageItemStack $stack */
+        foreach ($this->getStacks() as $stack) {
+            $spaceName = $stack->getStorageSpace()->getName();
+            $spaces[$spaceName] = $spaceName;
+        }
+
+        ksort($spaces);
+
+        return implode(separator: ', ', array: array_keys(array: $spaces));
     }
 }
