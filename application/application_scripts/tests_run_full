@@ -19,7 +19,6 @@ echo "---------------------------------------"
 echo "------- PREPARE DB....."
 echo "---------------------------------------"
 XDEBUG_MODE=off php bin/console doctrine:database:drop --force --env=test
-stoponfail
 XDEBUG_MODE=off php bin/console doctrine:database:create --env=test
 stoponfail
 XDEBUG_MODE=off php bin/console doctrine:migrations:migrate --no-interaction --env=test
@@ -52,10 +51,10 @@ echo "---------------------------------------"
 XDEBUG_MODE=coverage /var/www/html/vendor/bin/phpunit --verbose --coverage-html var/qa-results/phpunit/test-coverage-report --testdox-html var/qa-results/phpunit/test-result.html --log-junit var/qa-results/phpunit/junit-output.xml
 stoponfail
 chown -R 1000:1000 var/qa-results/ >/dev/null
-# echo "---------------------------------------"
-# echo "------- PHPMETRICS (-> var/qa-results)"
-# echo "---------------------------------------"
-# XDEBUG_MODE=off ./vendor/bin/phpmetrics --report-html=var/qa-results/phpmetrics-report --junit=var/qa-results/phpunit/junit-output.xml .
-# stoponfail
-# chown -R 1000:1000 var/qa-results/ >/dev/null
+echo "---------------------------------------"
+echo "------- PHPMETRICS (-> var/qa-results)"
+echo "---------------------------------------"
+XDEBUG_MODE=off ./vendor/bin/phpmetrics --report-html=var/qa-results/phpmetrics-report --junit=var/qa-results/phpunit/junit-output.xml .
+stoponfail
+chown -R 1000:1000 var/qa-results/ >/dev/null
 echo "----------------- DONE ----------------"
