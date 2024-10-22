@@ -17,7 +17,8 @@ then
     docker rm alexey-mysql
     clear
     echo "Removing images..."
-    docker rmi alexey_php
+    docker rmi alexey-php
+    docker rmi alexey-nginx
     #docker image prune
     clear
     echo "Removing data volumes..."
@@ -25,6 +26,7 @@ then
     #docker volume prune
     echo "Removing networks..."
     docker network rm alexey_network
+    docker network rm alexey_wake_lan
     clear
     echo "------------------------------------"
     echo "------ [ ALEXEY UNINSTALLED ] ------"

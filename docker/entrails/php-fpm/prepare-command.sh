@@ -2,7 +2,7 @@
 cd /var/www/html
 rm -rf var
 rm -rf public/build
-XDEBUG_MODE=off composer install
+XDEBUG_MODE=off php composer_2.1.0.phar install
 XDEBUG_MODE=off yarn install
 XDEBUG_MODE=off yarn build
 
