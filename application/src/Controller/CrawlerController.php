@@ -235,9 +235,13 @@ final class CrawlerController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
+        $bannedUsers = $user->getRedditBannedPosters()->toArray();
+        usort($bannedUsers, function (RedditBannedPoster $a, RedditBannedPoster $b) {
+            return strtolower($a->getUsername()) <=> strtolower($b->getUsername());
+        });
         return $this->render('crawler/groups_list.html.twig', [
             'groups' => $repo->getMine($user),
-            'bannedUsers' => $user->getRedditBannedPosters(),
+            'bannedUsers' => $bannedUsers,
         ]);
     }
 
