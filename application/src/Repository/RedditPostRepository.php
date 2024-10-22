@@ -31,12 +31,10 @@ final class RedditPostRepository extends ServiceEntityRepository
         $sql =
             'DELETE reddit_post ' .
             'FROM reddit_post ' .
-            'WHERE reddit_post.seen = :seen ' .
-            'AND reddit_post.touched < :ago;';
+            'WHERE reddit_post.touched < :ago;';
         $count = $connection->executeStatement(
             sql: $sql,
             params: [
-                'seen' => true,
                 'ago' => $oldTime,
             ],
         );
