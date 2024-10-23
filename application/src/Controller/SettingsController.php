@@ -14,6 +14,7 @@ use App\Service\RedditReader;
 use App\Service\SimpleCacheService;
 use App\Service\SimpleSettingsService;
 use App\Service\TunnelInfoProvider;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -102,6 +103,7 @@ final class SettingsController extends AlexeyAbstractController
 
     public function __construct(
         private AlexeyTranslator $translator,
+        protected EntityManagerInterface $em,
     ) {
     }
 
