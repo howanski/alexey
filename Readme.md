@@ -82,10 +82,10 @@ cd scripts
 #(this one will run for a loooong time and will stick to your terminal so you'll see logs - open new terminal tab and continue typing commands after you'll see that logs stabilised)
 #(I'm sure you'll feel it :-) )
 ./install # or ./install_detach if you want the server to run in background
-# get inside worker-container
-./console_php
 # generate certificate
 ./regenerate_https_certificate
+# get inside worker-container
+./console_php
 #create user
 php ../bin/console alexey:user:new
 # and now open your browser on https://localhost/ to log in ;-)
