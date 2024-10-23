@@ -6,13 +6,12 @@ namespace App\Controller;
 
 use App\Model\MobileSignalInfo;
 use App\Service\SimpleCacheService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/network/usage/info-mobile-signal')]
-final class MobileSignalController extends AbstractController
+final class MobileSignalController extends AlexeyAbstractController
 {
     #[Route('/', name: 'mobile_signal')]
     public function index(): Response

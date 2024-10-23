@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Class\OpenWeatherOneApiResponse;
-use App\Entity\SimpleSetting;
-use App\Entity\User;
 use App\EventSubscriber\UserLocaleSubscriber;
 use App\Form\SystemSettingsType;
 use App\Form\UserSettingsType;
@@ -16,25 +14,21 @@ use App\Service\RedditReader;
 use App\Service\SimpleCacheService;
 use App\Service\SimpleSettingsService;
 use App\Service\TunnelInfoProvider;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 // TODO: Too much logic, move some garbage to service
-final class SettingsController extends AbstractController
+final class SettingsController extends AlexeyAbstractController
 {
     #[Route('/settings/user', name: 'settings_user')]
     public function settingsUser(
         AlexeyTranslator $translator,
-        EntityManagerInterface $em,
         Request $request,
         SimpleCacheService $cacheService,
         SimpleSettingsService $simpleSettingsService,
     ): Response {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
         $settings = [
             'locale' => $user->getLocale(),
             'email' => $user->getEmail(),
@@ -63,8 +57,8 @@ final class SettingsController extends AbstractController
                 [RedditReader::REDDIT_EMPTY_STREAM_AUTOHIDE => strval($settings['redditStreamAutohide'])],
                 $user
             );
-            $em->persist($user);
-            $em->flush();
+            $this->em->persist($user);
+            $this->em->flush();
             $cacheService->invalidateCache(OpenWeatherOneApiResponse::WEATHER_CACHE_KEY);
             $request->getSession()->set(UserLocaleSubscriber::USER_LOCALE, $user->getLocale());
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
@@ -80,12 +74,11 @@ final class SettingsController extends AbstractController
     #[Route('/settings/system', name: 'settings_system')]
     public function settingsSystem(
         AlexeyTranslator $t,
-        EntityManagerInterface $em,
         Request $request,
         SimpleSettingsService $ss,
         TunnelInfoProvider $tunnelInfoProvider,
     ): Response {
-        $settings = new SystemSettings(em: $em, translator: $t, simpleSettingsService: $ss);
+        $settings = new SystemSettings(em: $this->em, translator: $t, simpleSettingsService: $ss);
         $form = $this->createForm(
             SystemSettingsType::class,
             $settings

@@ -5,26 +5,22 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\ApiDevice;
-use App\Entity\User;
 use App\Form\ApiDeviceType;
 use App\Repository\ApiDeviceRepository;
 use App\Service\AlexeyTranslator;
 use App\Service\MobileApiManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/mobile/access')]
-final class ApiSettingsController extends AbstractController
+final class ApiSettingsController extends AlexeyAbstractController
 {
     #[Route('/settings', name: 'api_local_settings')]
     public function index(ApiDeviceRepository $repo, MobileApiManager $manager): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
         $token = $manager->generateUserToken($user);
 
         return $this->render('api/index.html.twig', [
@@ -37,8 +33,7 @@ final class ApiSettingsController extends AbstractController
     #[Route('/qr.png', name: 'api_show_qr')]
     public function qr(MobileApiManager $apiManager)
     {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
         $credentials = $apiManager->getFullConnectionCredentials($user);
         $fileContent = $apiManager->getInMemoryQr(
             data: $credentials,
@@ -56,28 +51,26 @@ final class ApiSettingsController extends AbstractController
     #[Route('/token', name: 'api_my_token')]
     public function myToken(MobileApiManager $manager)
     {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
         $token = $manager->generateUserToken($user);
         return new JsonResponse(data: $token);
     }
 
     #[Route('/device/edit/{id}', name: 'api_device_edit')]
     public function editDevice(
-        ApiDevice $apiDevice,
         AlexeyTranslator $translator,
-        EntityManagerInterface $em,
+        int $id,
         Request $request,
     ): Response {
-        /** @var User $user */
-        $user = $this->getUser();
+        $apiDevice = $this->fetchEntityById(className: ApiDevice::class, id: $id);
+        $user = $this->alexeyUser();
         if ($apiDevice->getUser() === $user) {
             $form = $this->createForm(ApiDeviceType::class, $apiDevice);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $em->persist($apiDevice);
-                $em->flush();
+                $this->em->persist($apiDevice);
+                $this->em->flush();
                 $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
 
                 return $this->redirectToRoute('api_local_settings', [], Response::HTTP_SEE_OTHER);
@@ -92,13 +85,13 @@ final class ApiSettingsController extends AbstractController
     }
 
     #[Route('/device/drop/{id}', name: 'api_device_drop')]
-    public function dropDevice(ApiDevice $apiDevice, EntityManagerInterface $em)
+    public function dropDevice(int $id)
     {
-        /** @var User $user */
-        $user = $this->getUser();
+        $apiDevice = $this->fetchEntityById(className: ApiDevice::class, id: $id);
+        $user = $this->alexeyUser();
         if ($apiDevice->getUser() === $user) {
-            $em->remove($apiDevice);
-            $em->flush();
+            $this->em->remove($apiDevice);
+            $this->em->flush();
         }
 
         return $this->redirectToRoute('api_local_settings');

@@ -10,6 +10,7 @@ parameters:
         - "#on an unknown class if0xx#"
         - "#has a nullable return type declaration.#"
         - "#Language construct isset#"
+        - "#AlexeyAbstractController#"
     excludePaths:
         - src/Security/ApiAuthenticator
         - src/Security/OtpAuthenticator
