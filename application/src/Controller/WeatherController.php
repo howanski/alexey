@@ -12,14 +12,13 @@ use App\Service\AlexeyTranslator;
 use App\Service\SimpleCacheService;
 use App\Service\SimpleSettingsService;
 use App\Service\WeatherService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/weather')]
-final class WeatherController extends AbstractController
+final class WeatherController extends AlexeyAbstractController
 {
     #[Route('/', name: 'weather')]
     public function index(): Response

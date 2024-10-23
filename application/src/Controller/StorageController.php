@@ -5,24 +5,20 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\StorageSpace;
-use App\Entity\User;
 use App\Form\StorageSpaceType;
 use App\Repository\StorageSpaceRepository;
 use App\Service\AlexeyTranslator;
 use App\Service\StorageService;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class StorageController extends AbstractController
+final class StorageController extends AlexeyAbstractController
 {
     #[Route('/storage', name: 'storage_index')]
     public function index(StorageService $service): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
         return $this->render(
             'storage/index.html.twig',
             $service->getTemplateDataForStorageSpaces(user: $user),
@@ -32,11 +28,9 @@ final class StorageController extends AbstractController
     #[Route('/storage/space/new', name: 'storage_space_new')]
     public function add(
         AlexeyTranslator $translator,
-        EntityManagerInterface $em,
         Request $request,
     ) {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
         $channel = new StorageSpace();
         $channel->setUser(user: $user);
         $form = $this->createForm(
@@ -45,8 +39,8 @@ final class StorageController extends AbstractController
         );
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($channel);
-            $em->flush();
+            $this->em->persist($channel);
+            $this->em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
 
             return $this->redirectToRoute(
@@ -63,13 +57,11 @@ final class StorageController extends AbstractController
     #[Route('/storage/space/edit/{id}', name: 'storage_space_edit')]
     public function edit(
         AlexeyTranslator $translator,
-        EntityManagerInterface $em,
         int $id,
         Request $request,
         StorageSpaceRepository $storageSpaceRepository,
     ): Response {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
 
         $channel = $storageSpaceRepository->findOneBy(
             criteria: [
@@ -84,8 +76,8 @@ final class StorageController extends AbstractController
         );
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($channel);
-            $em->flush();
+            $this->em->persist($channel);
+            $this->em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
 
             return $this->redirectToRoute(
@@ -102,12 +94,10 @@ final class StorageController extends AbstractController
     #[Route('/storage/space/delete/{id}', name: 'storage_space_delete')]
     public function show(
         AlexeyTranslator $translator,
-        EntityManagerInterface $em,
         int $id,
         StorageSpaceRepository $storageSpaceRepository,
     ): Response {
-        /** @var User */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
         /** @var StorageSpace */
         $storageSpace = $storageSpaceRepository->findOneBy(
             criteria: [
@@ -126,8 +116,8 @@ final class StorageController extends AbstractController
             );
         }
 
-        $em ->remove($storageSpace);
-        $em->flush();
+        $this->em->remove($storageSpace);
+        $this->em->flush();
 
         $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
         return $this->redirectToRoute('storage_index');

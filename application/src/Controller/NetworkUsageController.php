@@ -12,12 +12,11 @@ use App\Service\AlexeyTranslator;
 use App\Service\NetworkUsageProviderSettings;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouterInterface;
 
 #[Route('/network/usage')]
-final class NetworkUsageController extends AbstractController
+final class NetworkUsageController extends AlexeyAbstractController
 {
     #[Route('/info/{chartType}', name: 'network_usage')]
     public function index(

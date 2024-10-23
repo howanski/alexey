@@ -5,23 +5,19 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\MoneyTransfer;
-use App\Entity\User;
 use App\Form\MoneyTransferSplitType;
 use App\Form\MoneyTransferType;
 use App\Repository\MoneyTransferRepository;
 use App\Service\AlexeyTranslator;
 use App\Service\MoneyService;
 use DateTime;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/money/transfer')]
-final class MoneyTransferController extends AbstractController
+final class MoneyTransferController extends AlexeyAbstractController
 {
     #[Route('/', name: 'money_transfer_index', methods: ['GET'])]
     public function index(
@@ -29,8 +25,7 @@ final class MoneyTransferController extends AbstractController
         MoneyTransferRepository $moneyTransferRepository,
         Request $request,
     ): Response {
-        /** @var User */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
         $filters = $request->query->all();
         if (array_key_exists(key: 'month', array: $filters)) {
             $monthStr = $filters['month'];
@@ -60,10 +55,8 @@ final class MoneyTransferController extends AbstractController
         Request $request,
         AlexeyTranslator $translator,
         MoneyService $service,
-        EntityManagerInterface $entityManager,
     ): Response {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
         $moneyTransfer = new MoneyTransfer($user);
         $form = $this->createForm(
             type: MoneyTransferType::class,
@@ -76,8 +69,8 @@ final class MoneyTransferController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($moneyTransfer);
-            $entityManager->flush();
+            $this->em->persist($moneyTransfer);
+            $this->em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -89,9 +82,10 @@ final class MoneyTransferController extends AbstractController
     }
 
     #[Route('/{id}', name: 'money_transfer_show', methods: ['GET'])]
-    public function show(MoneyTransfer $moneyTransfer): Response
+    public function show(int $id): Response
     {
-        $user = $this->getUser();
+        $moneyTransfer = $this->fetchEntityById(className: MoneyTransfer::class, id: $id);
+        $user = $this->alexeyUser();
         if (false === ($user === $moneyTransfer->getUser())) {
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -103,12 +97,12 @@ final class MoneyTransferController extends AbstractController
     #[Route('/{id}/edit', name: 'money_transfer_edit', methods: ['GET', 'POST'])]
     public function edit(
         AlexeyTranslator $translator,
-        EntityManagerInterface $em,
+        int $id,
         MoneyService $service,
-        MoneyTransfer $moneyTransfer,
         Request $request,
     ): Response {
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
+        $moneyTransfer = $this->fetchEntityById(className: MoneyTransfer::class, id: $id);
         if (false === ($user === $moneyTransfer->getUser())) {
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -129,7 +123,7 @@ final class MoneyTransferController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
+            $this->em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -143,17 +137,17 @@ final class MoneyTransferController extends AbstractController
     #[Route('/{id}/delete', name: 'money_transfer_delete', methods: ['POST'])]
     public function delete(
         AlexeyTranslator $translator,
-        EntityManagerInterface $entityManager,
-        MoneyTransfer $moneyTransfer,
+        int $id,
         Request $request,
     ): Response {
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
+        $moneyTransfer = $this->fetchEntityById(className: MoneyTransfer::class, id: $id);
         if (false === ($user === $moneyTransfer->getUser())) {
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
         if ($this->isCsrfTokenValid('delete' . $moneyTransfer->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($moneyTransfer);
-            $entityManager->flush();
+            $this->em->remove($moneyTransfer);
+            $this->em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -164,12 +158,12 @@ final class MoneyTransferController extends AbstractController
     #[Route('/{id}/split', name: 'money_transfer_split', methods: ['GET', 'POST'])]
     public function split(
         AlexeyTranslator $translator,
-        EntityManagerInterface $em,
+        int $id,
         MoneyService $service,
-        MoneyTransfer $moneyTransfer,
         Request $request,
     ): Response {
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
+        $moneyTransfer = $this->fetchEntityById(className: MoneyTransfer::class, id: $id);
         if (false === ($user === $moneyTransfer->getUser())) {
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -196,10 +190,7 @@ final class MoneyTransferController extends AbstractController
         $form->handleRequest(request: $request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /**
-             * @var EntityManager $em
-             */
-            $em->getConnection()->beginTransaction();
+            $this->em->getConnection()->beginTransaction();
             try { //TODO: move to service
                 $user = $moneyTransfer->getUser();
                 $sumOfAmounts = $moneyTransfer->getAmount();
@@ -224,7 +215,7 @@ final class MoneyTransferController extends AbstractController
                 $newTransferPrimary->setOperationDate($operationDate);
                 $newTransferPrimary->setExchangeRate($exchangeRate);
                 $newTransferPrimary->setComment($comment);
-                $em->persist($newTransferPrimary);
+                $this->em->persist($newTransferPrimary);
 
                 $newTransferSecondary = new MoneyTransfer($user);
                 $newTransferSecondary->setAmount($secondaryAmount);
@@ -233,12 +224,12 @@ final class MoneyTransferController extends AbstractController
                 $newTransferSecondary->setOperationDate($operationDate);
                 $newTransferSecondary->setExchangeRate($exchangeRate);
                 $newTransferSecondary->setComment($comment);
-                $em->persist($newTransferSecondary);
+                $this->em->persist($newTransferSecondary);
 
-                $em->remove($moneyTransfer);
+                $this->em->remove($moneyTransfer);
 
-                $em->flush();
-                $em->getConnection()->commit();
+                $this->em->flush();
+                $this->em->getConnection()->commit();
                 $this->addFlash(
                     type: 'nord14',
                     message: $translator->translateFlash(
@@ -248,7 +239,7 @@ final class MoneyTransferController extends AbstractController
                 );
                 return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
-                $em->getConnection()->rollBack();
+                $this->em->getConnection()->rollBack();
                 $this->addFlash(
                     type: 'nord11',
                     message: $e->getMessage(),
@@ -273,8 +264,7 @@ final class MoneyTransferController extends AbstractController
             return $this->redirectToRoute(route: 'dashboard');
         }
 
-        /** @var User */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
 
         $data = $service->getDataForEdgePieChart(
             chartType: $type,

@@ -9,7 +9,6 @@ use App\Entity\RedditBannedPoster;
 use App\Entity\RedditChannel;
 use App\Entity\RedditChannelGroup;
 use App\Entity\RedditPost;
-use App\Entity\User;
 use App\Form\RedditBannedUserType;
 use App\Form\RedditChannelGroupType;
 use App\Form\RedditChannelType;
@@ -21,8 +20,6 @@ use App\Service\AlexeyTranslator;
 use App\Service\RedditReader;
 use App\Service\SimpleSettingsService;
 use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +27,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/crawler')]
-final class CrawlerController extends AbstractController
+final class CrawlerController extends AlexeyAbstractController
 {
     #[Route('/{filter}', name: 'crawler_index')]
     public function index(
@@ -39,8 +36,7 @@ final class CrawlerController extends AbstractController
         RedditChannelGroupRepository $groupRepository,
         string $filter = '*',
     ): Response {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
         $myRedditChannels = $repository->getMyChannels(user: $user, filter: $filter);
         $feeds = [];
         foreach ($myRedditChannels as $channel) {
@@ -56,13 +52,14 @@ final class CrawlerController extends AbstractController
     }
 
     #[Route('/reddit/post/dismiss/{id}', name: 'crawler_reddit_post_dismiss', methods: ['POST'])]
-    public function dismiss(RedditPost $post, EntityManagerInterface $em)
+    public function dismiss(int $id)
     {
-        $user = $this->getUser();
+        $post = $this->fetchEntityById(className: RedditPost::class, id: $id);
+        $user = $this->alexeyUser();
         if ($user === $post->getChannel()->getUser()) {
             $post->setSeen(true);
-            $em->persist($post);
-            $em->flush();
+            $this->em->persist($post);
+            $this->em->flush();
         }
         return new JsonResponse('ok');
     }
@@ -72,9 +69,10 @@ final class CrawlerController extends AbstractController
         name: 'crawler_reddit_channel_dismiss',
         methods: ['POST'],
     )]
-    public function dismissAll(RedditChannel $channel, int $touchStamp, EntityManagerInterface $em)
+    public function dismissAll(int $id, int $touchStamp)
     {
-        $user = $this->getUser();
+        $channel = $this->fetchEntityById(className: RedditChannel::class, id: $id);
+        $user = $this->alexeyUser();
         if ($user === $channel->getUser()) {
             $timeBorder = new DateTime();
             $timeBorder->setTimestamp($touchStamp);
@@ -82,10 +80,10 @@ final class CrawlerController extends AbstractController
             foreach ($channel->getPosts() as $post) {
                 if ($post->getTouched() < $timeBorder) {
                     $post->setSeen(true);
-                    $em->persist($post);
+                    $this->em->persist($post);
                 }
             }
-            $em->flush();
+            $this->em->flush();
         }
         return new JsonResponse('ok');
     }
@@ -94,19 +92,17 @@ final class CrawlerController extends AbstractController
     public function add(
         Request $request,
         MessageBusInterface $bus,
-        EntityManagerInterface $em,
         AlexeyTranslator $translator,
     ) {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
         $channel = new RedditChannel();
         $channel->setUser($user);
         $form = $this->createForm(RedditChannelType::class, $channel, ['user' => $user, 'isNew' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($channel);
-            $em->flush();
+            $this->em->persist($channel);
+            $this->em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             $message = new AsyncJob(
                 jobType: AsyncJob::TYPE_UPDATE_CRAWLER_CHANNEL,
@@ -127,13 +123,12 @@ final class CrawlerController extends AbstractController
 
     #[Route('/reddit/channel/edit/{id}', name: 'crawler_reddit_channel_edit')]
     public function edit(
-        Request $request,
-        RedditChannel $channel,
-        EntityManagerInterface $em,
         AlexeyTranslator $translator,
+        int $id,
+        Request $request,
     ) {
-        /** @var User $user */
-        $user = $this->getUser();
+        $channel = $this->fetchEntityById(className: RedditChannel::class, id: $id);
+        $user = $this->alexeyUser();
         if (false === ($user === $channel->getUser())) {
             return $this->redirectToRoute('crawler_index', ['filter' => '*'], Response::HTTP_SEE_OTHER);
         }
@@ -141,8 +136,8 @@ final class CrawlerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($channel);
-            $em->flush();
+            $this->em->persist($channel);
+            $this->em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
 
             return $this->redirectToRoute('crawler_index', ['filter' => '*'], Response::HTTP_SEE_OTHER);
@@ -161,21 +156,23 @@ final class CrawlerController extends AbstractController
     }
 
     #[Route('/reddit/channel/drop/{id}/{filter}', name: 'crawler_reddit_channel_drop')]
-    public function dropChannel(RedditChannel $channel, string $filter, EntityManagerInterface $em)
+    public function dropChannel(string $filter, int $id)
     {
-        $user = $this->getUser();
+        $channel = $this->fetchEntityById(className: RedditChannel::class, id: $id);
+        $user = $this->alexeyUser();
         if ($user === $channel->getUser()) {
-            $em->remove($channel);
-            $em->flush();
+            $this->em->remove($channel);
+            $this->em->flush();
         }
 
         return $this->redirectToRoute('crawler_index', ['filter' => $filter], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/reddit/post/preview/{id}', name: 'crawler_reddit_post_preview')]
-    public function thumbnail(RedditPost $post)
+    public function thumbnail(int $id)
     {
-        $user = $this->getUser();
+        $post = $this->fetchEntityById(className: RedditPost::class, id: $id);
+        $user = $this->alexeyUser();
         if ($user === $post->getChannel()->getUser()) {
             return $this->render('crawler/preview.html.twig', [
                 'post' => $post,
@@ -187,13 +184,14 @@ final class CrawlerController extends AbstractController
 
     #[Route('/reddit/channel/table/{id}', name: 'crawler_reddit_channel_table')]
     public function channelTable(
-        RedditChannel $channel,
+        int $id,
         RedditReader $reader,
-        SimpleSettingsService $simpleSettingsService,
         Request $request,
+        SimpleSettingsService $simpleSettingsService,
     ): Response {
         $limit = 30;
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
+        $channel = $this->fetchEntityById(className: RedditChannel::class, id: $id);
         if ($request->isXmlHttpRequest() && $user === $channel->getUser()) {
             $channelData = $reader->getChannelDataForView($channel, $limit);
             $autoHide = SimpleSettingsService::UNIVERSAL_TRUTH ===
@@ -233,8 +231,7 @@ final class CrawlerController extends AbstractController
     #[Route('/reddit/channel/groups', name: 'crawler_reddit_channel_groups')]
     public function groupsList(RedditChannelGroupRepository $repo)
     {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
         $bannedUsers = $user->getRedditBannedPosters()->toArray();
         usort($bannedUsers, function (RedditBannedPoster $a, RedditBannedPoster $b) {
             return strtolower($a->getUsername()) <=> strtolower($b->getUsername());
@@ -247,13 +244,12 @@ final class CrawlerController extends AbstractController
 
     #[Route('/reddit/channel/groups/edit/{id}', name: 'crawler_reddit_channel_groups_edit')]
     public function groupsEdit(
-        RedditChannelGroup $group,
         AlexeyTranslator $translator,
-        EntityManagerInterface $em,
+        int $id,
         Request $request,
     ) {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
+        $group = $this->fetchEntityById(className: RedditChannelGroup::class, id: $id);
         if (false === ($user === $group->getUser())) {
             return $this->redirectToRoute('crawler_reddit_channel_groups', [], Response::HTTP_SEE_OTHER);
         }
@@ -261,8 +257,8 @@ final class CrawlerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($group);
-            $em->flush();
+            $this->em->persist($group);
+            $this->em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
 
             return $this->redirectToRoute('crawler_reddit_channel_groups', [], Response::HTTP_SEE_OTHER);
@@ -276,11 +272,9 @@ final class CrawlerController extends AbstractController
     #[Route('/reddit/channel/groups/new', name: 'crawler_reddit_channel_groups_new')]
     public function groupsNew(
         AlexeyTranslator $translator,
-        EntityManagerInterface $em,
         Request $request,
     ) {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
         $group = new RedditChannelGroup();
 
         $group->setUser($user);
@@ -289,8 +283,8 @@ final class CrawlerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($group);
-            $em->flush();
+            $this->em->persist($group);
+            $this->em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
 
             return $this->redirectToRoute('crawler_reddit_channel_groups', [], Response::HTTP_SEE_OTHER);
@@ -303,21 +297,20 @@ final class CrawlerController extends AbstractController
 
     #[Route('/reddit/channel/groups/delete/{id}', name: 'crawler_reddit_channel_groups_delete')]
     public function groupsDelete(
-        RedditChannelGroup $group,
         AlexeyTranslator $translator,
-        EntityManagerInterface $em,
+        int $id,
     ) {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
+        $group = $this->fetchEntityById(className: RedditChannelGroup::class, id: $id);
         if ($group->getUser() === $user) {
             /** @var RedditChannel $channel */
             foreach ($group->getChannels() as $channel) {
                 $channel->setChannelGroup(null);
-                $em->persist($channel);
+                $this->em->persist($channel);
             }
-            $em->flush();
-            $em->remove($group);
-            $em->flush();
+            $this->em->flush();
+            $this->em->remove($group);
+            $this->em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
         }
 
@@ -327,12 +320,10 @@ final class CrawlerController extends AbstractController
     #[Route('/reddit/channel/banned-users/new/{username}', name: 'crawler_reddit_banned_user_new')]
     public function bannedUserNew(
         AlexeyTranslator $translator,
-        EntityManagerInterface $em,
         Request $request,
         string $username = null,
     ) {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
         $bannedPoster = new RedditBannedPoster();
 
         $bannedPoster->setUser($user);
@@ -345,12 +336,12 @@ final class CrawlerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($bannedPoster);
-            $em->flush();
+            $this->em->persist($bannedPoster);
+            $this->em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
 
             /** @var RedditPostRepository $postRepo */
-            $postRepo = $em->getRepository(RedditPost::class);
+            $postRepo = $this->em->getRepository(RedditPost::class);
             $postRepo->dropBannedPosterPosts(user: $user, username: $bannedPoster->getUsername());
 
             return $this->redirectToRoute('crawler_reddit_channel_groups', [], Response::HTTP_SEE_OTHER);
@@ -363,15 +354,14 @@ final class CrawlerController extends AbstractController
 
     #[Route('/reddit/channel/banned-users/delete/{id}', name: 'crawler_reddit_banned_user_delete')]
     public function bannedUserDelete(
-        RedditBannedPoster $poster,
         AlexeyTranslator $translator,
-        EntityManagerInterface $em,
+        int $id,
     ) {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->alexeyUser();
+        $poster = $this->fetchEntityById(className: RedditBannedPoster::class, id: $id);
         if ($poster->getUser() === $user) {
-            $em->remove($poster);
-            $em->flush();
+            $this->em->remove($poster);
+            $this->em->flush();
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
         }
 
