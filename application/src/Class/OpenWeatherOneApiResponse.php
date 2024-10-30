@@ -55,7 +55,7 @@ final class OpenWeatherOneApiResponse
     {
         $response = $this->client->request(
             'GET',
-            'https://api.openweathermap.org/data/2.5/onecall?lat=' . $this->latitude .
+            'https://api.openweathermap.org/data/3.0/onecall?lat=' . $this->latitude .
                 '&lon=' . $this->longitude .
                 '&exclude=minutely&units=metric&lang=' . $locale . '&appid=' . $this->apiKey
         );
