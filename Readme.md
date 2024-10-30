@@ -3,7 +3,7 @@
 Alexey is a small application I started developing as "Personal assistant" way before AI boom.
 
 Current features are:
-- weather forecast
+- weather forecast -> needs subscription to One [Call API 3.0](https://openweathermap.org/api/one-call-3) - data rate is limited to make a call once every 3 hours so will not trigger payments
 - network devices monitoring/waking
 - monitoring LTE usage (Mikrotik and Huawei routers - just a subset I personally had)
 - storing financial details for analysis where did my money gone and how much I can expect to save by x time
