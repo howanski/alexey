@@ -7,16 +7,16 @@ namespace App\Service;
 use App\Entity\NetworkStatistic;
 use App\Model\TransmissionSettings;
 use App\Service\SimpleSettingsService;
-use Transmission\Transmission;
 
 final class TransmissionService
 {
     private TransmissionSettings $settings;
 
     public function __construct(
-        private NetworkUsageService $networkUsageService,
         private AlexeyTranslator $translator,
+        private NetworkUsageService $networkUsageService,
         private SimpleSettingsService $simpleSettingsService,
+        private TransmissionAPIClient $apiClient,
     ) {
         $this->settings = new TransmissionSettings();
         $this->settings->selfConfigure($simpleSettingsService);
@@ -147,16 +147,18 @@ final class TransmissionService
         if ($this->settings->getIsActive() === SimpleSettingsService::UNIVERSAL_TRUTH) {
             $stat = $this->networkUsageService->getLatestStatistic();
             if ($stat instanceof NetworkStatistic) {
-                $transmission = new Transmission($this->settings->getHost());
-                $client = $transmission->getclient();
-                $client->authenticate($this->settings->getUser(), $this->settings->getPassword());
-                $session = $transmission->getSession();
+                $this->apiClient->configureEndpoint(
+                    host: $this->settings->getHost(),
+                    password: $this->settings->getPassword(),
+                    username: $this->settings->getUser(),
+                );
+
                 $proposedSpeed = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft(
                     $this->settings->getTargetFrame()
                 ));
-                $session->setDownloadSpeedLimit($proposedSpeed);
-                $session->setAltSpeedDown($proposedSpeed);
-                $session->save();
+
+                $this->apiClient->setDownloadSpeedLimit($proposedSpeed);
+
                 if (false === (SimpleSettingsService::UNIVERSAL_FALSE === $this->settings->getAggressionAdapt())) {
                     $targetSpeed = intval($this->settings->getTargetSpeed());
                     $aggression = intval($this->settings->getAlgorithmAggression());

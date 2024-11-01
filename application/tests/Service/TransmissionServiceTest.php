@@ -11,6 +11,7 @@ use App\Service\NetworkUsageService;
 use App\Service\TransmissionService;
 use App\Service\SimpleSettingsService;
 use App\Entity\NetworkStatisticTimeFrame;
+use App\Service\TransmissionAPIClient;
 
 final class TransmissionServiceTest extends TestCase
 {
@@ -50,10 +51,13 @@ final class TransmissionServiceTest extends TestCase
         };
         $translator->method('translateString')->willReturnCallback($transCallback);
 
+        $apiClient = $this->createMock(originalClassName: TransmissionAPIClient::class);
+
         $service = new TransmissionService(
             networkUsageService: $networkUsageService,
             simpleSettingsService: $simpleSettingsService,
-            translator: $translator
+            translator: $translator,
+            apiClient: $apiClient,
         );
 
         $resultSpeed = $service->getSimulationChartData('speed');
