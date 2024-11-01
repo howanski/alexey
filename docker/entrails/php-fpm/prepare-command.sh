@@ -6,7 +6,7 @@ XDEBUG_MODE=off php composer_2.1.0.phar install
 XDEBUG_MODE=off yarn install
 XDEBUG_MODE=off yarn build
 
-until XDEBUG_MODE=off php bin/console doctrine:query:sql -q "show tables"; do
+until XDEBUG_MODE=off php bin/console dbal:run-sql -q "show tables"; do
 	echo "--------------------------------"
 	echo "------ [ WAITING FOR DB ] ------"
 	echo "--------------------------------"
