@@ -58,7 +58,7 @@ Encore
   .enableVersioning(true)
 
   .configureBabel((config) => {
-    config.plugins.push("@babel/plugin-proposal-class-properties");
+    config.plugins.push("@babel/plugin-transform-class-properties");
   })
 
   // enables @babel/preset-env polyfills
