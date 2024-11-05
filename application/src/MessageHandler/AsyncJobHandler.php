@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace App\MessageHandler;
 
 use App\Message\AsyncJob;
-use App\Service\NetworkUsageService;
-use App\Service\TransmissionService;
 use App\Service\NetworkMachineService;
+use App\Service\NetworkUsageService;
 use App\Service\RedditReader;
+use App\Service\TransmissionService;
 use App\Service\TunnelInfoProvider;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-final class AsyncJobHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class AsyncJobHandler
 {
     public function __construct(
         private MessageBusInterface $bus,

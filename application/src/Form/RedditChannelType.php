@@ -21,7 +21,7 @@ final class RedditChannelType extends CommonFormType
         $this->setTranslationModule(moduleName: 'crawler');
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $user = $options['user'];
         $builder
@@ -49,7 +49,7 @@ final class RedditChannelType extends CommonFormType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => RedditChannel::class,

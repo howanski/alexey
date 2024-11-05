@@ -20,7 +20,7 @@ final class WeatherSettingsType extends CommonFormType
         $this->setTranslationModule(moduleName: 'weather');
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add(child: 'latitude', type: TextType::class, options: [
@@ -63,7 +63,7 @@ final class WeatherSettingsType extends CommonFormType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => WeatherSettings::class,

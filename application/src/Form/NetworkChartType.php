@@ -32,7 +32,7 @@ final class NetworkChartType extends CommonFormType
         $this->setTranslationModule(moduleName: 'network_usage');
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $choices = [];
         foreach (self::CHART_TYPES as $chartType) {
@@ -50,7 +50,7 @@ final class NetworkChartType extends CommonFormType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             // Configure your form options here

@@ -27,7 +27,7 @@ final class TransmissionSettingsType extends CommonFormType
         $this->setTranslationModule(moduleName: 'network_usage');
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $choicesAggresionAdapt = [];
         foreach (self::AGGRESSION_ADAPT_CHOICES as $val) {
@@ -140,7 +140,7 @@ final class TransmissionSettingsType extends CommonFormType
         return $choices;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => TransmissionSettings::class,
