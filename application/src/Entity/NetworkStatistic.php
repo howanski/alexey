@@ -150,7 +150,11 @@ class NetworkStatistic
 
     public function getUploadSpeedFromReferencePoint(): float
     {
-        return ($this->getDataUploadedFromReferencePoint() / $this->getTimePassedFromReferencePoint());
+        $timePassed  = $this->getTimePassedFromReferencePoint();
+        if (0 < $timePassed) {
+            return ($this->getDataUploadedFromReferencePoint() / $timePassed);
+        }
+        return 0.0;
     }
 
     public function getUploadSpeedFromReferencePointReadable(): string
