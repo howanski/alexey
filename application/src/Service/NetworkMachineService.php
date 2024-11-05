@@ -34,7 +34,7 @@ final class NetworkMachineService
         }
     }
 
-    public function pingNetworkMachine(int $id)
+    public function pingNetworkMachine(int $id): void
     {
         $networkMachine = $this->networkMachineRepository->find($id);
         $uri = $networkMachine->getUri();
@@ -51,10 +51,27 @@ final class NetworkMachineService
         $this->em->flush();
     }
 
-    public function wakeOnLan(string $wakeDestination, string $macAddress)
-    {
-        exec('wakeonlan -i ' . $wakeDestination . ' ' . $macAddress);
-        exec('wakeonlan -i ' . $wakeDestination . ' ' . $macAddress);
-        exec('wakeonlan -i ' . $wakeDestination . ' ' . $macAddress);
+    public function wakeOnLan(
+        string $wakeDestination,
+        string $macAddress,
+        int $targetPort = 9,
+    ): void {
+      $packetData = str_repeat(chr(0xFF), 6);
+
+      $hardwareMac = '';
+      foreach (explode(':', strtoupper($macAddress)) as $chunk) {
+        $hardwareMac .= chr(hexdec($chunk));
+      }
+      $packetData .= str_repeat($hardwareMac, 16);
+
+      $socket = @socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+
+      socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
+      socket_sendto($socket, $packetData, strlen($packetData), 0, $wakeDestination, $targetPort);
+
+      if ($socket) {
+        socket_close($socket);
+        unset($socket);
+      }
     }
 }
