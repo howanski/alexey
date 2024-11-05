@@ -17,7 +17,7 @@ final class NetworkMachineType extends CommonFormType
         $this->setTranslationModule(moduleName: 'network_machines');
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add(child: 'uri', options: [
@@ -55,7 +55,7 @@ final class NetworkMachineType extends CommonFormType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => NetworkMachine::class,

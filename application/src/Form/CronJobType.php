@@ -17,7 +17,7 @@ final class CronJobType extends CommonFormType
         $this->setTranslationModule(moduleName: 'settings');
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(child: 'isActive', options: [
             'label' => $this->getLabelTrans(label: 'is_cron_active'),
@@ -29,7 +29,7 @@ final class CronJobType extends CommonFormType
         ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => CronJob::class,

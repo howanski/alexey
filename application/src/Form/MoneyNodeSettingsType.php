@@ -17,7 +17,7 @@ final class MoneyNodeSettingsType extends CommonFormType
         $this->setTranslationModule(moduleName: 'money');
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         for ($i = 0; $i < MoneyNodeSettings::GROUPS_MAX; $i++) {
             $builder
@@ -28,7 +28,7 @@ final class MoneyNodeSettingsType extends CommonFormType
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => MoneyNodeSettings::class,

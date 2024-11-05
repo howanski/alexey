@@ -4,7 +4,7 @@ services:
     database:
         env_file: 
             - .env
-        image: mysql:8.0
+        image: mysql:8.0.40
         container_name: "alexey-mysql"
         restart: always
         expose:

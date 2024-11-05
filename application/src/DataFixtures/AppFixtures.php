@@ -10,7 +10,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 
 final class AppFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $testUser = new User();
         $testUser->setUsername('test_user');

@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class MoneyTransferSplitCurrencyValiator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof MoneyTransferSplitCurrency) {
             throw new UnexpectedTypeException($constraint, MoneyTransferSplitCurrency::class);

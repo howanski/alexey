@@ -24,7 +24,7 @@ final class NetworkUsageProviderSettingsType extends CommonFormType
         $this->setTranslationModule(moduleName: 'network_usage');
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add(child: 'providerType', type: ChoiceType::class, options: [
@@ -89,7 +89,7 @@ final class NetworkUsageProviderSettingsType extends CommonFormType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => NetworkUsageProviderSettings::class,

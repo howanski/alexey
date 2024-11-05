@@ -24,7 +24,7 @@ final class UserSettingsType extends CommonFormType
         $this->setTranslationModule(moduleName: 'settings');
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $langChoices = [];
         foreach (self::LOCALES as $val) {

@@ -18,7 +18,7 @@ final class SystemSettingsType extends CommonFormType
         $this->setTranslationModule(moduleName: 'settings');
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add(child: 'tunnelingAllowed', type: ChoiceType::class, options: [
@@ -40,7 +40,7 @@ final class SystemSettingsType extends CommonFormType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => SystemSettings::class,

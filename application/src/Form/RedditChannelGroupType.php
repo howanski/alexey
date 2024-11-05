@@ -19,7 +19,7 @@ final class RedditChannelGroupType extends CommonFormType
         $this->setTranslationModule(moduleName: 'crawler');
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add(child: 'name', options: [
@@ -37,7 +37,7 @@ final class RedditChannelGroupType extends CommonFormType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => RedditChannelGroup::class,

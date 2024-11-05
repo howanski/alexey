@@ -20,7 +20,7 @@ final class ApiDeviceType extends CommonFormType
         $this->setTranslationModule(moduleName: 'api');
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $permChoices = [];
         foreach (MobileApi::API_PERMISSIONS as $perm) {
@@ -45,7 +45,7 @@ final class ApiDeviceType extends CommonFormType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => ApiDevice::class,
