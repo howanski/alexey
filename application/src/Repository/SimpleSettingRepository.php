@@ -26,7 +26,9 @@ final class SimpleSettingRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('ss')
             ->andWhere('ss.settingKey IN (:val)')
-            ->setParameter('val', $keys);
+            ->setParameter('val', $keys)
+            ->setCacheable(true)
+            ->setCacheRegion('default');
         if ($user instanceof User) {
             $qb->andWhere('ss.user = :user')
                 ->setParameter('user', $user);

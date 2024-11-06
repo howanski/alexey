@@ -18,6 +18,7 @@
         "nesbot/carbon": "^2.53",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.2",
+        "predis/predis": "^2.2",
         "rennokki/reddit-json-api": "2.5.*",
         "symfony/asset": "6.4.*",
         "symfony/console": "6.4.*",

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\NetworkMachineRepository;
 
 #[ORM\Entity(repositoryClass: NetworkMachineRepository::class)]
+#[ORM\Cache(usage: 'NONSTRICT_READ_WRITE', region: 'default')]
 class NetworkMachine
 {
     public const STATUS_UNKNOWN = 0;
