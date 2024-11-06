@@ -73,6 +73,9 @@ final class TransmissionAPIClient
 
     private function ensureSessionSet(): void
     {
+        if ($this->sessionId != '') {
+            return;
+        }
         $response = $this->callRpc();
         $headers = $response->getHeaders(false);
         $this->sessionId = $headers['x-transmission-session-id'][0];

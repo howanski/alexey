@@ -5,6 +5,9 @@ framework:
                 dsn: "%env(MESSENGER_TRANSPORT_DSN)%"
                 options:
                     queue_name: queue_async
+                retry_strategy: 
+                    max_retries: 0
+                    delay: 10
 
         routing:
             'App\Message\AsyncJob': async_queue
