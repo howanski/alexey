@@ -15,7 +15,7 @@ use App\Service\AlexeyTranslator;
 use App\Service\StorageService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class StorageItemController extends AlexeyAbstractController
 {

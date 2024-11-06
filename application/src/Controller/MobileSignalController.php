@@ -8,7 +8,7 @@ use App\Model\MobileSignalInfo;
 use App\Service\SimpleCacheService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/network/usage/info-mobile-signal')]
 final class MobileSignalController extends AlexeyAbstractController
