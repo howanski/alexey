@@ -37,8 +37,8 @@ services:
               max-size: "5m"
               max-file: "2"
     php:
-        environment:
-            - DEVELOPMENT=1
+        env_file:
+            - .env
         build:
             context: ./entrails/php-fpm
             dockerfile: Dockerfile
