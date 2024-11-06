@@ -25,7 +25,8 @@ final class RedditChannelRepository extends ServiceEntityRepository
     public function cleanup()
     {
         $oldTime = date('Y-m-d', strtotime('-3 months'));
-        $connection = $this->getEntityManager()->getConnection();
+        $em = $this->getEntityManager();
+        $connection = $em->getConnection();
         $sql =
             'DELETE reddit_channel ' .
             'FROM reddit_channel ' .
@@ -38,6 +39,10 @@ final class RedditChannelRepository extends ServiceEntityRepository
                 'oldTime' => $oldTime,
             ],
         );
+
+        $cache = $em->getCache();
+        $cache->evictEntityRegion(RedditChannel::class);
+
         return $count;
     }
 
@@ -55,6 +60,8 @@ final class RedditChannelRepository extends ServiceEntityRepository
                 ->setParameter('groupName', $filter);
         }
         $qb->orderBy('c.name', 'ASC');
+        $qb->setCacheable(true)
+            ->setCacheRegion('default');
 
         return $qb->getQuery()->getResult();
     }

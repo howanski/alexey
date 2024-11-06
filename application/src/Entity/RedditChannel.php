@@ -14,6 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: RedditChannelRepository::class)]
 #[UniqueEntity(fields: ['user', 'name'])]
+#[ORM\Cache(usage: 'NONSTRICT_READ_WRITE', region: 'default')]
 class RedditChannel
 {
     #[ORM\Id]

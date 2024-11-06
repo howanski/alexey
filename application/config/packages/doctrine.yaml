@@ -22,5 +22,7 @@ doctrine:
             enabled: true
             regions:
                 default:
-                    lifetime: 600
+                    lifetime: 7200
                     cache_driver: { type: service, id: cache.app }
+            region_cache_driver: { type: service, id: cache.app }
+            region_lifetime: 7200
