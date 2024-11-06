@@ -28,6 +28,8 @@ final class ApiDeviceRepository extends ServiceEntityRepository
             ->andWhere('ad.user = :user')
             ->setParameter('user', $user)
             ->orderBy('ad.lastRequest', 'DESC')
+            ->setCacheable(true)
+            ->setCacheRegion('default')
             ->getQuery()
             ->getResult();
     }

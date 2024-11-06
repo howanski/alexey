@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ApiDeviceRepository::class)]
 #[UniqueEntity(fields: ['secret'])]
+#[ORM\Cache(usage: 'NONSTRICT_READ_WRITE', region: 'default')]
 class ApiDevice
 {
     #[ORM\Id]
