@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SimpleSettingRepository;
 
 #[ORM\Entity(repositoryClass: SimpleSettingRepository::class)]
+#[ORM\Cache(usage: 'NONSTRICT_READ_WRITE', region: 'default')]
 class SimpleSetting
 {
     #[ORM\Id]

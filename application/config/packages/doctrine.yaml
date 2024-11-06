@@ -18,3 +18,9 @@ doctrine:
                 alias: App
         report_fields_where_declared: true
         enable_lazy_ghost_objects: true
+        second_level_cache:
+            enabled: true
+            regions:
+                default:
+                    lifetime: 600
+                    cache_driver: { type: service, id: cache.app }
