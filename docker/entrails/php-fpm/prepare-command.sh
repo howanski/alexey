@@ -3,6 +3,7 @@ cd /var/www/html
 rm -rf var/log
 rm -rf var/cache
 rm -rf public/build
+echo "date.timezone = $(printenv TZ)" > /usr/local/etc/php/conf.d/timezone.ini
 wget -c https://getcomposer.org/download/2.8.2/composer.phar
 XDEBUG_MODE=off php composer.phar install
 XDEBUG_MODE=off yarn install
