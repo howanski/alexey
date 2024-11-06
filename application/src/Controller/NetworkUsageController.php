@@ -11,7 +11,7 @@ use App\Form\NetworkUsageProviderSettingsType;
 use App\Service\AlexeyTranslator;
 use App\Service\NetworkUsageProviderSettings;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouterInterface;
 

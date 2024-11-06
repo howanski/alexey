@@ -9,7 +9,7 @@ use App\Security\ApiAuthenticator;
 use App\Service\MobileApi;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api')]
 final class ApiController extends AlexeyAbstractController
