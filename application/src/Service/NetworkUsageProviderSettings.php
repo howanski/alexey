@@ -27,14 +27,19 @@ final class NetworkUsageProviderSettings
 
     private int $billingDay;
 
+    private bool $configured = false;
+
     public function __construct(
         private SimpleSettingsService $simpleSettingsService
     ) {
-        $this->selfConfigure();
     }
 
     private function selfConfigure(): void
     {
+        if (true === $this->configured) {
+            return;
+        }
+
         $settingsArray = $this->simpleSettingsService->getSettings(
             keys: [
                 self::PROVIDER_TYPE,
@@ -46,6 +51,8 @@ final class NetworkUsageProviderSettings
             ],
             user: null,
         );
+        $this->configured = true;
+
         $this->setProviderType(strval($settingsArray[self::PROVIDER_TYPE]));
         $this->setAddress(strval($settingsArray[self::PROVIDER_ADDRESS]));
         $this->setPassword(strval($settingsArray[self::PROVIDER_PASSWORD]));
@@ -56,6 +63,7 @@ final class NetworkUsageProviderSettings
 
     public function selfPersist()
     {
+        $this->selfConfigure();
         $this->simpleSettingsService->saveSettings(
             settings: [
                 self::PROVIDER_TYPE => $this->getProviderType(),
@@ -71,67 +79,79 @@ final class NetworkUsageProviderSettings
 
     public function getProviderType(): string
     {
+        $this->selfConfigure();
         return $this->providerType;
     }
 
     public function setProviderType(string $providerType): self
     {
+        $this->selfConfigure();
         $this->providerType = $providerType;
         return $this;
     }
 
     public function getAddress(): string
     {
+        $this->selfConfigure();
         return $this->address;
     }
 
     public function setAddress(string $address): self
     {
+        $this->selfConfigure();
         $this->address = $address;
         return $this;
     }
 
     public function getPassword(): string
     {
+        $this->selfConfigure();
         return $this->password;
     }
 
     public function setPassword(string $password): self
     {
+        $this->selfConfigure();
         $this->password = $password;
         return $this;
     }
 
     public function getShowOnDashboard(): string
     {
+        $this->selfConfigure();
         return $this->showOnDashboard;
     }
 
     public function setShowOnDashboard(string $showOnDashboard): self
     {
+        $this->selfConfigure();
         $this->showOnDashboard = $showOnDashboard;
         return $this;
     }
 
     public function setMonthlyLimitGB(int $limit): self
     {
+        $this->selfConfigure();
         $this->monthlyLimitGB = $limit;
         return $this;
     }
 
     public function getMonthlyLimitGB(): int
     {
+        $this->selfConfigure();
         return $this->monthlyLimitGB;
     }
 
     public function setBillingDay(int $day): self
     {
+        $this->selfConfigure();
         $this->billingDay = $day;
         return $this;
     }
 
     public function getBillingDay(): int
     {
+        $this->selfConfigure();
         return $this->billingDay;
     }
 }
