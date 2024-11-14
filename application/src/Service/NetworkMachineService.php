@@ -9,6 +9,7 @@ use App\Message\AsyncJob;
 use App\Repository\NetworkMachineRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use JJG\Ping;
+use Socket;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class NetworkMachineService
@@ -56,22 +57,21 @@ final class NetworkMachineService
         string $macAddress,
         int $targetPort = 9,
     ): void {
-      $packetData = str_repeat(chr(0xFF), 6);
+        $packetData = str_repeat(chr(0xFF), 6);
 
-      $hardwareMac = '';
-      foreach (explode(':', strtoupper($macAddress)) as $chunk) {
-        $hardwareMac .= chr(hexdec($chunk));
-      }
-      $packetData .= str_repeat($hardwareMac, 16);
+        $hardwareMac = '';
+        foreach (explode(':', strtoupper($macAddress)) as $chunk) {
+            $hardwareMac .= chr(hexdec($chunk));
+        }
+        $packetData .= str_repeat($hardwareMac, 16);
 
-      $socket = @socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+        $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 
-      socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
-      socket_sendto($socket, $packetData, strlen($packetData), 0, $wakeDestination, $targetPort);
-
-      if ($socket) {
-        socket_close($socket);
-        unset($socket);
-      }
+        if ($socket instanceof Socket) {
+            socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
+            socket_sendto($socket, $packetData, strlen($packetData), 0, $wakeDestination, $targetPort);
+            socket_close($socket);
+            unset($socket);
+        }
     }
 }

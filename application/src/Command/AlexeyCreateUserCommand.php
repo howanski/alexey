@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Entity\User;
+use App\Service\OtpManager;
 use Doctrine\ORM\EntityManager;
 use App\Repository\UserRepository;
-use App\Service\OtpManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -41,6 +42,7 @@ final class AlexeyCreateUserCommand extends Command
         $username = '';
         while ((!$this->isStringOk($output, $username)) || (!$this->isUsernameUnique($output, $username))) {
             $question = new Question('Username: ');
+            /** @var QuestionHelper */
             $helper = $this->getHelper('question');
             $username = $helper->ask($input, $output, $question);
         }
@@ -48,6 +50,7 @@ final class AlexeyCreateUserCommand extends Command
         $password = '';
         while (!$this->isStringOk($output, $password)) {
             $question = new Question('Password for user ' . $username . ': ');
+            /** @var QuestionHelper */
             $helper = $this->getHelper('question');
             $password = $helper->ask($input, $output, $question);
         }
