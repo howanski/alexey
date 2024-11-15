@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "nameserver 8.8.8.8" >> /etc/resolv.conf && echo "nameserver 9.9.9.9" >> /etc/resolv.conf
 cd /var/www/html
 rm -rf var/log
 rm -rf var/cache
