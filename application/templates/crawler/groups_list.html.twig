@@ -35,7 +35,7 @@
 	{% for banned_user in bannedUsers %}
 		{% set actions = '<a href="' ~ path('crawler_reddit_banned_user_delete', {'id': banned_user.id}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'delete'|localised ~ '</a>' %}
 		{% set table_data = table_data|merge([{
-			'name': banned_user.username,
+			'name': '<a href="https://old.reddit.com/u/' ~ banned_user.username ~ '" target="_blank">' ~ banned_user.username ~ '</a>',
 			'actions': actions
 		}]) %}
 	{% endfor %}

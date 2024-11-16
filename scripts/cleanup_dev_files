@@ -1,0 +1,10 @@
+#!/bin/bash
+cd ..
+rm -rf application/.env.local.php
+rm -rf application/composer.phar
+rm -rf application/node_modules
+rm -rf application/public/build
+rm -rf application/var/*
+rm -rf application/vendor
+rm -rf docker/entrails/nginx/ngrok/ngrok
+rm -rf docker/entrails/nginx/ngrok/ngrok.log
