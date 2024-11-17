@@ -28,7 +28,7 @@ stoponfail
 echo "---------------------------------------"
 echo "------- TWIG CHECKSTYLE:"
 echo "---------------------------------------"
-XDEBUG_MODE=off /var/www/html/vendor/bin/twigcs templates/ --severity error --display blocking
+XDEBUG_MODE=off /var/www/html/vendor/bin/twigcs templates/ --severity error --display blocking | grep -v -e '^$' | grep -v 'Deprecated'
 stoponfail
 echo "---------------------------------------"
 echo "------- PHPCS (PSR12):"
@@ -48,13 +48,12 @@ stoponfail
 echo "---------------------------------------"
 echo "------- PHPUNIT:"
 echo "---------------------------------------"
-XDEBUG_MODE=coverage /var/www/html/vendor/bin/phpunit --verbose --coverage-html var/qa-results/phpunit/test-coverage-report --testdox-html var/qa-results/phpunit/test-result.html --log-junit var/qa-results/phpunit/junit-output.xml
+XDEBUG_MODE=coverage APP_ENV=test /var/www/html/vendor/bin/phpunit --verbose --coverage-html var/qa-results/phpunit/test-coverage-report --testdox-html var/qa-results/phpunit/test-result.html --log-junit var/qa-results/phpunit/junit-output.xml
 stoponfail
-chown -R 1000:1000 var/qa-results/ >/dev/null
 echo "---------------------------------------"
 echo "------- PHPMETRICS (-> var/qa-results)"
 echo "---------------------------------------"
-XDEBUG_MODE=off ./vendor/bin/phpmetrics --report-html=var/qa-results/phpmetrics-report --junit=var/qa-results/phpunit/junit-output.xml .
+XDEBUG_MODE=off ./vendor/bin/phpmetrics --report-html=var/qa-results/phpmetrics-report --junit=var/qa-results/phpunit/junit-output.xml . | grep -v -e '^$' | grep -v 'Deprecated'
 stoponfail
 chown -R 1000:1000 var/qa-results/ >/dev/null
 echo "----------------- DONE ----------------"
