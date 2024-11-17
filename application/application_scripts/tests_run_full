@@ -28,7 +28,7 @@ stoponfail
 echo "---------------------------------------"
 echo "------- TWIG CHECKSTYLE:"
 echo "---------------------------------------"
-XDEBUG_MODE=off /var/www/html/vendor/bin/twigcs templates/ --severity error --display blocking | grep -v -e '^$' | grep -v 'Deprecated'
+XDEBUG_MODE=off /var/www/html/vendor/bin/twigcs templates/ --severity error --display blocking
 stoponfail
 echo "---------------------------------------"
 echo "------- PHPCS (PSR12):"

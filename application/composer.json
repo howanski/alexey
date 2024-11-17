@@ -56,7 +56,7 @@
         "dg/bypass-finals": "^1.3",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "ergebnis/phpstan-rules": "^1.0",
-        "friendsoftwig/twigcs": "^5.0",
+        "friendsoftwig/twigcs": "*",
         "phpmetrics/phpmetrics": "^2.7",
         "phpstan/phpstan": "^1.2",
         "phpunit/phpunit": "^9.5",
