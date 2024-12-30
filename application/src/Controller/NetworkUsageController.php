@@ -67,7 +67,7 @@ final class NetworkUsageController extends AlexeyAbstractController
             return $this->redirectToRoute('network_usage', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('network_usage/settings.html.twig', [
+        return $this->render('network_usage/settings.html.twig', [
             'form' => $form,
         ]);
     }

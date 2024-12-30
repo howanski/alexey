@@ -49,7 +49,7 @@ final class StorageController extends AlexeyAbstractController
                 status: Response::HTTP_SEE_OTHER,
             );
         }
-        return $this->renderForm('storage/new.html.twig', [
+        return $this->render('storage/new.html.twig', [
             'form' => $form,
         ]);
     }
@@ -86,7 +86,7 @@ final class StorageController extends AlexeyAbstractController
                 status: Response::HTTP_SEE_OTHER,
             );
         }
-        return $this->renderForm('storage/new.html.twig', [
+        return $this->render('storage/new.html.twig', [
             'form' => $form,
         ]);
     }

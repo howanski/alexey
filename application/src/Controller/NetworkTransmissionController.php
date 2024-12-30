@@ -20,7 +20,7 @@ final class NetworkTransmissionController extends AlexeyAbstractController
     #[Route('/', name: 'network_transmission')]
     public function index(): Response
     {
-        return $this->renderForm('network_transmission/index.html.twig');
+        return $this->render('network_transmission/index.html.twig');
     }
 
     #[Route('/settings', name: 'network_transmission_settings')]
@@ -42,7 +42,7 @@ final class NetworkTransmissionController extends AlexeyAbstractController
             $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
             return $this->redirectToRoute('network_transmission', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->renderForm('network_transmission/settings.html.twig', [
+        return $this->render('network_transmission/settings.html.twig', [
             'form' => $form,
         ]);
     }

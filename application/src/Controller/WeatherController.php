@@ -80,7 +80,7 @@ final class WeatherController extends AlexeyAbstractController
             return $this->redirectToRoute('weather', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('weather/settings.html.twig', [
+        return $this->render('weather/settings.html.twig', [
             'form' => $form,
         ]);
     }

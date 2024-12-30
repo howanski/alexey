@@ -75,7 +75,7 @@ final class MoneyTransferController extends AlexeyAbstractController
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('money_transfer/new.html.twig', [
+        return $this->render('money_transfer/new.html.twig', [
             'money_transfer' => $moneyTransfer,
             'form' => $form,
         ]);
@@ -128,7 +128,7 @@ final class MoneyTransferController extends AlexeyAbstractController
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('money_transfer/edit.html.twig', [
+        return $this->render('money_transfer/edit.html.twig', [
             'money_transfer' => $moneyTransfer,
             'form' => $form,
         ]);
@@ -247,7 +247,7 @@ final class MoneyTransferController extends AlexeyAbstractController
             }
         }
 
-        return $this->renderForm('money_transfer/split.html.twig', [
+        return $this->render('money_transfer/split.html.twig', [
             'money_transfer' => $moneyTransfer,
             'form' => $form,
         ]);

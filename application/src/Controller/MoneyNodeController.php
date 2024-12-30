@@ -68,7 +68,7 @@ final class MoneyNodeController extends AlexeyAbstractController
             );
         }
 
-        return $this->renderForm('money_node/new.html.twig', [
+        return $this->render('money_node/new.html.twig', [
             'money_node' => $moneyNode,
             'form' => $form,
         ]);
@@ -123,7 +123,7 @@ final class MoneyNodeController extends AlexeyAbstractController
             );
         }
 
-        return $this->renderForm('money_node/edit.html.twig', [
+        return $this->render('money_node/edit.html.twig', [
             'money_node' => $moneyNode,
             'form' => $form,
         ]);
@@ -173,7 +173,7 @@ final class MoneyNodeController extends AlexeyAbstractController
             return $this->redirectToRoute('money_node_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('money_node/settings.html.twig', [
+        return $this->render('money_node/settings.html.twig', [
             'form' => $form,
         ]);
     }

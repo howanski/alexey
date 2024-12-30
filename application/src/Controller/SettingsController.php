@@ -66,7 +66,7 @@ final class SettingsController extends AlexeyAbstractController
             return $this->redirectToRoute('settings_user', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('settings/user.html.twig', [
+        return $this->render('settings/user.html.twig', [
             'form' => $form,
             'pills' => $this->getMenuPills(true),
         ]);
@@ -94,7 +94,7 @@ final class SettingsController extends AlexeyAbstractController
             return $this->redirectToRoute('settings_system', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('settings/system.html.twig', [
+        return $this->render('settings/system.html.twig', [
             'form' => $form,
             'pills' => $this->getMenuPills(false),
             'tunnel' => $tunnelInfoProvider->getCurrentTunnel(),

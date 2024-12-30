@@ -46,7 +46,7 @@ final class MoneyCurrencyController extends AlexeyAbstractController
             );
         }
 
-        return $this->renderForm('currencies/new.html.twig', [
+        return $this->render('currencies/new.html.twig', [
             'currency' => $currency,
             'form' => $form,
         ]);

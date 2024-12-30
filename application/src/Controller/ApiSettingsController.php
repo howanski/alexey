@@ -76,7 +76,7 @@ final class ApiSettingsController extends AlexeyAbstractController
                 return $this->redirectToRoute('api_local_settings', [], Response::HTTP_SEE_OTHER);
             }
 
-            return $this->renderForm('api/edit.html.twig', [
+            return $this->render('api/edit.html.twig', [
                 'form' => $form,
             ]);
         } else {

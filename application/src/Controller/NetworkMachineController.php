@@ -40,7 +40,7 @@ final class NetworkMachineController extends AlexeyAbstractController
             return $this->redirectToRoute('network_machine_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('network_machine/new.html.twig', [
+        return $this->render('network_machine/new.html.twig', [
             'network_machine' => $networkMachine,
             'form' => $form,
         ]);
@@ -71,7 +71,7 @@ final class NetworkMachineController extends AlexeyAbstractController
             return $this->redirectToRoute('network_machine_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('network_machine/edit.html.twig', [
+        return $this->render('network_machine/edit.html.twig', [
             'network_machine' => $networkMachine,
             'form' => $form,
         ]);

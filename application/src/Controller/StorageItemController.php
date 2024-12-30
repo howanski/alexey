@@ -95,7 +95,7 @@ final class StorageItemController extends AlexeyAbstractController
             );
         }
 
-        return $this->renderForm('storage_item/new.html.twig', [
+        return $this->render('storage_item/new.html.twig', [
             'form' => $form,
         ]);
     }
@@ -125,7 +125,7 @@ final class StorageItemController extends AlexeyAbstractController
             );
         }
 
-        return $this->renderForm('storage_item/new.html.twig', [
+        return $this->render('storage_item/new.html.twig', [
             'form' => $form,
             'storageItem' => $item,
         ]);
@@ -185,7 +185,7 @@ final class StorageItemController extends AlexeyAbstractController
             );
         }
 
-        return $this->renderForm('storage_item/add_quantity.html.twig', [
+        return $this->render('storage_item/add_quantity.html.twig', [
             'form' => $form,
             'storageItem' => $storageItem,
         ]);
@@ -233,7 +233,7 @@ final class StorageItemController extends AlexeyAbstractController
             );
         }
 
-        return $this->renderForm('storage_item/move_quantity.html.twig', [
+        return $this->render('storage_item/move_quantity.html.twig', [
             'form' => $form,
             'storageItem' => $storageItemStack->getStorageItem(),
             'storageSpace' => $storageItemStack->getStorageSpace(),
@@ -276,7 +276,7 @@ final class StorageItemController extends AlexeyAbstractController
             );
         }
 
-        return $this->renderForm('storage_item/remove_quantity.html.twig', [
+        return $this->render('storage_item/remove_quantity.html.twig', [
             'form' => $form,
             'storageItem' => $storageItemStack->getStorageItem(),
             'storageSpace' => $storageItemStack->getStorageSpace(),

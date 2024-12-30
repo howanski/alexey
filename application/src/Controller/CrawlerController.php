@@ -116,7 +116,7 @@ final class CrawlerController extends AlexeyAbstractController
             return $this->redirectToRoute('crawler_index', ['filter' => $filter], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('crawler/new.html.twig', [
+        return $this->render('crawler/new.html.twig', [
             'form' => $form,
         ]);
     }
@@ -148,7 +148,7 @@ final class CrawlerController extends AlexeyAbstractController
             $filter = $channel->getChannelGroup()->getName();
         }
 
-        return $this->renderForm('crawler/edit.html.twig', [
+        return $this->render('crawler/edit.html.twig', [
             'form' => $form,
             'channel' => $channel,
             'activeFilter' => $filter,
@@ -264,7 +264,7 @@ final class CrawlerController extends AlexeyAbstractController
             return $this->redirectToRoute('crawler_reddit_channel_groups', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('crawler/groups_edit.html.twig', [
+        return $this->render('crawler/groups_edit.html.twig', [
             'form' => $form,
         ]);
     }
@@ -290,7 +290,7 @@ final class CrawlerController extends AlexeyAbstractController
             return $this->redirectToRoute('crawler_reddit_channel_groups', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('crawler/groups_edit.html.twig', [
+        return $this->render('crawler/groups_edit.html.twig', [
             'form' => $form,
         ]);
     }
@@ -347,7 +347,7 @@ final class CrawlerController extends AlexeyAbstractController
             return $this->redirectToRoute('crawler_reddit_channel_groups', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('crawler/banned_user_edit.html.twig', [
+        return $this->render('crawler/banned_user_edit.html.twig', [
             'form' => $form,
         ]);
     }
