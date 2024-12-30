@@ -9,6 +9,7 @@ app:
           permissions:
             machines: 'Dostęp do urządzeń sieciowych'
             networkusage: 'Dostęp do zużycia sieci'
+            storage: 'Dostęp do magazynu'
             tunnel: 'Zarządzanie tunelem'
             weather: 'Dostęp do pogody'
       strings:
@@ -232,6 +233,7 @@ app:
         manage_tunnel: "Zarządzaj tunelem"
         menu_record: Ustawienia
         mobile_api_settings: "Aplikacja mobilna"
+        storage: Magazyn
         system_settings: "Ustawienia systemowe"
         user_settings: "Ustawienia użytkownika"
     storage:
@@ -257,7 +259,9 @@ app:
             quantity: "Szt."
       strings:
         menu_record: Magazyn
+        minimal_stocks: "Stany minimalne"
         quantity: Ilość
+        shortages: Braki
         storage_attributes: Własności
         storage_items: Pozycje
         storage_space: Kontener

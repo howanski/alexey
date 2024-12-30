@@ -9,6 +9,7 @@ app:
           permissions:
             machines: 'Access network machines'
             networkusage: 'Access network usage'
+            storage: 'Access storage'
             tunnel: 'Access tunnel management'
             weather: 'Access weather'
       strings:
@@ -232,6 +233,7 @@ app:
         manage_tunnel: "Manage tunnel"
         menu_record: Settings
         mobile_api_settings: "Companion App"
+        storage: Storage
         system_settings: "System settings"
         user_settings: "User settings"
     storage:
@@ -257,7 +259,9 @@ app:
             quantity: "Pieces"
       strings:
         menu_record: Storage
+        minimal_stocks: "Minimal stocks"
         quantity: Quantity
+        shortages: Shortages
         storage_attributes: Attributes
         storage_items: Items
         storage_space: "Storage space"

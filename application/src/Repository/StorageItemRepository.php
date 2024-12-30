@@ -26,6 +26,7 @@ final class StorageItemRepository extends ServiceEntityRepository
         User $user,
         int $storageSpaceId = 0,
         int $storageItemId = 0,
+        bool $withMinimalQuantity = false,
     ): array {
         $qb = $this->createQueryBuilder('s')
             ->innerJoin('s.stacks', 'storageStack')
@@ -42,6 +43,10 @@ final class StorageItemRepository extends ServiceEntityRepository
         if ($storageItemId > 0) {
             $qb->andWhere('s.id = :storageItemId')
                 ->setParameter('storageItemId', $storageItemId);
+        }
+
+        if (true === $withMinimalQuantity) {
+            $qb->andWhere('s.minimalQuantity > 0');
         }
 
         return $qb

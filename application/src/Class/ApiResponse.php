@@ -58,7 +58,12 @@ final class ApiResponse
 
     public function addSpacer(): self
     {
-        return $this->addText('                              ');
+        return $this->addText(string: '                              ');
+    }
+
+    public function addHorizontalLine(): self
+    {
+        return $this->addText(string: '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯');
     }
 
     public function addButton(string $name, string $path): self

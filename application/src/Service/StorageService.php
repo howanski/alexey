@@ -8,6 +8,7 @@ use App\Entity\StorageItem;
 use App\Entity\StorageItemStack;
 use App\Entity\StorageSpace;
 use App\Entity\User;
+use App\Repository\StorageItemRepository;
 use App\Repository\StorageSpaceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -15,6 +16,7 @@ final class StorageService
 {
     public function __construct(
         private EntityManagerInterface $em,
+        private StorageItemRepository $storageItemRepository,
         private StorageSpaceRepository $storageSpaceRepository,
     ) {
     }
@@ -106,5 +108,13 @@ final class StorageService
         }
 
         $this->em->flush();
+    }
+
+    public function getItemsWithMinimalQuantity(User $user): array
+    {
+        return $this->storageItemRepository->findByUser(
+            user: $user,
+            withMinimalQuantity: true
+        );
     }
 }

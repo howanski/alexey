@@ -180,4 +180,14 @@ class StorageItem
 
         return implode(separator: ', ', array: array_keys(array: $spaces));
     }
+
+    public function isStockBelowMinimalQuantity(): bool
+    {
+        return $this->getMinimalQuantity() > $this->getQuantity();
+    }
+
+    public function isStockEqualMinimalQuantity(): bool
+    {
+        return $this->getMinimalQuantity() === $this->getQuantity();
+    }
 }

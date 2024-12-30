@@ -8,12 +8,14 @@ use App\Class\ApiResponse;
 use App\Entity\ApiDevice;
 use App\Entity\NetworkMachine;
 use App\Entity\NetworkStatistic;
+use App\Entity\StorageItem;
 use App\Entity\User;
 use App\Message\AsyncJob;
 use App\Model\SystemSettings;
 use App\Model\TransmissionSettings;
 use App\Repository\NetworkMachineRepository;
 use App\Repository\NetworkStatisticRepository;
+use App\Service\StorageService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -33,6 +35,7 @@ final class MobileApi
         private OtpManager $otpManager,
         private RouterInterface $router,
         private SimpleSettingsService $simpleSettingsService,
+        private StorageService $storageService,
         private TunnelInfoProvider $tunnelInfoProvider,
         private WeatherService $weatherService,
     ) {
@@ -44,6 +47,7 @@ final class MobileApi
     private const API_FUNCTION_WEATHER = 'weather';
     private const API_FUNCTION_TUNNEL = 'tunnel';
     public const API_FUNCTION_DASHBOARD = 'dashboard';
+    public const API_FUNCTION_STORAGE = 'storage';
 
     private const API_FUNCTIONS = [
         self::API_FUNCTION_DASHBOARD => 'getDashboard',
@@ -52,6 +56,7 @@ final class MobileApi
         self::API_FUNCTION_NETWORK_USAGE => 'getNetworkUsage',
         self::API_FUNCTION_TUNNEL => 'manageTunnel',
         self::API_FUNCTION_WEATHER => 'getWeather',
+        self::API_FUNCTION_STORAGE => 'getStorage',
     ];
 
     public const API_PERMISSIONS = [
@@ -59,6 +64,7 @@ final class MobileApi
         self::API_FUNCTION_NETWORK_USAGE,
         self::API_FUNCTION_TUNNEL,
         self::API_FUNCTION_WEATHER,
+        self::API_FUNCTION_STORAGE,
     ];
 
     public function processFunction(
@@ -162,6 +168,17 @@ final class MobileApi
                     module: 'settings'
                 ),
                 path: $this->apiFunctionPath(self::API_FUNCTION_TUNNEL),
+            );
+        }
+
+        if ($this->canRun(self::API_FUNCTION_STORAGE)) {
+            $hasAnyPermission = true;
+            $response->addButton(
+                name: $this->translator->translateString(
+                    translationId: 'storage',
+                    module: 'settings'
+                ),
+                path: $this->apiFunctionPath(self::API_FUNCTION_STORAGE),
             );
         }
 
@@ -385,6 +402,86 @@ final class MobileApi
         }
 
         $response->addSpacer();
+        return $response->toResponse();
+    }
+
+    private function getStorage(User $user, array $parameters): JsonResponse
+    {
+        if (false === $this->canRun(self::API_FUNCTION_STORAGE)) {
+            return $this->getDashboard($user, $parameters);
+        }
+        $response = new ApiResponse($user->getLocale());
+
+        $shortages = [];
+        $minimalQuantities = [];
+
+        $items = $this->storageService->getItemsWithMinimalQuantity($user);
+
+        /** @var StorageItem $item */
+        foreach ($items as $item) {
+            if ($item->isStockBelowMinimalQuantity()) {
+                $shortages[] = $item;
+            } elseif ($item->isStockEqualMinimalQuantity()) {
+                $minimalQuantities[] = $item;
+            }
+        }
+
+        $response->addHorizontalLine();
+        $response->addText(string: $this->translator->translateString(
+            translationId: 'shortages',
+            module: 'storage'
+        ) . ' :');
+        $response->addHorizontalLine();
+
+        if (sizeof($shortages) === 0) {
+            $response->addText('N/A');
+        } else {
+            /** @var StorageItem $shortage */
+            foreach ($shortages as $shortage) {
+                $response->addText(
+                    string: $shortage->getName()
+                );
+                $response->addText(
+                    string: ' (' . $shortage->getQuantity()
+                        . '/' . $shortage->getMinimalQuantity() . ')'
+                );
+                $response->addSpacer();
+            }
+        }
+
+        $response->addHorizontalLine();
+        $response->addText(string: $this->translator->translateString(
+            translationId: 'minimal_stocks',
+            module: 'storage'
+        ) . ' :');
+        $response->addHorizontalLine();
+
+        if (sizeof($minimalQuantities) === 0) {
+            $response->addText('N/A');
+        } else {
+            /** @var StorageItem $shortage */
+            foreach ($minimalQuantities as $shortage) {
+                $response->addText(
+                    string: $shortage->getName()
+                );
+                $response->addText(
+                    string: ' (' . $shortage->getQuantity()
+                        . '/' . $shortage->getMinimalQuantity() . ')'
+                );
+                $response->addSpacer();
+            }
+        }
+
+        $response->addSpacer();
+        $response->addButton(
+            name: '<- ' . $this->translator->translateString(
+                translationId: 'back',
+                module: 'common'
+            ),
+            path: $this->apiFunctionPath(self::API_FUNCTION_DASHBOARD),
+        );
+        $response->addSpacer();
+
         return $response->toResponse();
     }
 }
