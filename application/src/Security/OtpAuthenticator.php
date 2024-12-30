@@ -78,7 +78,7 @@ final class OtpAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
-        $this->otpManager->scrambleAllOtps();
+        $this->otpManager->scrambleAllOTPs();
         return new RedirectResponse($this->router->generate('otp_login'));
     }
 }

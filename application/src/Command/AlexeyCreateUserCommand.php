@@ -61,7 +61,7 @@ final class AlexeyCreateUserCommand extends Command
         $user->setRoles(['ROLE_ADMIN']);
         $this->em->persist($user);
         $this->em->flush();
-        $this->otpManager->scrambleAllOtps();
+        $this->otpManager->scrambleAllOTPs();
         $output->writeln('------ [ USER ' . $username . ' CREATED ] ------');
         return Command::SUCCESS;
     }

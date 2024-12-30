@@ -43,7 +43,7 @@ final class OtpManager
         return $user;
     }
 
-    public function scrambleAllOtps(): void
+    public function scrambleAllOTPs(): void
     {
         $users = $this->userRepository->findAll();
         foreach ($users as $user) {
@@ -53,17 +53,17 @@ final class OtpManager
 
     private function getRandomHash(User $user)
     {
-        $whirpoolOne =
+        $whirlpoolOne =
             $user->getId() .
             $user->getEmail() .
             time();
 
-        $whirpoolTwo = $user->getOtp();
+        $whirlpoolTwo = $user->getOtp();
 
         $longHash = hash_hmac(
             algo: 'sha256',
-            data: $whirpoolOne,
-            key: $this->salt . $whirpoolTwo,
+            data: $whirlpoolOne,
+            key: $this->salt . $whirlpoolTwo,
         );
 
         $shortHash = substr($longHash, 3, 15);
