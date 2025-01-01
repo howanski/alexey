@@ -388,6 +388,7 @@ final class NetworkUsageService
             'host' => strval($this->networkUsageProviderSettings->getAddress()),
             'user' => 'admin',
             'pass' => strval($this->networkUsageProviderSettings->getPassword()),
+            'ssl' => true,
             // 'port' => 8728,//8729 for ssl
         ]);
 
@@ -514,6 +515,7 @@ final class NetworkUsageService
             'host' => strval($this->networkUsageProviderSettings->getAddress()),
             'user' => 'admin',
             'pass' => strval($this->networkUsageProviderSettings->getPassword()),
+            'ssl' => true,
             // 'port' => 8728,//8729 for ssl
         ]);
 
