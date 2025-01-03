@@ -186,11 +186,11 @@ class StorageItem
 
     public function isStockBelowMinimalQuantity(): bool
     {
-        return $this->getMinimalQuantity() > $this->getQuantity();
+        return $this->getMinimalQuantity() > 0 && $this->getMinimalQuantity() > $this->getQuantity();
     }
 
     public function isStockEqualMinimalQuantity(): bool
     {
-        return $this->getMinimalQuantity() === $this->getQuantity();
+        return $this->getMinimalQuantity() > 0 && $this->getMinimalQuantity() === $this->getQuantity();
     }
 }

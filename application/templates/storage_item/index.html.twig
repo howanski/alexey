@@ -65,8 +65,10 @@
 		{% set actions = '' %}
 		{% set actions = '<a href="' ~ path('storage_item_edit', {'id': storage_item.id}) ~ '" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">' ~ 'manage'|localised ~ '</a>' %}
 		{% set quantity = storage_item.quantity %}
-		{% if storage_item.minimalQuantity > 0 and storage_item.minimalQuantity >= quantity %}
+		{% if storage_item.isStockEqualMinimalQuantity() %}
 			{% set quantity = quantity ~ ' / ' ~ storage_item.minimalQuantity ~ '&nbsp&nbsp&nbsp<i class="fas fa-exclamation-circle text-red"></i>' %}
+		{% elseif storage_item.isStockBelowMinimalQuantity() %}
+			{% set quantity = quantity ~ ' / ' ~ storage_item.minimalQuantity ~ '&nbsp&nbsp&nbsp<i class="fas fa-exclamation-circle text-red"></i>&nbsp<i class="fas fa-exclamation-circle text-red"></i>&nbsp<i class="fas fa-exclamation-circle text-red"></i>' %}
 		{% endif %}
 		{% set table_data = table_data|merge([{
 			'name': storage_item.name,
