@@ -20,17 +20,19 @@ class StorageItem
     public const UNIT_METER = 'METER';
     public const UNIT_QUANTITY = 'QUANTITY';
     public const UNIT_VOLUME_LITER = 'LITER';
-    public const UNIT_VOLUME_MILILITER = 'MILILITER';
+    public const UNIT_VOLUME_MILLILITER = 'MILLILITER';
+    public const UNIT_VOLUME_PAIR = 'PAIR';
 
     public const VALID_UNITS = [
-        self::UNIT_QUANTITY,
         self::UNIT_BOX,
-        self::UNIT_METER,
         self::UNIT_CENTIMETER,
         self::UNIT_GRAM,
         self::UNIT_KILOGRAM,
+        self::UNIT_METER,
+        self::UNIT_QUANTITY,
         self::UNIT_VOLUME_LITER,
-        self::UNIT_VOLUME_MILILITER,
+        self::UNIT_VOLUME_MILLILITER,
+        self::UNIT_VOLUME_PAIR,
     ];
 
     public const VALID_UNITS_TRANS_CODES = [
@@ -41,7 +43,8 @@ class StorageItem
         self::UNIT_METER => 'meter',
         self::UNIT_QUANTITY => 'quantity',
         self::UNIT_VOLUME_LITER => 'liter',
-        self::UNIT_VOLUME_MILILITER => 'mililiter',
+        self::UNIT_VOLUME_MILLILITER => 'milliliter',
+        self::UNIT_VOLUME_PAIR => 'pair',
     ];
 
     #[ORM\Id]

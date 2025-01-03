@@ -255,7 +255,8 @@ app:
             kilogram: Kg
             liter: Liter
             meter: Meter
-            mililiter: Mililiter
+            milliliter: Milliliter
+            pair: Pair
             quantity: "Pieces"
       strings:
         menu_record: Storage

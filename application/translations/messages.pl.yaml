@@ -255,7 +255,8 @@ app:
             kilogram: Kg
             liter: Litr
             meter: Metr
-            mililiter: Mililitr
+            milliliter: Mililitr
+            pair: Para
             quantity: "Szt."
       strings:
         menu_record: Magazyn
