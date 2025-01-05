@@ -26,3 +26,5 @@ doctrine:
                     cache_driver: { type: service, id: cache.app }
             region_cache_driver: { type: service, id: cache.app }
             region_lifetime: 7200
+        controller_resolver:
+            auto_mapping: false
