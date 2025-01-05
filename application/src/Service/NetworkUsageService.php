@@ -81,7 +81,7 @@ final class NetworkUsageService
 
     public function getDataForChart(string $chartDataType, string $locale): array
     {
-        $chdata = [
+        $chartData = [
             'labels' => [],
             'datasets' => [],
             'bonusPayload' => [],
@@ -89,45 +89,45 @@ final class NetworkUsageService
         $today = new DateTime('today');
         $now = new DateTime('now');
         if ($chartDataType === NetworkChartType::CHART_TYPE_TODAY) {
-            $chdata = $this->prepareDataForChart(dateFrom: $today, timeFormat: 'H:i:s');
+            $chartData = $this->prepareDataForChart(dateFrom: $today, timeFormat: 'H:i:s');
         } elseif ($chartDataType === NetworkChartType::CHART_TYPE_WEEK) {
             $shift = new DateInterval('P1W');
             $today->sub($shift);
-            $chdata = $this->prepareDataForChart($today);
+            $chartData = $this->prepareDataForChart($today);
         } elseif ($chartDataType === NetworkChartType::CHART_TYPE_HOURS_2) {
             $shift = new DateInterval('PT2H');
             $now->sub($shift);
-            $chdata = $this->prepareDataForChart(dateFrom: $now, timeFormat: 'H:i:s');
+            $chartData = $this->prepareDataForChart(dateFrom: $now, timeFormat: 'H:i:s');
         } elseif ($chartDataType === NetworkChartType::CHART_TYPE_HOURS_48) {
             $shift = new DateInterval('PT48H');
             $now->sub($shift);
-            $chdata = $this->prepareDataForChart($now);
+            $chartData = $this->prepareDataForChart($now);
         } elseif ($chartDataType === NetworkChartType::CHART_TYPE_MINUTES_TEN) {
             $shift = new DateInterval('PT10M');
             $now->sub($shift);
-            $chdata = $this->prepareDataForChart(dateFrom: $now, timeFormat: 'H:i:s');
+            $chartData = $this->prepareDataForChart(dateFrom: $now, timeFormat: 'H:i:s');
         } elseif ($chartDataType === NetworkChartType::CHART_TYPE_BILLING_FRAME) {
             $currentStat = $this->getLatestStatistic();
             $billingStart = $currentStat->getTimeFrame()->getBillingFrameStart();
-            $chdata = $this->prepareDataForChart($billingStart);
+            $chartData = $this->prepareDataForChart($billingStart);
         }
 
-        $chdata['bonusPayload']['current_traffic_left'] = 0;
-        $chdata['bonusPayload']['current_transfer_rate_left'] = 0;
-        $chdata['bonusPayload']['current_transfer_rate'] = 0;
-        $chdata['bonusPayload']['current_billing_frame_end'] = 0;
+        $chartData['bonusPayload']['current_traffic_left'] = 0;
+        $chartData['bonusPayload']['current_transfer_rate_left'] = 0;
+        $chartData['bonusPayload']['current_transfer_rate'] = 0;
+        $chartData['bonusPayload']['current_billing_frame_end'] = 0;
 
         $latestStat = $this->getLatestStatistic();
         if ($latestStat instanceof NetworkStatistic) {
-            $chdata['bonusPayload']['current_traffic_left']
+            $chartData['bonusPayload']['current_traffic_left']
                 = $latestStat->getTrafficLeftReadable(4) . ' | ' .
                 $latestStat->getTrafficLeftReadable(4, TransmissionSettings::TARGET_SPEED_FRAME_DAY);
-            $chdata['bonusPayload']['current_transfer_rate_left']
+            $chartData['bonusPayload']['current_transfer_rate_left']
                 = $latestStat->getTransferRateLeftReadable(4) . ' | ' .
                 $latestStat->getTransferRateLeftReadable(4, TransmissionSettings::TARGET_SPEED_FRAME_DAY);
-            $chdata['bonusPayload']['current_transfer_rate']
+            $chartData['bonusPayload']['current_transfer_rate']
                 = $latestStat->getTotalSpeedFromReferencePointReadable();
-            $chdata['bonusPayload']['current_billing_frame_end']
+            $chartData['bonusPayload']['current_billing_frame_end']
                 = $latestStat->getTimeFrame()->getBillingFrameEndReadable($locale);
         }
 
@@ -144,9 +144,9 @@ final class NetworkUsageService
         } catch (\Exception $e) {
             $throttling = 'N. A.';
         }
-        $chdata['bonusPayload']['current_throttling'] = $throttling;
+        $chartData['bonusPayload']['current_throttling'] = $throttling;
 
-        return $chdata;
+        return $chartData;
     }
 
     public function getDynacard(string $property, string $locale): DynamicCard

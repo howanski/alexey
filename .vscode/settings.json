@@ -1,5 +1,17 @@
 {
     "cSpell.words": [
-        "DGRAM"
+        "cellid",
+        "DGRAM",
+        "Dynacard",
+        "earfcn",
+        "HILINK",
+        "maxsignal",
+        "plmn",
+        "rsrp",
+        "rsrq",
+        "rssi",
+        "sinr",
+        "trafficmaxlimit",
+        "txpower"
     ]
 }
