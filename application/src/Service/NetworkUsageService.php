@@ -29,9 +29,6 @@ final class NetworkUsageService
     public const NETWORK_USAGE_PROVIDER_NONE = 'NONE';
     public const NETWORK_USAGE_PROVIDER_ROUTER_OS = 'ROUTER_OS';
 
-    // Mikrotik issue is it hangs every 6.7-6.9 GB, setting 6.5 GB as automatic reset point
-    public const MIKROTIK_LTE_RESET = 6815744;
-
     public function __construct(
         private AlexeyTranslator $translator,
         private EntityManagerInterface $em,
@@ -389,11 +386,9 @@ final class NetworkUsageService
             'user' => 'admin',
             'pass' => strval($this->networkUsageProviderSettings->getPassword()),
             'ssl' => true,
-            // 'port' => 8728,//8729 for ssl
         ]);
 
-        $query =
-        (new Query('/interface/print')); // byte-stats since connection established
+        $query = (new Query('/interface/print'));
         $response = $client->query($query)->read();
 
         $scheduleReset = false;
@@ -467,16 +462,17 @@ final class NetworkUsageService
     {
         $info = new MobileSignalInfo($this->simpleCacheService);
         $info->fetchedAt = new DateTime('now');
+        $hasEnabledLteInterface = false;
 
         try {
-            $query =
-            (new Query('/interface/print')); // byte-stats since connection established
+            $query = (new Query('/interface/print'));
             $response = $client->query($query)->read();
             foreach ($response as $interfaceInfo) {
                 if ($interfaceInfo['running'] === 'true') {
                     if ($interfaceInfo['type'] === 'lte') {
+                        $hasEnabledLteInterface = $hasEnabledLteInterface || ($interfaceInfo['disabled'] === 'false');
                         $query =
-                        (new Query('/interface/lte/monitor'))
+                            (new Query('/interface/lte/monitor'))
                             ->equal('.id', $interfaceInfo['.id'])
                             ->equal('once', 'true');
                         $response = $client->query($query)->read();
@@ -506,6 +502,9 @@ final class NetworkUsageService
             return null;
         }
 
+        if (false === $hasEnabledLteInterface) {
+            return null;
+        }
         return $info;
     }
 
@@ -516,12 +515,14 @@ final class NetworkUsageService
             'user' => 'admin',
             'pass' => strval($this->networkUsageProviderSettings->getPassword()),
             'ssl' => true,
-            // 'port' => 8728,//8729 for ssl
         ]);
 
-        $query =
-        (new Query('/system/reboot'));
-        $client->query($query)->read();
+        try {
+            $query = (new Query('/system/reboot'));
+            $client->query($query)->read();
+        } catch (\Exception) {
+            $this->resetMikrotik();
+        }
     }
 
     private function getTimeFrame(
