@@ -32,6 +32,7 @@ final class NetworkUsageService
     public function __construct(
         private AlexeyTranslator $translator,
         private EntityManagerInterface $em,
+        private MikrotikService $mikrotikService,
         private NetworkStatisticRepository $networkStatisticRepository,
         private NetworkStatisticTimeFrameRepository $networkStatisticTimeFrameRepository,
         private NetworkUsageProviderSettings $networkUsageProviderSettings,
@@ -397,7 +398,7 @@ final class NetworkUsageService
         $lastUptime = null;
 
         foreach ($response as $interfaceInfo) {
-            if ($interfaceInfo['running'] === 'true') {
+            if ($interfaceInfo['running'] === 'true' && $interfaceInfo['disabled' === false]) {
                 if ($interfaceInfo['type'] === 'lte') {
                     $lastUptime = new DateTime($interfaceInfo['last-link-up-time']);
                     $rxBytes = (int)$interfaceInfo['rx-byte'];
@@ -452,7 +453,7 @@ final class NetworkUsageService
         }
 
         if (true === $scheduleReset) {
-            $this->resetMikrotik();
+            $this->mikrotikService->powerCycleMikrotik();
         }
 
         return $stat;
@@ -506,23 +507,6 @@ final class NetworkUsageService
             return null;
         }
         return $info;
-    }
-
-    public function resetMikrotik(): void
-    {
-        $client = new Client([
-            'host' => strval($this->networkUsageProviderSettings->getAddress()),
-            'user' => 'admin',
-            'pass' => strval($this->networkUsageProviderSettings->getPassword()),
-            'ssl' => true,
-        ]);
-
-        try {
-            $query = (new Query('/system/reboot'));
-            $client->query($query)->read();
-        } catch (\Exception) {
-            $this->resetMikrotik();
-        }
     }
 
     private function getTimeFrame(

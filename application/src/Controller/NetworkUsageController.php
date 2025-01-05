@@ -9,6 +9,7 @@ use App\Service\NetworkUsageService;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\NetworkUsageProviderSettingsType;
 use App\Service\AlexeyTranslator;
+use App\Service\MikrotikService;
 use App\Service\NetworkUsageProviderSettings;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -98,9 +99,9 @@ final class NetworkUsageController extends AlexeyAbstractController
     }
 
     #[Route('/force-router-reset', name: 'network_usage_force_router_reset')]
-    public function forceRouterReset(NetworkUsageService $service): Response
+    public function forceRouterReset(MikrotikService $service): Response
     {
-        $service->resetMikrotik();
+        $service->powerCycleMikrotik();
         $this->addFlash(type: 'nord14', message: 'RESET!');
         return $this->redirectToRoute(route: 'network_usage');
     }
