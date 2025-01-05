@@ -39,11 +39,18 @@ final class AsyncJobHandler
                 $this->networkMachineService->pingNetworkMachine(id: $payload['id']);
                 break;
             case AsyncJob::TYPE_UPDATE_NETWORK_STATS:
-                $this->networkUsageService->updateStats();
-                $this->bus->dispatch(new AsyncJob(
-                    jobType: AsyncJob::TYPE_TRANSMISSION_SPEED_ADJUST,
-                    payload: [],
-                ));
+                try {
+                    $this->networkUsageService->updateStats();
+                    $this->bus->dispatch(new AsyncJob(
+                        jobType: AsyncJob::TYPE_TRANSMISSION_SPEED_ADJUST,
+                        payload: [],
+                    ));
+                } catch (\Exception) {
+                    // Ignore connectivity issues
+                    // Don't retry router connection until next scheduled time
+                    // Queueing too many messages leads to racing which generates below-zero speeds in log
+                    //                                           based on which sub-process finishes first
+                }
                 break;
             case AsyncJob::TYPE_TRANSMISSION_SPEED_ADJUST:
                 $this->transmissionService->adjustSpeed();
