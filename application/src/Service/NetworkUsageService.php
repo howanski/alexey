@@ -18,8 +18,6 @@ use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use if0xx\HuaweiHilinkApi\Router;
-use RouterOS\Client;
-use RouterOS\Query;
 use SimpleXMLElement;
 use Throwable;
 
@@ -382,23 +380,13 @@ final class NetworkUsageService
 
     public function getCurrentStatisticFromRouterOs(): NetworkStatistic|null
     {
-        $client = new Client([
-            'host' => strval($this->networkUsageProviderSettings->getAddress()),
-            'user' => 'admin',
-            'pass' => strval($this->networkUsageProviderSettings->getPassword()),
-            'ssl' => true,
-        ]);
-
-        $query = (new Query('/interface/print'));
-        $response = $client->query($query)->read();
-
         $scheduleReset = false;
         $totalRxBytes = 0;
         $totalTxBytes = 0;
         $lastUptime = null;
 
-        foreach ($response as $interfaceInfo) {
-            if ($interfaceInfo['running'] === 'true' && $interfaceInfo['disabled' === false]) {
+        foreach ($this->mikrotikService->getInterfaces() as $interfaceInfo) {
+            if ($interfaceInfo['running'] === 'true' && $interfaceInfo['disabled'] === 'false') {
                 if ($interfaceInfo['type'] === 'lte') {
                     $lastUptime = new DateTime($interfaceInfo['last-link-up-time']);
                     $rxBytes = (int)$interfaceInfo['rx-byte'];
@@ -447,7 +435,7 @@ final class NetworkUsageService
         $stat->setDataDownloadedInFrame($currentMonthDownload);
         $stat->setDataUploadedInFrame($currentMonthUpload);
 
-        $mobileStat = $this->getMobileSignalInfoMikrotik($client);
+        $mobileStat = $this->getMobileSignalInfoMikrotik();
         if ($mobileStat instanceof MobileSignalInfo) {
             $mobileStat->save();
         }
@@ -459,43 +447,39 @@ final class NetworkUsageService
         return $stat;
     }
 
-    private function getMobileSignalInfoMikrotik(Client $client): ?MobileSignalInfo
+    private function getMobileSignalInfoMikrotik(): ?MobileSignalInfo
     {
         $info = new MobileSignalInfo($this->simpleCacheService);
         $info->fetchedAt = new DateTime('now');
         $hasEnabledLteInterface = false;
 
         try {
-            $query = (new Query('/interface/print'));
-            $response = $client->query($query)->read();
-            foreach ($response as $interfaceInfo) {
+            foreach ($this->mikrotikService->getInterfaces() as $interfaceInfo) {
                 if ($interfaceInfo['running'] === 'true') {
                     if ($interfaceInfo['type'] === 'lte') {
-                        $hasEnabledLteInterface = $hasEnabledLteInterface || ($interfaceInfo['disabled'] === 'false');
-                        $query =
-                            (new Query('/interface/lte/monitor'))
-                            ->equal('.id', $interfaceInfo['.id'])
-                            ->equal('once', 'true');
-                        $response = $client->query($query)->read();
-                        $info->rsrq = (float) $response[0]['rsrq'];
-                        $info->rsrp = (int) $response[0]['rsrp'];
-                        $info->sinr = (float) $response[0]['sinr'];
-                        $info->cellId = (int) $response[0]['current-cellid'];
-                        $info->pci = (int) $response[0]['phy-cellid'];
-                        if (isset($response[0]['earfcn'])) {
-                            $info->band = (string) $response[0]['earfcn'];
+                        if (false === $hasEnabledLteInterface) {
+                            $hasEnabledLteInterface = ($interfaceInfo['disabled'] === 'false');
                         }
-                        if (isset($response[0]['primary-band'])) {
-                            $info->band = (string) $response[0]['primary-band'];
-                            if (isset($response[0]['ca-band'])) {
-                                $info->band .= ' + ' . (string) $response[0]['ca-band'];
+                        $lteStatistics = $this->mikrotikService->getLteStatistics(interfaceId: $interfaceInfo['.id']);
+                        $info->rsrq = (float) $lteStatistics[0]['rsrq'];
+                        $info->rsrp = (int) $lteStatistics[0]['rsrp'];
+                        $info->sinr = (float) $lteStatistics[0]['sinr'];
+                        $info->cellId = (int) $lteStatistics[0]['current-cellid'];
+                        $info->pci = (int) $lteStatistics[0]['phy-cellid'];
+                        if (isset($lteStatistics[0]['earfcn'])) {
+                            $info->band = (string) $lteStatistics[0]['earfcn'];
+                        }
+                        if (isset($lteStatistics[0]['primary-band'])) {
+                            $info->band = (string) $lteStatistics[0]['primary-band'];
+                            if (isset($lteStatistics[0]['ca-band'])) {
+                                $info->band .= ' + ' . (string) $lteStatistics[0]['ca-band'];
                             }
                         }
-                        if (isset($response[0]['rssi'])) {
-                            $info->rssi = (int) $response[0]['rssi'];
+                        if (isset($lteStatistics[0]['rssi'])) {
+                            $info->rssi = (int) $lteStatistics[0]['rssi'];
                         }
                         $info->signalStrengthPercent = 0;
-                        $info->txpower = 'CQI: ' . (string) $response[0]['cqi'];
+                        $info->txpower = 'CQI: ' . (string) $lteStatistics[0]['cqi'];
                     }
                 }
             }

@@ -84,6 +84,14 @@ final class MikrotikService
         }
     }
 
+    public function getLteStatistics(string $interfaceId)
+    {
+        $query = (new Query('/interface/lte/monitor'))
+            ->equal('.id', $interfaceId)
+            ->equal('once', 'true');
+        return $this->getClient()->query($query)->read();
+    }
+
     public function getInterfaces(): array
     {
         $query = (new Query('/interface/print'));
@@ -147,13 +155,13 @@ final class MikrotikService
 
     private function toggleMikrotikLteInterfacesStatus(bool $enabled): bool
     {
-        $targetDisabledStatus = $enabled ? 'false' : 'true';
-        $targetApiMethod = $enabled ? 'enable' : 'disable';
+        $targetDisabledStatus = (true === $enabled) ? 'false' : 'true';
+        $targetApiMethod = (true === $enabled) ? 'enable' : 'disable';
 
         try {
             foreach ($this->getInterfaces() as $interfaceInfo) {
                 if ($interfaceInfo['type'] === 'lte') {
-                    if ($interfaceInfo['disabled'] !== $targetDisabledStatus) {
+                    if (!($interfaceInfo['disabled'] === $targetDisabledStatus)) {
                         $interfaceId = $interfaceInfo['.id'];
                         $query = (new Query('/interface/' . $targetApiMethod))
                             ->equal('.id', $interfaceId);

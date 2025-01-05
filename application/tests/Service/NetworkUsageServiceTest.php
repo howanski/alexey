@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\NetworkStatisticTimeFrame;
 use App\Repository\NetworkStatisticRepository;
 use App\Repository\NetworkStatisticTimeFrameRepository;
+use App\Service\MikrotikService;
 use App\Service\NetworkUsageProviderSettings;
 use App\Service\SimpleCacheService;
 
@@ -35,9 +36,11 @@ final class NetworkUsageServiceTest extends TestCase
         $networkStatisticRepository->method('getLatestOne')->willReturn($returnObj);
 
         $networkUsageProviderSettings = $this->createMock(originalClassName: NetworkUsageProviderSettings::class);
+        $mikrotikService = $this->createMock(originalClassName: MikrotikService::class);
 
         $service = new NetworkUsageService(
             em: $em,
+            mikrotikService: $mikrotikService,
             networkStatisticRepository: $networkStatisticRepository,
             networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
             networkUsageProviderSettings: $networkUsageProviderSettings,
@@ -76,9 +79,11 @@ final class NetworkUsageServiceTest extends TestCase
         $simpleSettingsService->method('getSettings')->willReturn($settingsArray);
 
         $networkUsageProviderSettings = $this->createMock(originalClassName: NetworkUsageProviderSettings::class);
+        $mikrotikService = $this->createMock(originalClassName: MikrotikService::class);
 
         $service = new NetworkUsageService(
             em: $em,
+            mikrotikService: $mikrotikService,
             networkStatisticRepository: $networkStatisticRepository,
             networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
             networkUsageProviderSettings: $networkUsageProviderSettings,
@@ -133,9 +138,12 @@ final class NetworkUsageServiceTest extends TestCase
         $networkStatisticRepository->method('getLatestOne')->willReturn($networkStatistic);
 
         $networkUsageProviderSettings = $this->createMock(originalClassName: NetworkUsageProviderSettings::class);
+        $mikrotikService = $this->createMock(originalClassName: MikrotikService::class);
+
 
         $service = new NetworkUsageService(
             em: $em,
+            mikrotikService: $mikrotikService,
             networkStatisticRepository: $networkStatisticRepository,
             networkStatisticTimeFrameRepository: $networkStatisticTimeFrameRepository,
             networkUsageProviderSettings: $networkUsageProviderSettings,
