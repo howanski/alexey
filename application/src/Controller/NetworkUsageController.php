@@ -101,7 +101,7 @@ final class NetworkUsageController extends AlexeyAbstractController
     #[Route('/force-router-reset', name: 'network_usage_force_router_reset')]
     public function forceRouterReset(MikrotikService $service): Response
     {
-        $service->powerCycleMikrotik();
+        $service->powerCycleMikrotik(force: true);
         $this->addFlash(type: 'nord14', message: 'RESET!');
         return $this->redirectToRoute(route: 'network_usage');
     }

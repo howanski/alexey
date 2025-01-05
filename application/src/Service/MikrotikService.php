@@ -13,16 +13,19 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 final class MikrotikService
 {
+    private const CACHE_KEY_POWER_CYCLE = 'mikrotik_last_power_cycle';
     private const POWER_CYCLE_STEP_DISABLE_LTE = 'disable_lte';
     private const POWER_CYCLE_STEP_ENABLE_LTE = 'enable_lte';
     private const POWER_CYCLE_STEP_INIT_POWER_CYCLE = 'init';
     private const POWER_CYCLE_STEP_REBOOT = 'reboot';
+    private const POWER_CYCLE_STEP_SNIFF_SIM = 'sniff_sim';
 
     private const POWER_CYCLE_SUCCESSOR_STATES = [
-        self::POWER_CYCLE_STEP_INIT_POWER_CYCLE => self::POWER_CYCLE_STEP_DISABLE_LTE,
         self::POWER_CYCLE_STEP_DISABLE_LTE => self::POWER_CYCLE_STEP_REBOOT,
-        self::POWER_CYCLE_STEP_REBOOT => self::POWER_CYCLE_STEP_ENABLE_LTE,
         self::POWER_CYCLE_STEP_ENABLE_LTE => null,
+        self::POWER_CYCLE_STEP_INIT_POWER_CYCLE => self::POWER_CYCLE_STEP_DISABLE_LTE,
+        self::POWER_CYCLE_STEP_REBOOT => self::POWER_CYCLE_STEP_ENABLE_LTE,
+        self::POWER_CYCLE_STEP_SNIFF_SIM => null,
     ];
 
     private const POWER_CYCLE_DELAYS = [
@@ -30,6 +33,7 @@ final class MikrotikService
         self::POWER_CYCLE_STEP_ENABLE_LTE => 1,
         self::POWER_CYCLE_STEP_INIT_POWER_CYCLE => 1,
         self::POWER_CYCLE_STEP_REBOOT => 30,
+        self::POWER_CYCLE_STEP_SNIFF_SIM => 1,
     ];
 
     private ?Client $client = null;
@@ -37,6 +41,7 @@ final class MikrotikService
     public function __construct(
         private MessageBusInterface $bus,
         private NetworkUsageProviderSettings $networkUsageProviderSettings,
+        private SimpleCacheService $simpleCacheService,
     ) {
     }
 
@@ -48,10 +53,41 @@ final class MikrotikService
     * - Reboot router
     * - Enable LTE interfaces
     */
-    public function powerCycleMikrotik(): void
+    public function powerCycleMikrotik(bool $force = false): void
     {
-        $this->handlePowerCycle(currentStep: self::POWER_CYCLE_STEP_INIT_POWER_CYCLE);
+        $canRunNow = true;
+        if (false === $force) {
+            // throttle runs so they are dispatched every 5 minutes at most
+            $cachedInfo = $this->simpleCacheService->retrieveDataFromCache(self::CACHE_KEY_POWER_CYCLE);
+            if (array_key_exists(key: self::CACHE_KEY_POWER_CYCLE, array: $cachedInfo)) {
+                $canRunNow = false;
+            }
+        }
+
+        if (true === $canRunNow) {
+            $this->handlePowerCycle(currentStep: self::POWER_CYCLE_STEP_INIT_POWER_CYCLE);
+        }
+
+        $now = new \DateTime('now');
+        $validTo = new \DateTime('+5 minutes');
+        $this->simpleCacheService->cacheData(
+            key: self::CACHE_KEY_POWER_CYCLE,
+            data: [
+                self::CACHE_KEY_POWER_CYCLE => $now,
+            ],
+            validTo: $validTo,
+        );
     }
+
+    public function handleSimCardBugIfOccurs(): void
+    {
+        $this->queuePowerCycleStep(
+            stepName: self::POWER_CYCLE_STEP_SNIFF_SIM,
+            stepDelaySeconds: 1,
+        );
+    }
+
+
 
     public function handlePowerCycle(string $currentStep): void
     {
@@ -71,6 +107,9 @@ final class MikrotikService
                 break;
             case self::POWER_CYCLE_STEP_ENABLE_LTE:
                 $stepAccomplished = $this->enableMikrotikLteInterfaces();
+                break;
+            case self::POWER_CYCLE_STEP_SNIFF_SIM:
+                $stepAccomplished = $this->sniffAndHandleSimCardNotFoundBug();
                 break;
         }
 
@@ -172,6 +211,31 @@ final class MikrotikService
         } catch (\Exception) {
             return false;
         }
+        return true;
+    }
+
+    private function sniffAndHandleSimCardNotFoundBug(): bool
+    {
+        try {
+            $simCardDetectable = false;
+            foreach ($this->getInterfaces() as $interfaceInfo) {
+                if ($interfaceInfo['type'] === 'lte') {
+                    $lteData = $this->getLteStatistics(interfaceId: $interfaceInfo['.id']);
+                    if (isset($lteData[0]['imsi'])) {
+                        $imsi = $lteData[0]['imsi'];
+                        if (is_string($imsi) && strlen($imsi) > 0) {
+                            $simCardDetectable = true;
+                        }
+                    }
+                }
+            }
+            if (false === $simCardDetectable) {
+                $this->powerCycleMikrotik(force: false);
+            }
+        } catch (\Exception) {
+            return false;
+        }
+
         return true;
     }
 }

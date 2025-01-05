@@ -61,6 +61,7 @@ final class NetworkUsageService
             $stat = $this->getCurrentStatisticFromHuawei();
         } elseif ($type === self::NETWORK_USAGE_PROVIDER_ROUTER_OS) {
             $stat = $this->getCurrentStatisticFromRouterOs();
+            $this->mikrotikService->handleSimCardBugIfOccurs();
         } elseif ($type === '' || $type === self::NETWORK_USAGE_PROVIDER_NONE) {
             // No settings, no work, great!
         } else {
@@ -441,7 +442,7 @@ final class NetworkUsageService
         }
 
         if (true === $scheduleReset) {
-            $this->mikrotikService->powerCycleMikrotik();
+            $this->mikrotikService->powerCycleMikrotik(force: false);
         }
 
         return $stat;
