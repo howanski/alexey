@@ -123,7 +123,7 @@ final class MikrotikService
         }
     }
 
-    public function getLteStatistics(string $interfaceId)
+    public function getLteStatistics(string $interfaceId): array
     {
         $query = (new Query('/interface/lte/monitor'))
             ->equal('.id', $interfaceId)
