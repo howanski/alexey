@@ -12,9 +12,9 @@ final class ApiResponse
         'Access-Control-Allow-Origin' => '*',
     ];
 
-    private const UI_ELEMENT_TEXT = 'txt';
-    private const UI_ELEMENT_BUTTON = 'btn';
-    private const UI_ELEMENT_LINK = 'lnk';
+    public const UI_ELEMENT_TEXT = 'txt';
+    public const UI_ELEMENT_BUTTON = 'btn';
+    public const UI_ELEMENT_LINK = 'lnk';
 
     private int $code = 200;
 
@@ -41,7 +41,7 @@ final class ApiResponse
         return $this;
     }
 
-    public function setRefreshInSeconds(int $seconds)
+    public function setRefreshInSeconds(int $seconds): void
     {
         $this->autoRefresh = intval(1000 * $seconds);
     }
@@ -58,7 +58,9 @@ final class ApiResponse
 
     public function addSpacer(): self
     {
-        return $this->addText(string: '                              ');
+        return $this->addText(
+            string: '                              '
+        );
     }
 
     public function addHorizontalLine(): self
@@ -88,17 +90,42 @@ final class ApiResponse
         return $this;
     }
 
+    public function getUiContent(): array
+    {
+        return $this->ui;
+    }
+
+    public function getLocale(): string
+    {
+        return $this->userLocale;
+    }
+
+    public function getRefreshTime(): int
+    {
+        return $this->autoRefresh;
+    }
+
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+
+    public function getStatusCode(): int
+    {
+        return $this->code;
+    }
+
     public function toResponse(): JsonResponse
     {
         return new JsonResponse(
             data: [
-                'code' => $this->code,
-                'message' => $this->message,
-                'autoRefresh' => $this->autoRefresh,
-                'ui' => $this->ui,
-                'loc' => $this->userLocale
+                'code' => $this->getStatusCode(),
+                'message' => $this->getMessage(),
+                'autoRefresh' => $this->getRefreshTime(),
+                'ui' => $this->getUiContent(),
+                'loc' => $this->getLocale(),
             ],
-            status: $this->code,
+            status: $this->getStatusCode(),
             headers: self::CORS_HEADERS,
         );
     }
