@@ -122,7 +122,7 @@ final class NetworkUsageServiceTest extends TestCase
         $sixHoursAgo->sub($sixHours);
 
         $inSixHours = new \DateTime('now');
-        $inSixHours->Add($sixHours);
+        $inSixHours->add($sixHours);
 
         $timeFrame = new NetworkStatisticTimeFrame();
         $timeFrame->setBillingFrameStart($sixHoursAgo);

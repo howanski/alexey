@@ -8,7 +8,6 @@ use App\Entity\NetworkMachine;
 
 final class NetworkMachineControllerTest extends ControllerTestStub
 {
-
     public function testAccess(): void
     {
         $this->testSecurityEnabled(path: '/network/machines/');

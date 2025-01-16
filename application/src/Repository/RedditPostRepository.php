@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\RedditBannedPoster;
 use App\Entity\RedditChannel;
 use App\Entity\RedditPost;
 use App\Entity\User;
@@ -24,7 +23,7 @@ final class RedditPostRepository extends ServiceEntityRepository
         parent::__construct($registry, RedditPost::class);
     }
 
-    public function cleanup()
+    public function cleanup(): int
     {
         $oldTime = date('Y-m-d', strtotime('-1 month'));
         $connection = $this->getEntityManager()->getConnection();
@@ -38,7 +37,8 @@ final class RedditPostRepository extends ServiceEntityRepository
                 'ago' => $oldTime,
             ],
         );
-        return $count;
+
+        return (int) $count;
     }
 
     public function dropBannedPosterPosts(User $user, string $username): int
@@ -47,8 +47,8 @@ final class RedditPostRepository extends ServiceEntityRepository
         $sql =
             'DELETE reddit_post ' .
             'FROM reddit_post ' .
-            'JOIN reddit_channel rchnl ON rchnl.id = reddit_post.channel_id ' .
-            'WHERE rchnl.user_id = :user ' .
+            'JOIN reddit_channel rChannel ON rChannel.id = reddit_post.channel_id ' .
+            'WHERE rChannel.user_id = :user ' .
             'AND reddit_post.user = :username;';
         $count = $connection->executeStatement(
             sql: $sql,
@@ -65,8 +65,8 @@ final class RedditPostRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('rp')
             ->andWhere('rp.channel = :channel')
             ->setParameter('channel', $channel)
-            ->andWhere('rp.seen = :notseen')
-            ->setParameter('notseen', false)
+            ->andWhere('rp.seen = :notSeen')
+            ->setParameter('notSeen', false)
             ->setMaxResults($limit)
             ->addOrderBy('rp.published', 'DESC')
             ->getQuery()

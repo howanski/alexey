@@ -22,7 +22,7 @@ final class RedditChannelRepository extends ServiceEntityRepository
         parent::__construct($registry, RedditChannel::class);
     }
 
-    public function cleanup()
+    public function cleanup(): int
     {
         $oldTime = date('Y-m-d', strtotime('-3 months'));
         $em = $this->getEntityManager();
@@ -43,10 +43,10 @@ final class RedditChannelRepository extends ServiceEntityRepository
         $cache = $em->getCache();
         $cache->evictEntityRegion(RedditChannel::class);
 
-        return $count;
+        return (int) $count;
     }
 
-    public function getMyChannels(User $user, string $filter)
+    public function getMyChannels(User $user, string $filter): array
     {
         $qb = $this->createQueryBuilder('c')
             ->distinct(true);

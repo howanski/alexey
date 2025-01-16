@@ -47,25 +47,25 @@ final class MobileApiManager
         return $this->generateQrResult($data)->getString();
     }
 
-    public function generateUserToken(User $user)
+    public function generateUserToken(User $user): string
     {
-        $whirpoolOne =
+        $whirlpoolOne =
             $user->getId() .
             $user->getEmail() .
             floor(time() / 60) .
             strval($this->deviceRepository->countMyDevices($user));
 
-        $whirpoolTwo = '';
+        $whirlpoolTwo = '';
         /** @var ApiDevice $device */
         foreach ($this->deviceRepository->getMyDevices($user) as $device) {
-            $whirpoolTwo .= $device->getSecret();
-            $whirpoolTwo .= $device->getName();
+            $whirlpoolTwo .= $device->getSecret();
+            $whirlpoolTwo .= $device->getName();
         }
 
         return hash_hmac(
             algo: 'sha256',
-            data: $whirpoolOne,
-            key: $this->salt . $whirpoolTwo,
+            data: $whirlpoolOne,
+            key: $this->salt . $whirlpoolTwo,
         );
     }
 

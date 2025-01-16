@@ -21,7 +21,7 @@ final class UserLocaleSubscriber implements EventSubscriberInterface
     ) {
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
         $userLocale = $this->requestStack->getSession()->get(self::USER_LOCALE);
@@ -30,7 +30,7 @@ final class UserLocaleSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function onInteractiveLogin(InteractiveLoginEvent $event)
+    public function onInteractiveLogin(InteractiveLoginEvent $event): void
     {
         /**
          * @var User $user

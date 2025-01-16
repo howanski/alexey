@@ -29,7 +29,7 @@ final class StorageController extends AlexeyAbstractController
     public function add(
         AlexeyTranslator $translator,
         Request $request,
-    ) {
+    ): Response {
         $user = $this->alexeyUser();
         $channel = new StorageSpace();
         $channel->setUser(user: $user);

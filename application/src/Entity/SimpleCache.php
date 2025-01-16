@@ -29,7 +29,7 @@ class SimpleCache
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?User $user;
 
-    public function getId(): int|null
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -67,7 +67,7 @@ class SimpleCache
         return $this;
     }
 
-    public function getUser(): User|null
+    public function getUser(): ?User
     {
         return $this->user;
     }

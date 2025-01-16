@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -31,7 +32,7 @@ class CronJob
         return $this->id;
     }
 
-    public function getLastRun(): \DateTimeInterface|null
+    public function getLastRun(): ?\DateTimeInterface
     {
         return $this->lastRun;
     }
@@ -69,7 +70,7 @@ class CronJob
         return $this->jobType;
     }
 
-    public function setJobType($jobType)
+    public function setJobType($jobType): CronJob
     {
         $this->jobType = $jobType;
         return $this;

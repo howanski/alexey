@@ -53,7 +53,7 @@ final class NetworkUsageService
         $this->networkStatisticRepository->dropObsoleteRecords();
     }
 
-    public function getCurrentStatistic(): NetworkStatistic|null
+    public function getCurrentStatistic(): ?NetworkStatistic
     {
         $type = $this->networkUsageProviderSettings->getProviderType();
         $stat = null;
@@ -191,18 +191,6 @@ final class NetworkUsageService
         $info->fetchedAt = new DateTime('now');
         $type = $this->networkUsageProviderSettings->getProviderType();
         if ($type === self::NETWORK_USAGE_PROVIDER_HUAWEI) {
-            try {
-                if (false === ($router instanceof Router)) {
-                    $router = new Router();
-                    $router->setAddress($this->networkUsageProviderSettings->getAddress());
-                    $router->login('admin', $this->networkUsageProviderSettings->getPassword());
-                }
-            } catch (\Exception $e) {
-                $info->error = $e->getMessage();
-                $info->errorOn = 'login';
-                return $info;
-            }
-
             try {
                 $status = $router->getStatus();
                 $signalMax = (int)$status->maxsignal;
@@ -342,7 +330,7 @@ final class NetworkUsageService
         return $networkStatistics;
     }
 
-    private function getCurrentStatisticFromHuawei(): NetworkStatistic|null
+    private function getCurrentStatisticFromHuawei(): ?NetworkStatistic
     {
         try {
             $router = new Router();
@@ -386,7 +374,7 @@ final class NetworkUsageService
         }
     }
 
-    public function getCurrentStatisticFromRouterOs(): NetworkStatistic|null
+    public function getCurrentStatisticFromRouterOs(): ?NetworkStatistic
     {
         $scheduleReset = false;
         $totalRxBytes = 0;

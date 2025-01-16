@@ -108,7 +108,7 @@ class NetworkMachine
         return $this;
     }
 
-    public function getLastSeen(): \DateTimeInterface|null
+    public function getLastSeen(): ?\DateTimeInterface
     {
         return $this->lastSeen;
     }
@@ -155,8 +155,8 @@ class NetworkMachine
     public function getLastSeenReadable(string $locale): string
     {
         $conventionalTime = $this->getLastSeen();
-        $carbonised = new Carbon($conventionalTime);
-        $carbonised->setLocale($locale);
-        return $carbonised->diffForHumans();
+        $carbonTime = new Carbon($conventionalTime);
+        $carbonTime->setLocale($locale);
+        return $carbonTime->diffForHumans();
     }
 }

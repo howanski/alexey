@@ -61,7 +61,7 @@ final class OtpAuthenticator extends AbstractAuthenticator
         $this->denyApiAccess();
     }
 
-    private function denyApiAccess(string $message = 'Access denied.', int $statusCode = 401)
+    private function denyApiAccess(string $message = 'Access denied.', int $statusCode = 401): void
     {
         throw new CustomUserMessageAuthenticationException(message: $message, code: $statusCode);
     }

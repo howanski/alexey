@@ -21,6 +21,7 @@ use App\Service\RedditReader;
 use App\Service\SimpleSettingsService;
 use DateTime;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -52,7 +53,7 @@ final class CrawlerController extends AlexeyAbstractController
     }
 
     #[Route('/reddit/post/dismiss/{id}', name: 'crawler_reddit_post_dismiss', methods: ['POST'])]
-    public function dismiss(int $id)
+    public function dismiss(int $id): Response
     {
         $post = $this->fetchEntityById(className: RedditPost::class, id: $id);
         $user = $this->alexeyUser();
@@ -69,8 +70,9 @@ final class CrawlerController extends AlexeyAbstractController
         name: 'crawler_reddit_channel_dismiss',
         methods: ['POST'],
     )]
-    public function dismissAll(int $id, int $touchStamp)
+    public function dismissAll(int $id, int $touchStamp): Response
     {
+        /** @var RedditChannel */
         $channel = $this->fetchEntityById(className: RedditChannel::class, id: $id);
         $user = $this->alexeyUser();
         if ($user === $channel->getUser()) {
@@ -93,7 +95,7 @@ final class CrawlerController extends AlexeyAbstractController
         Request $request,
         MessageBusInterface $bus,
         AlexeyTranslator $translator,
-    ) {
+    ): Response {
         $user = $this->alexeyUser();
         $channel = new RedditChannel();
         $channel->setUser($user);
@@ -126,7 +128,7 @@ final class CrawlerController extends AlexeyAbstractController
         AlexeyTranslator $translator,
         int $id,
         Request $request,
-    ) {
+    ): Response {
         $channel = $this->fetchEntityById(className: RedditChannel::class, id: $id);
         $user = $this->alexeyUser();
         if (false === ($user === $channel->getUser())) {
@@ -156,7 +158,7 @@ final class CrawlerController extends AlexeyAbstractController
     }
 
     #[Route('/reddit/channel/drop/{id}/{filter}', name: 'crawler_reddit_channel_drop')]
-    public function dropChannel(string $filter, int $id)
+    public function dropChannel(string $filter, int $id): Response
     {
         $channel = $this->fetchEntityById(className: RedditChannel::class, id: $id);
         $user = $this->alexeyUser();
@@ -169,7 +171,7 @@ final class CrawlerController extends AlexeyAbstractController
     }
 
     #[Route('/reddit/post/preview/{id}', name: 'crawler_reddit_post_preview')]
-    public function thumbnail(int $id)
+    public function thumbnail(int $id): Response
     {
         $post = $this->fetchEntityById(className: RedditPost::class, id: $id);
         $user = $this->alexeyUser();
@@ -229,7 +231,7 @@ final class CrawlerController extends AlexeyAbstractController
     }
 
     #[Route('/reddit/channel/groups', name: 'crawler_reddit_channel_groups')]
-    public function groupsList(RedditChannelGroupRepository $repo)
+    public function groupsList(RedditChannelGroupRepository $repo): Response
     {
         $user = $this->alexeyUser();
         $bannedUsers = $user->getRedditBannedPosters()->toArray();
@@ -247,7 +249,7 @@ final class CrawlerController extends AlexeyAbstractController
         AlexeyTranslator $translator,
         int $id,
         Request $request,
-    ) {
+    ): Response {
         $user = $this->alexeyUser();
         $group = $this->fetchEntityById(className: RedditChannelGroup::class, id: $id);
         if (false === ($user === $group->getUser())) {
@@ -270,10 +272,8 @@ final class CrawlerController extends AlexeyAbstractController
     }
 
     #[Route('/reddit/channel/groups/new', name: 'crawler_reddit_channel_groups_new')]
-    public function groupsNew(
-        AlexeyTranslator $translator,
-        Request $request,
-    ) {
+    public function groupsNew(AlexeyTranslator $translator, Request $request): Response
+    {
         $user = $this->alexeyUser();
         $group = new RedditChannelGroup();
 
@@ -296,10 +296,8 @@ final class CrawlerController extends AlexeyAbstractController
     }
 
     #[Route('/reddit/channel/groups/delete/{id}', name: 'crawler_reddit_channel_groups_delete')]
-    public function groupsDelete(
-        AlexeyTranslator $translator,
-        int $id,
-    ) {
+    public function groupsDelete(AlexeyTranslator $translator, int $id): RedirectResponse
+    {
         $user = $this->alexeyUser();
         $group = $this->fetchEntityById(className: RedditChannelGroup::class, id: $id);
         if ($group->getUser() === $user) {
@@ -322,7 +320,7 @@ final class CrawlerController extends AlexeyAbstractController
         AlexeyTranslator $translator,
         Request $request,
         string $username = null,
-    ) {
+    ): Response {
         $user = $this->alexeyUser();
         $bannedPoster = new RedditBannedPoster();
 
@@ -353,10 +351,8 @@ final class CrawlerController extends AlexeyAbstractController
     }
 
     #[Route('/reddit/channel/banned-users/delete/{id}', name: 'crawler_reddit_banned_user_delete')]
-    public function bannedUserDelete(
-        AlexeyTranslator $translator,
-        int $id,
-    ) {
+    public function bannedUserDelete(AlexeyTranslator $translator, int $id): RedirectResponse
+    {
         $user = $this->alexeyUser();
         $poster = $this->fetchEntityById(className: RedditBannedPoster::class, id: $id);
         if ($poster->getUser() === $user) {

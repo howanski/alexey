@@ -6,10 +6,8 @@ namespace App\Command;
 
 use App\Entity\User;
 use App\Service\OtpManager;
-use Doctrine\ORM\EntityManager;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Attribute\AsCommand;

@@ -232,12 +232,12 @@ class MoneyNode
         return $this;
     }
 
-    public function getCurrency()
+    public function getCurrency(): ?Currency
     {
         return $this->currency;
     }
 
-    public function getCurrencyCode()
+    public function getCurrencyCode(): string
     {
         $currency = $this->getCurrency();
         if ($currency instanceof Currency) {

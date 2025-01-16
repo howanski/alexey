@@ -46,7 +46,7 @@ class MoneyTransfer
         $this->operationDate = new \DateTime('today');
     }
 
-    public function getId(): int|null
+    public function getId(): ?int
     {
         return $this->id;
     }

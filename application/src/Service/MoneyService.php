@@ -24,7 +24,7 @@ final class MoneyService
     ) {
     }
 
-    public function getMoneyNodeChoicesForForm(User $user, array $includeNodes = [])
+    public function getMoneyNodeChoicesForForm(User $user, array $includeNodes = []): array
     {
         $choices = [];
         $settings = new MoneyNodeSettings($user);
@@ -47,7 +47,7 @@ final class MoneyService
         return $choices;
     }
 
-    public function getMoneyTransferMonthSelectorPills(User $user, string $selectedMonth)
+    public function getMoneyTransferMonthSelectorPills(User $user, string $selectedMonth): array
     {
         $randomString = 'XYZZY';
         $pillsLimit = 6;
@@ -82,33 +82,33 @@ final class MoneyService
 
     public function getDataForChart(User $user): array
     {
-        $chdata = [
+        $chartData = [
             'labels' => [],
             'datasets' => [],
         ];
 
-        $chdata = $this->prepareDataForChart(user: $user);
+        $chartData = $this->prepareDataForChart(user: $user);
         return [
-            'labels' => $chdata['labels'],
-            'datasets' => $chdata['datasets'],
+            'labels' => $chartData['labels'],
+            'datasets' => $chartData['datasets'],
         ];
     }
 
     public function getDataForForecastChart(User $user): array
     {
-        $chdata = [
+        $chartData = [
             'labels' => [],
             'datasets' => [],
         ];
 
-        $chdata = $this->prepareDataForForecastChart(user: $user);
+        $chartData = $this->prepareDataForForecastChart(user: $user);
         return [
-            'labels' => $chdata['labels'],
-            'datasets' => $chdata['datasets'],
+            'labels' => $chartData['labels'],
+            'datasets' => $chartData['datasets'],
         ];
     }
 
-    public function getDataForEdgePieChart(string $chartType, DateTime $month, User $user)
+    public function getDataForEdgePieChart(string $chartType, DateTime $month, User $user): array
     {
         $settings = new MoneyNodeSettings($user);
         $settings->selfConfigure($this->simpleSettingsService);
@@ -177,9 +177,9 @@ final class MoneyService
                 $colors[$id] = $this->mdColor($id . date('s'));
             }
         }
-        $this->dumbifyArray($labels);
-        $this->dumbifyArray($data);
-        $this->dumbifyArray($colors);
+        $this->stripArrayKeys($labels);
+        $this->stripArrayKeys($data);
+        $this->stripArrayKeys($colors);
         $data = [
             'labels' => $labels,
             'datasets' => [
@@ -193,19 +193,19 @@ final class MoneyService
         return $data;
     }
 
-    private function mdColor(string $source)
+    private function mdColor(string $source): string
     {
         return '#' . substr(md5($source), 0, 6);
     }
 
-    private function dumbifyArray(array &$sourceArray)
+    private function stripArrayKeys(array &$sourceArray): void
     {
-        $dumb = [];
+        $keyless = [];
         ksort($sourceArray);
         foreach ($sourceArray as $val) {
-            $dumb[] = $val;
+            $keyless[] = $val;
         }
-        $sourceArray = $dumb;
+        $sourceArray = $keyless;
     }
 
     private function prepareDataForChart(User $user): array

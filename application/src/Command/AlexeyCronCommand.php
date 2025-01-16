@@ -58,9 +58,9 @@ final class AlexeyCronCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function runCronJobs()
+    private function runCronJobs(): void
     {
-        if (false === $this->isDevelepmentEnvironment()) {
+        if (false === $this->isDevelopmentEnvironment()) {
             $cronJobs = $this->em->getRepository(CronJob::class)->findAll();
             foreach ($cronJobs as $cronJob) {
                 $this->runCronJob($cronJob);
@@ -68,7 +68,7 @@ final class AlexeyCronCommand extends Command
         }
     }
 
-    private function runCronJob(CronJob $cronJob)
+    private function runCronJob(CronJob $cronJob): void
     {
         $this->em->refresh($cronJob);
         $runEvery = $cronJob->getRunEvery();
@@ -92,7 +92,7 @@ final class AlexeyCronCommand extends Command
         }
     }
 
-    private function ensureDefaultJobsCreated()
+    private function ensureDefaultJobsCreated(): void
     {
         $repository = $this->em->getRepository(CronJob::class);
         foreach (self::DEFAULT_JOBS as $defaultType => $defaultRepeatTime) {
@@ -108,7 +108,7 @@ final class AlexeyCronCommand extends Command
         $this->em->flush();
     }
 
-    private function isDevelepmentEnvironment(): bool
+    private function isDevelopmentEnvironment(): bool
     {
         return $this->kernelEnv === 'dev';
     }
