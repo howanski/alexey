@@ -70,12 +70,15 @@ final class NetworkUsageService
         return $stat;
     }
 
-    public function getLatestStatistic()
+    public function getLatestStatistic(): ?NetworkStatistic
     {
         $latest = $this->networkStatisticRepository->getLatestOne();
         return $latest;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     public function getDataForChart(string $chartDataType, string $locale): array
     {
         $chartData = [
@@ -181,8 +184,9 @@ final class NetworkUsageService
         return $dynaCard;
     }
 
-    public function getMobileSignalInfo($router = null): MobileSignalInfo
+    public function getMobileSignalInfo(Router $router): MobileSignalInfo
     {
+        // TODO: refactor, method only used for Huawei
         $info = new MobileSignalInfo($this->simpleCacheService);
         $info->fetchedAt = new DateTime('now');
         $type = $this->networkUsageProviderSettings->getProviderType();
@@ -231,6 +235,9 @@ final class NetworkUsageService
         return $info;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     private function prepareDataForChart(DateTime $dateFrom, string $timeFormat = 'd.m H:i'): array
     {
         $data = [];
@@ -502,13 +509,17 @@ final class NetworkUsageService
         $timeFrame = $this->networkStatisticTimeFrameRepository->findOneBy([
             'billingFrameStart' => $frameStart,
         ]);
-        if (!($timeFrame instanceof NetworkStatisticTimeFrame)) {
+        if (!$timeFrame instanceof NetworkStatisticTimeFrame) {
             $timeFrame = new NetworkStatisticTimeFrame();
-            $timeFrame->setBillingFrameEnd($frameEnd);
         }
+
+        $timeFrame->setBillingFrameEnd($frameEnd);
         $timeFrame->setBillingFrameDataLimit($frameDataLimit);
         $timeFrame->setBillingFrameStart($frameStart);
+
         $this->em->persist($timeFrame);
+        $this->em->flush();
+
         return $timeFrame;
     }
 

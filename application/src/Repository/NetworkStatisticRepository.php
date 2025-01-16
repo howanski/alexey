@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use DateTime;
-use Carbon\Carbon;
 use App\Entity\NetworkStatistic;
 use App\Entity\NetworkStatisticTimeFrame;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,6 +15,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  * @method NetworkStatistic|null findOneBy(array $criteria, array $orderBy = null)
  * @method NetworkStatistic[]    findAll()
  * @method NetworkStatistic[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends ServiceEntityRepository<object>
  */
 final class NetworkStatisticRepository extends ServiceEntityRepository
 {
@@ -76,8 +76,8 @@ final class NetworkStatisticRepository extends ServiceEntityRepository
                 $sql =
                     'DELETE network_statistic ' .
                     'FROM network_statistic ' .
-                    'JOIN network_statistic_time_frame nstf ON nstf.id = network_statistic.time_frame_id ' .
-                    'WHERE nstf.id != :id;';
+                    'JOIN network_statistic_time_frame timeFrame ON timeFrame.id = network_statistic.time_frame_id ' .
+                    'WHERE timeFrame.id != :id;';
                 $count = $connection->executeStatement(
                     sql: $sql,
                     params: [

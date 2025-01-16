@@ -12,6 +12,7 @@
         "rsrq",
         "rssi",
         "sinr",
+        "stoponfail",
         "trafficmaxlimit",
         "txpower"
     ]

@@ -36,7 +36,7 @@ echo "---------------------------------------"
 XDEBUG_MODE=off /var/www/html/vendor/bin/phpcs --standard=PSR12 src
 stoponfail
 echo "---------------------------------------"
-echo "------- WEAK ASSUPTIONS:"
+echo "------- WEAK ASSUMPTIONS:"
 echo "---------------------------------------"
 XDEBUG_MODE=off /var/www/html/vendor/bin/phpa src
 stoponfail
