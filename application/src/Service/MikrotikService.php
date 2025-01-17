@@ -195,6 +195,7 @@ final class MikrotikService
     {
         $targetDisabledStatus = (true === $enabled) ? 'false' : 'true';
         $targetApiMethod = (true === $enabled) ? 'enable' : 'disable';
+        $executionSuccessful = false;
 
         try {
             foreach ($this->getInterfaces() as $interfaceInfo) {
@@ -207,10 +208,18 @@ final class MikrotikService
                     }
                 }
             }
+            $executionSuccessful = true;
+            foreach ($this->getInterfaces() as $interfaceInfo) {
+                if ($interfaceInfo['type'] === 'lte') {
+                    if (!($interfaceInfo['disabled'] === $targetDisabledStatus)) {
+                        $executionSuccessful = false;
+                    }
+                }
+            }
         } catch (\Exception) {
             return false;
         }
-        return true;
+        return $executionSuccessful;
     }
 
     private function sniffAndHandleSimCardNotFoundBug(): bool
