@@ -32,7 +32,7 @@ final class MikrotikService
         self::POWER_CYCLE_STEP_DISABLE_LTE => 2,
         self::POWER_CYCLE_STEP_ENABLE_LTE => 1,
         self::POWER_CYCLE_STEP_INIT_POWER_CYCLE => 1,
-        self::POWER_CYCLE_STEP_REBOOT => 50,
+        self::POWER_CYCLE_STEP_REBOOT => 30,
         self::POWER_CYCLE_STEP_SNIFF_SIM => 1,
     ];
 
@@ -58,23 +58,11 @@ final class MikrotikService
         $canRunNow = true;
         if (false === $force) {
             // throttle runs so they are dispatched every 5 minutes at most
-            $cachedInfo = $this->simpleCacheService->retrieveDataFromCache(self::CACHE_KEY_POWER_CYCLE);
-            if (array_key_exists(key: self::CACHE_KEY_POWER_CYCLE, array: $cachedInfo)) {
-                $canRunNow = false;
-            }
+            $canRunNow = !$this->isPowerCycleLocked();
         }
 
         if (true === $canRunNow) {
             $this->handlePowerCycle(currentStep: self::POWER_CYCLE_STEP_INIT_POWER_CYCLE);
-            $now = new \DateTime('now');
-            $validTo = new \DateTime('+5 minutes');
-            $this->simpleCacheService->cacheData(
-                key: self::CACHE_KEY_POWER_CYCLE,
-                data: [
-                    self::CACHE_KEY_POWER_CYCLE => $now,
-                ],
-                validTo: $validTo,
-            );
         }
     }
 
@@ -120,6 +108,8 @@ final class MikrotikService
         } else {
             $this->queuePowerCycleStep(stepName: $currentStep, stepDelaySeconds: 3);
         }
+
+        $this->lockPowerCycle();
     }
 
     public function getLteStatistics(string $interfaceId): array
@@ -171,6 +161,7 @@ final class MikrotikService
         $query = (new Query('/system/reboot'));
         try {
             $this->getClient()->query($query)->read();
+            $this->client = null;
             return true;
         } catch (\Exception) {
             return false;
@@ -245,5 +236,27 @@ final class MikrotikService
         }
 
         return true;
+    }
+
+    private function isPowerCycleLocked(): bool
+    {
+        $cachedInfo = $this->simpleCacheService->retrieveDataFromCache(self::CACHE_KEY_POWER_CYCLE);
+        if (array_key_exists(key: self::CACHE_KEY_POWER_CYCLE, array: $cachedInfo)) {
+            return true;
+        }
+        return false;
+    }
+
+    private function lockPowerCycle(): void
+    {
+        $now = new \DateTime('now');
+        $validTo = new \DateTime('+5 minutes');
+        $this->simpleCacheService->cacheData(
+            key: self::CACHE_KEY_POWER_CYCLE,
+            data: [
+                self::CACHE_KEY_POWER_CYCLE => $now,
+            ],
+            validTo: $validTo,
+        );
     }
 }
