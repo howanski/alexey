@@ -437,7 +437,8 @@ final class NetworkUsageService
         }
 
         if (true === $scheduleReset) {
-            $this->mikrotikService->powerCycleMikrotik(force: false);
+            // Let's reboot so all counters start from 0
+            $this->mikrotikService->powerCycleMikrotik(force: false, shortCycle: false);
         }
 
         return $stat;

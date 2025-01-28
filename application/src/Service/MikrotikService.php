@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Message\AsyncJob;
 use App\Service\NetworkUsageProviderSettings;
+use DateTime;
 use RouterOS\Client;
 use RouterOS\Query;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -19,6 +20,9 @@ final class MikrotikService
     private const POWER_CYCLE_STEP_INIT_POWER_CYCLE = 'init';
     private const POWER_CYCLE_STEP_REBOOT = 'reboot';
     private const POWER_CYCLE_STEP_SNIFF_SIM = 'sniff_sim';
+    private const SHORT_CYCLE_STEP_INIT = 'init_short';
+    private const SHORT_CYCLE_STEP_TOGGLE_LTE_DISABLE = 'short_lte_disable';
+    private const SHORT_CYCLE_STEP_TOGGLE_LTE_ENABLE = 'short_lte_enable';
 
     private const POWER_CYCLE_SUCCESSOR_STATES = [
         self::POWER_CYCLE_STEP_DISABLE_LTE => self::POWER_CYCLE_STEP_REBOOT,
@@ -26,6 +30,9 @@ final class MikrotikService
         self::POWER_CYCLE_STEP_INIT_POWER_CYCLE => self::POWER_CYCLE_STEP_DISABLE_LTE,
         self::POWER_CYCLE_STEP_REBOOT => self::POWER_CYCLE_STEP_ENABLE_LTE,
         self::POWER_CYCLE_STEP_SNIFF_SIM => null,
+        self::SHORT_CYCLE_STEP_INIT => self::SHORT_CYCLE_STEP_TOGGLE_LTE_DISABLE,
+        self::SHORT_CYCLE_STEP_TOGGLE_LTE_DISABLE => self::SHORT_CYCLE_STEP_TOGGLE_LTE_ENABLE,
+        self::SHORT_CYCLE_STEP_TOGGLE_LTE_ENABLE => null,
     ];
 
     private const POWER_CYCLE_DELAYS = [
@@ -34,6 +41,9 @@ final class MikrotikService
         self::POWER_CYCLE_STEP_INIT_POWER_CYCLE => 1,
         self::POWER_CYCLE_STEP_REBOOT => 30,
         self::POWER_CYCLE_STEP_SNIFF_SIM => 1,
+        self::SHORT_CYCLE_STEP_INIT => 1,
+        self::SHORT_CYCLE_STEP_TOGGLE_LTE_DISABLE => 5,
+        self::SHORT_CYCLE_STEP_TOGGLE_LTE_ENABLE => 1,
     ];
 
     private ?Client $client = null;
@@ -52,9 +62,14 @@ final class MikrotikService
     * - Disable LTE interfaces
     * - Reboot router
     * - Enable LTE interfaces
+    *
+    * Optionally we can disable and re-enable interfaces if it is only issue with connection
+    * and SIM card state is fine
     */
-    public function powerCycleMikrotik(bool $force = false): void
-    {
+    public function powerCycleMikrotik(
+        bool $force = false,
+        bool $shortCycle = false
+    ): void {
         $canRunNow = true;
         if (false === $force) {
             // throttle runs so they are dispatched every 5 minutes at most
@@ -62,7 +77,11 @@ final class MikrotikService
         }
 
         if (true === $canRunNow) {
-            $this->handlePowerCycle(currentStep: self::POWER_CYCLE_STEP_INIT_POWER_CYCLE);
+            if (true === $shortCycle) {
+                $this->handlePowerCycle(currentStep: self::SHORT_CYCLE_STEP_INIT);
+            } else {
+                $this->handlePowerCycle(currentStep: self::POWER_CYCLE_STEP_INIT_POWER_CYCLE);
+            }
         }
     }
 
@@ -84,15 +103,18 @@ final class MikrotikService
 
         switch ($currentStep) {
             case self::POWER_CYCLE_STEP_INIT_POWER_CYCLE:
+            case self::SHORT_CYCLE_STEP_INIT:
                 $stepAccomplished = true;
                 break;
             case self::POWER_CYCLE_STEP_DISABLE_LTE:
+            case self::SHORT_CYCLE_STEP_TOGGLE_LTE_DISABLE:
                 $stepAccomplished = $this->disableMikrotikLteInterfaces();
                 break;
             case self::POWER_CYCLE_STEP_REBOOT:
                 $stepAccomplished = $this->resetMikrotik();
                 break;
             case self::POWER_CYCLE_STEP_ENABLE_LTE:
+            case self::SHORT_CYCLE_STEP_TOGGLE_LTE_ENABLE:
                 $stepAccomplished = $this->enableMikrotikLteInterfaces();
                 break;
             case self::POWER_CYCLE_STEP_SNIFF_SIM:
@@ -217,8 +239,19 @@ final class MikrotikService
     {
         try {
             $simCardDetectable = false;
+            $connectionDown = false;
             foreach ($this->getInterfaces() as $interfaceInfo) {
                 if ($interfaceInfo['type'] === 'lte') {
+                    if (
+                        isset($interfaceInfo['last-link-down-time'])
+                        && strlen($interfaceInfo['last-link-down-time']) > 18
+                    ) {
+                        $lastUptime = new DateTime($interfaceInfo['last-link-up-time']);
+                        $lastDownTime = new DateTime($interfaceInfo['last-link-down-time']);
+                        if ($lastDownTime > $lastUptime) {
+                            $connectionDown = true;
+                        }
+                    }
                     $lteData = $this->getLteStatistics(interfaceId: $interfaceInfo['.id']);
                     if (isset($lteData[0]['imsi'])) {
                         $imsi = $lteData[0]['imsi'];
@@ -229,7 +262,9 @@ final class MikrotikService
                 }
             }
             if (false === $simCardDetectable) {
-                $this->powerCycleMikrotik(force: false);
+                $this->powerCycleMikrotik(force: false, shortCycle: false);
+            } elseif (true === $connectionDown) {
+                $this->powerCycleMikrotik(force: false, shortCycle: true);
             }
         } catch (\Exception) {
             return false;
