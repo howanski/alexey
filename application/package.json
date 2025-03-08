@@ -19,7 +19,7 @@
         "@fortawesome/fontawesome-free": "^5.15.4",
         "@popperjs/core": "^2.10.2",
         "autoprefixer": "^10.4.0",
-        "axios": "^0.28.0",
+        "axios": "^1.8.2",
         "chart.js": "^3.5.0",
         "chartjs-gauge": "^0.3.0",
         "favico.js": "^0.3.10",
