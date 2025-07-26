@@ -1,5 +1,5 @@
 FROM php:8.2-fpm
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get update && apt-get install -y unzip libzip-dev vim mariadb-client htop net-tools nodejs yarn supervisor iputils-ping wget libicu-dev libfreetype-dev libjpeg62-turbo-dev libpng-dev redis  --fix-missing
