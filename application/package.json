@@ -1,10 +1,11 @@
 {
     "devDependencies": {
-        "@symfony/webpack-encore": "3.*",
+        "@symfony/webpack-encore": "4.*",
         "core-js": "^3.0.0",
         "file-loader": "^6.0.0",
         "postcss-loader": "^7.0.0",
         "regenerator-runtime": "^0.13.2",
+        "webpack-cli": "^6.0.1",
         "webpack-notifier": "^1.6.0"
     },
     "license": "UNLICENSED",
@@ -16,6 +17,8 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@babel/core": "^7.28.0",
+        "@babel/preset-env": "^7.28.0",
         "@fortawesome/fontawesome-free": "^5.15.4",
         "@popperjs/core": "^2.10.2",
         "autoprefixer": "^10.4.0",
@@ -27,6 +30,7 @@
         "postcss-import": "^14.0.2",
         "tailwind-nord": "^1.2.0",
         "tailwindcss": "^2.2.19",
-        "vanillajs-datepicker": "^1.1.4"
+        "vanillajs-datepicker": "^1.1.4",
+        "webpack": "^5.100.2"
     }
 }
