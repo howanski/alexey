@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\RedditBannedPosterRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -23,6 +24,14 @@ class RedditBannedPoster
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'redditBannedPosters')]
     #[ORM\JoinColumn(nullable: false)]
     private $user;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private \DateTimeInterface $lastSeen;
+
+    public function __construct()
+    {
+        $this->setLastSeen(new \DateTime('now'));
+    }
 
     public function getId(): int
     {
@@ -49,6 +58,18 @@ class RedditBannedPoster
     public function setUser(User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getLastSeen(): \DateTimeInterface
+    {
+        return $this->lastSeen;
+    }
+
+    public function setLastSeen(\DateTimeInterface $lastSeen): static
+    {
+        $this->lastSeen = $lastSeen;
 
         return $this;
     }

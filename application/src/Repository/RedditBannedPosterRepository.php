@@ -20,4 +20,22 @@ final class RedditBannedPosterRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, RedditBannedPoster::class);
     }
+
+    public function cleanup(): int
+    {
+        $oldTime = date('Y-m-d', strtotime('-1 month'));
+        $connection = $this->getEntityManager()->getConnection();
+        $sql =
+            'DELETE reddit_banned_poster ' .
+            'FROM reddit_banned_poster ' .
+            'WHERE reddit_banned_poster.last_seen < :ago;';
+        $count = $connection->executeStatement(
+            sql: $sql,
+            params: [
+                'ago' => $oldTime,
+            ],
+        );
+
+        return (int) $count;
+    }
 }

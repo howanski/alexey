@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Entity\RedditBannedPoster;
 use App\Entity\RedditChannel;
 use App\Entity\RedditPost;
 use App\Entity\User;
 use App\Message\AsyncJob;
+use App\Repository\RedditBannedPosterRepository;
 use App\Repository\RedditChannelRepository;
 use App\Repository\RedditPostRepository;
 use DateInterval;
@@ -44,9 +46,12 @@ final class RedditReader
             );
             $this->bus->dispatch($message);
         }
+        /** @var RedditBannedPosterRepository */
+        $bannedPostersRepository = $this->em->getRepository(RedditBannedPoster::class);
+        $bannedPostersRepository->cleanup();
     }
 
-    public function getChannelDataForView(RedditChannel $channel, int $limit = 100)
+    public function getChannelDataForView(RedditChannel $channel, int $limit = 100): array
     {
         $posts = $this->postRepository->getUnseen(
             channel: $channel,
@@ -121,7 +126,9 @@ final class RedditReader
                     $uri = 'https://old.reddit.com' . $post['permalink'];
                     $persistedPost = $this->postRepository->findOneBy(['uri' => $uri, 'channel' => $channel]);
                     $userName = strval($post['author']);
-                    if ($this->isUserBanned($userName, $channel->getUser())) {
+                    $bannedPoster = $this->getBannedPosterIfExists($userName, $channel->getUser());
+                    if ($bannedPoster instanceof RedditBannedPoster) {
+                        $bannedPoster->setLastSeen(new \DateTime('now'));
                         continue;
                     }
                     if (is_null($persistedPost)) {
@@ -161,15 +168,15 @@ final class RedditReader
         }
     }
 
-    private function isUserBanned(string $userName, User $user): bool
+    private function getBannedPosterIfExists(string $userName, User $user): ?RedditBannedPoster
     {
-        // TODO: performance
+        // TODO: move to repository
         $userName = str_replace(search: '/u/', replace: '', subject: $userName);
         foreach ($user->getRedditBannedPosters() as $poster) {
             if ($poster->getUsername() === $userName) {
-                return true;
+                return $poster;
             }
         }
-        return false;
+        return null;
     }
 }
