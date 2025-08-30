@@ -1,4 +1,10 @@
-<title>{{ post.title }}</title>
-<a href="{{ post.uri }}" target="_blank">{{ post.title }}</a>
-<a href="{{ post.uri }}" target="_blank">{{ post.thumbnail|raw }}</a>
-<a href="{{ path('crawler_reddit_banned_user_new', {username: post.userName}) }}">🛇 {{ post.username }} 🛇</a>
+<html>
+    <head>
+        <title>{{ post.title }}</title>
+    </head>
+    <body style="background-color:#2e3440;">
+        <a href="{{ post.uri }}" target="_blank" style="color: white;">{{ post.title }}</a>
+        <a href="{{ post.uri }}" target="_blank">{{ post.thumbnail|raw }}</a>
+        <a href="{{ path('crawler_reddit_banned_user_new', {username: post.userName}) }}" style="color: white;">🛇 {{ post.username }} 🛇</a>
+    </body>
+</html>
