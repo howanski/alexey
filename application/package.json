@@ -31,6 +31,6 @@
         "tailwind-nord": "^1.2.0",
         "tailwindcss": "^2.2.19",
         "vanillajs-datepicker": "^1.1.4",
-        "webpack": "^5.100.2"
+        "webpack": "^5.104.1"
     }
 }
