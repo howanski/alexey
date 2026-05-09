@@ -42,8 +42,6 @@ services:
             context: ./entrails/php-fpm
             dockerfile: Dockerfile
         container_name: "alexey-php"
-        expose:
-            - 9000
         networks:
             - network
             - wake_lan
