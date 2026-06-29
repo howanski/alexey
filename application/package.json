@@ -17,7 +17,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "@babel/core": "^7.28.0",
+        "@babel/core": "^7.29.6",
         "@babel/preset-env": "^7.28.0",
         "@fortawesome/fontawesome-free": "^5.15.4",
         "@popperjs/core": "^2.10.2",
