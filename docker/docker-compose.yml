@@ -94,8 +94,8 @@ networks:
     wake_lan:
         driver: macvlan
         driver_opts:
-            parent: enp3s0  #set your host network card here, i.e. eth0
+            parent: ${WAKE_LAN_INTERFACE}  #required value in docker/.env, i.e. eth0
         ipam:
             driver: default
             config:
-                - subnet: 192.168.1.0/24  #set your network addressation here
+                - subnet: ${WAKE_LAN_SUBNET}  #required value in docker/.env, i.e. 192.168.1.0/24

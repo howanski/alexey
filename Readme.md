@@ -18,19 +18,11 @@ For now it is a field for experiments and some fun with coding :)
 
 I love simple deployments. For development-ready instance all you need is Docker, Docker-Compose (v2) and Bash:
 
-First of all - if you want Wake On LAN to work, you must configure network OUTSIDE containers in [docker-compose.yml](./docker/docker-compose.yml)
+First of all - if you want Wake On LAN to work, you must configure network interface and subnet in [env file](./docker/.env)
 
-```yaml
-...BLAH BLAH BLAH...
-    wake_lan:
-        driver: macvlan
-        driver_opts:
-            parent: enp3s0 #set your host network card here, i.e. eth0
-        ipam:
-            driver: default
-            config:
-                - subnet: 192.168.1.0/24 #set your network addressation here
-...BLAH BLAH BLAH...
+```env
+WAKE_LAN_INTERFACE=enp3s0
+WAKE_LAN_SUBNET=192.168.1.0/24
 ```
 
 Now, if you *want* tunneling to work, you need to add your [Ngrok Auth Token](https://dashboard.ngrok.com/get-started/your-authtoken) to [configuration file](./docker/entrails/nginx/ngrok/.env.local). Skip this step if you don't need access from outside.
