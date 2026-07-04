@@ -23,7 +23,10 @@ First of all - if you want Wake On LAN to work, you must configure network inter
 ```env
 WAKE_LAN_INTERFACE=enp3s0
 WAKE_LAN_SUBNET=192.168.1.0/24
+WAKE_LAN_GATEWAY=192.168.1.1
+WAKE_LAN_RESERVED_IPS=192.168.1.240/29
 ```
+`WAKE_LAN_RESERVED_IPS` defines a small IP range (e.g., .240–.247) that is EXCLUDED from your router's DHCP pool. This ensures the container never gets your router's IP, so it can communicate with the router via API while still having macvlan access for Layer 2 broadcasts (WOL). 
 
 Now, if you *want* tunneling to work, you need to add your [Ngrok Auth Token](https://dashboard.ngrok.com/get-started/your-authtoken) to [configuration file](./docker/entrails/nginx/ngrok/.env.local). Skip this step if you don't need access from outside.
 

@@ -1,7 +1,7 @@
 # https://github.com/compose-spec/compose-spec/blob/master/spec.md
 services:
     database:
-        env_file: 
+        env_file:
             - .env
         image: mysql:8.0.40
         container_name: "alexey-mysql"
@@ -14,10 +14,10 @@ services:
             - database_volume:/var/lib/mysql
             - ./entrails/mysql_conf:/etc/mysql/conf.d
         logging:
-          driver: json-file
-          options:
-              max-size: "5m"
-              max-file: "2"
+            driver: json-file
+            options:
+                max-size: "5m"
+                max-file: "2"
     phpmyadmin:
         env_file:
             - .env
@@ -31,10 +31,10 @@ services:
         depends_on:
             - database
         logging:
-          driver: json-file
-          options:
-              max-size: "5m"
-              max-file: "2"
+            driver: json-file
+            options:
+                max-size: "5m"
+                max-file: "2"
     php:
         env_file:
             - .env
@@ -44,7 +44,7 @@ services:
         container_name: "alexey-php"
         networks:
             - network
-            # - wake_lan #TODO revert - currently resolving issue when wake_lan configuration resolves localhost inside container as Mikrotik router
+            - wake_lan
         depends_on:
             - database
         volumes:
@@ -52,10 +52,10 @@ services:
             - ./entrails/nginx/ngrok:/ngrok
         restart: always
         logging:
-          driver: json-file
-          options:
-              max-size: "5m"
-              max-file: "2"
+            driver: json-file
+            options:
+                max-size: "5m"
+                max-file: "2"
         extra_hosts:
             - "host.docker.internal:host-gateway"
     nginx:
@@ -82,20 +82,22 @@ services:
             - ./entrails/nginx/nginx.conf:/etc/nginx/nginx.conf
             - ./entrails/nginx/ssl:/etc/nginx/ssl
         logging:
-          driver: json-file
-          options:
-              max-size: "5m"
-              max-file: "2"
+            driver: json-file
+            options:
+                max-size: "5m"
+                max-file: "2"
 volumes:
     database_volume: {}
 
 networks:
     network:
-    # wake_lan: #TODO revert - currently resolving issue when wake_lan configuration resolves localhost inside container as Mikrotik router
-    #     driver: macvlan
-    #     driver_opts:
-    #         parent: ${WAKE_LAN_INTERFACE}  #required value in docker/.env, i.e. eth0
-    #     ipam:
-    #         driver: default
-    #         config:
-    #             - subnet: ${WAKE_LAN_SUBNET}  #required value in docker/.env, i.e. 192.168.1.0/24
+    wake_lan:
+        driver: macvlan
+        driver_opts:
+            parent: ${WAKE_LAN_INTERFACE} #required value in docker/.env, i.e. eth0
+        ipam:
+            driver: default
+            config:
+                - subnet: ${WAKE_LAN_SUBNET} #required value in docker/.env, i.e. 192.168.1.0/24
+                  gateway: ${WAKE_LAN_GATEWAY} #required value in docker/.env, i.e. 192.168.1.1 <- pointing to your router
+                  ip_range: ${WAKE_LAN_RESERVED_IPS} #required value in docker/.env, i.e. 192.168.1.240/29 <- tiny slice of network WITHOUT your router
