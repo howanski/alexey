@@ -52,12 +52,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 15, options: ['default' => ''])]
     private string $otp = '';
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RedditChannel::class, orphanRemoval: true)]
-    private $redditChannels;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RedditBannedPoster::class, orphanRemoval: true)]
-    private $redditBannedPosters;
-
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: StorageSpace::class, orphanRemoval: true)]
     private $storageSpaces;
 
@@ -67,8 +61,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->caches = new ArrayCollection();
         $this->moneyNodes = new ArrayCollection();
         $this->moneyTransfers = new ArrayCollection();
-        $this->redditChannels = new ArrayCollection();
-        $this->redditBannedPosters = new ArrayCollection();
         $this->storageSpaces = new ArrayCollection();
     }
 
@@ -195,11 +187,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRedditChannels(): Collection
-    {
-        return $this->redditChannels;
-    }
-
     public function getOtp(): string
     {
         return $this->otp;
@@ -209,11 +196,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->otp = $otp;
         return $this;
-    }
-
-    public function getRedditBannedPosters(): Collection
-    {
-        return $this->redditBannedPosters;
     }
 
     public function getStorageSpaces(): Collection

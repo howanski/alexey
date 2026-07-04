@@ -65,18 +65,6 @@ app:
         visible: Visible
         wake: Wake
         you_sure_delete: "Are you sure you want to delete this item?"
-    crawler:
-      forms:
-        labels:
-          channelgroup: "Group"
-          name: "Name"
-          ordernumber: "Order number"
-          username: "Username"
-      strings:
-        banned_users: "Banned users"
-        groups: "Groups"
-        menu_record: 'Crawler'
-        username: "Username"
     dashboard:
       strings:
         menu_record: Dashboard
@@ -208,14 +196,11 @@ app:
           cron_job_cleanup_network_stats: "Cleanup obsolete network statistics"
           cron_job_ping: "Monitor network machines state"
           cron_job_update_network_stats: "Gather network statistics"
-          cron_job_update_crawler: "Update reddit crawler data"
           cron_job_check_tunnel_change: "Monitor tunnel changes"
         labels:
           cron_jobs: "Background jobs"
           is_cron_active: "Run this job in background"
           locale: Locale
-          reddit_stream_autohide: "Hide empty reddit channels"
-          reddit_username: "Reddit username"
           run_cron_every: "Break between runs (seconds)"
           tunneling_allowed: "Allow browser access via tunnel"
           your_email: "Your email"
@@ -226,9 +211,6 @@ app:
           locale:
             en: English
             pl: Polish
-          reddit_stream_autohide:
-            bool_false: "Don't hide"
-            bool_true: "Hide automatically"
       strings:
         manage_tunnel: "Manage tunnel"
         menu_record: Settings

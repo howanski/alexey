@@ -65,18 +65,6 @@ app:
         visible: Widoczna
         wake: Obudź
         you_sure_delete: "Na pewno chcesz to usunąć?"
-    crawler:
-      forms:
-        labels:
-          channelgroup: "Grupa"
-          name: "Nazwa"
-          ordernumber: "Numer porządkowy"
-          username: "Nazwa użytkownika"
-      strings:
-        banned_users: "Zablokowani użytkownicy"
-        groups: "Grupy"
-        menu_record: 'Crawler'
-        username: "Nazwa użytkownika"
     dashboard:
       strings:
         menu_record: Sterownia
@@ -208,14 +196,11 @@ app:
           cron_job_cleanup_network_stats: "Sprzatanie przestarzalych statystyk sieci"
           cron_job_ping: "Monitorowanie stanu urzadzen sieciowych"
           cron_job_update_network_stats: "Zbieranie statystyk sieci"
-          cron_job_update_crawler: "Aktualizacja crawlera reddit"
           cron_job_check_tunnel_change: "Obserwuj zmiany tunelu"
         labels:
           cron_jobs: "Procesy w tle"
           is_cron_active: "Uruchamiaj ten proces w tle"
           locale: Język
-          reddit_stream_autohide: "Ukrywaj puste kanały Reddit"
-          reddit_username: "Nazwa użytkownika Reddit"
           run_cron_every: "Przerwa pomiędzy uruchomieniami (sekundy)"
           tunneling_allowed: "Zezwól na dostęp przeglądarki przez tunel"
           your_email: "Twój email"
@@ -226,9 +211,6 @@ app:
           locale:
             en: Angielski
             pl: Polski
-          reddit_stream_autohide:
-            bool_false: "Nie ukrywaj"
-            bool_true: "Ukrywaj automatycznie"
       strings:
         manage_tunnel: "Zarządzaj tunelem"
         menu_record: Ustawienia

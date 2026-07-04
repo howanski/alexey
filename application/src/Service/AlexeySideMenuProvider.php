@@ -72,18 +72,6 @@ final class AlexeySideMenuProvider extends AbstractExtension
 
         $sideMenu = $this->addMoneyMenuRecords($sideMenu);
 
-        $route = $this->router->generate('crawler_index');
-        $sideMenu[] = new SideMenuItem(
-            name: $this->translator->translateString(
-                translationId: 'menu_record',
-                module: 'crawler'
-            ),
-            destination: $route,
-            icon: 'fab fa-reddit-alien',
-            isActive: $this->isActiveRoute($route),
-            children: [],
-        );
-
         $route = $this->router->generate('storage_index');
         $sideMenu[] = new SideMenuItem(
             name: $this->translator->translateString(

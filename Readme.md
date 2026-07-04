@@ -7,7 +7,6 @@ Current features are:
 - network devices monitoring/waking
 - monitoring LTE usage (Mikrotik and Huawei routers - just a subset I personally had)
 - storing financial details for analysis where did my money gone and how much I can expect to save by x time
-- crawling through my favorites subreddits, looking for most popular articles
 - basic access via Android app and ability to open secure tunnel to log in via *unknown* browser using One Time Password
 - physical storage management
 

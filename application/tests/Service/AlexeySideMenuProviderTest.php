@@ -88,13 +88,6 @@ final class AlexeySideMenuProviderTest extends TestCase
                 ],
             ],
             [
-                'icon' => 'fab fa-reddit-alien',
-                'isActive' => false,
-                'name' => 'trans_menu_record',
-                'destination' => '/crawler_index',
-                'children' => [],
-            ],
-            [
                 'icon' => 'fas fa-warehouse',
                 'isActive' => false,
                 'name' => 'trans_menu_record',

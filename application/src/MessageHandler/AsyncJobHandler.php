@@ -8,7 +8,6 @@ use App\Message\AsyncJob;
 use App\Service\MikrotikService;
 use App\Service\NetworkMachineService;
 use App\Service\NetworkUsageService;
-use App\Service\RedditReader;
 use App\Service\TransmissionService;
 use App\Service\TunnelInfoProvider;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -22,7 +21,6 @@ final class AsyncJobHandler
         private MikrotikService $mikrotikService,
         private NetworkMachineService $networkMachineService,
         private NetworkUsageService $networkUsageService,
-        private RedditReader $redditReader,
         private TransmissionService $transmissionService,
         private TunnelInfoProvider $tunnelInfoProvider,
     ) {
@@ -65,12 +63,6 @@ final class AsyncJobHandler
                     wakeDestination: $payload['wakeDestination'],
                     macAddress: $payload['macAddress'],
                 );
-                break;
-            case AsyncJob::TYPE_UPDATE_CRAWLER:
-                $this->redditReader->refreshAllChannels();
-                break;
-            case AsyncJob::TYPE_UPDATE_CRAWLER_CHANNEL:
-                $this->redditReader->refreshChannelById(id: $payload['id']);
                 break;
             case AsyncJob::TYPE_CHECK_TUNNEL_CHANGE:
                 $this->tunnelInfoProvider->reactOnChanges();
