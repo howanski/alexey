@@ -6,5 +6,12 @@ echo "-----------------------------------------------------"
 echo "---------------- [ HAVE  PATIENCE! ] ----------------"
 echo "-----------------------------------------------------"
 sleep 3
+
+ENV_FILE_LOCAL=".env.local"
+ENV_ARGS=""
+if [ -f "$ENV_FILE_LOCAL" ]; then
+    ENV_ARGS="--env-file $ENV_FILE_LOCAL"
+fi
+
 docker compose build --pull --parallel --no-cache --force-rm
-docker compose up
+docker compose $ENV_ARGS up 
