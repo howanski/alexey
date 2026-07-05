@@ -19,8 +19,18 @@ done
 
 XDEBUG_MODE=off php bin/console doctrine:migration:migrate
 
-chown -R www-data:1000 /var/www/html/var/
-chmod -R g+rwX /var/www/html/var/
+ensure_dir_writeable() {
+    mkdir -p "$1"
+    chown -R www-data:1000 "$1"
+    chmod -R g+rwX "$1"
+}
+
+ensure_dir_writeable /var/www/html/public/build/
+ensure_dir_writeable /var/www/html/var/
+ensure_dir_writeable /var/www/html/var/log/
+ensure_dir_writeable /var/www/html/var/cache/
+ensure_dir_writeable /var/www/html/vendor/
+ensure_dir_writeable /var/www/html/node_modules/
 find /var/www/html -type d -exec chmod g+s {} +
 
 nohup supervisord

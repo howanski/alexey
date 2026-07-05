@@ -17,6 +17,7 @@ application/vendor/
 application/yarn-error.log
 backups/*.sql
 backups/*.sql.gz
+docker.md5
 docker/.env.local
 docker/entrails/nginx/ngrok/.env.local
 docker/entrails/nginx/ngrok/ngrok

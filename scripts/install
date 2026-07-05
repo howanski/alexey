@@ -1,23 +1,44 @@
 #!/bin/bash
+MD5_SUM_FILE="../docker.md5"
 DETACH=""
 if [[ "$1" == "--detach" ]]; then
-    DETACH="--detach"
+	DETACH="--detach"
+fi
+
+newSum=""
+oldSum=""
+rebuildContainers=1
+
+if [ -f "$MD5_SUM_FILE" ]; then
+	oldSum=$(cat "$MD5_SUM_FILE")
+fi
+
+while IFS= read -r item; do
+	fileSum=$(md5sum "$item" | cut -d " " -f 1)
+	newSum="${newSum}${fileSum}"
+done < <(find ../docker -type f -not -name "*.log" | sort)
+
+if [[ "$oldSum" == "$newSum" ]]; then
+	rebuildContainers=0
+else
+	echo "$newSum" >"$MD5_SUM_FILE"
+	rebuildContainers=1
+	echo "------ [ STARTING CONTAINERS REBUILD ] ------"
+	sleep 2
 fi
 
 cd ../docker
-echo "-----------------------------------------------------"
-echo "------ [ ALEXEY WILL BE LIVE IN FEW MOMENTS! ] ------"
-echo "-----------------------------------------------------"
-echo "---------------- [ HAVE  PATIENCE! ] ----------------"
-echo "-----------------------------------------------------"
-sleep 3
 
 ENV_FILE_LOCAL=".env.local"
 ENV_ARGS=""
 if [ -f "$ENV_FILE_LOCAL" ]; then
-    ENV_ARGS="--env-file $ENV_FILE_LOCAL"
+	ENV_ARGS="--env-file $ENV_FILE_LOCAL"
 fi
 
-docker compose build --pull --parallel --no-cache --force-rm
-docker compose $ENV_ARGS up $DETACH
+if [ "$rebuildContainers" -eq 1 ]; then
+	docker compose build --pull --parallel --no-cache --force-rm
+fi
 
+echo "---------- [ STARTING COMPOSE UP ] ----------"
+sleep 2
+docker compose $ENV_ARGS up $DETACH
