@@ -1,4 +1,9 @@
 #!/bin/bash
+DETACH=""
+if [[ "$1" == "--detach" ]]; then
+    DETACH="--detach"
+fi
+
 cd ../docker
 echo "-----------------------------------------------------"
 echo "------ [ ALEXEY WILL BE LIVE IN FEW MOMENTS! ] ------"
@@ -14,4 +19,5 @@ if [ -f "$ENV_FILE_LOCAL" ]; then
 fi
 
 docker compose build --pull --parallel --no-cache --force-rm
-docker compose $ENV_ARGS up 
+docker compose $ENV_ARGS up $DETACH
+
