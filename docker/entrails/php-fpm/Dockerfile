@@ -1,4 +1,5 @@
 FROM php:8.2-fpm
+RUN groupadd -g 1000 -o appgroup 2>/dev/null; usermod -aG 1000 www-data
 RUN curl -sL https://deb.nodesource.com/setup_22.x | bash -
 RUN apt-get update && apt-get install -y unzip libzip-dev vim mariadb-client htop net-tools nodejs supervisor iputils-ping wget libicu-dev libfreetype-dev libjpeg62-turbo-dev libpng-dev redis  --fix-missing
 RUN npm install -g corepack

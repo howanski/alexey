@@ -15,4 +15,3 @@ fi
 
 docker compose build --pull --parallel --no-cache --force-rm
 docker compose $ENV_ARGS up --detach 
-# ./../scripts/fix_permissions #TODO automate permissions fix, preferably by proper UID/GID

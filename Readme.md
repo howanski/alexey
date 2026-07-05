@@ -83,9 +83,6 @@ cd scripts
 #create user
 php ../bin/console alexey:user:new
 # and now open your browser on https://localhost/ to log in ;-)
-
-#note: from time to time there's file ownership issue I haven't fixed yet, which can be manually fixed by running
-./fix_permissions
 ```
 
 Above scenario should work out-of-the-box if there are no port conflicts with your containers. Alexey containers will be up every time you turn on your computer.

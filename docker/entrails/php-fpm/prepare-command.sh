@@ -19,7 +19,9 @@ done
 
 XDEBUG_MODE=off php bin/console doctrine:migration:migrate
 
-chown -R 1000:1000 /var/www/html/
+chown -R www-data:1000 /var/www/html/var/
+chmod -R g+rwX /var/www/html/var/
+find /var/www/html -type d -exec chmod g+s {} +
 
 nohup supervisord
 
