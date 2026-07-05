@@ -1,2 +1,3 @@
-docker/.env.local
 .vscode/commands
+docker/.env.local
+docker/entrails/nginx/ngrok/.env.local
