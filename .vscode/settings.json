@@ -1,7 +1,9 @@
 {
     "cSpell.words": [
         "amqp",
+        "appendonly",
         "Autohide",
+        "autorestart",
         "cellid",
         "DGRAM",
         "Dynacard",
@@ -11,13 +13,16 @@
         "imsi",
         "LONGTEXT",
         "maxsignal",
+        "numprocs",
         "plmn",
         "rsrp",
         "rsrq",
         "rssi",
         "sinr",
+        "startsecs",
         "stoponfail",
         "trafficmaxlimit",
         "txpower"
-    ]
+    ],
+    "php.version": "8.2"
 }

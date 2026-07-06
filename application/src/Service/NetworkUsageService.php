@@ -193,9 +193,9 @@ final class NetworkUsageService
         if ($type === self::NETWORK_USAGE_PROVIDER_HUAWEI) {
             try {
                 $status = $router->getStatus();
-                $signalMax = (int)$status->maxsignal;
-                $signalCurrent = (int)$status->SignalIcon;
-                $info->signalStrengthPercent = (int)($signalMax / $signalCurrent * 100);
+                $signalMax = (int) $status->maxsignal;
+                $signalCurrent = (int) $status->SignalIcon;
+                $info->signalStrengthPercent = (int) ($signalMax / $signalCurrent * 100);
             } catch (\Exception $e) {
                 $info->error = $e->getMessage();
                 $info->errorOn = 'basic_info';
@@ -204,15 +204,15 @@ final class NetworkUsageService
 
             try {
                 $signal = $router->generalizedGet('api/device/signal');
-                $info->band = (string)$signal->band;
-                $info->cellId = (int)$signal->cell_id;
-                $info->pci = (int)$signal->pci;
-                $info->plmn = (int)$signal->plmn;
-                $info->rsrp = (int)$signal->rsrp;
-                $info->rsrq = (float)$signal->rsrq;
-                $info->rssi = (int)$signal->rssi;
-                $info->sinr = (float)$signal->sinr;
-                $info->txpower = (string)$signal->txpower;
+                $info->band = (string) $signal->band;
+                $info->cellId = (int) $signal->cell_id;
+                $info->pci = (int) $signal->pci;
+                $info->plmn = (int) $signal->plmn;
+                $info->rsrp = (int) $signal->rsrp;
+                $info->rsrq = (float) $signal->rsrq;
+                $info->rssi = (int) $signal->rssi;
+                $info->sinr = (float) $signal->sinr;
+                $info->txpower = (string) $signal->txpower;
             } catch (\Exception $e) {
                 $info->error = $e->getMessage();
                 $info->errorOn = 'advanced_info';
@@ -310,7 +310,7 @@ final class NetworkUsageService
         $count = count($networkStatistics);
         if ($count > $maxRecords) {
             $loosenEntities = [];
-            $selectEveryNth = (int)($count / $maxRecords);
+            $selectEveryNth = (int) ($count / $maxRecords);
             foreach ($networkStatistics as $key => $entity) {
                 if ($key % $selectEveryNth === 0) {
                     $loosenEntities[] = $entity;
@@ -343,10 +343,10 @@ final class NetworkUsageService
             /** @var SimpleXMLElement $startDate */
             $startDate = $router->generalizedGet('api/monitoring/start_date');
 
-            $currentMonthDownload = (int)$monthStats->CurrentMonthDownload;
-            $currentMonthUpload = (int)$monthStats->CurrentMonthUpload;
-            $monthLastClearTime = (string)$monthStats->MonthLastClearTime;
-            $trafficMaxLimit = (int)$startDate->trafficmaxlimit;
+            $currentMonthDownload = (int) $monthStats->CurrentMonthDownload;
+            $currentMonthUpload = (int) $monthStats->CurrentMonthUpload;
+            $monthLastClearTime = (string) $monthStats->MonthLastClearTime;
+            $trafficMaxLimit = (int) $startDate->trafficmaxlimit;
             $monthStart = new DateTime($monthLastClearTime);
             $monthEnd = clone $monthStart;
             $monthEnd->add(new DateInterval('P1M'));
@@ -385,8 +385,8 @@ final class NetworkUsageService
             if ($interfaceInfo['running'] === 'true' && $interfaceInfo['disabled'] === 'false') {
                 if ($interfaceInfo['type'] === 'lte') {
                     $lastUptime = new DateTime($interfaceInfo['last-link-up-time']);
-                    $rxBytes = (int)$interfaceInfo['rx-byte'];
-                    $txBytes = (int)$interfaceInfo['tx-byte'];
+                    $rxBytes = (int) $interfaceInfo['rx-byte'];
+                    $txBytes = (int) $interfaceInfo['tx-byte'];
 
                     $totalRxBytes += $rxBytes;
                     $totalTxBytes += $txBytes;
@@ -402,8 +402,7 @@ final class NetworkUsageService
         $trafficMaxLimit *= 1024 * 1024 * 1024;
 
         $monthStart = $this->getLastMonthResetTimeByUserDeclaration();
-        $monthEnd = clone $monthStart;
-        $monthEnd->add(new DateInterval('P1M'));
+        $monthEnd = $this->getNextBillingDayAfter($monthStart);
         $monthEnd->sub(new DateInterval('PT1S'));
         $timeFrame = $this->getTimeFrame($monthStart, $monthEnd, $trafficMaxLimit);
 
@@ -437,7 +436,7 @@ final class NetworkUsageService
         }
 
         if (true === $scheduleReset) {
-            // Let's reboot so all counters start from 0
+            // Let's reboot router so all counters start from 0
             $this->mikrotikService->powerCycleMikrotik(force: false, shortCycle: false);
         }
 
@@ -519,21 +518,57 @@ final class NetworkUsageService
         $now->setTime(0, 0);
 
         $currentDay = intval($now->format('d'));
+        $lastDayOfCurrentMonth = intval($now->format('t'));
+        $effectiveBillingDayForCurrentMonth = min($billingDay, $lastDayOfCurrentMonth);
 
-        // TODO will crash on 30th day of month or 29th of february etc. if billing is on 31st
-        // needs some logic improvements
-        // $lastDayOfCurrentMonth = intval($now->format('t'));
-
-        if (($currentDay < $billingDay)) {
+        // If we're before the effective billing day of the current month, the last billing was last month.
+        // E.g. billing day 31, today is March 20 → effective billing day for March is 31, 20 < 31 → subtract month.
+        // E.g. billing day 31, today is Feb 28 → effective billing day for Feb is 28, 28 is NOT < 28 → don't subtract.
+        if ($currentDay < $effectiveBillingDayForCurrentMonth) {
             $now->sub(new DateInterval('P1M'));
         }
 
+        // Set to the effective billing day of the target month (clamped to last day of that month).
+        $lastDayOfTargetMonth = intval($now->format('t'));
+        $effectiveDay = min($billingDay, $lastDayOfTargetMonth);
         $now->setDate(
             year: intval($now->format('Y')),
             month: intval($now->format('m')),
-            day: $billingDay
+            day: $effectiveDay
         );
 
         return $now;
+    }
+
+    /**
+     * Calculate the next billing day after a given date.
+     * The billing day is clamped to the last day of the month when the declared
+     * billing day exceeds the month length (e.g. billing day 31 → Feb 28, Apr 30).
+     *
+     * We increment the month manually instead of using P1M, because PHP's P1M
+     * can overflow into the wrong month (e.g. Jan 31 + P1M = Mar 3, not Feb 28).
+     */
+    private function getNextBillingDayAfter(DateTime $from): DateTime
+    {
+        $billingDay = $this->networkUsageProviderSettings->getBillingDay();
+
+        $year = intval($from->format('Y'));
+        $month = intval($from->format('m'));
+
+        // Advance to next month, handling year rollover.
+        if ($month === 12) {
+            $year++;
+            $month = 1;
+        } else {
+            $month++;
+        }
+
+        $lastDayOfNextMonth = intval((new DateTime("{$year}-{$month}-01"))->format('t'));
+        $effectiveDay = min($billingDay, $lastDayOfNextMonth);
+
+        $next = new DateTime("{$year}-{$month}-{$effectiveDay}");
+        $next->setTime(0, 0);
+
+        return $next;
     }
 }

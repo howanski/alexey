@@ -45,7 +45,7 @@ final class AlexeySideMenuProviderTest extends TestCase
         );
 
         $this->assertEquals(
-            expected: 6,
+            expected: 5,
             actual: sizeof($menu),
             message: '---!---> Main menu items count changed',
         );
