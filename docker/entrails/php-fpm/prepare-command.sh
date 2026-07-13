@@ -31,6 +31,8 @@ ensure_dir_writeable /var/www/html/var/log/
 ensure_dir_writeable /var/www/html/var/cache/
 ensure_dir_writeable /var/www/html/vendor/
 ensure_dir_writeable /var/www/html/node_modules/
+mkdir -p /tmp/phpstan/
+ensure_dir_writeable /tmp/phpstan/
 find /var/www/html -type d -exec chmod g+s {} +
 
 nohup supervisord

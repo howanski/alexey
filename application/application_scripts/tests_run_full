@@ -55,5 +55,5 @@ echo "------- PHPMETRICS (-> var/qa-results)"
 echo "---------------------------------------"
 XDEBUG_MODE=off ./vendor/bin/phpmetrics --report-html=var/qa-results/phpmetrics-report --junit=var/qa-results/phpunit/junit-output.xml . | grep -v -e '^$' | grep -v 'Deprecated'
 stoponfail
-chown -R 1000:1000 var/qa-results/ >/dev/null
+# chown -R 1000:1000 var/qa-results/ >/dev/null
 echo "----------------- DONE ----------------"

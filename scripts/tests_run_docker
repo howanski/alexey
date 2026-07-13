@@ -1,2 +1,2 @@
 #!/bin/bash
-docker exec -it -w /var/www/html/application_scripts alexey-php ./tests_run_full
+docker exec -it -u www-data -w /var/www/html/application_scripts alexey-php ./tests_run_full
