@@ -1,0 +1,5 @@
+#!/bin/bash
+docker stop alexey-php
+docker stop alexey-phpmyadmin
+docker stop alexey-nginx
+docker stop alexey-mysql
