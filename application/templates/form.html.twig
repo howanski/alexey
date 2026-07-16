@@ -19,7 +19,11 @@
 						<div class="text-center mt-6 flex flex-wrap justify-center">
 							<button class="bg-nord5 text-nord14 hover:bg-nord14 hover:text-nord5 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1" style="transition: all 0.15s ease 0s;">
 								<i class="fas fa-save"></i>
-								{{ 'save'|localised }}
+								{% if saveButtonLabel is defined %}
+									{{ saveButtonLabel }}
+								{% else %}
+									{{ 'save'|localised }}
+								{% endif %}
 							</button>
 							{% if additionalButtons is defined %}
 								{% for button in additionalButtons %}

@@ -5,6 +5,7 @@ application/.env.local.php
 application/.phpunit.result.cache
 application/.phpunit.result.cache
 application/composer.phar
+application/config/reference.php
 application/config/secrets/prod/prod.decrypt.private.php
 application/node_modules/
 application/npm-debug.log

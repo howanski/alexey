@@ -11,6 +11,7 @@ parameters:
         - "#has a nullable return type declaration.#"
         - "#Language construct isset#"
         - "#AlexeyAbstractController#"
+        - "#with a nullable type declaration#"
     excludePaths:
         - src/Security/ApiAuthenticator
         - src/Security/OtpAuthenticator

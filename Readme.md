@@ -9,6 +9,7 @@ Current features are:
 - storing financial details for analysis where did my money gone and how much I can expect to save by x time
 - basic access via Android app and ability to open secure tunnel to log in via *unknown* browser using One Time Password
 - physical storage management
+- basic LLM chat support for local openai-compatible deployments
 
 Matter of features is still open - I've no idea what I'm gonna need/want to include in this app.
 

@@ -35,7 +35,7 @@ final class SimpleSettingsService
         return $result;
     }
 
-    public function saveSettings(array $settings, $user)
+    public function saveSettings(array $settings, $user, bool $flush = true)
     {
         foreach ($settings as $key => $value) {
             $criteria = ['settingKey' => $key];
@@ -51,6 +51,13 @@ final class SimpleSettingsService
             $entity->setSettingValue($value);
             $this->em->persist($entity);
         }
-        $this->em->flush();
+        if (true === $flush) {
+            $this->em->flush();
+        }
+    }
+
+    public function getManager(): EntityManagerInterface
+    {
+        return $this->em;
     }
 }

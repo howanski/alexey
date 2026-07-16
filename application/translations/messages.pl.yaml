@@ -15,9 +15,24 @@ app:
       strings:
         setup_permissions: 'Skonfiguruj uprawnienia urządzenia.'
         open_in_browser: "Otwórz w przeglądarce"
+    assistant:
+      forms:
+        labels:
+          api_key: 'Klucz API'
+          base_url: 'Adres serwera'
+          message: 'Wiadomość'
+          model: 'Model'
+          system_message: 'Wiadomość systemowa'
+      flashes:
+        wrong_settings: 'Nie udało się sprawdzić ustawień - spróbuj ponownie'
+      strings:
+        chat: Czat
+        chats: Czaty
+        menu_record: 'Asystent AI'
     common:
       flashes:
         saved: "Pomyślnie zapisano"
+        sent: "Pomyślnie wysłano"
         deleted: "Pomyślnie usunięto"
         delete_forbidden: "Nie można usunąć"
         signal_dispatched: "Sygnał wysłany"
@@ -45,6 +60,7 @@ app:
         hi: "Cześć"
         id: ID
         ip_or_url: IP/URL
+        last_update: "Ostatnia aktualizacja"
         logout: Wyloguj
         mac_address: "Adres MAC"
         manage: Zarządzaj
@@ -53,15 +69,18 @@ app:
         name: Nazwa
         new: Nowy
         save: Zapisz
+        send: Wyślij
         settings: Ustawienia
         show: Pokaż
         simulation: Symulacja
         status: Status
+        title: Tytuł
         total: Razem
         turn_off: "Wyłącz"
         turn_on: "Włącz"
         unknown: "?"
         unreachable: Nieosiągalna
+        view: Zobacz
         visible: Widoczna
         wake: Obudź
         you_sure_delete: "Na pewno chcesz to usunąć?"
@@ -193,10 +212,11 @@ app:
     settings:
       forms:
         help:
+          cron_job_assistant_call: "Konserwacja kolejki zadan asystenta"
+          cron_job_check_tunnel_change: "Obserwuj zmiany tunelu"
           cron_job_cleanup_network_stats: "Sprzatanie przestarzalych statystyk sieci"
           cron_job_ping: "Monitorowanie stanu urzadzen sieciowych"
           cron_job_update_network_stats: "Zbieranie statystyk sieci"
-          cron_job_check_tunnel_change: "Obserwuj zmiany tunelu"
         labels:
           cron_jobs: "Procesy w tle"
           is_cron_active: "Uruchamiaj ten proces w tle"

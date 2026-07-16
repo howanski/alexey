@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('assistant'), 'href': path('assistant_index')}
+	]
+%}
+
+{% block pageContentPrimary %}
+	{% set action_buttons = [
+		{
+			'color': 'nord12',
+			'href': path('assistant_index'),
+			'name': 'menu_record'|localised('assistant'),
+			'icon': 'fas fa-robot'
+	   },
+	] %}
+	{% set action_buttons = action_buttons|merge(
+		[
+			{
+				'color': 'nord10',
+				'href': path('assistant_config'),
+				'name': 'settings'|localised,
+				'icon': 'fas fa-tools'
+			},
+		]
+	) %}
+	{% include 'entity_actions_row.html.twig' with {
+		'buttons': action_buttons,
+	} only %}
+{% endblock %}
+
+{% block pageContentSecondary %}
+	{% include 'form.html.twig' with {
+	'form': form,
+	'saveButtonLabel': 'send'|localised
+	} only %}
+
+	{% set table_data = {} %}
+	{% for chat in chats %}
+		{% set actions %}
+			{% include 'table_action_button.html.twig' with {
+				'href': path('assistant_chat_view', {'id': chat.id}),
+				'name': 'view'|localised,
+			} only %}
+			{% include 'table_action_button.html.twig' with {
+				'href': path('assistant_chat_delete', {'id': chat.id}),
+				'name': 'delete'|localised,
+			} only %}
+		{% endset %}
+
+		{% set table_data = table_data|merge([{
+            'name': chat.shortName(30),
+			'status': chat.statusEffective,
+			'actions': actions,
+		}]) %}
+	{% endfor %}
+	{% include 'table.html.twig' with {
+		'tableTitle': 'chats'|localised('assistant'),
+		'tableHeaders': [
+			'title'|localised,
+			'status'|localised,
+            'actions'|localised,
+		],
+		'tableData': table_data,
+	} only %}
+
+{% endblock %}

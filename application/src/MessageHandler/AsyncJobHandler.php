@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\MessageHandler;
 
 use App\Message\AsyncJob;
+use App\Service\AssistantCallProcessor;
 use App\Service\MikrotikService;
 use App\Service\NetworkMachineService;
 use App\Service\NetworkUsageService;
@@ -17,6 +18,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 final class AsyncJobHandler
 {
     public function __construct(
+        private AssistantCallProcessor $assistantCallProcessor,
         private MessageBusInterface $bus,
         private MikrotikService $mikrotikService,
         private NetworkMachineService $networkMachineService,
@@ -69,6 +71,13 @@ final class AsyncJobHandler
                 break;
             case AsyncJob::TYPE_POWER_CYCLE_MIKROTIK_LTE:
                 $this->mikrotikService->handlePowerCycle(currentStep: $payload['step']);
+                break;
+            case AsyncJob::TYPE_PROCESS_ASSISTANT_CALLS:
+                if (!empty($payload['id'])) {
+                    $this->assistantCallProcessor->processCallById((int) $payload['id']);
+                } else {
+                    $this->assistantCallProcessor->runMaintenance();
+                }
                 break;
         }
     }

@@ -15,9 +15,24 @@ app:
       strings:
         setup_permissions: 'Please setup device permissions.'
         open_in_browser: "Open in browser"
+    assistant:
+      forms:
+        labels:
+          api_key: 'API Key'
+          base_url: 'Server URL'
+          message: 'Message'
+          model: 'Model'
+          system_message: 'System message'
+      flashes:
+        wrong_settings: 'Could not check settings - check again'
+      strings:
+        chat: Chat
+        chats: Chats
+        menu_record: 'AI assistant'
     common:
       flashes:
         saved: "Successfully saved"
+        sent: "Successfully sent"
         deleted: "Successfully deleted"
         delete_forbidden: "Cannot delete"
         signal_dispatched: "Signal dispatched"
@@ -45,6 +60,7 @@ app:
         hi: "Hi"
         id: ID
         ip_or_url: IP/URL
+        last_update: "Last update"
         logout: Logout
         mac_address: "MAC Address"
         manage: "Manage"
@@ -53,15 +69,18 @@ app:
         name: Name
         new: New
         save: Save
+        send: Send
         settings: Settings
         show: Show
         simulation: Simulation
         status: Status
+        title: Title
         total: Total
         turn_off: "Turn off"
         turn_on: "Turn on"
         unknown: "?"
         unreachable: Unreachable
+        view: View
         visible: Visible
         wake: Wake
         you_sure_delete: "Are you sure you want to delete this item?"
@@ -193,10 +212,11 @@ app:
     settings:
       forms:
         help:
+          cron_job_assistant_call: "Assistant task queue maintenance"
+          cron_job_check_tunnel_change: "Monitor tunnel changes"
           cron_job_cleanup_network_stats: "Cleanup obsolete network statistics"
           cron_job_ping: "Monitor network machines state"
           cron_job_update_network_stats: "Gather network statistics"
-          cron_job_check_tunnel_change: "Monitor tunnel changes"
         labels:
           cron_jobs: "Background jobs"
           is_cron_active: "Run this job in background"

@@ -56,6 +56,18 @@ final class AlexeySideMenuProvider extends AbstractExtension
             children: [],
         );
 
+        $route = $this->router->generate('assistant_index');
+        $sideMenu[] = new SideMenuItem(
+            name: $this->translator->translateString(
+                translationId: 'menu_record',
+                module: 'assistant'
+            ),
+            destination: $route,
+            icon: 'fas fa-robot',
+            isActive: $this->isActiveRoute($route),
+            children: [],
+        );
+
         $route = $this->router->generate('weather');
         $sideMenu[] = new SideMenuItem(
             name: $this->translator->translateString(
@@ -114,7 +126,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
                 module: 'network_machines'
             ),
             destination: $route,
-            icon: 'fas fa-robot',
+            icon: 'fas fa-network-wired',
             isActive: $this->isActiveRoute($route),
             children: [],
         );
