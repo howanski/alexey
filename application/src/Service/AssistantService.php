@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\AssistantTool\WeatherTool;
 use App\Entity\AssistantCall;
 use App\Entity\User;
 use App\Message\AsyncJob;
@@ -13,6 +14,8 @@ use App\Model\AssistantSettings;
 use App\Repository\AssistantCallRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\AI\Agent\Agent;
+use Symfony\AI\Agent\Toolbox\AgentProcessor;
+use Symfony\AI\Agent\Toolbox\Toolbox;
 use Symfony\AI\Platform\Bridge\Generic\Factory;
 use Symfony\AI\Platform\Message\Message;
 use Symfony\AI\Platform\Platform;
@@ -28,6 +31,12 @@ final class AssistantService
     private const API_KEY = 'apiKey';
     private const MODEL = 'model';
 
+    public const TOOL_WEATHER = 'weather_';
+
+    public const TOOLS_AVAILABLE = [
+        self::TOOL_WEATHER,
+    ];
+
     private array $agents = [];
 
     public function __construct(
@@ -35,6 +44,7 @@ final class AssistantService
         private EntityManagerInterface $em,
         private SimpleSettingsService $simpleSettingsService,
         private MessageBusInterface $bus,
+        private WeatherTool $weatherTool,
     ) {
     }
 
@@ -109,26 +119,56 @@ final class AssistantService
         return $choices;
     }
 
-    public function getDefaultAgent(UserInterface $user, array $options): Agent
+    public function getDefaultAgent(UserInterface $user, array $options, array $tools = []): Agent
     {
-        return $this->getAgent($user, $options);
+        return $this->getAgent($user, $options, $tools);
     }
 
-    private function getAgent(UserInterface $user, array $options): Agent
+    private function getAgent(UserInterface $user, array $options, array $tools = []): Agent
     {
-        $userId = $user->getUserIdentifier();
-        if (
-            !empty($this->agents[$userId][$options[self::MODEL]])
-            && $this->agents[$userId][$options[self::MODEL]] instanceof Agent
-        ) {
-            return $this->agents[$userId][$options[self::MODEL]];
+        $toolsSlug = '_';
+        if (!empty($tools)) {
+            sort($tools);
+            $tools = array_unique($tools);
+            foreach ($tools as $toolName) {
+                $toolsSlug .= $toolName;
+            }
         }
 
-        $this->agents[$userId][$options[self::MODEL]] = new Agent(
+        $userId = $user->getUserIdentifier();
+        if (
+            !empty($this->agents[$userId][$options[self::MODEL]][$toolsSlug])
+            && $this->agents[$userId][$options[self::MODEL]][$toolsSlug] instanceof Agent
+        ) {
+            return $this->agents[$userId][$options[self::MODEL]][$toolsSlug];
+        }
+
+        $inputProcessors = [];
+        $outputProcessors = [];
+
+        $toolsSlug = '_tools_';
+        if (!empty($tools)) {
+            $toolBox = [];
+            foreach ($tools as $toolName) {
+                if ($toolName === self::TOOL_WEATHER) {
+                    $toolBox[] = $this->weatherTool;
+                }
+            }
+            $toolbox = new Toolbox($toolBox);
+            $processor = new AgentProcessor($toolbox);
+            $inputProcessors = [$processor];
+            $outputProcessors = [$processor];
+        }
+
+
+
+        $this->agents[$userId][$options[self::MODEL]][$toolsSlug] = new Agent(
             platform: $this->getDefaultPlatform($options),
             model: $options[self::MODEL],
+            inputProcessors: $inputProcessors,
+            outputProcessors: $outputProcessors,
         );
-        return $this->agents[$userId][$options[self::MODEL]];
+        return $this->agents[$userId][$options[self::MODEL]][$toolsSlug];
     }
 
     private function getDefaultPlatform(array $options): Platform

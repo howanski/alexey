@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\AI\Platform\TokenUsage\TokenUsage;
 
 #[ORM\Entity(repositoryClass: AssistantCallRepository::class)]
 class AssistantCall
@@ -25,6 +26,7 @@ class AssistantCall
     public const STATUS_ERROR = 4;
     public const STATUS_PROCESSING = 3;
     public const STATUS_READY_TO_PROCESS = 2;
+    public const STATUS_TO_REDO = 7;
     public const STATUS_WAITING_FOR_CHILDREN = 6;
 
     private const STATUSES = [
@@ -33,6 +35,7 @@ class AssistantCall
         self::STATUS_ERROR => 'STATUS_ERROR',
         self::STATUS_PROCESSING => 'STATUS_PROCESSING',
         self::STATUS_READY_TO_PROCESS => 'STATUS_READY_TO_PROCESS',
+        self::STATUS_TO_REDO => 'STATUS_TO_REDO',
         self::STATUS_WAITING_FOR_CHILDREN => 'STATUS_WAITING_FOR_CHILDREN',
     ];
 
@@ -279,6 +282,17 @@ class AssistantCall
         return $string;
     }
 
+    public function getTokenUsage(): array
+    {
+     if ($this->metadata['token_usage'] ?? null instanceof TokenUsage) {                                                                                               
+         return [                                                                                                                                                      
+             'promptTokens' => $this->metadata['token_usage']->getPromptTokens(),                                                                                      
+             'completionTokens' => $this->metadata['token_usage']->getCompletionTokens(),                                                                              
+         ];                                                                                                                                                            
+     }                                                                                                                                                                 
+     return ['promptTokens' => null, 'completionTokens' => null]; 
+    }
+
     public function getMessagesTimeline(): array
     {
         $timeLine = [];
@@ -288,6 +302,7 @@ class AssistantCall
             'response' => $this->getAssistantResponse(),
             'isProcessing' => !($this->getStatus() === self::STATUS_DONE),
             'id' => $this->getId(),
+            'token_usage' => $this->getTokenUsage(),
         ];
         foreach ($this->getChildren() as $child) {
             // There should be max 1 child for chat but no limit for research

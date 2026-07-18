@@ -93,6 +93,17 @@ final class AssistantCallProcessor
                 $this->scheduleMaintenance();
                 return;
             }
+            $entity = $this->assistantCallRepository->findOldestWithStatus(AssistantCall::STATUS_TO_REDO);
+            if ($entity instanceof AssistantCall) {
+                if (!($entity->getId() === $entity->getLastChild()->getId())) {
+                    $this->removeLastNode($entity);
+                } else {
+                    $entity->setStatus(AssistantCall::STATUS_READY_TO_PROCESS);
+                }
+                $this->em->flush();
+                $this->scheduleMaintenance(0);
+                return;
+            }
         } else {
             $entity = $this->assistantCallRepository->findOldestWithStatus(AssistantCall::STATUS_PROCESSING);
             if ($entity instanceof AssistantCall) {
@@ -123,7 +134,11 @@ final class AssistantCallProcessor
 
     private function scheduleMaintenance(int $delaySeconds = 2)
     {
-        $delayStamp = new DelayStamp(1000 * $delaySeconds);
+        if ($delaySeconds === 0) {
+            $delayStamp = new DelayStamp(1);
+        } else {
+            $delayStamp = new DelayStamp(1000 * $delaySeconds);
+        }
         $message = new AsyncJob(
             jobType: AsyncJob::TYPE_PROCESS_ASSISTANT_CALLS,
             payload: [],
@@ -191,7 +206,8 @@ final class AssistantCallProcessor
         }
         $options = $this->service->getDefaultOptionsForUser($user);
 
-        $agent = $this->service->getDefaultAgent($user, $options);
+        // TODO: When more tools get introduced, add tool selection and logging which tools are bound to $this exact api call
+        $agent = $this->service->getDefaultAgent($user, $options, [AssistantService::TOOL_WEATHER]);
         $result = $agent->call(messages: $messageBag->getBag());
 
         $entity->setAssistantResponse($result->getContent());

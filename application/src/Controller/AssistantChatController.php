@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\AssistantCall;
 use App\Form\AssistantMessageType;
+use App\Message\AsyncJob;
 use App\Model\AssistantChat;
 use App\Model\AssistantMessageDTO;
 use App\Model\AssistantSettings;
@@ -14,6 +15,7 @@ use App\Service\AssistantService;
 use App\Service\SimpleSettingsService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/assistant/chat')]
@@ -111,14 +113,35 @@ final class AssistantChatController extends AlexeyAbstractController
     ) {
         $call = $this->fetchEntityById(className: AssistantCall::class, id: $id);
         if ($call instanceof AssistantCall) {
-            if ($call->getStatus() === AssistantCall::STATUS_DONE) {
+            if (!($call->getStatus() === AssistantCall::STATUS_DONE)) {
                 return $this->json([
-                    'result' => true,
+                    'result' => false,
                 ]);
             }
         }
         return $this->json([
-            'result' => false,
+            'result' => true,
         ]);
+    }
+
+    #[Route('/ajax/redo/{id}', name: 'assistant_ajax_redo', methods: ['GET'])]
+    public function ajaxRedo(
+        int $id,
+        MessageBusInterface $bus,
+    ) {
+        $call = $this->fetchEntityById(className: AssistantCall::class, id: $id);
+        if ($call instanceof AssistantCall) {
+            $user = $this->alexeyUser();
+            if ($call->getUser()->getUserIdentifier() === $user->getUserIdentifier()) {
+                $call->setStatus(AssistantCall::STATUS_TO_REDO);
+                $this->em->flush();
+                $bus->dispatch(new AsyncJob(
+                    jobType: AsyncJob::TYPE_PROCESS_ASSISTANT_CALLS,
+                    payload: [],
+                ));
+            }
+            return $this->redirectToRoute('assistant_chat_view', ['id' => $call->getRootEntity()->getId()]);
+        }
+        return $this->redirectToRoute('assistant_index');
     }
 }

@@ -88,6 +88,15 @@
 									{% else %}
 										<div class="bg-nord5 text-nord0 rounded-lg rounded-tl-none px-4 py-3 text-sm whitespace-pre-wrap break-words overflow-y-auto">{{ message_pair.response|raw|trim }}</div>
 									{% endif %}
+									<div class="bg-nord4 text-right text-nord0 rounded-lg px-4 py-3 text-sm break-words overflow-y-auto">
+										{% if message_pair.token_usage.promptTokens %}
+											↑{{ message_pair.token_usage.promptTokens }}
+										{% endif %}
+										{% if message_pair.token_usage.completionTokens %}
+											↓{{ message_pair.token_usage.completionTokens }}
+										{% endif %}
+										<a href="{{path('assistant_ajax_redo', {id: message_pair.id})}}" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">↻</a>
+									</div>
 								</div>
 							</div>
 						</div>
