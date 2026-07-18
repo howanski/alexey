@@ -44,5 +44,14 @@ services:
     arguments:
       $salt: "%env(APP_SECRET)%"
 
+  League\CommonMark\Extension\Table\TableExtension:
+    tags: ['twig.markdown.league_extension']
+
+  League\CommonMark\Extension\TaskList\TaskListExtension:
+    tags: ['twig.markdown.league_extension']
+
+  League\CommonMark\Extension\Attributes\AttributesExtension:
+    tags: ['twig.markdown.league_extension']
+
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones

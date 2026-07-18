@@ -68,7 +68,7 @@
 									</div>
 								</div>
 								<div class="flex-1 min-w-0">
-									<div class="bg-nord2 text-nord4 rounded-lg rounded-tl-none px-4 py-3 text-sm whitespace-pre-wrap break-words overflow-y-auto">{{ message_pair.request|raw|trim }}</div>
+									<div class="bg-nord2 text-nord4 rounded-lg rounded-tl-none px-4 py-3 text-sm whitespace-pre-wrap break-words overflow-y-auto has-md-content">{{ message_pair.request|markdown_to_html }}</div>
 								</div>
 							</div>
 						</div>
@@ -86,7 +86,7 @@
 										<i class="fas fa-circle-notch animate-spin-5 refresh-page-on-check" data-check-path="{{ path('assistant_ajax_is_processed', {id: message_pair.id}) }}"></i>
 										{% set show_response_form = false %}
 									{% else %}
-										<div class="bg-nord5 text-nord0 rounded-lg rounded-tl-none px-4 py-3 text-sm whitespace-pre-wrap break-words overflow-y-auto">{{ message_pair.response|raw|trim }}</div>
+										<div class="bg-nord5 text-nord0 rounded-lg rounded-tl-none px-4 py-3 text-sm whitespace-pre-wrap break-words overflow-y-auto has-md-content">{{ message_pair.response|markdown_to_html }}</div>
 									{% endif %}
 									<div class="bg-nord4 text-right text-nord0 rounded-lg px-4 py-3 text-sm break-words overflow-y-auto">
 										{% if message_pair.token_usage.promptTokens %}

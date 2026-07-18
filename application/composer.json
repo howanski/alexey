@@ -15,6 +15,7 @@
         "evilfreelancer/routeros-api-php": "^1.5",
         "geerlingguy/ping": "^1.2",
         "if0xx/huawei-hilink-api": "^0.1.0",
+        "league/commonmark": "^2.8",
         "nesbot/carbon": "3.13.*",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "2.*",
@@ -50,7 +51,8 @@
         "symfony/web-link": "7.4.*",
         "symfony/webpack-encore-bundle": ">=2.4",
         "symfony/yaml": "7.4.*",
-        "twig/extra-bundle": "^3.0",
+        "twig/extra-bundle": "^3.24",
+        "twig/markdown-extra": "^3.28",
         "twig/twig": "^3.0"
     },
     "require-dev": {

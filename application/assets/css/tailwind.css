@@ -3,3 +3,21 @@
 @tailwind components;
 
 @tailwind utilities;
+
+.has-md-content {
+
+    table,
+    th,
+    td {
+        border: 1px solid;
+    }
+
+    th,
+    td {
+        padding: 10px;
+    }
+
+    table {
+        width: 100%;
+    }
+}
