@@ -23,6 +23,11 @@ app:
           message: 'Wiadomość'
           model: 'Model'
           system_message: 'Wiadomość systemowa'
+          tools: "Narzędzia"
+        values:
+          tools:
+            datetime_: "Data i czas"
+            weather_: "Pogoda"
       flashes:
         wrong_settings: 'Nie udało się sprawdzić ustawień - spróbuj ponownie'
       strings:

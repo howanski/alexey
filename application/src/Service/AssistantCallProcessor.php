@@ -206,11 +206,7 @@ final class AssistantCallProcessor
         }
         $options = $this->service->getDefaultOptionsForUser($user);
 
-        // TODO: When more tools get introduced, add tool selection and logging which tools are bound to $this exact api call
-        $tools = [
-            AssistantService::TOOL_WEATHER,
-            AssistantService::TOOL_DATETIME,
-        ];
+        $tools = $entity->getTools();
         $agent = $this->service->getDefaultAgent($user, $options, $tools);
         $result = $agent->call(messages: $messageBag->getBag());
 

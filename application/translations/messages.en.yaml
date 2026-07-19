@@ -23,6 +23,11 @@ app:
           message: 'Message'
           model: 'Model'
           system_message: 'System message'
+          tools: "Tools"
+        values:
+          tools:
+            datetime_: "Data i czas"
+            weather_: "Pogoda"
       flashes:
         wrong_settings: 'Could not check settings - check again'
       strings:

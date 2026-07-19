@@ -81,6 +81,9 @@ class AssistantCall
     #[ORM\ManyToOne(targetEntity: AssistantRecurringMessage::class)]
     private ?AssistantRecurringMessage $systemMessage = null;
 
+    #[ORM\Column(type: Types::ARRAY)]
+    private array $tools = [];
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
@@ -93,6 +96,7 @@ class AssistantCall
         $call->setUserQuery($dto->getMessage());
         $call->setUser($user);
         $call->setStatus(self::STATUS_READY_TO_PROCESS);
+        $call->setTools($dto->getTools());
         return $call;
     }
 
@@ -266,6 +270,18 @@ class AssistantCall
     public function setSystemMessage(?AssistantRecurringMessage $systemMessage): static
     {
         $this->systemMessage = $systemMessage;
+
+        return $this;
+    }
+
+    public function getTools(): array
+    {
+        return $this->tools;
+    }
+
+    public function setTools(array $tools): static
+    {
+        $this->tools = $tools;
 
         return $this;
     }

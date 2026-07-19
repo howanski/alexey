@@ -58,6 +58,7 @@ final class AssistantChatController extends AlexeyAbstractController
 
         $dto = new AssistantMessageDTO();
         $dto->setModel($settings->getModel());
+        $dto->setTools($call->getLastChild()->getTools());
         $dto->setRootId($id);
 
         $form = $this->createForm(
