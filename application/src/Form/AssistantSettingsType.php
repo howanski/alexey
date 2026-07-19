@@ -49,6 +49,9 @@ final class AssistantSettingsType extends CommonFormType
                 'label' => $this->getLabelTrans(label: 'system_message'),
                 'priority' => -3,
                 'required' => false,
+                'attr' => [
+                    'class' => 'min-h-180 ' . CommonFormType::STANDARD_INPUT_CLASSES,
+                ],
             ])
         ;
     }

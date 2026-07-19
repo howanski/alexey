@@ -95,7 +95,7 @@
 										{% if message_pair.token_usage.completionTokens %}
 											↓{{ message_pair.token_usage.completionTokens }}
 										{% endif %}
-										<a href="{{path('assistant_ajax_redo', {id: message_pair.id})}}" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">↻</a>
+										<a href="{{ path('assistant_ajax_redo', {id: message_pair.id}) }}" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">↻</a>
 									</div>
 								</div>
 							</div>
@@ -105,7 +105,6 @@
 			</div>
 		</div>
 	</div>
-
 
 	{% if show_response_form %}
 		{% include 'form.html.twig' with {

@@ -300,13 +300,13 @@ class AssistantCall
 
     public function getTokenUsage(): array
     {
-     if ($this->metadata['token_usage'] ?? null instanceof TokenUsage) {                                                                                               
-         return [                                                                                                                                                      
-             'promptTokens' => $this->metadata['token_usage']->getPromptTokens(),                                                                                      
-             'completionTokens' => $this->metadata['token_usage']->getCompletionTokens(),                                                                              
-         ];                                                                                                                                                            
-     }                                                                                                                                                                 
-     return ['promptTokens' => null, 'completionTokens' => null]; 
+        if (($this->metadata['token_usage'] ?? null) instanceof TokenUsage) {
+            return [
+                'promptTokens' => $this->metadata['token_usage']->getPromptTokens(),
+                'completionTokens' => $this->metadata['token_usage']->getCompletionTokens(),
+            ];
+        }
+        return ['promptTokens' => null, 'completionTokens' => null];
     }
 
     public function getMessagesTimeline(): array

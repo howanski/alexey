@@ -5,7 +5,7 @@ services:
             - .env
         image: mysql:8.0.40
         container_name: "alexey-mysql"
-        restart: always
+        restart: ${DOCKER_RESTART_POLICY:-always}
         expose:
             - 3306
         networks:
@@ -27,7 +27,7 @@ services:
             - 80
         networks:
             - network
-        restart: always
+        restart: ${DOCKER_RESTART_POLICY:-always}
         depends_on:
             - database
         logging:
@@ -50,7 +50,7 @@ services:
         volumes:
             - ./../application:/var/www/html
             - ./entrails/nginx/ngrok:/ngrok
-        restart: always
+        restart: ${DOCKER_RESTART_POLICY:-always}
         logging:
             driver: json-file
             options:
@@ -70,7 +70,7 @@ services:
             - 443:443
         networks:
             - network
-        restart: always
+        restart: ${DOCKER_RESTART_POLICY:-always}
         depends_on:
             - php
             - database

@@ -19,6 +19,5 @@ final class DateTimeTool
             'time' => $now->format('H:i:s'),
             'day_of_week' => $now->format('D'),
         ];
-        
     }
 }
