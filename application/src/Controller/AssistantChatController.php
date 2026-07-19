@@ -78,6 +78,7 @@ final class AssistantChatController extends AlexeyAbstractController
             [
                 'chat' => $chat,
                 'form' => $form,
+                'id' => $id,
             ],
         );
     }

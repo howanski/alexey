@@ -110,6 +110,14 @@
 	{% if show_response_form %}
 		{% include 'form.html.twig' with {
 			'form': form,
+			'additionalButtons': [
+				{
+					'color': 'nord11',
+					'href': path('assistant_chat_delete', {id: id}),
+					'name': 'delete'|localised,
+					'icon': 'fas fa-trash'
+				}
+			],
 			'saveButtonLabel': 'send'|localised
 		} only %}
 	{% endif %}

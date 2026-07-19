@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\AssistantTool\DateTimeTool;
 use App\AssistantTool\WeatherTool;
 use App\Entity\AssistantCall;
 use App\Entity\User;
@@ -31,9 +32,11 @@ final class AssistantService
     private const API_KEY = 'apiKey';
     private const MODEL = 'model';
 
+    public const TOOL_DATETIME = 'datetime_';
     public const TOOL_WEATHER = 'weather_';
 
     public const TOOLS_AVAILABLE = [
+        self::TOOL_DATETIME,
         self::TOOL_WEATHER,
     ];
 
@@ -150,6 +153,9 @@ final class AssistantService
         if (!empty($tools)) {
             $toolBox = [];
             foreach ($tools as $toolName) {
+                if ($toolName === self::TOOL_DATETIME) {
+                    $toolBox[] = new DateTimeTool();
+                }
                 if ($toolName === self::TOOL_WEATHER) {
                     $toolBox[] = $this->weatherTool;
                 }
