@@ -6,6 +6,7 @@
         "autorestart",
         "cellid",
         "codesniffer",
+        "commonmark",
         "ctype",
         "DGRAM",
         "Dynacard",

@@ -26,8 +26,10 @@ app:
           tools: "Tools"
         values:
           tools:
-            datetime_: "Data i czas"
-            weather_: "Pogoda"
+            datetime_: "Date & time"
+            read_url_: "Webpages reading"
+            weather_: "Weather"
+            web_search_: "Web search"
       flashes:
         wrong_settings: 'Could not check settings - check again'
       strings:

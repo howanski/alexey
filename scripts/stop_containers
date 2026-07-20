@@ -3,3 +3,5 @@ docker stop alexey-php
 docker stop alexey-phpmyadmin
 docker stop alexey-nginx
 docker stop alexey-mysql
+docker stop alexey-valkey
+docker stop alexey-searxng

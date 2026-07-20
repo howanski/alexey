@@ -27,7 +27,9 @@ app:
         values:
           tools:
             datetime_: "Data i czas"
+            read_url_: "Odczyt stron internetowych"
             weather_: "Pogoda"
+            web_search_: "Szukaj w internecie"
       flashes:
         wrong_settings: 'Nie udało się sprawdzić ustawień - spróbuj ponownie'
       strings:

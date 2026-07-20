@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\AssistantTool\DateTimeTool;
+use App\AssistantTool\ReadUrlTool;
 use App\AssistantTool\WeatherTool;
+use App\AssistantTool\WebSearchTool;
 use App\Entity\AssistantCall;
 use App\Entity\User;
 use App\Message\AsyncJob;
@@ -33,11 +35,15 @@ final class AssistantService
     private const MODEL = 'model';
 
     public const TOOL_DATETIME = 'datetime_';
+    public const TOOL_READ_URL = 'read_url_';
     public const TOOL_WEATHER = 'weather_';
+    public const TOOL_WEB_SEARCH = 'web_search_';
 
     public const TOOLS_AVAILABLE = [
         self::TOOL_DATETIME,
+        self::TOOL_READ_URL,
         self::TOOL_WEATHER,
+        self::TOOL_WEB_SEARCH,
     ];
 
     private array $agents = [];
@@ -45,9 +51,11 @@ final class AssistantService
     public function __construct(
         private AssistantCallRepository $assistantCallRepository,
         private EntityManagerInterface $em,
-        private SimpleSettingsService $simpleSettingsService,
         private MessageBusInterface $bus,
+        private ReadUrlTool $readUrlTool,
+        private SimpleSettingsService $simpleSettingsService,
         private WeatherTool $weatherTool,
+        private WebSearchTool $webSearchTool,
     ) {
     }
 
@@ -159,14 +167,18 @@ final class AssistantService
                 if ($toolName === self::TOOL_WEATHER) {
                     $toolBox[] = $this->weatherTool;
                 }
+                if ($toolName === self::TOOL_WEB_SEARCH) {
+                    $toolBox[] = $this->webSearchTool;
+                }
+                if ($toolName === self::TOOL_READ_URL) {
+                    $toolBox[] = $this->readUrlTool;
+                }
             }
             $toolbox = new Toolbox($toolBox);
             $processor = new AgentProcessor($toolbox);
             $inputProcessors = [$processor];
             $outputProcessors = [$processor];
         }
-
-
 
         $this->agents[$userId][$options[self::MODEL]][$toolsSlug] = new Agent(
             platform: $this->getDefaultPlatform($options),

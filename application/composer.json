@@ -16,6 +16,7 @@
         "geerlingguy/ping": "^1.2",
         "if0xx/huawei-hilink-api": "^0.1.0",
         "league/commonmark": "^2.8",
+        "league/html-to-markdown": "^5.1",
         "nesbot/carbon": "3.13.*",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "2.*",

@@ -9,12 +9,16 @@ then
     docker stop alexey-phpmyadmin
     docker stop alexey-nginx
     docker stop alexey-mysql
+    docker stop alexey-valkey
+    docker stop alexey-searxng
     clear
     echo "Removing containers..."
     docker rm alexey-php
     docker rm alexey-phpmyadmin
     docker rm alexey-nginx
     docker rm alexey-mysql
+    docker rm alexey-valkey
+    docker rm alexey-searxng
     clear
     echo "Removing images..."
     docker rmi alexey-php
@@ -23,6 +27,7 @@ then
     clear
     echo "Removing data volumes..."
     docker volume rm alexey_database_volume
+    docker volume rm alexey_valkey_data
     #docker volume prune
     echo "Removing networks..."
     docker network rm alexey_network

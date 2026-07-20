@@ -1,0 +1,18 @@
+# Read the documentation before extending the defaults:
+# https://docs.searxng.org/admin/settings/
+
+use_default_settings: true
+
+server:
+  secret_key: "${SEARXNG_SECRET:-SecretIsMissing8u51n3554sUsu41}"
+  image_proxy: true
+search:
+  safe_search: 0
+  languages:
+    - en
+    - pl
+  formats:
+    - json
+    - html
+valkey:
+  url: valkey://valkey:6379/0
