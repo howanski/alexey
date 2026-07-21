@@ -198,9 +198,10 @@ final class AssistantCallProcessor
         }
 
         $fullMessageHistory = $entity->getRootEntity()->getMessagesTimeline();
-        foreach ($fullMessageHistory as $historySlice) {
+        $lastKey = array_key_last($fullMessageHistory);
+        foreach ($fullMessageHistory as $key => $historySlice) {
             $messageBag->addMessage(Message::ofUser($historySlice['request']));
-            if (!empty($historySlice['response'])) {
+            if (!($key === $lastKey) && !empty($historySlice['response'])) {
                 $messageBag->addMessage(Message::ofAssistant($historySlice['response']));
             }
         }

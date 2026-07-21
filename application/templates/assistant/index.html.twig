@@ -29,16 +29,12 @@
 {% endblock %}
 
 {% block pageContentSecondary %}
-	{% include 'form.html.twig' with {
-	'form': form,
-	'saveButtonLabel': 'send'|localised
-	} only %}
-
 	{% set table_data = {} %}
 	{% for chat in chats %}
+		{% set chat_view_path = path('assistant_chat_view', {'id': chat.id}) %}
 		{% set actions %}
 			{% include 'table_action_button.html.twig' with {
-				'href': path('assistant_chat_view', {'id': chat.id}),
+				'href': chat_view_path,
 				'name': 'view'|localised,
 			} only %}
 			{% include 'table_action_button.html.twig' with {
@@ -48,8 +44,8 @@
 		{% endset %}
 
 		{% set table_data = table_data|merge([{
-            'name': chat.shortName(30),
-			'status': chat.statusEffective,
+            'name': '<a href="' ~ chat_view_path ~ '">' ~ chat.shortName(30) ~ '</a>',
+			'status': '<a href="' ~ chat_view_path ~ '">' ~ chat.statusEffective ~ '</a>',
 			'actions': actions,
 		}]) %}
 	{% endfor %}
@@ -61,6 +57,11 @@
             'actions'|localised,
 		],
 		'tableData': table_data,
+	} only %}
+
+	{% include 'form.html.twig' with {
+		'form': form,
+		'saveButtonLabel': 'send'|localised
 	} only %}
 
 {% endblock %}
