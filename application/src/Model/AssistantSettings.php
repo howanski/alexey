@@ -122,6 +122,15 @@ final class AssistantSettings
 
     /**
      * @deprecated to be removed on next code cleanup
+     * Used on settings page
+     */
+    public function setModel(string $model): void
+    {
+        $this->model = $model;
+    }
+
+    /**
+     * @deprecated to be removed on next code cleanup
      */
     public function getModel(): string
     {
