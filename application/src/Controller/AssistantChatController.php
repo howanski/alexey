@@ -23,7 +23,6 @@ final class AssistantChatController extends AlexeyAbstractController
 {
     #[Route('/view/{id}', name: 'assistant_chat_view', methods: ['GET', 'POST'])]
     public function viewChat(
-        AlexeyTranslator $translator,
         AssistantService $service,
         int $id,
         Request $request,
@@ -57,7 +56,7 @@ final class AssistantChatController extends AlexeyAbstractController
         }
 
         $dto = new AssistantMessageDTO();
-        $dto->setModel($settings->getModel());
+        $dto->setModelId($call->getLastChild()->getSystemMessage()->getId());
         $dto->setTools($call->getLastChild()->getTools());
         $dto->setRootId($id);
 
@@ -88,6 +87,7 @@ final class AssistantChatController extends AlexeyAbstractController
     public function deleteChat(
         AlexeyTranslator $translator,
         int $id,
+        MessageBusInterface $bus,
     ): Response {
         $call = $this->fetchEntityById(className: AssistantCall::class, id: $id);
         if (!($call instanceof AssistantCall)) {
@@ -101,7 +101,18 @@ final class AssistantChatController extends AlexeyAbstractController
         }
 
         $call->setType(AssistantCall::TYPE_TRASH);
+        $call->setStatus(AssistantCall::STATUS_PROCESSING);
         $this->em->flush();
+
+        $bus->dispatch(new AsyncJob(
+            jobType: AsyncJob::TYPE_PROCESS_ASSISTANT_CALLS,
+            payload: [],
+        ));
+
+        $root = $call->getRoot();
+        if ($root instanceof AssistantCall && !($root->getId() === $id)) {
+            return $this->redirectToRoute('assistant_chat_view', ['id' => $root->getId()]);
+        }
 
         $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
 

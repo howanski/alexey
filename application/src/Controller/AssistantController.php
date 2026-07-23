@@ -36,7 +36,7 @@ final class AssistantController extends AlexeyAbstractController
         }
 
         $dto = new AssistantMessageDTO();
-        $dto->setModel($settings->getModel());
+        $dto->setModelId($settings->getModelId());
 
         $form = $this->createForm(
             AssistantMessageType::class,

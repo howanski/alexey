@@ -5,26 +5,8 @@
 %}
 
 {% block pageContentPrimary %}
-	{% set action_buttons = [
-		{
-			'color': 'nord12',
-			'href': path('assistant_index'),
-			'name': 'menu_record'|localised('assistant'),
-			'icon': 'fas fa-robot'
-	   },
-	] %}
-	{% set action_buttons = action_buttons|merge(
-		[
-			{
-				'color': 'nord10',
-				'href': path('assistant_config'),
-				'name': 'settings'|localised,
-				'icon': 'fas fa-tools'
-			},
-		]
-	) %}
-	{% include 'entity_actions_row.html.twig' with {
-		'buttons': action_buttons,
+	{% include 'assistant/_main_selector_buttons.html.twig' with {
+		'active_button': 'assistant_index',
 	} only %}
 {% endblock %}
 

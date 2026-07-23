@@ -9,13 +9,16 @@ use App\AssistantTool\ReadUrlTool;
 use App\AssistantTool\WeatherTool;
 use App\AssistantTool\WebSearchTool;
 use App\Entity\AssistantCall;
+use App\Entity\AssistantRecurringMessage;
 use App\Entity\User;
 use App\Message\AsyncJob;
 use App\Model\AssistantMessageBag;
 use App\Model\AssistantMessageDTO;
 use App\Model\AssistantSettings;
 use App\Repository\AssistantCallRepository;
+use App\Repository\AssistantRecurringMessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use Symfony\AI\Agent\Agent;
 use Symfony\AI\Agent\Toolbox\AgentProcessor;
 use Symfony\AI\Agent\Toolbox\Toolbox;
@@ -32,7 +35,7 @@ final class AssistantService
     public const MAX_PROCESSING_TIME = 7200; // Two hours for slow local processing
     private const BASE_URL = 'baseUrl';
     private const API_KEY = 'apiKey';
-    private const MODEL = 'model';
+    public const MODEL = 'model';
 
     public const TOOL_DATETIME = 'datetime_';
     public const TOOL_READ_URL = 'read_url_';
@@ -50,6 +53,7 @@ final class AssistantService
 
     public function __construct(
         private AssistantCallRepository $assistantCallRepository,
+        private AssistantRecurringMessageRepository $assistantRecurringMessageRepository,
         private EntityManagerInterface $em,
         private MessageBusInterface $bus,
         private ReadUrlTool $readUrlTool,
@@ -63,10 +67,18 @@ final class AssistantService
     {
         $settings = new AssistantSettings();
         $settings->selfConfigure($this->simpleSettingsService, $user);
+        $modelName = '';
+        $modelId = $settings->getModelId();
+        if (!empty($modelId)) {
+            $modelEntity = $this->assistantRecurringMessageRepository->find($modelId);
+            if ($modelEntity instanceof AssistantRecurringMessage) {
+                $modelName = $modelEntity->getModel();
+            }
+        }
         return [
             self::BASE_URL => $settings->getBaseUrl(),
             self::API_KEY => $settings->getApiKey(),
-            self::MODEL => $settings->getModel(),
+            self::MODEL => $modelName,
         ];
     }
 
@@ -95,6 +107,14 @@ final class AssistantService
     public function sendMessage(User $user, AssistantMessageDTO $dto): AssistantCall
     {
         $call = AssistantCall::fromMessageDTO($user, $dto);
+        $systemMessage = $this->assistantRecurringMessageRepository->findOneBy([
+            'id' => $dto->getModelId(),
+            'user' => $user,
+        ]);
+        if (!($systemMessage instanceof AssistantRecurringMessage)) {
+            throw new InvalidArgumentException('System Message ID in AssistantMessageDTO not mapped properly');
+        }
+        $call->setSystemMessage($systemMessage);
         $rootId = $dto->getRootId();
         if (!empty($rootId)) {
             $root = $this->assistantCallRepository->find($rootId);
@@ -122,17 +142,22 @@ final class AssistantService
 
     public function getModelChoices(UserInterface $user): array
     {
-        $defaultModel = $this->getDefaultOptionsForUser($user)[self::MODEL];
-        // Basic version, this will be expanded to support multiple models
-        $choices = [
-            $defaultModel => $defaultModel,
-        ];
+        $choices = [];
+        $entities = $this->assistantRecurringMessageRepository->getUserSystemMessages($user);
+        foreach ($entities as $entity) {
+            $choices[$entity->getDisplayName()] = (string) $entity->getId();
+        }
         return $choices;
     }
 
     public function getDefaultAgent(UserInterface $user, array $options, array $tools = []): Agent
     {
         return $this->getAgent($user, $options, $tools);
+    }
+
+    public function getAvailableAgents(UserInterface $user): array
+    {
+        return $this->assistantRecurringMessageRepository->getUserSystemMessages($user);
     }
 
     private function getAgent(UserInterface $user, array $options, array $tools = []): Agent

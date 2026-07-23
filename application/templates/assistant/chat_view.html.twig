@@ -19,26 +19,8 @@
 {% endblock %}
 
 {% block pageContentPrimary %}
-	{% set action_buttons = [
-		{
-			'color': 'nord12',
-			'href': path('assistant_index'),
-			'name': 'menu_record'|localised('assistant'),
-			'icon': 'fas fa-robot'
-	   },
-	] %}
-	{% set action_buttons = action_buttons|merge(
-		[
-			{
-				'color': 'nord10',
-				'href': path('assistant_config'),
-				'name': 'settings'|localised,
-				'icon': 'fas fa-tools'
-			},
-		]
-	) %}
-	{% include 'entity_actions_row.html.twig' with {
-		'buttons': action_buttons,
+	{% include 'assistant/_main_selector_buttons.html.twig' with {
+		'active_button': 'assistant_index',
 	} only %}
 {% endblock %}
 
@@ -89,6 +71,7 @@
 										<div class="bg-nord5 text-nord0 rounded-lg rounded-tl-none px-4 py-3 text-sm whitespace-pre-wrap break-words overflow-y-auto has-md-content">{{ message_pair.response|markdown_to_html }}</div>
 									{% endif %}
 									<div class="bg-nord4 text-right text-nord0 rounded-lg px-4 py-3 text-sm break-words overflow-y-auto">
+										{{ message_pair.responder }}
 										{% if message_pair.token_usage.promptTokens %}
 											↑{{ message_pair.token_usage.promptTokens }}
 										{% endif %}
@@ -96,6 +79,7 @@
 											↓{{ message_pair.token_usage.completionTokens }}
 										{% endif %}
 										<a href="{{ path('assistant_ajax_redo', {id: message_pair.id}) }}" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">↻</a>
+										<a href="{{ path('assistant_chat_delete', {id: message_pair.id}) }}" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">❌</a>
 									</div>
 								</div>
 							</div>

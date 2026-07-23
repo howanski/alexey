@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[UniqueEntity(fields: ['type', 'user', 'priority'])]
 class AssistantRecurringMessage
 {
+    public const DEFAULT_PRIORITY = 0;
     public const TYPE_SYSTEM_MESSAGE = 1;
 
     #[ORM\Id]
@@ -33,9 +34,29 @@ class AssistantRecurringMessage
     #[ORM\Column]
     private int $priority = 0;
 
+    #[ORM\Column(length: 255)]
+    private string $name = '';
+
+    #[ORM\Column(length: 255)]
+    private string $model = '';
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    // something unique for dropdown
+    public function getDisplayName(): string
+    {
+        if ($this->isDefault()) {
+            return '[👑][' . $this->getModel() . ']';
+        }
+        return '#' . strval($this->getId()) . ' ' . $this->getName() . ' [' . $this->getModel() . ']';
+    }
+
+    public function isDefault(): bool
+    {
+        return $this->priority === self::DEFAULT_PRIORITY;
     }
 
     public function getMessage(): ?string
@@ -82,6 +103,30 @@ class AssistantRecurringMessage
     public function setPriority(int $priority): static
     {
         $this->priority = $priority;
+
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): static
+    {
+        $this->name = strval($name);
+
+        return $this;
+    }
+
+    public function getModel(): string
+    {
+        return $this->model;
+    }
+
+    public function setModel(?string $model): static
+    {
+        $this->model = strval($model);
 
         return $this;
     }

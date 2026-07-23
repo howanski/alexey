@@ -1,7 +1,12 @@
 {% extends 'base.html.twig' %}
+{% if breadcrumb_label is not defined %}
+	{% set breadcrumb_label = 'new' %}
+{% endif %}
+
 {% set breadcrumbs = [
 	{'name': 'menu_record'|localised('assistant'), 'href': path('assistant_index')},
-	{'name': 'settings'|localised},
+	{'name': 'custom_agents'|localised('assistant'), 'href': path('assistant_agent_list')},
+	{'name': breadcrumb_label|localised},
 	]
 %}
 
@@ -9,10 +14,12 @@
 	{{ encore_entry_script_tags('forms-js') }}
 {% endblock %}
 
+
 {% block pageContentPrimary %}
 	{% include 'assistant/_main_selector_buttons.html.twig' with {
-		'active_button': 'assistant_config',
+		'active_button': 'assistant_agent_list',
 	} only %}
+
 {% endblock %}
 
 {% block pageContentSecondary %}
@@ -21,8 +28,8 @@
 		'additionalButtons': [
 			{
 				'color': 'nord10',
-				'href': path('assistant_index'),
-				'name': 'cancel'|localised,
+				'href': path('assistant_agent_list'),
+				'name': 'back_to_list'|localised,
 				'icon': 'fas fa-undo'
 			}
 		]

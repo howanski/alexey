@@ -206,6 +206,7 @@ final class AssistantCallProcessor
             }
         }
         $options = $this->service->getDefaultOptionsForUser($user);
+        $options[AssistantService::MODEL] = $defaultSystemMessage->getModel();
 
         $tools = $entity->getTools();
         $agent = $this->service->getDefaultAgent($user, $options, $tools);

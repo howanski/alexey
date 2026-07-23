@@ -319,6 +319,7 @@ class AssistantCall
             'isProcessing' => !($this->getStatus() === self::STATUS_DONE),
             'id' => $this->getId(),
             'token_usage' => $this->getTokenUsage(),
+            'responder' => strval($this->getSystemMessage()?->getName()),
         ];
         foreach ($this->getChildren() as $child) {
             // There should be max 1 child for chat but no limit for research

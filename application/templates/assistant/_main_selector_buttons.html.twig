@@ -1,0 +1,56 @@
+{% if not active_button is defined %}
+    {% set active_button = 'assistant_index' %}
+{% endif %}
+
+{% set action_buttons = [] %}
+
+{% if active_button == 'assistant_index' %}
+    {% set color = 'nord12' %}
+{% else %}
+    {% set color = 'nord10' %}
+{% endif %}
+{% set action_buttons = action_buttons|merge(
+    [
+        {
+            'color': color,
+            'href': path('assistant_index'),
+            'name': 'menu_record'|localised('assistant'),
+            'icon': 'fas fa-robot'
+        },
+    ]
+) %}
+
+{% if active_button == 'assistant_agent_list' %}
+    {% set color = 'nord12' %}
+{% else %}
+    {% set color = 'nord10' %}
+{% endif %}
+{% set action_buttons = action_buttons|merge(
+    [
+        {
+            'color': color,
+            'href': path('assistant_agent_list'),
+            'name': 'custom_agents'|localised('assistant'),
+            'icon': 'fas fa-grin-wink'
+        },
+    ]
+) %}
+
+{% if active_button == 'assistant_config' %}
+    {% set color = 'nord12' %}
+{% else %}
+    {% set color = 'nord10' %}
+{% endif %}
+{% set action_buttons = action_buttons|merge(
+    [
+        {
+            'color': color,
+            'href': path('assistant_config'),
+            'name': 'settings'|localised,
+            'icon': 'fas fa-tools'
+        },
+    ]
+) %}
+{% include 'entity_actions_row.html.twig' with {
+    'buttons': action_buttons,
+} only %}

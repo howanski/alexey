@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('assistant'), 'href': path('assistant_index')},
+	{'name': 'custom_agents'|localised('assistant'), 'href': path('assistant_agent_list')},
+	]
+%}
+
+{% block pageContentPrimary %}
+	{% include 'assistant/_main_selector_buttons.html.twig' with {
+		'active_button': 'assistant_agent_list',
+	} only %}
+{% endblock %}
+
+{% block pageContentSecondary %}
+	{% set table_data = {} %}
+	{% for custom_agent in agents %}
+		{% if custom_agent.isDefault %}
+			{% set agent_edit_path = path('assistant_config') %}
+		{% else %}
+			{% set agent_edit_path = path('assistant_agent_edit', {'id': custom_agent.id}) %}
+		{% endif %}
+		{% set actions %}
+			{% include 'table_action_button.html.twig' with {
+				'href': agent_edit_path,
+				'name': 'edit'|localised,
+			} only %}
+		{% endset %}
+
+		{% set table_data = table_data|merge([{
+            'name': custom_agent.displayName,
+			'model': custom_agent.model,
+			'actions': actions,
+		}]) %}
+	{% endfor %}
+	{% include 'table.html.twig' with {
+		'tableTitle': 'custom_agents'|localised('assistant'),
+		'tableHeaders': [
+			'name'|localised,
+			'model'|localised('assistant'),
+            'actions'|localised,
+		],
+		'tableData': table_data,
+		'buttons': [{'href': path('assistant_agent_new'), text: 'add'|localised}],
+	} only %}
+{% endblock %}

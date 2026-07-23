@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use App\Entity\AssistantRecurringMessage;
 use App\Form\CommonFormType;
-use App\Model\AssistantMessageDTO;
-use App\Service\AssistantService;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-final class AssistantMessageType extends CommonFormType
+final class AssistantAgentType extends CommonFormType
 {
     protected function init(): void
     {
@@ -22,29 +21,22 @@ final class AssistantMessageType extends CommonFormType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $toolChoices = [];
-        foreach (AssistantService::TOOLS_AVAILABLE as $toolName) {
-            $toolChoices[$this->getValueTrans(field: 'tools', value: $toolName)] = $toolName;
-        }
-        ksort($toolChoices);
-
         $builder
-            ->add(child: 'modelId', type: ChoiceType::class, options: [
-                'label' => $this->getLabelTrans(label: 'model'),
+            ->add(child: 'name', type: TextType::class, options: [
+                'label' => $this->getLabelTrans(label: 'agent_name'),
                 'priority' => 0,
                 'required' => true,
-                'choices' => $options['model_choices'],
                 'constraints' => [
                     new NotBlank()
                 ],
             ])
-            ->add(child: 'tools', type: ChoiceType::class, options: [
-                'label' => $this->getLabelTrans(label: 'tools'),
-                'multiple' => true,
-                'expanded' => true,
+            ->add(child: 'model', type: TextType::class, options: [
+                'label' => $this->getLabelTrans(label: 'model'),
                 'priority' => -1,
-                'required' => false,
-                'choices' => $toolChoices,
+                'required' => true,
+                'constraints' => [
+                    new NotBlank()
+                ],
             ])
             ->add(child: 'message', type: TextareaType::class, options: [
                 'label' => $this->getLabelTrans(label: 'message'),
@@ -63,8 +55,7 @@ final class AssistantMessageType extends CommonFormType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => AssistantMessageDTO::class,
-            'model_choices' => [],
+            'data_class' => AssistantRecurringMessage::class,
         ]);
     }
 }

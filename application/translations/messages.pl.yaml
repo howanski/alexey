@@ -18,6 +18,7 @@ app:
     assistant:
       forms:
         labels:
+          agent_name: 'Nazwa agenta'
           api_key: 'Klucz API'
           base_url: 'Adres serwera'
           message: 'Wiadomość'
@@ -35,7 +36,9 @@ app:
       strings:
         chat: Czat
         chats: Czaty
-        menu_record: 'Asystent AI'
+        custom_agents: "Agenci niestandardowi"
+        menu_record: "Asystent AI"
+        model: Model
     common:
       flashes:
         saved: "Pomyślnie zapisano"

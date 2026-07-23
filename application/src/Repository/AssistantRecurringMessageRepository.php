@@ -36,4 +36,42 @@ final class AssistantRecurringMessageRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * @return AssistantRecurringMessage[]
+     */
+    public function getUserSystemMessages(UserInterface $user): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.user = :user')
+            ->andWhere('c.type = :type')
+            ->orderBy('c.priority', 'ASC')
+            ->setParameters([
+                'user' => $user,
+                'type' => AssistantRecurringMessage::TYPE_SYSTEM_MESSAGE,
+            ])
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getNextFreePrioritySlot(UserInterface $user, int $type): int
+    {
+        $result = $this->createQueryBuilder('c')
+            ->andWhere('c.user = :user')
+            ->andWhere('c.type = :type')
+            ->orderBy('c.priority', 'DESC')
+            ->setMaxResults(1)
+            ->setParameters([
+                'user' => $user,
+                'type' => $type,
+            ])
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (is_null($result)) {
+            return 0;
+        }
+
+        return 1 + $result->getPriority();
+    }
 }

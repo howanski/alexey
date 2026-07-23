@@ -10,7 +10,7 @@ final class AssistantMessageDTO
 {
     private string $message;
 
-    private string $model;
+    private int $modelId = 0;
 
     private ?int $rootId = null;
 
@@ -27,14 +27,14 @@ final class AssistantMessageDTO
         return $this;
     }
 
-    public function getModel(): string
+    public function getModelId(): int
     {
-        return $this->model;
+        return $this->modelId;
     }
 
-    public function setModel(string $model): self
+    public function setModelId(int $modelId): self
     {
-        $this->model = $model;
+        $this->modelId = $modelId;
         return $this;
     }
 

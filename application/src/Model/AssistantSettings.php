@@ -14,10 +14,19 @@ final class AssistantSettings
 {
     private const BASE_URL = 'ASSISTANT_DEFAULT_URL';
     private const API_KEY = 'ASSISTANT_DEFAULT_API_KEY';
-    private const MODEL = 'ASSISTANT_DEFAULT_MODEL';
 
     private string $baseUrl = '';
     private string $apiKey = '';
+    private int $modelId = 0;
+
+    /**
+     * @deprecated to be removed on next code cleanup
+     * it keeps the model name, I need to stop exposing it
+     * and use entity id (or whole entity???)
+     * 
+     * Generally this class is getting rotten with workaround code, might need rethinking
+     * how to do it better
+     */
     private string $model = '';
     private string $systemMessage = '';
 
@@ -27,13 +36,11 @@ final class AssistantSettings
             keys: [
                 self::BASE_URL,
                 self::API_KEY,
-                self::MODEL,
             ],
             user: $user,
         );
         $this->setBaseUrl(strval($settingsArray[self::BASE_URL]));
         $this->setApiKey(strval($settingsArray[self::API_KEY]));
-        $this->setModel(strval($settingsArray[self::MODEL]));
 
         /**
          * @var AssistantRecurringMessageRepository
@@ -43,6 +50,8 @@ final class AssistantSettings
         $defaultMessage = $repo->getDefaultSystemMessage($user);
         if ($defaultMessage instanceof AssistantRecurringMessage) {
             $this->setSystemMessage($defaultMessage->getMessage());
+            $this->model = ($defaultMessage->getModel());
+            $this->setModelId($defaultMessage->getId());
         }
     }
 
@@ -52,7 +61,6 @@ final class AssistantSettings
             settings: [
                 self::BASE_URL => $this->getBaseUrl(),
                 self::API_KEY => $this->getApiKey(),
-                self::MODEL => $this->getModel(),
             ],
             user: $user,
             flush: false
@@ -74,6 +82,7 @@ final class AssistantSettings
             $em->persist($defaultMessage);
         }
         $defaultMessage->setMessage($this->getSystemMessage());
+        $defaultMessage->setModel($this->model);
     }
 
     public function isConfigured(): bool
@@ -101,14 +110,22 @@ final class AssistantSettings
         $this->apiKey = strval($apiKey);
     }
 
+    public function getModelId(): int
+    {
+        return $this->modelId;
+    }
+
+    private function setModelId(int $modelId): void
+    {
+        $this->modelId = $modelId;
+    }
+
+    /**
+     * @deprecated to be removed on next code cleanup
+     */
     public function getModel(): string
     {
         return $this->model;
-    }
-
-    public function setModel(string $model): void
-    {
-        $this->model = $model;
     }
 
     public function getSystemMessage(): string
