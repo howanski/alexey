@@ -27,7 +27,13 @@
 			} only %}
 		{% endset %}
 
+		{% set visibility_icon = '<i class="fas fa-circle text-nord-11"></i>' %}
+		{% if chat.isRead %}
+			{% set visibility_icon = '<i class="fas fa-circle text-nord-14"></i>' %}
+		{% endif %}
+
 		{% set table_data = table_data|merge([{
+			'seen': visibility_icon,
             'title': '<a href="' ~ chat_view_path ~ '">' ~ chat.shortName(30) ~ '</a>',
 			'model': '<a href="' ~ chat_view_path ~ '">' ~ chat.assistantName ~ '</a>',
 			'status': '<a href="' ~ chat_view_path ~ '">' ~ chat.statusEffective ~ '</a>',
@@ -37,6 +43,7 @@
 	{% include 'table.html.twig' with {
 		'tableTitle': 'chats'|localised('assistant'),
 		'tableHeaders': [
+			'<i class="far fa-eye"></i>',
 			'title'|localised,
 			'model'|localised('assistant'),
 			'status'|localised,

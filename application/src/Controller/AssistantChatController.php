@@ -73,6 +73,10 @@ final class AssistantChatController extends AlexeyAbstractController
             $call = $service->sendMessage($user, $dto);
             return $this->redirectToRoute('assistant_chat_view', ['id' => $id]);
         }
+        if (false === $call->isRead()) {
+            $call->setIsRead(true);
+            $this->em->flush();
+        }
         return $this->render(
             'assistant/chat_view.html.twig',
             [
@@ -152,7 +156,10 @@ final class AssistantChatController extends AlexeyAbstractController
         $call = $this->fetchEntityById(className: AssistantCall::class, id: $id);
         if ($call instanceof AssistantCall) {
             $user = $this->alexeyUser();
-            if ($call->getUser()->getUserIdentifier() === $user->getUserIdentifier() && $this->isCsrfTokenValid('redo_chat_' . $call->getId(), $request->request->get('_token'))) {
+            if (
+                $call->getUser()->getUserIdentifier() === $user->getUserIdentifier()
+                && $this->isCsrfTokenValid('redo_chat_' . $call->getId(), $request->request->get('_token'))
+            ) {
                 $call->setStatus(AssistantCall::STATUS_TO_REDO);
                 $this->em->flush();
                 $bus->dispatch(new AsyncJob(

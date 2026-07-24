@@ -46,7 +46,10 @@ final class AssistantAgentController extends AlexeyAbstractController
         Request $request,
     ): Response {
         $user = $this->alexeyUser();
-        $availablePrioritySlot = $repository->getNextFreePrioritySlot($user, AssistantRecurringMessage::TYPE_SYSTEM_MESSAGE);
+        $availablePrioritySlot = $repository->getNextFreePrioritySlot(
+            $user,
+            AssistantRecurringMessage::TYPE_SYSTEM_MESSAGE,
+        );
         $agent = new AssistantRecurringMessage();
         $agent->setType(AssistantRecurringMessage::TYPE_SYSTEM_MESSAGE);
         $agent->setPriority($availablePrioritySlot);

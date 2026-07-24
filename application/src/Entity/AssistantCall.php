@@ -84,6 +84,9 @@ class AssistantCall
     #[ORM\Column(type: Types::ARRAY)]
     private array $tools = [];
 
+    #[ORM\Column]
+    private bool $isRead = false;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
@@ -236,6 +239,7 @@ class AssistantCall
         if (!($this->status === $status) && array_key_exists($status, self::STATUSES)) {
             $this->status = $status;
             $this->lastStatusChange = new DateTime('now');
+            $this->getRootEntity()->setIsRead(false);
         }
         return $this;
     }
@@ -348,6 +352,18 @@ class AssistantCall
         foreach ($this->getChildren() as $child) {
             return $child->getLastChild();
         }
+        return $this;
+    }
+
+    public function isRead(): bool
+    {
+        return (bool) $this->isRead;
+    }
+
+    public function setIsRead(bool $isRead): static
+    {
+        $this->isRead = $isRead;
+
         return $this;
     }
 }
