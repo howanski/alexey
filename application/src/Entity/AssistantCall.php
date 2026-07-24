@@ -274,6 +274,15 @@ class AssistantCall
         return $this;
     }
 
+    public function getAssistantName(): string
+    {
+        if (true === $this->getSystemMessage()?->isDefault()) {
+            return 'Alexey';
+        }
+
+        return $this->getSystemMessage()?->getName() ?? 'n/a';
+    }
+
     public function getTools(): array
     {
         return $this->tools;

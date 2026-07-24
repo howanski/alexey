@@ -28,7 +28,8 @@
 		{% endset %}
 
 		{% set table_data = table_data|merge([{
-            'name': '<a href="' ~ chat_view_path ~ '">' ~ chat.shortName(30) ~ '</a>',
+            'title': '<a href="' ~ chat_view_path ~ '">' ~ chat.shortName(30) ~ '</a>',
+			'model': '<a href="' ~ chat_view_path ~ '">' ~ chat.assistantName ~ '</a>',
 			'status': '<a href="' ~ chat_view_path ~ '">' ~ chat.statusEffective ~ '</a>',
 			'actions': actions,
 		}]) %}
@@ -37,6 +38,7 @@
 		'tableTitle': 'chats'|localised('assistant'),
 		'tableHeaders': [
 			'title'|localised,
+			'model'|localised('assistant'),
 			'status'|localised,
             'actions'|localised,
 		],

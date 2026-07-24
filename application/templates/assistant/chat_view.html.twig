@@ -72,6 +72,7 @@
 									{% endif %}
 									<div class="bg-nord4 text-right text-nord0 rounded-lg px-4 py-3 text-sm break-words overflow-y-auto">
 										{{ message_pair.responder }}
+										#{{ loop.index }}
 										{% if message_pair.token_usage.promptTokens %}
 											↑{{ message_pair.token_usage.promptTokens }}
 										{% endif %}
