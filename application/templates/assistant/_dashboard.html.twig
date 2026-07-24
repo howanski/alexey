@@ -1,0 +1,14 @@
+<div class="flex flex-wrap">
+    {% for call_id in callIds %}
+        {% include 'card.html.twig' with {
+            'iconClass': 'fas fa-robot',
+            'iconBg': 'nord10',
+            'iconHref': path('assistant_chat_view', {id: call_id}),
+            'headerValue': 'model'|localised('assistant'),
+            'headerText': 'menu_record'|localised('assistant'),
+            'bottomData': '',
+            'dynamicSrc': path('assistant_ajax_card_data', {id: call_id}),
+            'refreshRate': 0,
+        } only %}
+    {% endfor %}
+</div>

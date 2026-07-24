@@ -6,6 +6,8 @@ namespace App\Form;
 
 use App\Form\CommonFormType;
 use App\Model\AssistantSettings;
+use App\Service\SimpleSettingsService;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -51,6 +53,16 @@ final class AssistantSettingsType extends CommonFormType
                 'required' => false,
                 'attr' => [
                     'class' => 'min-h-180 ' . CommonFormType::STANDARD_INPUT_CLASSES,
+                ],
+            ])
+            ->add(child: 'showOnDashboard', type: ChoiceType::class, options: [
+                'label' => $this->getLabelTrans(label: 'show_on_dashboard'),
+                'priority' => -4,
+                'choices' => [
+                    $this->getValueTrans(field: 'show_on_dashboard', value: 'hide')
+                    => SimpleSettingsService::UNIVERSAL_FALSE,
+                    $this->getValueTrans(field: 'show_on_dashboard', value: 'show')
+                    => SimpleSettingsService::UNIVERSAL_TRUTH,
                 ],
             ])
         ;

@@ -15,8 +15,9 @@ final class DashboardController extends AlexeyAbstractController
     #[Route('/', name: 'dashboard')]
     public function index(DashboardService $service): Response
     {
+        $user = $this->alexeyUser();
         return $this->render('dashboard/index.html.twig', [
-            'dashboard_data' => $service->getDashboardData()
+            'dashboard_data' => $service->getDashboardData($user),
         ]);
     }
 

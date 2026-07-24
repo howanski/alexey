@@ -37,6 +37,28 @@ final class AssistantCallRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getUnreadChatsIds(UserInterface $user): array
+    {
+        $ids = [];
+        $results = $this->createQueryBuilder('c')
+            ->select('c.id')
+            ->andWhere('c.root IS NULL')
+            ->andWhere('c.user = :user')
+            ->andWhere('c.isRead = :read')
+            ->andWhere('c.type = :chatType')
+            ->setParameters([
+                'user' => $user,
+                'read' => 0,
+                'chatType' => AssistantCall::TYPE_CHAT,
+            ])
+            ->getQuery()
+            ->getResult();
+        foreach ($results as $result) {
+            $ids[] = $result['id'];
+        }
+        return $ids;
+    }
+
     public function countCallsWithStatus(int $status): int
     {
         return $this->count(

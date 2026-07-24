@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Class\DynamicCard;
 use App\Entity\AssistantCall;
 use App\Form\AssistantMessageType;
 use App\Message\AsyncJob;
@@ -170,5 +171,38 @@ final class AssistantChatController extends AlexeyAbstractController
             return $this->redirectToRoute('assistant_chat_view', ['id' => $call->getRootEntity()->getId()]);
         }
         return $this->redirectToRoute('assistant_index');
+    }
+
+    #[Route('/card-data/{id}', name: 'assistant_ajax_card_data', methods: ['GET'])]
+    public function ajaxCardData(
+        AlexeyTranslator $translator,
+        int $id,
+        Request $request,
+    ): Response {
+        if ($request->isXmlHttpRequest()) {
+            $call = $this->fetchEntityById(className: AssistantCall::class, id: $id);
+            if (!($call instanceof AssistantCall)) {
+                return $this->redirectToRoute('assistant_index');
+            }
+            $user = $this->alexeyUser();
+            if (!($call->getUser()->getUserIdentifier() === $user->getUserIdentifier())) {
+                return $this->redirectToRoute('assistant_index');
+            }
+
+            $dynaCard = new DynamicCard();
+            $dynaCard->setHeaderText(
+                $translator->translateString('menu_record', 'assistant')
+            );
+            $dynaCard->setHeaderValue(
+                $call->getAssistantName()
+            );
+            $dynaCard->setFooterValue(
+                $call->getShortName(40)
+            );
+
+            return $dynaCard->toResponse();
+        } else {
+            return $this->redirectToRoute(route: 'assistant_index');
+        }
     }
 }

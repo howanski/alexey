@@ -14,16 +14,18 @@ final class AssistantSettings
 {
     private const BASE_URL = 'ASSISTANT_DEFAULT_URL';
     private const API_KEY = 'ASSISTANT_DEFAULT_API_KEY';
+    public const SHOW_ON_DASHBOARD = 'ASSISTANT_SHOW_ON_DASHBOARD';
 
     private string $baseUrl = '';
     private string $apiKey = '';
     private int $modelId = 0;
+    private string $showOnDashboard = '';
 
     /**
      * @deprecated to be removed on next code cleanup
      * it keeps the model name, I need to stop exposing it
      * and use entity id (or whole entity???)
-     * 
+     *
      * Generally this class is getting rotten with workaround code, might need rethinking
      * how to do it better
      */
@@ -36,11 +38,13 @@ final class AssistantSettings
             keys: [
                 self::BASE_URL,
                 self::API_KEY,
+                self::SHOW_ON_DASHBOARD,
             ],
             user: $user,
         );
         $this->setBaseUrl(strval($settingsArray[self::BASE_URL]));
         $this->setApiKey(strval($settingsArray[self::API_KEY]));
+        $this->setShowOnDashboard(strval($settingsArray[self::SHOW_ON_DASHBOARD]));
 
         /**
          * @var AssistantRecurringMessageRepository
@@ -61,6 +65,7 @@ final class AssistantSettings
             settings: [
                 self::BASE_URL => $this->getBaseUrl(),
                 self::API_KEY => $this->getApiKey(),
+                self::SHOW_ON_DASHBOARD => $this->getShowOnDashboard(),
             ],
             user: $user,
             flush: false
@@ -145,5 +150,15 @@ final class AssistantSettings
     public function setSystemMessage(?string $systemMessage): void
     {
         $this->systemMessage = strval($systemMessage);
+    }
+
+    public function getShowOnDashboard(): string
+    {
+        return $this->showOnDashboard;
+    }
+
+    public function setShowOnDashboard(string $showOnDashboard): void
+    {
+        $this->showOnDashboard = $showOnDashboard;
     }
 }

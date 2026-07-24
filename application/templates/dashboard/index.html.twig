@@ -1,45 +1,53 @@
 {% extends 'base.html.twig' %}
 {% set breadcrumbs = [{'name': 'menu_record'|localised('dashboard')}] %}
-{% set machines_were_shown = false %}
-{% set network_was_shown = false %}
-{% set weather_was_hown = false %}
 
 {% block javascripts %}
 	{{ encore_entry_script_tags('dynacard') }}
 {% endblock %}
 
+{% set items = [] %}
+{% if dashboard_data.assistant is defined and dashboard_data.assistant is not null  %}{% set items = items|merge([{name: 'assistant'}]) %}{% endif %}
+{% if dashboard_data.machines is defined and dashboard_data.machines|length > 0 %}{% set items = items|merge([{name: 'machines'}]) %}{% endif %}
+{% if dashboard_data.network_statistic is defined and dashboard_data.network_statistic is not null %}{% set items = items|merge([{name: 'network'}]) %}{% endif %}
+{% if dashboard_data.weather is defined and dashboard_data.weather is not null %}{% set items = items|merge([{name: 'weather'}]) %}{% endif %}
+
 {% block pageContentPrimary %}
-	{% if dashboard_data.machines|length > 0 %}
-		<div class="flex flex-wrap">
-			{% for machine in dashboard_data.machines %}
-				{% set machines_were_shown = true %}
-				{% include 'network_machine/card.html.twig' with {'network_machine': machine} only %}
-			{% endfor %}
-		</div>
-	{% endif %}
-
-
-	{% if dashboard_data.network_statistic is defined and dashboard_data.network_statistic is not null and not machines_were_shown %}
-		{% set network_was_shown = true %}
-		{% include 'dashboard/_network_usage.html.twig' %}
-	{% endif %}
-
-
-	{% if dashboard_data.weather is defined and dashboard_data.weather is not null and not machines_were_shown and not network_was_shown %}
-		{% set weather_was_hown = true %}
-		{% include 'dashboard/_weather.html.twig' %}
+	{% if items|length > 0 %}
+		{% set item = items[0] %}
+		{% if item.name == 'assistant' %}
+			{% include 'assistant/_dashboard.html.twig' with {
+				'callIds': dashboard_data.assistant,
+			} only %}
+		{% elseif item.name == 'machines' %}
+			<div class="flex flex-wrap">
+				{% for machine in dashboard_data.machines %}
+					{% include 'network_machine/card.html.twig' with {'network_machine': machine} only %}
+				{% endfor %}
+			</div>
+		{% elseif item.name == 'network' %}
+			{% include 'dashboard/_network_usage.html.twig' %}
+		{% elseif item.name == 'weather' %}
+			{% include 'dashboard/_weather.html.twig' %}
+		{% endif %}
 	{% endif %}
 {% endblock %}
 
-
 {% block pageContentSecondary %}
-	{% if dashboard_data.network_statistic is defined and dashboard_data.network_statistic is not null and not network_was_shown  %}
-		{% set network_was_shown = true %}
-		{% include 'dashboard/_network_usage.html.twig' %}
-	{% endif %}
-
-	{% if dashboard_data.weather is defined and dashboard_data.weather is not null and not weather_was_hown %}
-		{% set weather_was_hown = true %}
-		{% include 'dashboard/_weather.html.twig' %}
-	{% endif %}
+	{% for item in items|slice(1) %}
+		{% if item.name == 'assistant' %}
+			{% include 'assistant/_dashboard.html.twig' with {
+				'callIds': dashboard_data.assistant,
+			} only %}
+		{% elseif item.name == 'machines' %}
+			<div class="flex flex-wrap">
+				{% for machine in dashboard_data.machines %}
+					{% include 'network_machine/card.html.twig' with {'network_machine': machine} only %}
+				{% endfor %}
+			</div>
+		{% elseif item.name == 'network' %}
+			{% include 'dashboard/_network_usage.html.twig' %}
+		{% elseif item.name == 'weather' %}
+			{% include 'dashboard/_weather.html.twig' %}
+		{% endif %}
+	{% endfor %}
 {% endblock %}
