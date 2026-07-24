@@ -39,6 +39,7 @@ app:
         custom_agents: "Agenci niestandardowi"
         menu_record: "Asystent AI"
         model: Model
+        you_sure_redo: "Wygenerować odpowiedź ponownie?"
     common:
       flashes:
         saved: "Pomyślnie zapisano"

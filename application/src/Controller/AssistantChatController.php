@@ -83,11 +83,12 @@ final class AssistantChatController extends AlexeyAbstractController
         );
     }
 
-    #[Route('/delete/{id}', name: 'assistant_chat_delete', methods: ['GET'])]
+    #[Route('/delete/{id}', name: 'assistant_chat_delete', methods: ['POST'])]
     public function deleteChat(
         AlexeyTranslator $translator,
         int $id,
         MessageBusInterface $bus,
+        Request $request,
     ): Response {
         $call = $this->fetchEntityById(className: AssistantCall::class, id: $id);
         if (!($call instanceof AssistantCall)) {
@@ -100,14 +101,19 @@ final class AssistantChatController extends AlexeyAbstractController
             return $this->redirectToRoute('assistant_index');
         }
 
-        $call->setType(AssistantCall::TYPE_TRASH);
-        $call->setStatus(AssistantCall::STATUS_PROCESSING);
-        $this->em->flush();
+        if ($this->isCsrfTokenValid('delete_chat_' . $call->getId(), $request->request->get('_token'))) {
+            $call->setType(AssistantCall::TYPE_TRASH);
+            $call->setStatus(AssistantCall::STATUS_PROCESSING);
+            $this->em->flush();
 
-        $bus->dispatch(new AsyncJob(
-            jobType: AsyncJob::TYPE_PROCESS_ASSISTANT_CALLS,
-            payload: [],
-        ));
+            $bus->dispatch(new AsyncJob(
+                jobType: AsyncJob::TYPE_PROCESS_ASSISTANT_CALLS,
+                payload: [],
+            ));
+        } else {
+            $this->addFlash(type: 'nord11', message: $translator->translateFlash('delete_forbidden'));
+            return $this->redirectToRoute('assistant_index');
+        }
 
         $root = $call->getRoot();
         if ($root instanceof AssistantCall && !($root->getId() === $id)) {
@@ -137,15 +143,16 @@ final class AssistantChatController extends AlexeyAbstractController
         ]);
     }
 
-    #[Route('/ajax/redo/{id}', name: 'assistant_ajax_redo', methods: ['GET'])]
+    #[Route('/ajax/redo/{id}', name: 'assistant_ajax_redo', methods: ['POST'])]
     public function ajaxRedo(
         int $id,
         MessageBusInterface $bus,
+        Request $request,
     ) {
         $call = $this->fetchEntityById(className: AssistantCall::class, id: $id);
         if ($call instanceof AssistantCall) {
             $user = $this->alexeyUser();
-            if ($call->getUser()->getUserIdentifier() === $user->getUserIdentifier()) {
+            if ($call->getUser()->getUserIdentifier() === $user->getUserIdentifier() && $this->isCsrfTokenValid('redo_chat_' . $call->getId(), $request->request->get('_token'))) {
                 $call->setStatus(AssistantCall::STATUS_TO_REDO);
                 $this->em->flush();
                 $bus->dispatch(new AsyncJob(

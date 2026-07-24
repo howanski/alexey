@@ -1,4 +1,3 @@
-import "./secured-button.js";
 import { Datepicker } from "vanillajs-datepicker";
 import pl from "./../../node_modules/vanillajs-datepicker/js/i18n/locales/pl.js";
 Object.assign(Datepicker.locales, pl);

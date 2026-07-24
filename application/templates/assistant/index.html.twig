@@ -19,9 +19,11 @@
 				'href': chat_view_path,
 				'name': 'view'|localised,
 			} only %}
-			{% include 'table_action_button.html.twig' with {
-				'href': path('assistant_chat_delete', {'id': chat.id}),
+			{% include 'table_action_button_secure.html.twig' with {
+				'href': path('assistant_chat_delete', {id: chat.id}),
+				'confirmation': 'you_sure_delete'|localised,
 				'name': 'delete'|localised,
+				'csrf': csrf_token('delete_chat_' ~ chat.id),
 			} only %}
 		{% endset %}
 

@@ -39,6 +39,7 @@ app:
         custom_agents: Custom Agents
         menu_record: "AI assistant"
         model: Model
+        you_sure_redo: "Regenerate message?"
     common:
       flashes:
         saved: "Successfully saved"

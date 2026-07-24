@@ -78,8 +78,18 @@
 										{% if message_pair.token_usage.completionTokens %}
 											↓{{ message_pair.token_usage.completionTokens }}
 										{% endif %}
-										<a href="{{ path('assistant_ajax_redo', {id: message_pair.id}) }}" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">↻</a>
-										<a href="{{ path('assistant_chat_delete', {id: message_pair.id}) }}" class="bg-nord2 text-white hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1">❌</a>
+										{% include 'table_action_button_secure.html.twig' with {
+											'confirmation': 'you_sure_redo'|localised('assistant'),
+											'csrf': csrf_token('redo_chat_' ~ message_pair.id),
+											'href': path('assistant_ajax_redo', {id: message_pair.id}),
+											'name': '↻',
+										} only %}
+										{% include 'table_action_button_secure.html.twig' with {
+											'confirmation': 'you_sure_delete'|localised,
+											'csrf': csrf_token('delete_chat_' ~ message_pair.id),
+											'href': path('assistant_chat_delete', {id: message_pair.id}),
+											'name': '❌',
+										} only %}
 									</div>
 								</div>
 							</div>
@@ -93,12 +103,14 @@
 	{% if show_response_form %}
 		{% include 'form.html.twig' with {
 			'form': form,
-			'additionalButtons': [
+			'additionalSecuredButtons': [
 				{
 					'color': 'nord11',
-					'href': path('assistant_chat_delete', {id: id}),
+					'action': path('assistant_chat_delete', {id: id}),
+		            'csrf': csrf_token('delete_chat_' ~ id),
 					'name': 'delete'|localised,
-					'icon': 'fas fa-trash'
+					'icon': 'fas fa-trash',
+					'confirmation': 'you_sure_delete'|localised
 				}
 			],
 			'saveButtonLabel': 'send'|localised
