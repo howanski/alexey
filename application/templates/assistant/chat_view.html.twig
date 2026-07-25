@@ -83,13 +83,13 @@
 											'confirmation': 'you_sure_redo'|localised('assistant'),
 											'csrf': csrf_token('redo_chat_' ~ message_pair.id),
 											'href': path('assistant_ajax_redo', {id: message_pair.id}),
-											'name': '↻',
+											'name': '<i class="fas fa-redo"></i>',
 										} only %}
 										{% include 'table_action_button_secure.html.twig' with {
 											'confirmation': 'you_sure_delete'|localised,
 											'csrf': csrf_token('delete_chat_' ~ message_pair.id),
 											'href': path('assistant_chat_delete', {id: message_pair.id}),
-											'name': '❌',
+											'name': '<i class="fas fa-trash-alt"></i>',
 										} only %}
 									</div>
 								</div>
