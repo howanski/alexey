@@ -36,7 +36,7 @@ final class NetworkMachineController extends AlexeyAbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($networkMachine);
             $this->em->flush();
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
             return $this->redirectToRoute('network_machine_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -67,7 +67,7 @@ final class NetworkMachineController extends AlexeyAbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
             return $this->redirectToRoute('network_machine_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -108,7 +108,7 @@ final class NetworkMachineController extends AlexeyAbstractController
             payload: $payload,
         );
         $bus->dispatch($message);
-        $this->addFlash(type: 'nord14', message: $translator->translateFlash('signal_dispatched'));
+        $this->flashSuccess($translator->translateFlash('signal_dispatched'));
         return $this->redirectToRoute($backRoute, [], Response::HTTP_SEE_OTHER);
     }
 

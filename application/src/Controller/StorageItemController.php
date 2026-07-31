@@ -84,7 +84,7 @@ final class StorageItemController extends AlexeyAbstractController
             $this->em->persist($item);
             $this->em->persist($mappingStack);
             $this->em->flush();
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
 
             return $this->redirectToRoute(
                 route: 'storage_item_index',
@@ -116,7 +116,7 @@ final class StorageItemController extends AlexeyAbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
 
             return $this->redirectToRoute(
                 route: 'storage_item_edit',
@@ -174,7 +174,7 @@ final class StorageItemController extends AlexeyAbstractController
                 quantity: $quantity,
             );
 
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
 
             return $this->redirectToRoute(
                 route: 'storage_item_edit',
@@ -222,7 +222,7 @@ final class StorageItemController extends AlexeyAbstractController
                 quantity: $quantity,
             );
 
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
 
             return $this->redirectToRoute(
                 route: 'storage_item_edit',
@@ -265,7 +265,7 @@ final class StorageItemController extends AlexeyAbstractController
                 quantity: $quantity,
             );
 
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
 
             return $this->redirectToRoute(
                 route: 'storage_item_edit',

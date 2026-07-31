@@ -71,7 +71,7 @@ final class ApiSettingsController extends AlexeyAbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->em->persist($apiDevice);
                 $this->em->flush();
-                $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+                $this->flashSuccess($translator->translateFlash('saved'));
 
                 return $this->redirectToRoute('api_local_settings', [], Response::HTTP_SEE_OTHER);
             }

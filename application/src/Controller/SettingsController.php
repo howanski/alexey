@@ -47,7 +47,7 @@ final class SettingsController extends AlexeyAbstractController
             $this->em->flush();
             $cacheService->invalidateCache(OpenWeatherOneApiResponse::WEATHER_CACHE_KEY);
             $request->getSession()->set(UserLocaleSubscriber::USER_LOCALE, $user->getLocale());
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
             return $this->redirectToRoute('settings_user', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -75,7 +75,7 @@ final class SettingsController extends AlexeyAbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $settings = $form->getData();
             $settings->save();
-            $this->addFlash(type: 'nord14', message: $t->translateFlash('saved'));
+            $this->flashSuccess($t->translateFlash('saved'));
             return $this->redirectToRoute('settings_system', [], Response::HTTP_SEE_OTHER);
         }
 

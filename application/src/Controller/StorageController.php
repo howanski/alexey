@@ -41,7 +41,7 @@ final class StorageController extends AlexeyAbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($channel);
             $this->em->flush();
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
 
             return $this->redirectToRoute(
                 route: 'storage_index',
@@ -78,7 +78,7 @@ final class StorageController extends AlexeyAbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($channel);
             $this->em->flush();
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
 
             return $this->redirectToRoute(
                 route: 'storage_index',
@@ -107,7 +107,7 @@ final class StorageController extends AlexeyAbstractController
         );
 
         if ($storageSpace->hasStacks()) {
-            $this->addFlash(type: 'nord11', message: $translator->translateFlash('delete_forbidden'));
+            $this->flashError($translator->translateFlash('delete_forbidden'));
 
             return $this->redirectToRoute(
                 route: 'storage_index',
@@ -119,7 +119,7 @@ final class StorageController extends AlexeyAbstractController
         $this->em->remove($storageSpace);
         $this->em->flush();
 
-        $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
+        $this->flashSuccess($translator->translateFlash('deleted'));
         return $this->redirectToRoute('storage_index');
     }
 }

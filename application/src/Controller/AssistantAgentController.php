@@ -61,7 +61,7 @@ final class AssistantAgentController extends AlexeyAbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($agent);
             $this->em->flush();
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
             return $this->redirectToRoute('assistant_agent_list', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -98,7 +98,7 @@ final class AssistantAgentController extends AlexeyAbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($agent);
             $this->em->flush();
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
             return $this->redirectToRoute('assistant_agent_list', [], Response::HTTP_SEE_OTHER);
         }
 

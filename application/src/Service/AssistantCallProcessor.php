@@ -126,7 +126,7 @@ final class AssistantCallProcessor
             foreach ($trash as $trashItem) {
                 $this->removeLastNode($trashItem);
                 $this->em->flush();
-                $this->scheduleMaintenance();
+                $this->scheduleMaintenance(0);
                 return;
             }
         }

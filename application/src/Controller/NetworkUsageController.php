@@ -64,7 +64,7 @@ final class NetworkUsageController extends AlexeyAbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $settings->selfPersist();
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
             return $this->redirectToRoute('network_usage', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -102,7 +102,7 @@ final class NetworkUsageController extends AlexeyAbstractController
     public function forceRouterReset(MikrotikService $service): Response
     {
         $service->powerCycleMikrotik(force: true, shortCycle: false);
-        $this->addFlash(type: 'nord14', message: 'RESET!');
+        $this->flashSuccess('RESET!');
         return $this->redirectToRoute(route: 'network_usage');
     }
 }

@@ -97,12 +97,12 @@ final class AssistantChatController extends AlexeyAbstractController
     ): Response {
         $call = $this->fetchEntityById(className: AssistantCall::class, id: $id);
         if (!($call instanceof AssistantCall)) {
-            $this->addFlash(type: 'nord11', message: $translator->translateFlash('delete_forbidden'));
+            $this->flashError($translator->translateFlash('delete_forbidden'));
             return $this->redirectToRoute('assistant_index');
         }
         $user = $this->alexeyUser();
         if (!($call->getUser()->getUserIdentifier() === $user->getUserIdentifier())) {
-            $this->addFlash(type: 'nord11', message: $translator->translateFlash('delete_forbidden'));
+            $this->flashError($translator->translateFlash('delete_forbidden'));
             return $this->redirectToRoute('assistant_index');
         }
 
@@ -116,7 +116,7 @@ final class AssistantChatController extends AlexeyAbstractController
                 payload: [],
             ));
         } else {
-            $this->addFlash(type: 'nord11', message: $translator->translateFlash('delete_forbidden'));
+            $this->flashError($translator->translateFlash('delete_forbidden'));
             return $this->redirectToRoute('assistant_index');
         }
 
@@ -125,7 +125,7 @@ final class AssistantChatController extends AlexeyAbstractController
             return $this->redirectToRoute('assistant_chat_view', ['id' => $root->getId()]);
         }
 
-        $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
+        $this->flashSuccess($translator->translateFlash('deleted'));
 
 
         return $this->redirectToRoute('assistant_index');

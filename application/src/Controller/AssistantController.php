@@ -49,7 +49,7 @@ final class AssistantController extends AlexeyAbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $call = $service->sendMessage($user, $dto);
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('sent'));
+            $this->flashSuccess($translator->translateFlash('sent'));
             return $this->redirectToRoute('assistant_chat_view', ['id' => $call->getId()]);
         }
 
@@ -92,14 +92,14 @@ final class AssistantController extends AlexeyAbstractController
                 );
                 $result->getContent();
 
-                $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+                $this->flashSuccess($translator->translateFlash('saved'));
                 $this->em->flush();
                 $this->em->commit();
                 return $this->redirectToRoute('assistant_index', [], Response::HTTP_SEE_OTHER);
             } catch (Exception $e) {
                 $loggerInterface->warning(sprintf('Assistant config validation failed: %s', $e->getMessage()));
                 $this->em->rollback();
-                $this->addFlash(type: 'nord11', message: $translator->translateFlash('wrong_settings', 'assistant'));
+                $this->flashError($translator->translateFlash('wrong_settings', 'assistant'));
                 return $this->render('assistant/settings.html.twig', [
                     'form' => $form,
                 ]);

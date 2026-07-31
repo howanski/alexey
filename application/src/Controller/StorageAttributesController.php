@@ -12,7 +12,7 @@ final class StorageAttributesController extends AlexeyAbstractController
     #[Route('/storage/attributes', name: 'storage_attributes_index')]
     public function index(): Response
     {
-        $this->addFlash(type: 'nord11', message: 'WIP :P');
+        $this->flashError('WIP :P');
 
         return $this->redirectToRoute('storage_index');
     }

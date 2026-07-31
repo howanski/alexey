@@ -58,7 +58,7 @@ final class MoneyNodeController extends AlexeyAbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($moneyNode);
             $this->em->flush();
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
             return $this->redirectToRoute(
                 route: 'money_node_index',
                 parameters: [
@@ -113,7 +113,7 @@ final class MoneyNodeController extends AlexeyAbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
             return $this->redirectToRoute(
                 route: 'money_node_index',
                 parameters: [
@@ -142,12 +142,12 @@ final class MoneyNodeController extends AlexeyAbstractController
             if ($this->isCsrfTokenValid('delete' . $moneyNode->getId(), $request->request->get('_token'))) {
                 $this->em->remove($moneyNode);
                 $this->em->flush();
-                $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
+                $this->flashSuccess($translator->translateFlash('deleted'));
             } else {
-                $this->addFlash(type: 'nord11', message: $translator->translateFlash('delete_forbidden'));
+                $this->flashError($translator->translateFlash('delete_forbidden'));
             }
         } else {
-            $this->addFlash(type: 'nord11', message: $translator->translateFlash('delete_forbidden'));
+            $this->flashError($translator->translateFlash('delete_forbidden'));
         }
         return $this->redirectToRoute('money_node_index', ['groupId' => $groupId], Response::HTTP_SEE_OTHER);
     }
@@ -169,7 +169,7 @@ final class MoneyNodeController extends AlexeyAbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $settings->selfPersist($simpleSettingsService);
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
             return $this->redirectToRoute('money_node_index', [], Response::HTTP_SEE_OTHER);
         }
 

@@ -71,7 +71,7 @@ final class MoneyTransferController extends AlexeyAbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($moneyTransfer);
             $this->em->flush();
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -124,7 +124,7 @@ final class MoneyTransferController extends AlexeyAbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -148,10 +148,10 @@ final class MoneyTransferController extends AlexeyAbstractController
         if ($this->isCsrfTokenValid('delete' . $moneyTransfer->getId(), $request->request->get('_token'))) {
             $this->em->remove($moneyTransfer);
             $this->em->flush();
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('deleted'));
+            $this->flashSuccess($translator->translateFlash('deleted'));
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
-        $this->addFlash(type: 'nord11', message: $translator->translateFlash('delete_forbidden') . ' (Beta)');
+        $this->flashError($translator->translateFlash('delete_forbidden') . ' (Beta)');
         return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
     }
 
@@ -230,20 +230,11 @@ final class MoneyTransferController extends AlexeyAbstractController
 
                 $this->em->flush();
                 $this->em->getConnection()->commit();
-                $this->addFlash(
-                    type: 'nord14',
-                    message: $translator->translateFlash(
-                        translationId: 'split',
-                        module: 'money',
-                    )
-                );
+                $this->flashSuccess($translator->translateFlash(translationId: 'split', module: 'money'));
                 return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
                 $this->em->getConnection()->rollBack();
-                $this->addFlash(
-                    type: 'nord11',
-                    message: $e->getMessage(),
-                );
+                $this->flashError($e->getMessage());
             }
         }
 

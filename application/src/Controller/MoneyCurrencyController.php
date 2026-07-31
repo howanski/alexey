@@ -39,7 +39,7 @@ final class MoneyCurrencyController extends AlexeyAbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($currency);
             $this->em->flush();
-            $this->addFlash(type: 'nord14', message: $translator->translateFlash('saved'));
+            $this->flashSuccess($translator->translateFlash('saved'));
             return $this->redirectToRoute(
                 route: 'currencies',
                 status: Response::HTTP_SEE_OTHER,
