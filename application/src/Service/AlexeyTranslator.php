@@ -21,7 +21,7 @@ final class AlexeyTranslator extends AbstractExtension
     ) {
     }
 
-    public function forceLocale(string $locale)
+    public function forceLocale(string $locale): void
     {
         $this->forcedLocale = $locale;
     }
@@ -63,7 +63,7 @@ final class AlexeyTranslator extends AbstractExtension
         }
         throw new MissingResourceException(
             message: 'Flash ' . $translationId
-                . ' not translated in module ' . $module . ' ! Example: ' . $fullId,
+            . ' not translated in module ' . $module . ' ! Example: ' . $fullId,
         );
     }
 
@@ -79,7 +79,7 @@ final class AlexeyTranslator extends AbstractExtension
         }
         throw new MissingResourceException(
             message: 'String ' . $translationId
-                . ' not translated in module ' . $module . ' ! Example: ' . $fullId,
+            . ' not translated in module ' . $module . ' ! Example: ' . $fullId,
         );
     }
 
@@ -106,7 +106,7 @@ final class AlexeyTranslator extends AbstractExtension
 
         throw new MissingResourceException(
             'Label ' . $label . ' not translated in module '
-                . $module . ' ! Example: ' . $translationId
+            . $module . ' ! Example: ' . $translationId
         );
     }
 
@@ -132,7 +132,7 @@ final class AlexeyTranslator extends AbstractExtension
         }
         throw new MissingResourceException(
             message: 'Value ' . $value . ' for field ' . $field
-                . ' not translated in module ' . $module . ' ! Example: ' . $translationId,
+            . ' not translated in module ' . $module . ' ! Example: ' . $translationId,
         );
     }
 
@@ -159,7 +159,7 @@ final class AlexeyTranslator extends AbstractExtension
 
         throw new MissingResourceException(
             'Helper for field ' . $field . ' not translated in module '
-                . $module . ' ! Example: ' . $translationId
+            . $module . ' ! Example: ' . $translationId
         );
     }
 

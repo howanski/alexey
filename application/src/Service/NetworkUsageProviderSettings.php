@@ -61,7 +61,7 @@ final class NetworkUsageProviderSettings
         $this->setBillingDay(intval($settingsArray[self::PROVIDER_BILLING_DAY]));
     }
 
-    public function selfPersist()
+    public function selfPersist(): void
     {
         $this->selfConfigure();
         $this->simpleSettingsService->saveSettings(

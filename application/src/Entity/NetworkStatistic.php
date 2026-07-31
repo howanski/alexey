@@ -138,7 +138,7 @@ class NetworkStatistic
 
     public function getDownloadSpeedFromReferencePointReadable(): string
     {
-        return Interwebz::formatBytes((int)$this->getDownloadSpeedFromReferencePoint()) . '/s';
+        return Interwebz::formatBytes((int) $this->getDownloadSpeedFromReferencePoint()) . '/s';
     }
 
     // Upload
@@ -150,7 +150,7 @@ class NetworkStatistic
 
     public function getUploadSpeedFromReferencePoint(): float
     {
-        $timePassed  = $this->getTimePassedFromReferencePoint();
+        $timePassed = $this->getTimePassedFromReferencePoint();
         if (0 < $timePassed) {
             return ($this->getDataUploadedFromReferencePoint() / $timePassed);
         }
@@ -159,7 +159,7 @@ class NetworkStatistic
 
     public function getUploadSpeedFromReferencePointReadable(): string
     {
-        return Interwebz::formatBytes((int)$this->getUploadSpeedFromReferencePoint()) . '/s';
+        return Interwebz::formatBytes((int) $this->getUploadSpeedFromReferencePoint()) . '/s';
     }
 
     // Download + Upload
@@ -195,12 +195,12 @@ class NetworkStatistic
         $packageSize = $this->getTimeFrame()->getBillingFrameDataLimit();
         $packageEnd = $this->getTimeFrame()->getBillingFrameEnd()->getTimestamp();
         $packageStart = $this->getTimeFrame()->getBillingFrameStart()->getTimestamp();
-        $packageLength =  $packageEnd - $packageStart;
+        $packageLength = $packageEnd - $packageStart;
         $continuumDensity = $packageSize / $packageLength;
         $timeTillMidnight = $this->getTimeLeftTillMidnight();
         $timeTillFrameEnd = $this->getTimeLeftTillFrameEnd();
         $timeFromMidnightToFrameEnd = $timeTillFrameEnd - $timeTillMidnight;
-        $packageFromMidnightToFrameEnd = (int)($timeFromMidnightToFrameEnd * $continuumDensity);
+        $packageFromMidnightToFrameEnd = (int) ($timeFromMidnightToFrameEnd * $continuumDensity);
         return $this->getTrafficLeft() - $packageFromMidnightToFrameEnd;
     }
 
@@ -216,8 +216,9 @@ class NetworkStatistic
         return Interwebz::formatBytes($value, $precision);
     }
 
-    public function getTransferRateLeft($frameWidth = TransmissionSettings::TARGET_SPEED_FRAME_FULL): float
-    {
+    public function getTransferRateLeft(
+        string $frameWidth = TransmissionSettings::TARGET_SPEED_FRAME_FULL,
+    ): float {
         try {
             if (TransmissionSettings::TARGET_SPEED_FRAME_DAY === $frameWidth) {
                 return ($this->getTrafficLeftTillMidnight() / $this->getTimeLeftTillMidnight());
@@ -231,8 +232,8 @@ class NetworkStatistic
 
     public function getTransferRateLeftReadable(
         int $precision = 2,
-        $frameWidth = TransmissionSettings::TARGET_SPEED_FRAME_FULL
+        string $frameWidth = TransmissionSettings::TARGET_SPEED_FRAME_FULL
     ): string {
-        return Interwebz::formatBytes((int)$this->getTransferRateLeft($frameWidth), $precision) . '/s';
+        return Interwebz::formatBytes((int) $this->getTransferRateLeft($frameWidth), $precision) . '/s';
     }
 }

@@ -26,7 +26,7 @@ final class TunnelInfoProvider
         return $tunnel;
     }
 
-    public function reactOnChanges()
+    public function reactOnChanges(): void
     {
         $oldTunnelAddress = $this->simpleCacheService->retrieveDataFromCache(
             key: self::CACHE_KEY,

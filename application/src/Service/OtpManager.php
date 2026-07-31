@@ -26,7 +26,7 @@ final class OtpManager
         return $newOtp;
     }
 
-    public function getUserByOtp(string $otp)
+    public function getUserByOtp(string $otp): ?User
     {
         if (strlen($otp) < 15) {
             return null;

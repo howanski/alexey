@@ -21,7 +21,7 @@ final class SimpleCacheRepository extends ServiceEntityRepository
         parent::__construct($registry, SimpleCache::class);
     }
 
-    public function findValidRecordByKey(string $key)
+    public function findValidRecordByKey(string $key): ?SimpleCache
     {
         $now = new \DateTime('now');
         return $this->createQueryBuilder('s')
@@ -33,7 +33,7 @@ final class SimpleCacheRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findRecordByKey(string $key)
+    public function findRecordByKey(string $key): ?SimpleCache
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.cacheKey = :key')

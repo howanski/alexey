@@ -16,14 +16,14 @@ final class DashboardControllerTest extends ControllerTestStub
         $this->testSecurityEnabled(path: '/ping');
     }
 
-    public function testDashboard()
+    public function testDashboard(): void
     {
         $client = $this->getClientWithLoggedInUser();
         $client->request('GET', '/');
         $this->assertResponseIsSuccessful();
     }
 
-    public function testPing()
+    public function testPing(): void
     {
         $client = $this->getClientWithLoggedInUser();
         $client->request('GET', '/ping');

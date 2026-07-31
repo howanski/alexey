@@ -35,8 +35,11 @@ final class SimpleSettingsService
         return $result;
     }
 
-    public function saveSettings(array $settings, $user, bool $flush = true)
-    {
+    public function saveSettings(
+        array $settings,
+        ?User $user,
+        bool $flush = true,
+    ): void {
         foreach ($settings as $key => $value) {
             $criteria = ['settingKey' => $key];
             if ($user instanceof User) {

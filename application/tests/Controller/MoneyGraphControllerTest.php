@@ -11,35 +11,35 @@ final class MoneyGraphControllerTest extends ControllerTestStub
         $this->testSecurityEnabled(path: '/money/graph/nodes');
     }
 
-    public function testListOpens()
+    public function testListOpens(): void
     {
         $client = $this->getClientWithLoggedInUser();
         $client->request('GET', '/money/graph/nodes');
         $this->assertResponseIsSuccessful();
     }
 
-    public function testGraph()
+    public function testGraph(): void
     {
         $client = $this->getClientWithLoggedInUser();
         $client->request('GET', '/money/graph/nodes-data');
         $this->assertResponseRedirects(expectedLocation: '/');
     }
 
-    public function testGraphJson()
+    public function testGraphJson(): void
     {
         $client = $this->getClientWithLoggedInUser(forAjaxRequest: true);
         $client->request('GET', '/money/graph/nodes-data');
         $this->assertResponseIsSuccessful();
     }
 
-    public function testForecast()
+    public function testForecast(): void
     {
         $client = $this->getClientWithLoggedInUser();
         $client->request('GET', '/money/graph/forecast-data');
         $this->assertResponseRedirects(expectedLocation: '/');
     }
 
-    public function testForecastJson()
+    public function testForecastJson(): void
     {
         $client = $this->getClientWithLoggedInUser(forAjaxRequest: true);
         $client->request('GET', '/money/graph/forecast-data');

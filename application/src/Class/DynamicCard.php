@@ -27,19 +27,19 @@ final class DynamicCard
         return new JsonResponse($data);
     }
 
-    public function setHeaderText(string $headerText)
+    public function setHeaderText(string $headerText): self
     {
         $this->headerText = $headerText;
         return $this;
     }
 
-    public function setHeaderValue(string $headerValue)
+    public function setHeaderValue(string $headerValue): self
     {
         $this->headerValue = $headerValue;
         return $this;
     }
 
-    public function setFooterValue(string $footerValue)
+    public function setFooterValue(string $footerValue): self
     {
         $this->footerValue = $footerValue;
         return $this;

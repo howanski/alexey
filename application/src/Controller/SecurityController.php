@@ -37,7 +37,7 @@ final class SecurityController extends AlexeyAbstractController
     #[Route('/login/otp', name: 'otp_login')]
     public function otpLogin(
         Request $request,
-    ) {
+    ): Response {
         if ($this->alexeyUser()) {
             return $this->redirectToRoute('dashboard');
         }

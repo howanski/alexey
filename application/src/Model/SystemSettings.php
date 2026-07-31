@@ -35,7 +35,7 @@ final class SystemSettings
         $this->tunnelingAllowed = $tun[self::TUNNELING_ALLOWED];
     }
 
-    public function save()
+    public function save(): void
     {
         foreach ($this->cronJobs as $cronJob) {
             $this->em->persist($cronJob);

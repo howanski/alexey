@@ -134,7 +134,7 @@ final class AssistantChatController extends AlexeyAbstractController
     #[Route('/ajax/is-processed/{id}', name: 'assistant_ajax_is_processed', methods: ['GET'])]
     public function ajaxCheckIsProcessed(
         int $id,
-    ) {
+    ): Response {
         $call = $this->fetchEntityById(className: AssistantCall::class, id: $id);
         if ($call instanceof AssistantCall) {
             if (!($call->getStatus() === AssistantCall::STATUS_DONE)) {
@@ -153,7 +153,7 @@ final class AssistantChatController extends AlexeyAbstractController
         int $id,
         MessageBusInterface $bus,
         Request $request,
-    ) {
+    ): Response {
         $call = $this->fetchEntityById(className: AssistantCall::class, id: $id);
         if ($call instanceof AssistantCall) {
             $user = $this->alexeyUser();

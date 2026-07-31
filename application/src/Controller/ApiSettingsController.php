@@ -31,7 +31,7 @@ final class ApiSettingsController extends AlexeyAbstractController
     }
 
     #[Route('/qr.png', name: 'api_show_qr')]
-    public function qr(MobileApiManager $apiManager)
+    public function qr(MobileApiManager $apiManager): Response
     {
         $user = $this->alexeyUser();
         $credentials = $apiManager->getFullConnectionCredentials($user);
@@ -49,7 +49,7 @@ final class ApiSettingsController extends AlexeyAbstractController
     }
 
     #[Route('/token', name: 'api_my_token')]
-    public function myToken(MobileApiManager $manager)
+    public function myToken(MobileApiManager $manager): Response
     {
         $user = $this->alexeyUser();
         $token = $manager->generateUserToken($user);
@@ -85,7 +85,7 @@ final class ApiSettingsController extends AlexeyAbstractController
     }
 
     #[Route('/device/drop/{id}', name: 'api_device_drop')]
-    public function dropDevice(int $id)
+    public function dropDevice(int $id): Response
     {
         $apiDevice = $this->fetchEntityById(className: ApiDevice::class, id: $id);
         $user = $this->alexeyUser();

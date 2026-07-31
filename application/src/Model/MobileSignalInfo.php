@@ -45,7 +45,7 @@ final class MobileSignalInfo
         }
     }
 
-    public function save()
+    public function save(): void
     {
         $timeValid = new DateTime('now');
         $timeValid->modify('+1 day');

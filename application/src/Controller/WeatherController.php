@@ -38,8 +38,11 @@ final class WeatherController extends AlexeyAbstractController
     }
 
     #[Route('/card-data/{daysAhead}', name: 'weather_card_data')]
-    public function cardData(int $daysAhead, WeatherService $weatherService, Request $request)
-    {
+    public function cardData(
+        int $daysAhead,
+        WeatherService $weatherService,
+        Request $request
+    ): Response {
         if ($request->isXmlHttpRequest()) {
             $weatherData = $weatherService->getWeather()->getWeatherReadable($request->getLocale());
             $dailyWeather = $weatherData['daily'][$daysAhead];

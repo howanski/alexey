@@ -22,7 +22,7 @@ final class TunnelRequestSubscriber implements EventSubscriberInterface
     ) {
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
         $host = $request->getHost();

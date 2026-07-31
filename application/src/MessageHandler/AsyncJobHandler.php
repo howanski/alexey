@@ -28,7 +28,7 @@ final class AsyncJobHandler
     ) {
     }
 
-    public function __invoke(AsyncJob $message)
+    public function __invoke(AsyncJob $message): void
     {
         $jobType = $message->getJobType();
         $payload = $message->getPayload();

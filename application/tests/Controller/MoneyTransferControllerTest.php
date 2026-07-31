@@ -11,7 +11,7 @@ final class MoneyTransferControllerTest extends ControllerTestStub
         $this->testSecurityEnabled(path: '/money/transfer/');
     }
 
-    public function testListOpens()
+    public function testListOpens(): void
     {
         $client = $this->getClientWithLoggedInUser();
         $client->request('GET', '/money/transfer/');

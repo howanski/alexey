@@ -50,7 +50,7 @@ final class GaussianGauge
         $this->value = $value;
     }
 
-    public function setBonusPayload(array $payload)
+    public function setBonusPayload(array $payload): void
     {
         $this->bonusPayload = $payload;
     }

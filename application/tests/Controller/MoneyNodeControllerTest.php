@@ -13,14 +13,14 @@ final class MoneyNodeControllerTest extends ControllerTestStub
         $this->testSecurityEnabled(path: '/money/node/list');
     }
 
-    public function testListOpens()
+    public function testListOpens(): void
     {
         $client = $this->getClientWithLoggedInUser();
         $client->request('GET', '/money/node/list');
         $this->assertResponseIsSuccessful();
     }
 
-    public function testNew()
+    public function testNew(): void
     {
         $this->markTestIncomplete('missing currency fixtures');
         $client = $this->getClientWithLoggedInUser();
