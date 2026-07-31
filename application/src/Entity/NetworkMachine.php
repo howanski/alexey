@@ -43,7 +43,7 @@ class NetworkMachine
     private int $status;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $lastSeen;
+    private $lastSeen;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $showOnDashboard = false;

@@ -42,7 +42,7 @@ class AssistantCall
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'bigint')]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -103,7 +103,7 @@ class AssistantCall
         return $call;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

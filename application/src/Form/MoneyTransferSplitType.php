@@ -25,9 +25,6 @@ final class MoneyTransferSplitType extends CommonFormType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /**
-         * @var MoneyTransfer
-         */
         $splitSource = $options['source'];
         if (!($splitSource instanceof MoneyTransfer) || is_null($splitSource->getId())) {
             throw new InvalidArgumentException('Wrongly specified MoneyTransfer split source.');

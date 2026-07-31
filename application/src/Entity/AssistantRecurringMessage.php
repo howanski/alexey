@@ -19,7 +19,7 @@ class AssistantRecurringMessage
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $message = null;
@@ -40,7 +40,7 @@ class AssistantRecurringMessage
     #[ORM\Column(length: 255)]
     private string $model = '';
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

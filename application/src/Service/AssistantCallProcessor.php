@@ -186,7 +186,7 @@ final class AssistantCallProcessor
         $messageBag = new AssistantMessageBag();
 
         $defaultSystemMessage = $entity->getSystemMessage();
-        if (is_null($defaultSystemMessage) || !($defaultSystemMessage instanceof AssistantRecurringMessage)) {
+        if (!($defaultSystemMessage instanceof AssistantRecurringMessage)) {
             $defaultSystemMessage = $this->assistantRecurringMessageRepository->getDefaultSystemMessage($user);
         }
 

@@ -51,8 +51,7 @@ final class DashboardService
     {
         $settings = $this->simpleSettingsService->getSettings([AssistantSettings::SHOW_ON_DASHBOARD], $user);
         if (
-            is_array($settings)
-            && array_key_exists(AssistantSettings::SHOW_ON_DASHBOARD, $settings)
+            array_key_exists(AssistantSettings::SHOW_ON_DASHBOARD, $settings)
             && $settings[AssistantSettings::SHOW_ON_DASHBOARD] === SimpleSettingsService::UNIVERSAL_TRUTH
         ) {
             /** @var AssistantCallRepository */

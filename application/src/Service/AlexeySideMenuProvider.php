@@ -17,7 +17,7 @@ final class AlexeySideMenuProvider extends AbstractExtension
     // TODO: move to TwigExtension dir
     private ?Request $currentRequest;
 
-    private ?string $currentRoute;
+    private string $currentRoute;
 
     public function __construct(
         private RequestStack $requestStack,

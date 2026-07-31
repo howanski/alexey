@@ -71,21 +71,19 @@ final class NetworkStatisticRepository extends ServiceEntityRepository
         $latestStat = $this->getLatestOne();
         if ($latestStat instanceof NetworkStatistic) {
             $timeFrame = $latestStat->getTimeFrame();
-            if ($timeFrame instanceof NetworkStatisticTimeFrame) {
-                $connection = $this->getEntityManager()->getConnection();
-                $sql =
-                    'DELETE network_statistic ' .
-                    'FROM network_statistic ' .
-                    'JOIN network_statistic_time_frame timeFrame ON timeFrame.id = network_statistic.time_frame_id ' .
-                    'WHERE timeFrame.id != :id;';
-                $count = $connection->executeStatement(
-                    sql: $sql,
-                    params: [
-                        'id' => $timeFrame->getId(),
-                    ],
-                );
-                return $count;
-            }
+            $connection = $this->getEntityManager()->getConnection();
+            $sql =
+                'DELETE network_statistic ' .
+                'FROM network_statistic ' .
+                'JOIN network_statistic_time_frame timeFrame ON timeFrame.id = network_statistic.time_frame_id ' .
+                'WHERE timeFrame.id != :id;';
+            $count = $connection->executeStatement(
+                sql: $sql,
+                params: [
+                    'id' => $timeFrame->getId(),
+                ],
+            );
+            return $count;
         }
         return 0;
     }

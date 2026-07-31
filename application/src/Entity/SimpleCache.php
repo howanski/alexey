@@ -27,7 +27,7 @@ class SimpleCache
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'caches')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
-    private ?User $user;
+    private $user;
 
     public function getId(): ?int
     {
