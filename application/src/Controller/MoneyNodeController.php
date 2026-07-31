@@ -76,11 +76,15 @@ final class MoneyNodeController extends AlexeyAbstractController
 
     #[Route('/show/{id}', name: 'money_node_show', methods: ['GET'])]
     public function show(
+        AlexeyTranslator $translator,
         int $id,
         SimpleSettingsService $simpleSettingsService,
     ): Response {
-        $moneyNode = $this->fetchEntityById(className: MoneyNode::class, id: $id);
-        //TODO: check user
+        $result = $this->ensureOwnedMoneyNode(id: $id, translator: $translator);
+        if ($result instanceof Response) {
+            return $result;
+        }
+        $moneyNode = $result;
         $user = $this->alexeyUser();
         $settings = new MoneyNodeSettings($user);
         $settings->selfConfigure($simpleSettingsService);
@@ -98,9 +102,12 @@ final class MoneyNodeController extends AlexeyAbstractController
         Request $request,
         SimpleSettingsService $simpleSettingsService,
     ): Response {
-        //TODO: check user
+        $result = $this->ensureOwnedMoneyNode(id: $id, translator: $translator);
+        if ($result instanceof Response) {
+            return $result;
+        }
+        $moneyNode = $result;
         $user = $this->alexeyUser();
-        $moneyNode = $this->fetchEntityById(className: MoneyNode::class, id: $id);
         $settings = new MoneyNodeSettings($user);
         $settings->selfConfigure($simpleSettingsService);
         $form = $this->createForm(type: MoneyNodeType::class, data: $moneyNode, options: [
@@ -135,8 +142,11 @@ final class MoneyNodeController extends AlexeyAbstractController
         int $id,
         Request $request,
     ): Response {
-        $moneyNode = $this->fetchEntityById(className: MoneyNode::class, id: $id);
-        // TODO: SECURITY!
+        $result = $this->ensureOwnedMoneyNode(id: $id, translator: $translator, flashKey: 'delete_forbidden');
+        if ($result instanceof Response) {
+            return $result;
+        }
+        $moneyNode = $result;
         $groupId = $moneyNode->getNodeGroup();
         if (true === $moneyNode->canBeDeleted()) {
             if ($this->isCsrfTokenValid('delete' . $moneyNode->getId(), $request->request->get('_token'))) {
@@ -176,5 +186,22 @@ final class MoneyNodeController extends AlexeyAbstractController
         return $this->render('money_node/settings.html.twig', [
             'form' => $form,
         ]);
+    }
+
+    private function ensureOwnedMoneyNode(
+        int $id,
+        AlexeyTranslator $translator,
+        string $flashKey = 'not_authorized',
+    ): MoneyNode|Response {
+        $entity = $this->fetchEntityById(className: MoneyNode::class, id: $id);
+        if (!$entity instanceof MoneyNode) {
+            return $this->redirectToRoute('money_node_index', [], Response::HTTP_SEE_OTHER);
+        }
+        $user = $this->alexeyUser();
+        if (!($user->getId() === $entity->getUser()->getId())) {
+            $this->flashError($translator->translateFlash($flashKey));
+            return $this->redirectToRoute('money_node_index', [], Response::HTTP_SEE_OTHER);
+        }
+        return $entity;
     }
 }

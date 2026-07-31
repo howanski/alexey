@@ -42,10 +42,11 @@ app:
         you_sure_redo: "Regenerate message?"
     common:
       flashes:
+        delete_forbidden: "Cannot delete"
+        deleted: "Successfully deleted"
+        not_authorized: "You don't have access to this action"
         saved: "Successfully saved"
         sent: "Successfully sent"
-        deleted: "Successfully deleted"
-        delete_forbidden: "Cannot delete"
         signal_dispatched: "Signal dispatched"
       forms:
         labels:

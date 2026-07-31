@@ -42,10 +42,11 @@ app:
         you_sure_redo: "Wygenerować odpowiedź ponownie?"
     common:
       flashes:
+        delete_forbidden: "Nie można usunąć"
+        deleted: "Pomyślnie usunięto"
+        not_authorized: "Nie posiadasz dostępu do tej akcji"
         saved: "Pomyślnie zapisano"
         sent: "Pomyślnie wysłano"
-        deleted: "Pomyślnie usunięto"
-        delete_forbidden: "Nie można usunąć"
         signal_dispatched: "Sygnał wysłany"
       forms:
         labels:
