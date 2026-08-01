@@ -137,7 +137,11 @@ final class StorageItemController extends AlexeyAbstractController
         Request $request,
     ): Response {
         $storageItem = $this->fetchEntityById(className: StorageItem::class, id: $id);
-        if ($this->isCsrfTokenValid('delete' . $storageItem->getId(), $request->request->get('_token'))) {
+        if (!($storageItem instanceof StorageItem)) {
+            return $this->redirectToRoute('storage_item_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        if ($this->isCsrfTokenValid('delete' . $storageItem->getId(), (string) $request->request->get('_token'))) {
             $this->em->remove($storageItem);
             $this->em->flush();
         }
@@ -154,6 +158,9 @@ final class StorageItemController extends AlexeyAbstractController
     ): Response {
         $user = $this->alexeyUser();
         $storageItem = $this->fetchEntityById(className: StorageItem::class, id: $id);
+        if (!($storageItem instanceof StorageItem)) {
+            return $this->redirectToRoute('storage_item_index', [], Response::HTTP_SEE_OTHER);
+        }
 
         $form = $this->createForm(
             type: StorageItemAddQuantityType::class,
@@ -201,6 +208,9 @@ final class StorageItemController extends AlexeyAbstractController
     ): Response {
         $user = $this->alexeyUser();
         $storageItemStack = $this->fetchEntityById(className: StorageItemStack::class, id: $id);
+        if (!($storageItemStack instanceof StorageItemStack)) {
+            return $this->redirectToRoute('storage_item_index', [], Response::HTTP_SEE_OTHER);
+        }
 
         $form = $this->createForm(
             type: StorageItemMoveQuantityType::class,
@@ -248,6 +258,9 @@ final class StorageItemController extends AlexeyAbstractController
         StorageService $service,
     ): Response {
         $storageItemStack = $this->fetchEntityById(className: StorageItemStack::class, id: $id);
+        if (!($storageItemStack instanceof StorageItemStack)) {
+            return $this->redirectToRoute('storage_item_index', [], Response::HTTP_SEE_OTHER);
+        }
         $form = $this->createForm(
             type: StorageItemRemoveQuantityType::class,
             data: null,

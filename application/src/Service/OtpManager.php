@@ -51,7 +51,7 @@ final class OtpManager
         }
     }
 
-    private function getRandomHash(User $user)
+    private function getRandomHash(User $user): string
     {
         $whirlpoolOne =
             $user->getId() .

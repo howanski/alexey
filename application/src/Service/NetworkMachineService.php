@@ -61,7 +61,7 @@ final class NetworkMachineService
 
         $hardwareMac = '';
         foreach (explode(':', strtoupper($macAddress)) as $chunk) {
-            $hardwareMac .= chr(hexdec($chunk));
+            $hardwareMac .= chr((int) hexdec($chunk));
         }
         $packetData .= str_repeat($hardwareMac, 16);
 

@@ -62,7 +62,7 @@ final class OpenWeatherOneApiResponse
         $this->rawApiResponse = $response->toArray();
     }
 
-    private function storeWeatherDataInCache()
+    private function storeWeatherDataInCache(): void
     {
         $validTo = new \DateTime('now');
         $interval = new \DateInterval('PT3H');

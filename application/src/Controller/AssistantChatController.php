@@ -106,7 +106,7 @@ final class AssistantChatController extends AlexeyAbstractController
             return $this->redirectToRoute('assistant_index');
         }
 
-        if ($this->isCsrfTokenValid('delete_chat_' . $call->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete_chat_' . $call->getId(), (string) $request->request->get('_token'))) {
             $call->setType(AssistantCall::TYPE_TRASH);
             $call->setStatus(AssistantCall::STATUS_PROCESSING);
             $this->em->flush();
@@ -159,7 +159,7 @@ final class AssistantChatController extends AlexeyAbstractController
             $user = $this->alexeyUser();
             if (
                 $call->getUser()->getUserIdentifier() === $user->getUserIdentifier()
-                && $this->isCsrfTokenValid('redo_chat_' . $call->getId(), $request->request->get('_token'))
+                && $this->isCsrfTokenValid('redo_chat_' . $call->getId(), (string) $request->request->get('_token'))
             ) {
                 $call->setStatus(AssistantCall::STATUS_TO_REDO);
                 $this->em->flush();

@@ -22,7 +22,7 @@ abstract class CommonFormType extends AbstractType
         $this->init();
     }
 
-    abstract protected function init();
+    abstract protected function init(): void;
 
     final protected function getLabelTrans(string $label): string
     {

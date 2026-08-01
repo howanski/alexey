@@ -81,6 +81,6 @@ final class MobileApiManager
                 ]
             ),
         ];
-        return json_encode($connectionData);
+        return (string) json_encode($connectionData);
     }
 }

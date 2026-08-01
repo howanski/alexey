@@ -132,7 +132,7 @@ final class AssistantCallProcessor
         }
     }
 
-    private function scheduleMaintenance(int $delaySeconds = 2)
+    private function scheduleMaintenance(int $delaySeconds = 2): void
     {
         if ($delaySeconds === 0) {
             $delayStamp = new DelayStamp(1);
@@ -212,7 +212,21 @@ final class AssistantCallProcessor
         $agent = $this->service->getDefaultAgent($user, $options, $tools);
         $result = $agent->call(messages: $messageBag->getBag());
 
-        $entity->setAssistantResponse($result->getContent());
+        $resultContent = $result->getContent();
+        if (is_null($resultContent)) {
+            $stringResult = '';
+        } elseif (is_iterable($resultContent)) {
+            $stringResult = '';
+            foreach ($resultContent as $partialResult) {
+                $stringResult .= (string) $partialResult;
+            }
+        } elseif (is_object($resultContent)) {
+            $stringResult = serialize($resultContent);
+        } else {
+            $stringResult = (string) $resultContent;
+        }
+
+        $entity->setAssistantResponse($stringResult);
         $entity->setMetadata($result->getMetadata()->jsonSerialize());
     }
 }

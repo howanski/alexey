@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\AI\Platform\TokenUsage\TokenUsage;
+use UnexpectedValueException;
 
 #[ORM\Entity(repositoryClass: AssistantCallRepository::class)]
 class AssistantCall
@@ -251,7 +252,10 @@ class AssistantCall
             return $child->getStatusEffective();
         }
         $status = $this->getStatus();
-        return self::STATUSES[$status];
+        if (array_key_exists($status, self::STATUSES)) {
+            return self::STATUSES[$status];
+        }
+        throw new UnexpectedValueException('Unknown status: ' . $status);
     }
 
     public function getType(): ?int

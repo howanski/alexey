@@ -85,6 +85,9 @@ final class MoneyTransferController extends AlexeyAbstractController
     public function show(int $id): Response
     {
         $moneyTransfer = $this->fetchEntityById(className: MoneyTransfer::class, id: $id);
+        if (!($moneyTransfer instanceof MoneyTransfer)) {
+            return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
+        }
         $user = $this->alexeyUser();
         if (false === ($user === $moneyTransfer->getUser())) {
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
@@ -103,6 +106,9 @@ final class MoneyTransferController extends AlexeyAbstractController
     ): Response {
         $user = $this->alexeyUser();
         $moneyTransfer = $this->fetchEntityById(className: MoneyTransfer::class, id: $id);
+        if (!($moneyTransfer instanceof MoneyTransfer)) {
+            return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
+        }
         if (false === ($user === $moneyTransfer->getUser())) {
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -140,12 +146,15 @@ final class MoneyTransferController extends AlexeyAbstractController
         int $id,
         Request $request,
     ): Response {
-        $user = $this->alexeyUser();
         $moneyTransfer = $this->fetchEntityById(className: MoneyTransfer::class, id: $id);
+        if (!($moneyTransfer instanceof MoneyTransfer)) {
+            return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
+        }
+        $user = $this->alexeyUser();
         if (false === ($user === $moneyTransfer->getUser())) {
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }
-        if ($this->isCsrfTokenValid('delete' . $moneyTransfer->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $moneyTransfer->getId(), (string) $request->request->get('_token'))) {
             $this->em->remove($moneyTransfer);
             $this->em->flush();
             $this->flashSuccess($translator->translateFlash('deleted'));
@@ -164,6 +173,9 @@ final class MoneyTransferController extends AlexeyAbstractController
     ): Response {
         $user = $this->alexeyUser();
         $moneyTransfer = $this->fetchEntityById(className: MoneyTransfer::class, id: $id);
+        if (!($moneyTransfer instanceof MoneyTransfer)) {
+            return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
+        }
         if (false === ($user === $moneyTransfer->getUser())) {
             return $this->redirectToRoute('money_transfer_index', [], Response::HTTP_SEE_OTHER);
         }

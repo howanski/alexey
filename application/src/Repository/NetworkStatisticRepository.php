@@ -83,7 +83,7 @@ final class NetworkStatisticRepository extends ServiceEntityRepository
                     'id' => $timeFrame->getId(),
                 ],
             );
-            return $count;
+            return (int) $count;
         }
         return 0;
     }

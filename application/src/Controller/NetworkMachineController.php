@@ -83,7 +83,10 @@ final class NetworkMachineController extends AlexeyAbstractController
         Request $request,
     ): Response {
         $networkMachine = $this->fetchEntityById(className: NetworkMachine::class, id: $id);
-        if ($this->isCsrfTokenValid('delete' . $networkMachine->getId(), $request->request->get('_token'))) {
+        if (!($networkMachine instanceof NetworkMachine)) {
+            return $this->redirectToRoute('network_machine_index', [], Response::HTTP_SEE_OTHER);
+        }
+        if ($this->isCsrfTokenValid('delete' . $networkMachine->getId(), (string) $request->request->get('_token'))) {
             $this->em->remove($networkMachine);
             $this->em->flush();
         }
@@ -99,6 +102,9 @@ final class NetworkMachineController extends AlexeyAbstractController
         string $backRoute,
     ): Response {
         $networkMachine = $this->fetchEntityById(className: NetworkMachine::class, id: $id);
+        if (!($networkMachine instanceof NetworkMachine)) {
+            return $this->redirectToRoute($backRoute, [], Response::HTTP_SEE_OTHER);
+        }
         $payload = [
             'wakeDestination' => $networkMachine->getWakeDestination(),
             'macAddress' => $networkMachine->getMacAddress(),

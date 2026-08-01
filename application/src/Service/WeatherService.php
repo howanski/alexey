@@ -31,7 +31,7 @@ final class WeatherService
         return (SimpleSettingsService::UNIVERSAL_TRUTH === $settings->getShowOnDashboard());
     }
 
-    public function getChartData($locale, $type): array
+    public function getChartData(string $locale, string $type): array
     {
         if ('daily' === $type) {
             return $this->getDailyChartData(locale: $locale);
@@ -40,7 +40,7 @@ final class WeatherService
         }
     }
 
-    private function getDailyChartData(string $locale)
+    private function getDailyChartData(string $locale): array
     {
         $chartData = [
             'labels' => [],
@@ -75,7 +75,7 @@ final class WeatherService
         return $chartData;
     }
 
-    private function getHourlyChartData(string $locale)
+    private function getHourlyChartData(string $locale): array
     {
         $chartData = [
             'labels' => [],

@@ -131,7 +131,7 @@ final class TransmissionSettingsType extends CommonFormType
             ]);
     }
 
-    private function falseTruthChoices(string $fieldName)
+    private function falseTruthChoices(string $fieldName): array
     {
         $choices = [];
         foreach ([SimpleSettingsService::UNIVERSAL_FALSE, SimpleSettingsService::UNIVERSAL_TRUTH] as $val) {

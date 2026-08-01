@@ -82,7 +82,7 @@ final class TransmissionAPIClient
 
     private function constructBody(string $methodName, array $arguments): string
     {
-        return json_encode(['method' => $methodName, 'arguments' => $arguments]);
+        return (string) json_encode(['method' => $methodName, 'arguments' => $arguments]);
     }
 
     private function callRpc(string $body = ''): ResponseInterface

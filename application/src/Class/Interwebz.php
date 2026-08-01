@@ -15,7 +15,7 @@ final class Interwebz
 
         $bytes = max($bytes, 0);
         $power = floor((($bytes > 0) ? log($bytes) : 0) / log(1024));
-        $power = min($power, count($units) - 1);
+        $power = (int) min($power, count($units) - 1);
 
         if (true === $asPowerOfTens) {
             $bytes /= (1 << (10 * $power));
@@ -28,8 +28,8 @@ final class Interwebz
 
     public static function simpleXmlToArray(SimpleXMLElement $xml): array
     {
-        $json = json_encode($xml);
-        $array = json_decode($json, true);
+        $json = (string) json_encode($xml);
+        $array = json_decode($json, true) ?? [];
         return $array;
     }
 }

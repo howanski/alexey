@@ -22,7 +22,7 @@ final class TransmissionService
         $this->settings->selfConfigure($simpleSettingsService);
     }
 
-    private function getSimulationChartDataTime()
+    private function getSimulationChartDataTime(): array
     {
         $chartData = [
             'labels' => [],
@@ -93,7 +93,7 @@ final class TransmissionService
         return $chartData;
     }
 
-    private function getSimulationChartDataSpeed()
+    private function getSimulationChartDataSpeed(): array
     {
         $chartData = [
             'labels' => [],

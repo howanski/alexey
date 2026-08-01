@@ -149,7 +149,7 @@ final class MoneyNodeController extends AlexeyAbstractController
         $moneyNode = $result;
         $groupId = $moneyNode->getNodeGroup();
         if (true === $moneyNode->canBeDeleted()) {
-            if ($this->isCsrfTokenValid('delete' . $moneyNode->getId(), $request->request->get('_token'))) {
+            if ($this->isCsrfTokenValid('delete' . $moneyNode->getId(), (string) $request->request->get('_token'))) {
                 $this->em->remove($moneyNode);
                 $this->em->flush();
                 $this->flashSuccess($translator->translateFlash('deleted'));

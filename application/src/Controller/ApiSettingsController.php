@@ -63,6 +63,9 @@ final class ApiSettingsController extends AlexeyAbstractController
         Request $request,
     ): Response {
         $apiDevice = $this->fetchEntityById(className: ApiDevice::class, id: $id);
+        if (!($apiDevice instanceof ApiDevice)) {
+            return $this->redirectToRoute('api_local_settings', [], Response::HTTP_SEE_OTHER);
+        }
         $user = $this->alexeyUser();
         if ($apiDevice->getUser() === $user) {
             $form = $this->createForm(ApiDeviceType::class, $apiDevice);
@@ -88,6 +91,9 @@ final class ApiSettingsController extends AlexeyAbstractController
     public function dropDevice(int $id): Response
     {
         $apiDevice = $this->fetchEntityById(className: ApiDevice::class, id: $id);
+        if (!($apiDevice instanceof ApiDevice)) {
+            return $this->redirectToRoute('api_local_settings', [], Response::HTTP_SEE_OTHER);
+        }
         $user = $this->alexeyUser();
         if ($apiDevice->getUser() === $user) {
             $this->em->remove($apiDevice);

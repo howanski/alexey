@@ -5,6 +5,13 @@ parameters:
         - "#id is never written, only read.#"
         - "#on an unknown class if0xx#"
         - "#AlexeyAbstractController::alexeyUser#"
+        - "#type has no value type specified in iterable type array.#"
+        - "#with no value type specified in iterable type array.#"
+        - "#no type specified.#"
+        - "#does not specify its types#"
+        - "#Unable to resolve the template type#"
+        - "#should return non-empty-string but returns string.#"
+        - "#expects class-string<object>, string given.#"
     ergebnis:
         noConstructorParameterWithDefaultValue:
             enabled: false
