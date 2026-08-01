@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Class\DynamicCard;
 use App\Entity\AssistantCall;
+use App\Entity\User;
 use App\Form\AssistantMessageType;
 use App\Message\AsyncJob;
 use App\Model\AssistantChat;
@@ -34,6 +35,9 @@ final class AssistantChatController extends AlexeyAbstractController
             return $this->redirectToRoute('assistant_index');
         }
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         if (!($call->getUser()->getUserIdentifier() === $user->getUserIdentifier())) {
             return $this->redirectToRoute('assistant_index');
         }
@@ -57,7 +61,7 @@ final class AssistantChatController extends AlexeyAbstractController
         }
 
         $dto = new AssistantMessageDTO();
-        $dto->setModelId($call->getLastChild()->getSystemMessage()->getId());
+        $dto->setModelId((int) $call->getLastChild()->getSystemMessage()?->getId());
         $dto->setTools($call->getLastChild()->getTools());
         $dto->setRootId($id);
 
@@ -101,6 +105,9 @@ final class AssistantChatController extends AlexeyAbstractController
             return $this->redirectToRoute('assistant_index');
         }
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         if (!($call->getUser()->getUserIdentifier() === $user->getUserIdentifier())) {
             $this->flashError($translator->translateFlash('delete_forbidden'));
             return $this->redirectToRoute('assistant_index');
@@ -157,6 +164,9 @@ final class AssistantChatController extends AlexeyAbstractController
         $call = $this->fetchEntityById(className: AssistantCall::class, id: $id);
         if ($call instanceof AssistantCall) {
             $user = $this->alexeyUser();
+            if (!($user instanceof User)) {
+                return $this->banishToLoginPage();
+            }
             if (
                 $call->getUser()->getUserIdentifier() === $user->getUserIdentifier()
                 && $this->isCsrfTokenValid('redo_chat_' . $call->getId(), (string) $request->request->get('_token'))
@@ -185,6 +195,9 @@ final class AssistantChatController extends AlexeyAbstractController
                 return $this->redirectToRoute('assistant_index');
             }
             $user = $this->alexeyUser();
+            if (!($user instanceof User)) {
+                return $this->banishToLoginPage();
+            }
             if (!($call->getUser()->getUserIdentifier() === $user->getUserIdentifier())) {
                 return $this->redirectToRoute('assistant_index');
             }

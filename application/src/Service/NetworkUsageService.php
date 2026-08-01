@@ -108,8 +108,10 @@ final class NetworkUsageService
             $chartData = $this->prepareDataForChart(dateFrom: $now, timeFormat: 'H:i:s');
         } elseif ($chartDataType === NetworkChartType::CHART_TYPE_BILLING_FRAME) {
             $currentStat = $this->getLatestStatistic();
-            $billingStart = $currentStat->getTimeFrame()->getBillingFrameStart();
-            $chartData = $this->prepareDataForChart($billingStart);
+            if ($currentStat instanceof NetworkStatistic) {
+                $billingStart = $currentStat->getTimeFrame()->getBillingFrameStart();
+                $chartData = $this->prepareDataForChart($billingStart);
+            }
         }
 
         $chartData['bonusPayload']['current_traffic_left'] = 0;
@@ -135,11 +137,16 @@ final class NetworkUsageService
             $transmissionSettings = new TransmissionSettings();
             $transmissionSettings->selfConfigure($this->simpleSettingsService);
             $stat = $this->getLatestStatistic();
-            $throttling = ($stat instanceof NetworkStatistic) ? $transmissionSettings->getProposedThrottleSpeed(
-                speedLeft: $this->getLatestStatistic()->getTransferRateLeft(
-                    $transmissionSettings->getTargetFrame()
+            $throttling = (
+                $stat instanceof NetworkStatistic
+                && $this->getLatestStatistic() instanceof NetworkStatistic
+            ) ?
+                $transmissionSettings->getProposedThrottleSpeed(
+                    speedLeft: $this->getLatestStatistic()->getTransferRateLeft(
+                        $transmissionSettings->getTargetFrame()
+                    )
                 )
-            ) : 0;
+                : 0;
             $throttling .= ' kB/s';
         } catch (\Exception $e) {
             $throttling = 'N. A.';

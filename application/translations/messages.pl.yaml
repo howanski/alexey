@@ -45,6 +45,7 @@ app:
         delete_forbidden: "Nie można usunąć"
         deleted: "Pomyślnie usunięto"
         not_authorized: "Nie posiadasz dostępu do tej akcji"
+        not_found: "Konteks żądania nie został odnaleziony"
         saved: "Pomyślnie zapisano"
         sent: "Pomyślnie wysłano"
         signal_dispatched: "Sygnał wysłany"

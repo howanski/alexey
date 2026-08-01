@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Enum\FlashType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class AlexeyAbstractController extends AbstractController
 {
@@ -34,5 +35,14 @@ abstract class AlexeyAbstractController extends AbstractController
     final public function flashError(string $message): void
     {
         $this->addFlash(type: FlashType::ERROR->value, message: $message);
+    }
+
+    final public function banishToLoginPage(): Response
+    {
+        return $this->redirectToRoute(
+            route: 'app_login',
+            parameters: [],
+            status: Response::HTTP_SEE_OTHER,
+        );
     }
 }

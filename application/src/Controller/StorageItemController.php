@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\StorageItem;
 use App\Entity\StorageItemStack;
+use App\Entity\User;
 use App\Form\StorageItemAddQuantityType;
 use App\Form\StorageItemMoveQuantityType;
 use App\Form\StorageItemRemoveQuantityType;
@@ -26,6 +27,9 @@ final class StorageItemController extends AlexeyAbstractController
         int $storageSpace = 0,
     ): Response {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $storageItems = $storageItemRepository->findByUser(
             user: $user,
             storageSpaceId: $storageSpace,
@@ -108,6 +112,9 @@ final class StorageItemController extends AlexeyAbstractController
         StorageItemRepository $storageItemRepository,
     ): Response {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
 
         $item = $storageItemRepository->findByUser(user: $user, storageItemId: $id)[0];
 

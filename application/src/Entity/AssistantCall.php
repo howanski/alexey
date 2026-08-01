@@ -47,7 +47,7 @@ class AssistantCall
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private User $user;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $userQuery = null;
@@ -109,12 +109,12 @@ class AssistantCall
         return $this->id;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(User $user): static
     {
         $this->user = $user;
 
@@ -252,7 +252,7 @@ class AssistantCall
             return $child->getStatusEffective();
         }
         $status = $this->getStatus();
-        if (array_key_exists($status, self::STATUSES)) {
+        if (is_int($status) && array_key_exists($status, self::STATUSES)) {
             return self::STATUSES[$status];
         }
         throw new UnexpectedValueException('Unknown status: ' . $status);
@@ -305,7 +305,7 @@ class AssistantCall
 
     public function getShortName(int $charLimit = 10): string
     {
-        $string = $this->getUserQuery();
+        $string = (string) $this->getUserQuery();
         if ($charLimit < 4) {
             $charLimit = 4;
         }

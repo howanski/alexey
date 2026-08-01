@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\StorageSpace;
+use App\Entity\User;
 use App\Form\StorageSpaceType;
 use App\Repository\StorageSpaceRepository;
 use App\Service\AlexeyTranslator;
@@ -19,6 +20,9 @@ final class StorageController extends AlexeyAbstractController
     public function index(StorageService $service): Response
     {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         return $this->render(
             'storage/index.html.twig',
             $service->getTemplateDataForStorageSpaces(user: $user),
@@ -31,6 +35,9 @@ final class StorageController extends AlexeyAbstractController
         Request $request,
     ): Response {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $channel = new StorageSpace();
         $channel->setUser(user: $user);
         $form = $this->createForm(
@@ -69,6 +76,14 @@ final class StorageController extends AlexeyAbstractController
                 'id' => $id,
             ],
         );
+
+        if (!($channel instanceof StorageSpace)) {
+            return $this->redirectToRoute(
+                route: 'storage_index',
+                parameters: [],
+                status: Response::HTTP_SEE_OTHER,
+            );
+        }
 
         $form = $this->createForm(
             type: StorageSpaceType::class,

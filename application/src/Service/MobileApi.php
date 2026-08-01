@@ -121,7 +121,7 @@ final class MobileApi
                 translationId: 'hi',
                 module: 'common'
             ) .
-                ', ' . $user->getUserIdentifier() . ' !'
+            ', ' . $user->getUserIdentifier() . ' !'
         );
         $response->addSpacer();
 
@@ -235,22 +235,29 @@ final class MobileApi
         $machineId = $parameters['id'];
 
         $networkMachine = $this->networkMachineRepository->find($machineId);
+        if ($networkMachine instanceof NetworkMachine) {
+            $payload = [
+                'wakeDestination' => $networkMachine->getWakeDestination(),
+                'macAddress' => $networkMachine->getMacAddress(),
+            ];
+            $message = new AsyncJob(
+                jobType: AsyncJob::TYPE_WAKE_ON_LAN,
+                payload: $payload,
+            );
 
-        $payload = [
-            'wakeDestination' => $networkMachine->getWakeDestination(),
-            'macAddress' => $networkMachine->getMacAddress(),
-        ];
-        $message = new AsyncJob(
-            jobType: AsyncJob::TYPE_WAKE_ON_LAN,
-            payload: $payload,
-        );
+            $this->bus->dispatch($message);
 
-        $this->bus->dispatch($message);
+            $response->addText($this->translator->translateFlash(
+                translationId: 'signal_dispatched',
+                module: 'common'
+            ));
+        } else {
+            $response->addText($this->translator->translateFlash(
+                translationId: 'not_found',
+                module: 'common'
+            ));
+        }
 
-        $response->addText($this->translator->translateFlash(
-            translationId: 'signal_dispatched',
-            module: 'common'
-        ));
         $response->addSpacer();
         $response->addButton(
             name: '<- ' . $this->translator->translateString(
@@ -385,9 +392,9 @@ final class MobileApi
                     module: 'api'
                 ),
                 path: $this->tunnelInfoProvider->getCurrentTunnel() .
-                    $this->router->generate(name: 'otp_login', parameters: [
-                        'otp' => $otp,
-                    ]),
+                $this->router->generate(name: 'otp_login', parameters: [
+                    'otp' => $otp,
+                ]),
             );
         } else {
             $response->addButton(
@@ -443,7 +450,7 @@ final class MobileApi
                 );
                 $response->addText(
                     string: ' (' . $shortage->getQuantity()
-                        . '/' . $shortage->getMinimalQuantity() . ')'
+                    . '/' . $shortage->getMinimalQuantity() . ')'
                 );
                 $response->addSpacer();
             }
@@ -466,7 +473,7 @@ final class MobileApi
                 );
                 $response->addText(
                     string: ' (' . $shortage->getQuantity()
-                        . '/' . $shortage->getMinimalQuantity() . ')'
+                    . '/' . $shortage->getMinimalQuantity() . ')'
                 );
                 $response->addSpacer();
             }

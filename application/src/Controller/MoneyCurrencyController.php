@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Currency;
+use App\Entity\User;
 use App\Form\CurrencyType;
 use App\Repository\CurrencyRepository;
 use App\Service\AlexeyTranslator;
@@ -20,6 +21,9 @@ final class MoneyCurrencyController extends AlexeyAbstractController
         CurrencyRepository $currencyRepository,
     ): Response {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $currencies = $currencyRepository->getUserCurrencies($user);
         return $this->render('currencies/index.html.twig', [
             'currencies' => $currencies,
@@ -32,6 +36,9 @@ final class MoneyCurrencyController extends AlexeyAbstractController
         AlexeyTranslator $translator,
     ): Response {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $currency = new Currency($user);
         $form = $this->createForm(type: CurrencyType::class, data: $currency);
         $form->handleRequest($request);

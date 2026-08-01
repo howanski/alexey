@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Class\OpenWeatherOneApiResponse;
+use App\Entity\User;
 use App\EventSubscriber\UserLocaleSubscriber;
 use App\Form\SystemSettingsType;
 use App\Form\UserSettingsType;
@@ -29,6 +30,9 @@ final class SettingsController extends AlexeyAbstractController
         SimpleSettingsService $simpleSettingsService,
     ): Response {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $settings = [
             'locale' => $user->getLocale(),
             'email' => $user->getEmail(),
@@ -95,14 +99,17 @@ final class SettingsController extends AlexeyAbstractController
     private function getMenuPills(bool $isUserActive): array
     {
         // TODO: refactor pills globally
-        return [[
-            'name' => $this->translator->translateString(translationId: 'user_settings', module: 'settings'),
-            'path' => $this->generateUrl(route: 'settings_user'),
-            'active' => (true === $isUserActive),
-        ], [
-            'name' => $this->translator->translateString(translationId: 'system_settings', module: 'settings'),
-            'path' => $this->generateUrl(route: 'settings_system'),
-            'active' => (false === $isUserActive),
-        ]];
+        return [
+            [
+                'name' => $this->translator->translateString(translationId: 'user_settings', module: 'settings'),
+                'path' => $this->generateUrl(route: 'settings_user'),
+                'active' => (true === $isUserActive),
+            ],
+            [
+                'name' => $this->translator->translateString(translationId: 'system_settings', module: 'settings'),
+                'path' => $this->generateUrl(route: 'settings_system'),
+                'active' => (false === $isUserActive),
+            ]
+        ];
     }
 }

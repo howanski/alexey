@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\AssistantRecurringMessage;
+use App\Entity\User;
 use App\Form\AssistantAgentType;
 use App\Model\AssistantSettings;
 use App\Repository\AssistantRecurringMessageRepository;
@@ -24,6 +25,9 @@ final class AssistantAgentController extends AlexeyAbstractController
         SimpleSettingsService $simpleSettingsService,
     ): Response {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $settings = new AssistantSettings();
         $settings->selfConfigure($simpleSettingsService, $user);
 
@@ -46,6 +50,9 @@ final class AssistantAgentController extends AlexeyAbstractController
         Request $request,
     ): Response {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $availablePrioritySlot = $repository->getNextFreePrioritySlot(
             $user,
             AssistantRecurringMessage::TYPE_SYSTEM_MESSAGE,

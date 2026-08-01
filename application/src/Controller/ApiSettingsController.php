@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\ApiDevice;
+use App\Entity\User;
 use App\Form\ApiDeviceType;
 use App\Repository\ApiDeviceRepository;
 use App\Service\AlexeyTranslator;
@@ -21,6 +22,9 @@ final class ApiSettingsController extends AlexeyAbstractController
     public function index(ApiDeviceRepository $repo, MobileApiManager $manager): Response
     {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $token = $manager->generateUserToken($user);
 
         return $this->render('api/index.html.twig', [
@@ -34,6 +38,9 @@ final class ApiSettingsController extends AlexeyAbstractController
     public function qr(MobileApiManager $apiManager): Response
     {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $credentials = $apiManager->getFullConnectionCredentials($user);
         $fileContent = $apiManager->getInMemoryQr(
             data: $credentials,
@@ -52,6 +59,9 @@ final class ApiSettingsController extends AlexeyAbstractController
     public function myToken(MobileApiManager $manager): Response
     {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $token = $manager->generateUserToken($user);
         return new JsonResponse(data: $token);
     }

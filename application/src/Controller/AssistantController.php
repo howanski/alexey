@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\AssistantMessageType;
 use App\Form\AssistantSettingsType;
 use App\Model\AssistantMessageDTO;
@@ -28,6 +29,9 @@ final class AssistantController extends AlexeyAbstractController
         SimpleSettingsService $simpleSettingsService,
     ): Response {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $settings = new AssistantSettings();
         $settings->selfConfigure($simpleSettingsService, $user);
 
@@ -71,6 +75,9 @@ final class AssistantController extends AlexeyAbstractController
         SimpleSettingsService $simpleSettingsService,
     ): Response {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $settings = new AssistantSettings();
         $settings->selfConfigure($simpleSettingsService, $user);
         $form = $this->createForm(

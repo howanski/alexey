@@ -11,11 +11,13 @@ use App\Model\AssistantMessageBag;
 use App\Repository\AssistantCallRepository;
 use App\Repository\AssistantRecurringMessageRepository;
 use Carbon\Carbon;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\AI\Platform\Message\Message;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 final class AssistantCallProcessor
 {
@@ -108,13 +110,15 @@ final class AssistantCallProcessor
             $entity = $this->assistantCallRepository->findOldestWithStatus(AssistantCall::STATUS_PROCESSING);
             if ($entity instanceof AssistantCall) {
                 $lastChange = $entity->getLastStatusChange();
-                $now = new Carbon('now');
-                $now = $now->subSeconds(AssistantService::MAX_PROCESSING_TIME + 30);
-                if ($now->isAfter($lastChange)) {
-                    $entity->setStatus(AssistantCall::STATUS_ERROR);
-                    $this->em->flush();
-                    $this->scheduleMaintenance();
-                    return;
+                if ($lastChange instanceof DateTime) {
+                    $now = new Carbon('now');
+                    $now = $now->subSeconds(AssistantService::MAX_PROCESSING_TIME + 30);
+                    if ($now->isAfter($lastChange)) {
+                        $entity->setStatus(AssistantCall::STATUS_ERROR);
+                        $this->em->flush();
+                        $this->scheduleMaintenance();
+                        return;
+                    }
                 }
             }
         }
@@ -206,7 +210,9 @@ final class AssistantCallProcessor
             }
         }
         $options = $this->service->getDefaultOptionsForUser($user);
-        $options[AssistantService::MODEL] = $defaultSystemMessage->getModel();
+        if ($defaultSystemMessage instanceof AssistantRecurringMessage) {
+            $options[AssistantService::MODEL] = $defaultSystemMessage->getModel();
+        }
 
         $tools = $entity->getTools();
         $agent = $this->service->getDefaultAgent($user, $options, $tools);

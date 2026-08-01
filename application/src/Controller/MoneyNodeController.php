@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\MoneyNode;
+use App\Entity\User;
 use App\Form\MoneyNodeSettingsType;
 use App\Form\MoneyNodeType;
 use App\Model\MoneyNodeSettings;
@@ -26,6 +27,9 @@ final class MoneyNodeController extends AlexeyAbstractController
         int $groupId = null,
     ): Response {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $settings = new MoneyNodeSettings($user);
         $settings->selfConfigure($simpleSettingsService);
         return $this->render('money_node/index.html.twig', [
@@ -46,6 +50,9 @@ final class MoneyNodeController extends AlexeyAbstractController
         CurrencyRepository $currencyRepository,
     ): Response {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $moneyNode = new MoneyNode($user);
         $settings = new MoneyNodeSettings($user);
         $settings->selfConfigure($simpleSettingsService);
@@ -80,12 +87,15 @@ final class MoneyNodeController extends AlexeyAbstractController
         int $id,
         SimpleSettingsService $simpleSettingsService,
     ): Response {
+        $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $result = $this->ensureOwnedMoneyNode(id: $id, translator: $translator);
         if ($result instanceof Response) {
             return $result;
         }
         $moneyNode = $result;
-        $user = $this->alexeyUser();
         $settings = new MoneyNodeSettings($user);
         $settings->selfConfigure($simpleSettingsService);
         return $this->render('money_node/show.html.twig', [
@@ -102,12 +112,15 @@ final class MoneyNodeController extends AlexeyAbstractController
         Request $request,
         SimpleSettingsService $simpleSettingsService,
     ): Response {
+        $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $result = $this->ensureOwnedMoneyNode(id: $id, translator: $translator);
         if ($result instanceof Response) {
             return $result;
         }
         $moneyNode = $result;
-        $user = $this->alexeyUser();
         $settings = new MoneyNodeSettings($user);
         $settings->selfConfigure($simpleSettingsService);
         $form = $this->createForm(type: MoneyNodeType::class, data: $moneyNode, options: [
@@ -169,6 +182,9 @@ final class MoneyNodeController extends AlexeyAbstractController
         AlexeyTranslator $translator,
     ): Response {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $settings = new MoneyNodeSettings($user);
         $settings->selfConfigure($simpleSettingsService);
         $form = $this->createForm(
@@ -198,6 +214,9 @@ final class MoneyNodeController extends AlexeyAbstractController
             return $this->redirectToRoute('money_node_index', [], Response::HTTP_SEE_OTHER);
         }
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         if (!($user->getId() === $entity->getUser()->getId())) {
             $this->flashError($translator->translateFlash($flashKey));
             return $this->redirectToRoute('money_node_index', [], Response::HTTP_SEE_OTHER);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\MoneyTransfer;
+use App\Entity\User;
 use App\Form\MoneyTransferSplitType;
 use App\Form\MoneyTransferType;
 use App\Repository\MoneyTransferRepository;
@@ -26,6 +27,9 @@ final class MoneyTransferController extends AlexeyAbstractController
         Request $request,
     ): Response {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $filters = $request->query->all();
         if (array_key_exists(key: 'month', array: $filters)) {
             $monthStr = $filters['month'];
@@ -57,6 +61,9 @@ final class MoneyTransferController extends AlexeyAbstractController
         MoneyService $service,
     ): Response {
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
         $moneyTransfer = new MoneyTransfer($user);
         $form = $this->createForm(
             type: MoneyTransferType::class,
@@ -268,6 +275,9 @@ final class MoneyTransferController extends AlexeyAbstractController
         }
 
         $user = $this->alexeyUser();
+        if (!($user instanceof User)) {
+            return $this->banishToLoginPage();
+        }
 
         $data = $service->getDataForEdgePieChart(
             chartType: $type,

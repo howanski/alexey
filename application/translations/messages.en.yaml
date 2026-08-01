@@ -45,6 +45,7 @@ app:
         delete_forbidden: "Cannot delete"
         deleted: "Successfully deleted"
         not_authorized: "You don't have access to this action"
+        not_found: "Request context not found"
         saved: "Successfully saved"
         sent: "Successfully sent"
         signal_dispatched: "Signal dispatched"

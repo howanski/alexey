@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Service\MoneyService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +24,9 @@ final class MoneyGraphController extends AlexeyAbstractController
     {
         if ($request->isXmlHttpRequest()) {
             $user = $this->alexeyUser();
+            if (!($user instanceof User)) {
+                return $this->banishToLoginPage();
+            }
             $data = $service->getDataForChart(user: $user);
             return new JsonResponse($data);
         } else {
@@ -35,6 +39,9 @@ final class MoneyGraphController extends AlexeyAbstractController
     {
         if ($request->isXmlHttpRequest()) {
             $user = $this->alexeyUser();
+            if (!($user instanceof User)) {
+                return $this->banishToLoginPage();
+            }
             $data = $service->getDataForForecastChart(user: $user);
             return new JsonResponse($data);
         } else {

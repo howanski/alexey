@@ -7,6 +7,8 @@ namespace App\Service;
 use App\Entity\NetworkStatistic;
 use App\Model\TransmissionSettings;
 use App\Service\SimpleSettingsService;
+use DateInterval;
+use DateTime;
 
 final class TransmissionService
 {
@@ -50,13 +52,15 @@ final class TransmissionService
 
         $throttled = 0;
         $stat = $this->networkUsageService->getLatestStatistic();
-        if ($stat instanceof NetworkStatistic) {
-            $throttled = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft(
-                $this->settings->getTargetFrame()
-            ));
+        if (!($stat instanceof NetworkStatistic)) {
+            return $chartData;
         }
-        $mockedProbingTime = new \DateTime('now');
-        $window = new \DateInterval('PT1H');
+
+        $throttled = $this->settings->getProposedThrottleSpeed($stat->getTransferRateLeft(
+            $this->settings->getTargetFrame()
+        ));
+        $mockedProbingTime = new DateTime('now');
+        $window = new DateInterval('PT1H');
         $maxChartPoints = 300;
         $chartPoints = 0;
         if ($throttled < intval($this->settings->getTargetSpeed())) {

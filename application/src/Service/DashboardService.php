@@ -57,7 +57,7 @@ final class DashboardService
             /** @var AssistantCallRepository */
             $repo = $this->em->getRepository(AssistantCall::class);
 
-            $ids = $repo->getUnreadChatsIds($user);
+            $ids = ($user instanceof UserInterface) ? $repo->getUnreadChatsIds($user) : [];
             if (empty($ids)) {
                 return null;
             }

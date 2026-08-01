@@ -38,6 +38,9 @@ final class NetworkMachineService
     public function pingNetworkMachine(int $id): void
     {
         $networkMachine = $this->networkMachineRepository->find($id);
+        if (!($networkMachine instanceof NetworkMachine)) {
+            return;
+        }
         $uri = $networkMachine->getUri();
         $ping = new Ping(host: $uri, ttl: 255, timeout: 2);
         $latency = $ping->ping();

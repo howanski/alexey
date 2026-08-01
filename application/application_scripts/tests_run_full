@@ -43,7 +43,7 @@ stoponfail
 echo "---------------------------------------"
 echo "------- PHPSTAN:"
 echo "---------------------------------------"
-XDEBUG_MODE=off /var/www/html/vendor/bin/phpstan --level=7 --memory-limit=2048M analyse src
+XDEBUG_MODE=off /var/www/html/vendor/bin/phpstan --level=8 --memory-limit=2048M analyse src
 stoponfail
 echo "---------------------------------------"
 echo "------- PHPUNIT:"
