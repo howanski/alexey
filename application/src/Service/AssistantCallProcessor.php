@@ -216,7 +216,7 @@ final class AssistantCallProcessor
 
         $tools = $entity->getTools();
         $agent = $this->service->getDefaultAgent($user, $options, $tools);
-        $result = $agent->call(messages: $messageBag->getBag());
+        $result = $agent->call(input: $messageBag->getBag());
 
         $resultContent = $result->getContent();
         if (is_null($resultContent)) {

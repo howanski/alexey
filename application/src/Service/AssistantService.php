@@ -101,7 +101,7 @@ final class AssistantService
 
         $messageBag->addMessage(Message::ofUser($message));
 
-        return $agent->call(messages: $messageBag->getBag());
+        return $agent->call(input: $messageBag->getBag());
     }
 
     public function sendMessage(User $user, AssistantMessageDTO $dto): AssistantCall
