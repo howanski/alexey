@@ -21,9 +21,19 @@
 		{% endif %}
 		{% set actions %}
 			{% include 'table_action_button.html.twig' with {
+				'button_color_hover': 'bg-nord10',
 				'href': agent_edit_path,
 				'name': 'edit'|localised,
 			} only %}
+			{% if not custom_agent.isDefault %}
+				{% include 'table_action_button_secure.html.twig' with {
+					'button_color_hover': 'bg-red-600',
+					'confirmation': 'you_sure_delete'|localised,
+					'csrf': csrf_token('delete_agent_' ~ custom_agent.id),
+					'href': path('assistant_agent_delete', {'id': custom_agent.id}),
+					'name': 'delete'|localised,
+				} only %}
+			{% endif %}
 		{% endset %}
 
 		{% set table_data = table_data|merge([{
@@ -40,6 +50,6 @@
             'actions'|localised,
 		],
 		'tableData': table_data,
-		'buttons': [{'href': path('assistant_agent_new'), text: 'add'|localised}],
+		'buttons': [{'href': path('assistant_agent_new'), text: 'add'|localised, hover_color: 'bg-green-700'}],
 	} only %}
 {% endblock %}

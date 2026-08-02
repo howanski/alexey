@@ -22,11 +22,11 @@
 						{% if buttons is defined %}
 							{% for button in buttons %}
 								{% if button.href is defined %}
-									<a class="bg-nord2 text-{{ light }} hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1" style="transition:all .15s ease" href="{{ button.href }}">
+									<a class="bg-nord2 text-{{ light }} hover:{% if button.hover_color is defined %}{{ button.hover_color }}{% else %}bg-nord3{% endif %} text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1" style="transition:all .15s ease" href="{{ button.href }}">
 										{{ button.text|raw }}
 									</a>
 								{% else %}
-									<button class="bg-nord2 text-{{ light }} hover:bg-nord3 text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1" style="transition:all .15s ease">
+									<button class="bg-nord2 text-{{ light }} hover:{% if button.hover_color is defined %}{{ button.hover_color }}{% else %}bg-nord3{% endif %} text-xs font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1" style="transition:all .15s ease">
 										{{ button.text|raw }}
 									</button>
 								{% endif %}

@@ -51,7 +51,7 @@ class AssistantRecurringMessage
         if ($this->isDefault()) {
             return '[👑][' . $this->getModel() . ']';
         }
-        return '#' . strval($this->getId()) . ' ' . $this->getName() . ' [' . $this->getModel() . ']';
+        return '#' . strval($this->getPriority()) . ' ' . $this->getName() . ' [' . $this->getModel() . ']';
     }
 
     public function isDefault(): bool
