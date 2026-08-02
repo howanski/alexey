@@ -299,15 +299,29 @@ final class NetworkUsageService
          * @var NetworkStatistic $stat
          */
         foreach ($networkStatistics as $stat) {
+            ///
             $labels[] = $stat->getProbingTime()->format($timeFormat);
-            $datasets['speed_relative']['data'][] = round(($stat->getTotalSpeedFromReferencePoint() / 1024), 4);
-            $datasets['speed_left']['data'][] = round(($stat->getTransferRateLeft() / 1024), 4);
-            $datasets['speed_left_midnight']['data'][] =
-                round(($stat->getTransferRateLeft(TransmissionSettings::TARGET_SPEED_FRAME_DAY) / 1024), 4);
+            $datasets['speed_relative']['data'][] = $this->nonNegativeValue(
+                round(($stat->getTotalSpeedFromReferencePoint() / 1024), 4)
+            );
+            $datasets['speed_left']['data'][] = $this->nonNegativeValue(
+                round(($stat->getTransferRateLeft() / 1024), 4)
+            );
+            $datasets['speed_left_midnight']['data'][] = $this->nonNegativeValue(
+                round(($stat->getTransferRateLeft(TransmissionSettings::TARGET_SPEED_FRAME_DAY) / 1024), 4)
+            );
         }
         $data['labels'] = $labels;
         $data['datasets'] = $datasets;
         return $data;
+    }
+
+    private function nonNegativeValue(float $value): float
+    {
+        if ($value > 0.0) {
+            return $value;
+        }
+        return 0.0;
     }
 
     private function getPreparedEntitiesForChart(DateTime $dateFrom, DateTime $dateTo, int $maxRecords = 50): array
