@@ -25,11 +25,14 @@
 	{% set table_data = {} %}
 	{% for device in devices %}
 		{% set actions %}
+		{# TODO: use button with confirmation #}
 		{% include 'table_action_button.html.twig' with {
+			'button_color_hover': 'bg-red-600',
 			'href': path('api_device_drop', {'id': device.id}),
 			'name': 'delete'|localised,
 		} only %}
         {% include 'table_action_button.html.twig' with {
+			'button_color_hover': 'bg-nord10',
 			'href': path('api_device_edit', {'id': device.id}),
 			'name': 'edit'|localised,
 		} only %}

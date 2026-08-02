@@ -16,10 +16,12 @@
 		{% set chat_view_path = path('assistant_chat_view', {'id': chat.id}) %}
 		{% set actions %}
 			{% include 'table_action_button.html.twig' with {
+				'button_color_hover': 'bg-nord10',
 				'href': chat_view_path,
 				'name': 'view'|localised,
 			} only %}
 			{% include 'table_action_button_secure.html.twig' with {
+				'button_color_hover': 'bg-red-600',
 				'href': path('assistant_chat_delete', {id: chat.id}),
 				'confirmation': 'you_sure_delete'|localised,
 				'name': 'delete'|localised,

@@ -67,11 +67,13 @@
 		{% set actions %}
 
 		{% include 'table_action_button.html.twig' with {
+			'button_color_hover': 'bg-nord10',
 			'href': path('money_transfer_show', {'id': transfer.id}),
 			'name': 'show_transfer'|localised('money'),
 		} only %}
 
 		{% include 'table_action_button.html.twig' with {
+			'button_color_hover': 'bg-nord10',
 			'href': path('money_node_show', {'id': transfer.sourceNode.id}),
 			'name': 'show_node'|localised('money'),
 		} only %}
@@ -110,11 +112,13 @@
 		{% set actions %}
 
 		{% include 'table_action_button.html.twig' with {
+			'button_color_hover': 'bg-nord10',
 			'href': path('money_transfer_show', {'id': transfer.id}),
 			'name': 'show_transfer'|localised('money'),
 		} only %}
 
 		{% include 'table_action_button.html.twig' with {
+			'button_color_hover': 'bg-nord10',
 			'href': path('money_node_show', {'id': transfer.targetNode.id}),
 			'name': 'show_node'|localised('money'),
 		} only %}

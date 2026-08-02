@@ -26,14 +26,17 @@
 	{% for money_transfer in money_transfers %}
 		{% set actions %}
 		{% include 'table_action_button.html.twig' with {
+			'button_color_hover': 'bg-nord10',
 			'href': path('money_transfer_show', {'id': money_transfer.id}),
 			'name': 'show'|localised,
 		} only %}
 		{% include 'table_action_button.html.twig' with {
+			'button_color_hover': 'bg-nord10',
 			'href': path('money_transfer_edit', {'id': money_transfer.id}),
 			'name': 'edit'|localised ,
 		} only %}
 		{% include 'table_action_button.html.twig' with {
+			'button_color_hover': 'bg-nord10',
 			'href': path('money_transfer_split', {'id': money_transfer.id}),
 			'name': 'split'|localised('money'),
 		} only %}
