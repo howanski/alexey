@@ -42,23 +42,55 @@
 				<div class="p-4 space-y-6">
 					{% for message_pair in chat.messages %}
 						<!-- User message -->
-						<div class="flex flex-col">
+						<div class="flex flex-col alternative-view-boundary">
 							<div class="flex items-start gap-3">
 								<div class="flex-1 min-w-0">
-									<div class="bg-nord2 text-nord4 rounded-lg rounded-tl-none px-4 py-3 text-sm whitespace-pre-wrap break-words overflow-y-auto has-md-content"><i class="fas fa-user text-sm text-nord4"></i>{{ message_pair.request|markdown_to_html }}</div>
+									<div class="bg-nord2 text-nord4 rounded-lg rounded-tl-none px-4 py-3 text-sm break-words overflow-y-auto has-md-content">
+										<i class="fas fa-user text-sm text-nord4"></i>
+										{% include '_alternate_view_button.html.twig' with {
+											'alternative_view_id': '1',
+											'alternative_view_target': '2',
+											'default_hidden': false,
+											'icon': 'fas fa-eye',
+										} only %}
+										{% include '_alternate_view_button.html.twig' with {
+											'alternative_view_id': '2',
+											'alternative_view_target': '1',
+											'default_hidden': true,
+											'icon': 'fas fa-eye-slash',
+										} only %}
+										<div class="alternative-view alternative-view-1">{{ message_pair.request|markdown_to_html }}</div>
+										<div class="hidden alternative-view alternative-view-2">{{ message_pair.request }}</div>
+									</div>
 								</div>
 							</div>
 						</div>
 
 						<!-- LLM response -->
-						<div class="flex flex-col">
+						<div class="flex flex-col alternative-view-boundary">
 							<div class="flex items-start gap-3">
 								<div class="flex-1 min-w-0">
 									{% if message_pair.isProcessing %}
 										<i class="fas fa-circle-notch animate-spin-5 refresh-page-on-check" data-check-path="{{ path('assistant_ajax_is_processed', {id: message_pair.id}) }}"></i>
 										{% set show_response_form = false %}
 									{% else %}
-										<div class="bg-nord5 text-nord0 rounded-lg rounded-tl-none px-4 py-3 text-sm whitespace-pre-wrap break-words overflow-y-auto has-md-content"><i class="fas fa-robot text-sm"></i>{{ message_pair.response|markdown_to_html }}</div>
+										<div class="bg-nord5 text-nord0 rounded-lg rounded-tl-none px-4 py-3 text-sm break-words overflow-y-auto has-md-content">
+											<i class="fas fa-robot text-sm"></i>
+											{% include '_alternate_view_button.html.twig' with {
+												'alternative_view_id': '1',
+												'alternative_view_target': '2',
+												'default_hidden': false,
+												'icon': 'fas fa-eye',
+											} only %}
+											{% include '_alternate_view_button.html.twig' with {
+												'alternative_view_id': '2',
+												'alternative_view_target': '1',
+												'default_hidden': true,
+												'icon': 'fas fa-eye-slash',
+											} only %}
+											<div class="alternative-view alternative-view-1">{{ message_pair.response|markdown_to_html }}</div>
+											<div class="hidden alternative-view alternative-view-2">{{ message_pair.response }}</div>
+										</div>
 									{% endif %}
 									<div class="bg-nord4 text-right text-nord0 rounded-lg px-4 py-3 text-sm break-words overflow-y-auto">
 										{{ message_pair.responder }}

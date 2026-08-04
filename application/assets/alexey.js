@@ -3,6 +3,10 @@ import "./../node_modules/vanillajs-datepicker/dist/css/datepicker.css";
 import "./css/flash-toast.css";
 import "./css/tailwind.css";
 
+// external js / dependencies
+import "@popperjs/core";
+
+// internal js - independent modules
 import "./js/dynamic-table.js";
 import "./js/flash-destructor.js";
 import "./js/inline-unlinker.js";
@@ -11,4 +15,4 @@ import "./js/secured-button.js";
 import "./js/sidebar-menu.js";
 import "./js/table-unfolder.js";
 import "./js/top-scroller.js";
-import "@popperjs/core";
+import "./js/view-alternator.js";
