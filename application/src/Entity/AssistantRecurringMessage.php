@@ -40,6 +40,9 @@ class AssistantRecurringMessage
     #[ORM\Column(length: 255)]
     private string $model = '';
 
+    #[ORM\Column(nullable:false)]
+    private int $maxMessagesToSendAtOnce = 0;
+
     public function getId(): int
     {
         return $this->id;
@@ -127,6 +130,18 @@ class AssistantRecurringMessage
     public function setModel(?string $model): static
     {
         $this->model = strval($model);
+
+        return $this;
+    }
+
+    public function getMaxMessagesToSendAtOnce(): int
+    {
+        return $this->maxMessagesToSendAtOnce;
+    }
+
+    public function setMaxMessagesToSendAtOnce(int $maxMessagesToSendAtOnce): static
+    {
+        $this->maxMessagesToSendAtOnce = $maxMessagesToSendAtOnce;
 
         return $this;
     }

@@ -202,6 +202,12 @@ final class AssistantCallProcessor
         }
 
         $fullMessageHistory = $entity->getRootEntity()->getMessagesTimeline();
+        $messagesLimit = $entity->getSystemMessage()?->getMaxMessagesToSendAtOnce() ?? 0;
+        if ($messagesLimit > 0) {
+            while (count($fullMessageHistory) > $messagesLimit) {
+                $fullMessageHistory = array_slice($fullMessageHistory, 1);
+            }
+        }
         $lastKey = array_key_last($fullMessageHistory);
         foreach ($fullMessageHistory as $key => $historySlice) {
             $messageBag->addMessage(Message::ofUser($historySlice['request']));

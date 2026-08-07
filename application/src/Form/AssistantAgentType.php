@@ -6,10 +6,12 @@ namespace App\Form;
 
 use App\Entity\AssistantRecurringMessage;
 use App\Form\CommonFormType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class AssistantAgentType extends CommonFormType
@@ -38,9 +40,21 @@ final class AssistantAgentType extends CommonFormType
                     new NotBlank()
                 ],
             ])
+            ->add(child: 'maxMessagesToSendAtOnce', type: IntegerType::class, options: [
+                'label' => $this->getLabelTrans(label: 'message_limit'),
+                'priority' => -2,
+                'required' => true,
+                'attr' => [
+                    'min' => 0,
+                ],
+                'constraints' => [
+                    new NotBlank(),
+                    new GreaterThanOrEqual(0),
+                ],
+            ])
             ->add(child: 'message', type: TextareaType::class, options: [
                 'label' => $this->getLabelTrans(label: 'message'),
-                'priority' => -2,
+                'priority' => -3,
                 'required' => true,
                 'attr' => [
                     'class' => 'min-h-120 ' . CommonFormType::STANDARD_INPUT_CLASSES,

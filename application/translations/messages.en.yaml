@@ -21,6 +21,7 @@ app:
           agent_name: 'Agent name'
           api_key: 'API Key'
           base_url: 'Server URL'
+          message_limit: 'Context limit (no. of request-response pairs)'
           message: 'Message'
           model: 'Model'
           system_message: 'System message'

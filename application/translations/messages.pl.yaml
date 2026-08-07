@@ -21,6 +21,7 @@ app:
           agent_name: 'Nazwa agenta'
           api_key: 'Klucz API'
           base_url: 'Adres serwera'
+          message_limit: 'Limit kontekstu (ilość par pytanie-odpowiedź)'
           message: 'Wiadomość'
           model: 'Model'
           system_message: 'Wiadomość systemowa'
