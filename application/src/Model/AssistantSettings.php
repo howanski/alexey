@@ -20,6 +20,8 @@ final class AssistantSettings
     private string $apiKey = '';
     private int $modelId = 0;
     private string $showOnDashboard = '';
+    private int $maxMessagesToSendAtOnce = 0;
+    private int $maxMemories = 0;
 
     /**
      * @deprecated to be removed on next code cleanup
@@ -53,6 +55,8 @@ final class AssistantSettings
 
         $defaultMessage = $repo->getDefaultSystemMessage($user);
         if ($defaultMessage instanceof AssistantRecurringMessage) {
+            $this->setMaxMessagesToSendAtOnce($defaultMessage->getMaxMessagesToSendAtOnce());
+            $this->setMaxMemories($defaultMessage->getMaxMemories());
             $this->setSystemMessage($defaultMessage->getMessage());
             $this->model = ($defaultMessage->getModel());
             $this->setModelId($defaultMessage->getId());
@@ -86,6 +90,8 @@ final class AssistantSettings
             $defaultMessage->setType(AssistantRecurringMessage::TYPE_SYSTEM_MESSAGE);
             $em->persist($defaultMessage);
         }
+        $defaultMessage->setMaxMessagesToSendAtOnce($this->getMaxMessagesToSendAtOnce());
+        $defaultMessage->setMaxMemories($this->getMaxMemories());
         $defaultMessage->setMessage($this->getSystemMessage());
         $defaultMessage->setModel($this->model);
     }
@@ -160,5 +166,25 @@ final class AssistantSettings
     public function setShowOnDashboard(string $showOnDashboard): void
     {
         $this->showOnDashboard = $showOnDashboard;
+    }
+
+    public function getMaxMessagesToSendAtOnce(): int
+    {
+        return $this->maxMessagesToSendAtOnce;
+    }
+
+    public function setMaxMessagesToSendAtOnce(int $maxMessagesToSendAtOnce): void
+    {
+        $this->maxMessagesToSendAtOnce = $maxMessagesToSendAtOnce;
+    }
+
+    public function getMaxMemories(): int
+    {
+        return $this->maxMemories;
+    }
+
+    public function setMaxMemories(int $maxMemories): void
+    {
+        $this->maxMemories = $maxMemories;
     }
 }

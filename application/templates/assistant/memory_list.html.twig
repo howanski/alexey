@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('assistant'), 'href': path('assistant_index')},
+	{'name': 'all_memories'|localised('assistant'), 'href': path('assistant_memory_list')},
+	]
+%}
+
+{% block pageContentPrimary %}
+	{% include 'assistant/_main_selector_buttons.html.twig' with {
+		'active_button': 'assistant_memory_list',
+	} only %}
+{% endblock %}
+
+{% block pageContentSecondary %}
+	{% set table_data = {} %}
+	{% for memory in memories %}
+		{% set status_badge = '' %}
+		{% set status_class = '' %}
+		{% if memory.isUserApproved %}
+			{% set status_badge = 'memory_status_approved'|localised('assistant') %}
+			{% set status_class = 'text-green-500' %}
+		{% elseif memory.isNewMemory %}
+			{% set status_badge = 'memory_status_new'|localised('assistant') %}
+			{% set status_class = 'text-yellow-500' %}
+		{% elseif memory.isEditedMemory %}
+			{% set status_badge = 'memory_status_edited'|localised('assistant') %}
+			{% set status_class = 'text-yellow-500' %}
+		{% elseif memory.isMarkedForDeletion %}
+			{% set status_badge = 'memory_status_deleted'|localised('assistant') %}
+			{% set status_class = 'text-red-500' %}
+		{% endif %}
+
+		{% set actions %}
+			{% if memory.isUserApproved %}
+				{% include 'table_action_button.html.twig' with {
+					'button_color_hover': 'bg-nord10',
+					'href': path('assistant_memory_edit', {id: memory.id}),
+					'name': 'edit'|localised,
+				} only %}
+			{% else %}
+				{% include 'table_action_button.html.twig' with {
+					'button_color_hover': 'bg-nord10',
+					'href': path('assistant_memory_compare', {id: memory.id}),
+					'name': 'compare'|localised,
+				} only %}
+				{% include 'table_action_button_secure.html.twig' with {
+					'button_color_hover': 'bg-green-600',
+					'href': path('assistant_memory_approve', {id: memory.id}),
+					'confirmation': 'you_sure_approve'|localised('assistant'),
+					'name': 'approve'|localised,
+					'csrf': csrf_token('approve_memory_' ~ memory.id),
+				} only %}
+				{% include 'table_action_button_secure.html.twig' with {
+					'button_color_hover': 'bg-red-600',
+					'href': path('assistant_memory_reject', {id: memory.id}),
+					'confirmation': 'you_sure_reject'|localised('assistant'),
+					'name': 'reject'|localised,
+					'csrf': csrf_token('reject_memory_' ~ memory.id),
+				} only %}
+			{% endif %}
+			{% include 'table_action_button_secure.html.twig' with {
+				'button_color_hover': 'bg-red-600',
+				'href': path('assistant_memory_delete', {id: memory.id}),
+				'confirmation': 'you_sure_delete'|localised,
+				'name': 'delete'|localised,
+				'csrf': csrf_token('delete_memory_' ~ memory.id),
+			} only %}
+		{% endset %}
+
+		{% set table_data = table_data|merge([{
+			'status': '<span class="' ~ status_class ~ '">' ~ status_badge ~ '</span>',
+			'assistant': memory.assistant.displayName,
+            'title': memory.assistantTitle,
+            'content': memory.assistantContentShort(20),
+			'created': memory.createdAt|date('Y-m-d H:i'),
+			'actions': actions,
+		}]) %}
+	{% endfor %}
+	{% include 'table.html.twig' with {
+		'tableTitle': 'all_memories'|localised('assistant'),
+		'tableHeaders': [
+			'status'|localised,
+			'model'|localised('assistant'),
+			'title'|localised,
+			'content'|localised,
+			'created'|localised,
+            'actions'|localised,
+		],
+		'tableData': table_data,
+		'buttons': [{'href': path('assistant_memory_new'), text: 'add'|localised, hover_color: 'bg-green-700'}],
+	} only %}
+{% endblock %}

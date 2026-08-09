@@ -21,26 +21,38 @@ app:
           agent_name: 'Nazwa agenta'
           api_key: 'Klucz API'
           base_url: 'Adres serwera'
+          content: Zawartość
+          max_memories: 'Limit ilości banków pamięci'
           message_limit: 'Limit kontekstu (ilość par pytanie-odpowiedź)'
           message: 'Wiadomość'
           model: 'Model'
           system_message: 'Wiadomość systemowa'
+          title: Tytuł
           tools: "Narzędzia"
         values:
           tools:
             datetime_: "Data i czas"
+            memory_read_: "Pamięć asystenta - odczyt"
+            memory_write_: "Pamięć asystenta - zapis"
             read_url_: "Odczyt stron internetowych"
             weather_: "Pogoda"
             web_search_: "Szukaj w internecie"
       flashes:
         wrong_settings: 'Nie udało się sprawdzić ustawień - spróbuj ponownie'
       strings:
+        all_memories: "Pamięć"
         chat: Czat
         chats: Czaty
         custom_agents: "Agenci niestandardowi"
+        memory_status_approved: Zaakceptowana
+        memory_status_deleted: "Do usunięcia"
+        memory_status_edited: Edytowana
+        memory_status_new: Nowa
         menu_record: "Asystent AI"
         model: Model
+        you_sure_approve: "Zaakceptować?"
         you_sure_redo: "Wygenerować odpowiedź ponownie?"
+        you_sure_reject: "Odrzucić?"
     common:
       flashes:
         delete_forbidden: "Nie można usunąć"
@@ -63,11 +75,16 @@ app:
       strings:
         actions: Akcje
         add: Dodaj
+        approve: Zaakceptuj
+        assistant: Asystent
         back_to_list: "Wróć do listy"
         back: Wstecz
         cancel: Anuluj
         chart_type: "Typ wykresu"
         comment: Komentarz
+        compare: Porównaj
+        content: Zawartość
+        created: Utworzono
         delete: Usuń
         edit: Edytuj
         empty_data: "Brak wpisów"
@@ -82,6 +99,7 @@ app:
         move: Przenieś
         name: Nazwa
         new: Nowy
+        reject: Odrzuć
         save: Zapisz
         send: Wyślij
         settings: Ustawienia
@@ -94,6 +112,7 @@ app:
         turn_on: "Włącz"
         unknown: "?"
         unreachable: Nieosiągalna
+        user: Użytkownik
         view: Zobacz
         visible: Widoczna
         wake: Obudź

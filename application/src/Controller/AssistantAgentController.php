@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Form\AssistantAgentType;
 use App\Repository\AssistantCallRepository;
 use App\Model\AssistantSettings;
+use App\Repository\AssistantMemoryRepository;
 use App\Repository\AssistantRecurringMessageRepository;
 use App\Service\AlexeyTranslator;
 use App\Service\AssistantService;
@@ -121,6 +122,7 @@ final class AssistantAgentController extends AlexeyAbstractController
     public function delete(
         AlexeyTranslator $translator,
         AssistantCallRepository $assistantCallRepository,
+        AssistantMemoryRepository $assistantMemoryRepository,
         int $id,
         Request $request,
     ): Response {
@@ -159,6 +161,15 @@ final class AssistantAgentController extends AlexeyAbstractController
         foreach ($calls as $call) {
             $this->em->remove($call);
         }
+
+        // Delete all memories related to this agent
+        $memories = $assistantMemoryRepository->findBy([
+            'assistant' => $agent,
+        ]);
+        foreach ($memories as $memory) {
+            $this->em->remove($memory);
+        }
+
         $this->em->flush();
 
         // Delete the agent

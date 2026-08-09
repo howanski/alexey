@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% set breadcrumbs = [
+	{'name': 'menu_record'|localised('assistant'), 'href': path('assistant_index')},
+	{'name': 'all_memories'|localised('assistant'), 'href': path('assistant_memory_list')},
+	{'name': 'compare'|localised},
+	]
+%}
+
+{% block pageContentPrimary %}
+	{% include 'assistant/_main_selector_buttons.html.twig' with {
+		'active_button': 'assistant_memory_list',
+	} only %}
+{% endblock %}
+
+{% block pageContentSecondary %}
+	<div class="flex flex-wrap">
+		<div class="container mx-auto px-4">
+			<div class="flex flex-wrap justify-center">
+				<div class="w-full lg:w-10/12 px-4">
+					<div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-nord0">
+						<div class="flex-auto p-5 lg:p-10 text-nord4">
+							<h4 class="text-2xl font-semibold mb-6">
+								{{ 'compare'|localised }}
+							</h4>
+
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<div>
+									<h5 class="text-lg font-semibold text-nord6 mb-2">{{ 'user'|localised }}</h5>
+									<div class="bg-nord1 p-4 rounded">
+										<p class="text-sm text-nord6 mb-1">{{ 'title'|localised }}</p>
+										<p class="font-medium mb-4">{{ memory.userTitle }}</p>
+										<p class="text-sm text-nord6 mb-1">{{ 'content'|localised }}</p>
+										<p class="whitespace-pre-wrap">{{ memory.userContent }}</p>
+									</div>
+								</div>
+								<div>
+									<h5 class="text-lg font-semibold text-nord6 mb-2">{{ 'assistant'|localised('assistant') }}</h5>
+									<div class="bg-nord1 p-4 rounded">
+										<p class="text-sm text-nord6 mb-1">{{ 'title'|localised }}</p>
+										<p class="font-medium mb-4">{{ memory.assistantTitle }}</p>
+										<p class="text-sm text-nord6 mb-1">{{ 'content'|localised }}</p>
+										<p class="whitespace-pre-wrap">{{ memory.assistantContent }}</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="text-center mt-6 flex flex-wrap justify-center">
+								<a href="{{ path('assistant_memory_list') }}" class="bg-nord5 text-nord10 hover:bg-nord10 hover:text-nord5 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1">
+									<i class="fas fa-undo"></i>
+									{{ 'back_to_list'|localised }}
+								</a>
+								<button type="button" class="button-secure bg-nord5 text-green-600 hover:bg-green-600 hover:text-nord5 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1" data-action="{{ path('assistant_memory_approve', {id: memory.id}) }}" data-csrf="{{ csrf_token('approve_memory_' ~ memory.id) }}" data-confirmation-question="{{ 'you_sure_approve'|localised('assistant') }}">
+									<i class="fas fa-check"></i>
+									{{ 'approve'|localised }}
+								</button>
+								<button type="button" class="button-secure bg-nord5 text-red-600 hover:bg-red-600 hover:text-nord5 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1" data-action="{{ path('assistant_memory_reject', {id: memory.id}) }}" data-csrf="{{ csrf_token('reject_memory_' ~ memory.id) }}" data-confirmation-question="{{ 'you_sure_reject'|localised('assistant') }}">
+									<i class="fas fa-times"></i>
+									{{ 'reject'|localised }}
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

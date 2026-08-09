@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\AssistantTool\DateTimeTool;
+use App\AssistantTool\MemoryAddTool;
+use App\AssistantTool\MemoryDeleteTool;
+use App\AssistantTool\MemoryEditTool;
+use App\AssistantTool\MemoryListTool;
+use App\AssistantTool\MemoryViewTool;
 use App\AssistantTool\ReadUrlTool;
 use App\AssistantTool\WeatherTool;
 use App\AssistantTool\WebSearchTool;
@@ -41,12 +46,16 @@ final class AssistantService
     public const TOOL_READ_URL = 'read_url_';
     public const TOOL_WEATHER = 'weather_';
     public const TOOL_WEB_SEARCH = 'web_search_';
+    public const TOOL_MEMORY_READ = 'memory_read_';
+    public const TOOL_MEMORY_WRITE = 'memory_write_';
 
     public const TOOLS_AVAILABLE = [
         self::TOOL_DATETIME,
         self::TOOL_READ_URL,
         self::TOOL_WEATHER,
         self::TOOL_WEB_SEARCH,
+        self::TOOL_MEMORY_READ,
+        self::TOOL_MEMORY_WRITE,
     ];
 
     private array $agents = [];
@@ -55,6 +64,11 @@ final class AssistantService
         private AssistantCallRepository $assistantCallRepository,
         private AssistantRecurringMessageRepository $assistantRecurringMessageRepository,
         private EntityManagerInterface $em,
+        private MemoryAddTool $memoryAddTool,
+        private MemoryDeleteTool $memoryDeleteTool,
+        private MemoryEditTool $memoryEditTool,
+        private MemoryListTool $memoryListTool,
+        private MemoryViewTool $memoryViewTool,
         private MessageBusInterface $bus,
         private ReadUrlTool $readUrlTool,
         private SimpleSettingsService $simpleSettingsService,
@@ -95,7 +109,7 @@ final class AssistantService
             self::MODEL => $model,
         ];
 
-        $agent = $this->getDefaultAgent($user, $options);
+        $agent = $this->getAgent($user, $options);
 
         $messageBag = new AssistantMessageBag();
 
@@ -140,19 +154,18 @@ final class AssistantService
         return $this->assistantCallRepository->getUserChats($user);
     }
 
-    public function getModelChoices(UserInterface $user): array
+    public function getModelChoices(UserInterface $user, bool $choiceAsId = true): array
     {
         $choices = [];
         $entities = $this->assistantRecurringMessageRepository->getUserSystemMessages($user);
         foreach ($entities as $entity) {
-            $choices[$entity->getDisplayName()] = (string) $entity->getId();
+            if (true === $choiceAsId) {
+                $choices[$entity->getDisplayName()] = (string) $entity->getId();
+            } else {
+                $choices[$entity->getDisplayName()] = $entity;
+            }
         }
         return $choices;
-    }
-
-    public function getDefaultAgent(UserInterface $user, array $options, array $tools = []): Agent
-    {
-        return $this->getAgent($user, $options, $tools);
     }
 
     public function getAvailableAgents(UserInterface $user): array
@@ -160,8 +173,12 @@ final class AssistantService
         return $this->assistantRecurringMessageRepository->getUserSystemMessages($user);
     }
 
-    private function getAgent(UserInterface $user, array $options, array $tools = []): Agent
-    {
+    public function getAgent(
+        UserInterface $user,
+        array $options,
+        array $tools = [],
+        ?AssistantRecurringMessage $assistant = null,
+    ): Agent {
         $toolsSlug = '_';
         if (!empty($tools)) {
             sort($tools);
@@ -197,6 +214,32 @@ final class AssistantService
                 }
                 if ($toolName === self::TOOL_READ_URL) {
                     $toolBox[] = $this->readUrlTool;
+                }
+                if ($assistant instanceof AssistantRecurringMessage) {
+                    if ($toolName === self::TOOL_MEMORY_WRITE) {
+                        $clone = clone ($this->memoryAddTool);
+                        $clone->setAssistant($assistant);
+                        $toolBox[] = $clone;
+
+                        $clone = clone ($this->memoryEditTool);
+                        $clone->setAssistant($assistant);
+                        $toolBox[] = $clone;
+
+                        $clone = clone ($this->memoryDeleteTool);
+                        $clone->setAssistant($assistant);
+                        $toolBox[] = $clone;
+
+                    }
+                    if ($toolName === self::TOOL_MEMORY_READ) {
+
+                        $clone = clone ($this->memoryListTool);
+                        $clone->setAssistant($assistant);
+                        $toolBox[] = $clone;
+
+                        $clone = clone ($this->memoryViewTool);
+                        $clone->setAssistant($assistant);
+                        $toolBox[] = $clone;
+                    }
                 }
             }
             $toolbox = new Toolbox($toolBox);

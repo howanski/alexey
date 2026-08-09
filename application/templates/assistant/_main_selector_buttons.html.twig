@@ -36,6 +36,22 @@
     ]
 ) %}
 
+{% if active_button == 'assistant_memory_list' %}
+    {% set color = 'nord12' %}
+{% else %}
+    {% set color = 'nord10' %}
+{% endif %}
+{% set action_buttons = action_buttons|merge(
+    [
+        {
+            'color': color,
+            'href': path('assistant_memory_list'),
+            'name': 'all_memories'|localised('assistant'),
+            'icon': 'fas fa-database'
+        },
+    ]
+) %}
+
 {% if active_button == 'assistant_config' %}
     {% set color = 'nord12' %}
 {% else %}

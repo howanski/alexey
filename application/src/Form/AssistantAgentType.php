@@ -52,9 +52,21 @@ final class AssistantAgentType extends CommonFormType
                     new GreaterThanOrEqual(0),
                 ],
             ])
+            ->add(child: 'maxMemories', type: IntegerType::class, options: [
+                'label' => $this->getLabelTrans(label: 'max_memories'),
+                'priority' => -3,
+                'required' => true,
+                'attr' => [
+                    'min' => 0,
+                ],
+                'constraints' => [
+                    new NotBlank(),
+                    new GreaterThanOrEqual(0),
+                ],
+            ])
             ->add(child: 'message', type: TextareaType::class, options: [
                 'label' => $this->getLabelTrans(label: 'message'),
-                'priority' => -3,
+                'priority' => -4,
                 'required' => true,
                 'attr' => [
                     'class' => 'min-h-120 ' . CommonFormType::STANDARD_INPUT_CLASSES,

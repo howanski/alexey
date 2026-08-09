@@ -21,26 +21,38 @@ app:
           agent_name: 'Agent name'
           api_key: 'API Key'
           base_url: 'Server URL'
+          content: Content
+          max_memories: 'Memories limit'
           message_limit: 'Context limit (no. of request-response pairs)'
           message: 'Message'
           model: 'Model'
           system_message: 'System message'
+          title: Title
           tools: "Tools"
         values:
           tools:
             datetime_: "Date & time"
+            memory_read_: "Assistant memory - read access"
+            memory_write_: "Assistant memory - write access"
             read_url_: "Webpages reading"
             weather_: "Weather"
             web_search_: "Web search"
       flashes:
         wrong_settings: 'Could not check settings - check again'
       strings:
+        all_memories: "All memories"
         chat: Chat
         chats: Chats
-        custom_agents: Custom Agents
+        custom_agents: "Custom Agents"
+        memory_status_approved: Approved
+        memory_status_deleted: "To be deleted"
+        memory_status_edited: Edited
+        memory_status_new: New
         menu_record: "AI assistant"
         model: Model
+        you_sure_approve: "Approve change?"
         you_sure_redo: "Regenerate message?"
+        you_sure_reject: "Reject change?"
     common:
       flashes:
         delete_forbidden: "Cannot delete"
@@ -63,11 +75,16 @@ app:
       strings:
         actions: Actions
         add: Add
+        approve: Approve
+        assistant: Assistant
         back_to_list: "Back to list"
         back: Back
         cancel: Cancel
         chart_type: "Chart type"
         comment: Comment
+        compare: Compare
+        content: Content
+        created: Created
         delete: Delete
         edit: Edit
         empty_data: "Nothing found"
@@ -82,6 +99,7 @@ app:
         move: Move
         name: Name
         new: New
+        reject: Reject
         save: Save
         send: Send
         settings: Settings
@@ -94,6 +112,7 @@ app:
         turn_on: "Turn on"
         unknown: "?"
         unreachable: Unreachable
+        user: User
         view: View
         visible: Visible
         wake: Wake

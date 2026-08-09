@@ -8,10 +8,12 @@ use App\Form\CommonFormType;
 use App\Model\AssistantSettings;
 use App\Service\SimpleSettingsService;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class AssistantSettingsType extends CommonFormType
@@ -47,9 +49,33 @@ final class AssistantSettingsType extends CommonFormType
                 'priority' => -2,
                 'required' => false,
             ])
+            ->add(child: 'maxMessagesToSendAtOnce', type: IntegerType::class, options: [
+                'label' => $this->getLabelTrans(label: 'message_limit'),
+                'priority' => -3,
+                'required' => true,
+                'attr' => [
+                    'min' => 0,
+                ],
+                'constraints' => [
+                    new NotBlank(),
+                    new GreaterThanOrEqual(0),
+                ],
+            ])
+            ->add(child: 'maxMemories', type: IntegerType::class, options: [
+                'label' => $this->getLabelTrans(label: 'max_memories'),
+                'priority' => -4,
+                'required' => true,
+                'attr' => [
+                    'min' => 0,
+                ],
+                'constraints' => [
+                    new NotBlank(),
+                    new GreaterThanOrEqual(0),
+                ],
+            ])
             ->add(child: 'systemMessage', type: TextareaType::class, options: [
                 'label' => $this->getLabelTrans(label: 'system_message'),
-                'priority' => -3,
+                'priority' => -5,
                 'required' => false,
                 'attr' => [
                     'class' => 'min-h-180 ' . CommonFormType::STANDARD_INPUT_CLASSES,
@@ -57,7 +83,7 @@ final class AssistantSettingsType extends CommonFormType
             ])
             ->add(child: 'showOnDashboard', type: ChoiceType::class, options: [
                 'label' => $this->getLabelTrans(label: 'show_on_dashboard'),
-                'priority' => -4,
+                'priority' => -6,
                 'choices' => [
                     $this->getValueTrans(field: 'show_on_dashboard', value: 'hide')
                     => SimpleSettingsService::UNIVERSAL_FALSE,

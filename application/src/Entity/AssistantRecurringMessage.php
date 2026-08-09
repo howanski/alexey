@@ -43,6 +43,9 @@ class AssistantRecurringMessage
     #[ORM\Column(nullable:false)]
     private int $maxMessagesToSendAtOnce = 0;
 
+    #[ORM\Column]
+    private int $maxMemories = 0;
+
     public function getId(): int
     {
         return $this->id;
@@ -142,6 +145,18 @@ class AssistantRecurringMessage
     public function setMaxMessagesToSendAtOnce(int $maxMessagesToSendAtOnce): static
     {
         $this->maxMessagesToSendAtOnce = $maxMessagesToSendAtOnce;
+
+        return $this;
+    }
+
+    public function getMaxMemories(): int
+    {
+        return $this->maxMemories;
+    }
+
+    public function setMaxMemories(int $maxMemories): static
+    {
+        $this->maxMemories = $maxMemories;
 
         return $this;
     }
