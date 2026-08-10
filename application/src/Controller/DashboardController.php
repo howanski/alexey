@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Service\DashboardService;
+use App\Service\NetworkUsageService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,5 +30,15 @@ final class DashboardController extends AlexeyAbstractController
         } else {
             return $this->redirectToRoute(route: 'dashboard');
         }
+    }
+
+    #[Route('/public-data', name: 'public_data')]
+    public function publicData(
+        NetworkUsageService $networkUsageService,
+    ): Response {
+        $data = [
+            'transmission_throttling' => $networkUsageService->getCurrentThrottlingSpeedKb(),
+        ];
+        return new JsonResponse($data);
     }
 }

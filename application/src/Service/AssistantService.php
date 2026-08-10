@@ -228,10 +228,8 @@ final class AssistantService
                         $clone = clone ($this->memoryDeleteTool);
                         $clone->setAssistant($assistant);
                         $toolBox[] = $clone;
-
                     }
                     if ($toolName === self::TOOL_MEMORY_READ) {
-
                         $clone = clone ($this->memoryListTool);
                         $clone->setAssistant($assistant);
                         $toolBox[] = $clone;

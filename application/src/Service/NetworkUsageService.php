@@ -156,6 +156,30 @@ final class NetworkUsageService
         return $chartData;
     }
 
+    // TODO: use in getDataForChart() as it is duplicate; tests will break
+    public function getCurrentThrottlingSpeedKb(): int
+    {
+        try {
+            $transmissionSettings = new TransmissionSettings();
+            $transmissionSettings->selfConfigure($this->simpleSettingsService);
+            $stat = $this->getLatestStatistic();
+            $throttling = (
+                $stat instanceof NetworkStatistic
+                && $this->getLatestStatistic() instanceof NetworkStatistic
+            ) ?
+                $transmissionSettings->getProposedThrottleSpeed(
+                    speedLeft: $this->getLatestStatistic()->getTransferRateLeft(
+                        $transmissionSettings->getTargetFrame()
+                    )
+                )
+                : 0;
+        } catch (\Exception $e) {
+            $throttling = 0;
+        }
+        return $throttling;
+    }
+
+
     public function getDynacard(string $property, string $locale): DynamicCard
     {
         // TODO: move transmissionSettings to constructor
