@@ -66,13 +66,11 @@ final class AssistantCallProcessor
                 $this->processSendChat($entity);
                 $entity->setStatus(AssistantCall::STATUS_DONE);
             } catch (Exception $e) {
-                //TODO: logging?
-                $entity->setStatus(AssistantCall::STATUS_ERROR);
+                $entity->storeError($e);
+                $this->scheduleMaintenance();
             } finally {
                 $this->em->flush();
             }
-
-            $this->scheduleMaintenance();
         } else {
             $this->queueProcessingJob(id: (int) $id);
         }
@@ -88,8 +86,8 @@ final class AssistantCallProcessor
                 return;
             }
             $entity = $this->assistantCallRepository->findOldestWithStatus(AssistantCall::STATUS_ERROR);
+            // AssistantCall::STATUS_ERROR_LOOP is not picked up automatically, needs user intervention
             if ($entity instanceof AssistantCall) {
-                // TODO: some sort of handling?
                 $entity->setStatus(AssistantCall::STATUS_READY_TO_PROCESS);
                 $this->em->flush();
                 $this->scheduleMaintenance();
@@ -114,7 +112,12 @@ final class AssistantCallProcessor
                     $now = new Carbon('now');
                     $now = $now->subSeconds(AssistantService::MAX_PROCESSING_TIME + 30);
                     if ($now->isAfter($lastChange)) {
-                        $entity->setStatus(AssistantCall::STATUS_ERROR);
+                        // It is longer in processing than physically possible
+                        // It does not went to error state so it is not really being processed
+                        // Cleaning as messageBus must have lost track of it
+                        // which is lowest imaginable probability edge case but needs some some sort of handling
+                        // to free queue
+                        $entity->setStatus(AssistantCall::STATUS_READY_TO_PROCESS);
                         $this->em->flush();
                         $this->scheduleMaintenance();
                         return;
@@ -238,6 +241,7 @@ final class AssistantCallProcessor
             $stringResult = (string) $resultContent;
         }
 
+        $entity->setIsRead(false);
         $entity->setAssistantResponse($stringResult);
         $entity->setMetadata($result->getMetadata()->jsonSerialize());
     }

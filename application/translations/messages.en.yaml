@@ -50,6 +50,14 @@ app:
         memory_status_new: New
         menu_record: "AI assistant"
         model: Model
+        status_done: Answered
+        status_draft: Draft
+        status_error_loop: Errors
+        status_error: Error
+        status_processing: Processing
+        status_ready_to_process: "To process"
+        status_to_redo: "To redo"
+        status_waiting_for_children: "Awaiting subprocess"
         you_sure_approve: "Approve change?"
         you_sure_redo: "Regenerate message?"
         you_sure_reject: "Reject change?"

@@ -71,7 +71,8 @@ final class AssistantCallRepository extends ServiceEntityRepository
     public function findOldestWithStatus(int $status): ?AssistantCall
     {
         return $this->createQueryBuilder('c')
-            ->orderBy('c.lastStatusChange', 'ASC')
+            ->addOrderBy('c.errorCount', 'ASC')
+            ->addOrderBy('c.lastStatusChange', 'ASC')
             ->andWhere('c.status = :status')
             ->setParameters([
                 'status' => $status,

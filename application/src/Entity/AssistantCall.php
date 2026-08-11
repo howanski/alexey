@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\AI\Platform\TokenUsage\TokenUsage;
 use UnexpectedValueException;
 
@@ -25,15 +26,19 @@ class AssistantCall
     public const STATUS_DONE = 5;
     public const STATUS_DRAFT = 1;
     public const STATUS_ERROR = 4;
+    public const STATUS_ERROR_LOOP = 8;
     public const STATUS_PROCESSING = 3;
     public const STATUS_READY_TO_PROCESS = 2;
     public const STATUS_TO_REDO = 7;
     public const STATUS_WAITING_FOR_CHILDREN = 6;
 
+    public const MAX_RETRIES_ON_ERROR = 20;
+
     private const STATUSES = [
         self::STATUS_DONE => 'STATUS_DONE',
         self::STATUS_DRAFT => 'STATUS_DRAFT',
         self::STATUS_ERROR => 'STATUS_ERROR',
+        self::STATUS_ERROR_LOOP => 'STATUS_ERROR_LOOP',
         self::STATUS_PROCESSING => 'STATUS_PROCESSING',
         self::STATUS_READY_TO_PROCESS => 'STATUS_READY_TO_PROCESS',
         self::STATUS_TO_REDO => 'STATUS_TO_REDO',
@@ -87,6 +92,12 @@ class AssistantCall
 
     #[ORM\Column]
     private bool $isRead = false;
+
+    #[ORM\Column]
+    private int $errorCount = 0;
+
+    #[ORM\Column(type: Types::ARRAY)]
+    private array $lastError = [];
 
     public function __construct()
     {
@@ -359,6 +370,14 @@ class AssistantCall
         return $this;
     }
 
+    public function isOnErrorStatus(): bool
+    {
+        return in_array($this->getStatus(), [
+            self::STATUS_ERROR,
+            self::STATUS_ERROR_LOOP,
+        ]);
+    }
+
     public function isRead(): bool
     {
         return (bool) $this->isRead;
@@ -368,6 +387,36 @@ class AssistantCall
     {
         $this->isRead = $isRead;
 
+        return $this;
+    }
+
+    public function getErrorCount(): int
+    {
+        return $this->errorCount;
+    }
+
+    public function resetErrorCount(): void
+    {
+        $this->errorCount = 0;
+    }
+
+    public function getLastError(): array
+    {
+        return $this->lastError;
+    }
+
+    public function storeError(Exception $e): static
+    {
+        $this->errorCount++;
+        if ($this->errorCount >= self::MAX_RETRIES_ON_ERROR) {
+            $this->setStatus(self::STATUS_ERROR_LOOP);
+        } else {
+            $this->setStatus(self::STATUS_ERROR);
+        }
+        $this->lastError = [
+            'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString(),
+        ];
         return $this;
     }
 }

@@ -50,6 +50,14 @@ app:
         memory_status_new: Nowa
         menu_record: "Asystent AI"
         model: Model
+        status_done: Odpowiedziano
+        status_draft: Nowy
+        status_error_loop: "Ciągłe błędy"
+        status_error: Błąd
+        status_processing: Przetwarzanie
+        status_ready_to_process: "W kolejce"
+        status_to_redo: "Do wygenerowania"
+        status_waiting_for_children: "Oczekuje na podproces"
         you_sure_approve: "Zaakceptować?"
         you_sure_redo: "Wygenerować odpowiedź ponownie?"
         you_sure_reject: "Odrzucić?"

@@ -172,6 +172,7 @@ final class AssistantChatController extends AlexeyAbstractController
                 && $this->isCsrfTokenValid('redo_chat_' . $call->getId(), (string) $request->request->get('_token'))
             ) {
                 $call->setStatus(AssistantCall::STATUS_TO_REDO);
+                $call->resetErrorCount();
                 $this->em->flush();
                 $bus->dispatch(new AsyncJob(
                     jobType: AsyncJob::TYPE_PROCESS_ASSISTANT_CALLS,
