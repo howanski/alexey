@@ -1,4 +1,7 @@
-<div class="flex flex-wrap">
+{% if wrapper_class is not defined %}
+	{% set wrapper_class = '' %}
+{% endif %}
+<div class="flex flex-wrap {{ wrapper_class }}">
 	<div class="container mx-auto px-4">
 		<div class="flex flex-wrap justify-center">
 			<div class="w-full lg:w-10/12 px-4">

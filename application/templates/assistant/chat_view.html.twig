@@ -8,12 +8,22 @@
 	{{ encore_entry_script_tags('forms-js') }}
 	{{ encore_entry_script_tags('assistant-scripts') }}
 	<script>
+		function delayedReveal(elem) {
+			elem.classList.remove("reveal-after-1000");
+			elem.classList.add("fade-in-3000");
+			elem.classList.remove("hidden");
+		}
+		function showHiddenElements(elem) {
+			const hiddenOnStart = document.querySelectorAll(".reveal-after-1000");
+    		Array.from(hiddenOnStart).map(delayedReveal);
+		}
 		window.addEventListener("load", (event) => {
 	        window.scrollTo({
 				top: document.body.scrollHeight,
 				left: 0,
 				behavior: "smooth",
         	});
+			setInterval(showHiddenElements, 1000);
 		});
 	</script>
 {% endblock %}
@@ -128,6 +138,7 @@
 
 	{% if show_response_form %}
 		{% include 'form.html.twig' with {
+			'wrapper_class': 'reveal-after-1000 hidden',
 			'form': form,
 			'additionalSecuredButtons': [
 				{

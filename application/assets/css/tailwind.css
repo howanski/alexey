@@ -25,3 +25,16 @@
         color: blueviolet;
     }
 }
+
+.fade-in-3000 {
+    animation: fade-in 3s ease both;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
