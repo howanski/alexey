@@ -21,12 +21,13 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/assistant')]
 final class AssistantController extends AlexeyAbstractController
 {
-    #[Route('/', name: 'assistant_index', methods: ['GET', 'POST'])]
+    #[Route('/list/{assistantId}', name: 'assistant_index', methods: ['GET', 'POST'])]
     public function index(
         AlexeyTranslator $translator,
         AssistantService $service,
         Request $request,
         SimpleSettingsService $simpleSettingsService,
+        int $assistantId = null,
     ): Response {
         $user = $this->alexeyUser();
         if (!($user instanceof User)) {
@@ -60,7 +61,9 @@ final class AssistantController extends AlexeyAbstractController
         return $this->render(
             'assistant/index.html.twig',
             [
-                'chats' => $service->getUserChats($user),
+                'chats' => $service->getUserChats($user, $assistantId),
+                'agents' => $service->getAvailableAgents($user),
+                'selectedAgent' => $assistantId,
                 'form' => $form,
             ],
         );

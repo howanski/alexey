@@ -8,6 +8,17 @@
 	{% include 'assistant/_main_selector_buttons.html.twig' with {
 		'active_button': 'assistant_index',
 	} only %}
+	{% set empty_agent = {'displayNameShort': '*', 'id': null} %}
+	{% set agents = {empty_agent}|merge(agents) %}
+	{% if agents|length > 2 %}
+		<div class="justify-center -my-4 flex flex-wrap">
+			{% for agent in agents %}
+				<a class="py-1 my-1 px-4 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none mr-2{% if agent.id is same as (selectedAgent) %} bg-nord9{% else %} bg-nord1{% endif %}" href="{{ path('assistant_index', {assistantId: agent.id}) }}">
+					{{ agent.displayNameShort }}
+				</a>
+			{% endfor %}
+		</div>
+	{% endif %}
 {% endblock %}
 
 {% block pageContentSecondary %}

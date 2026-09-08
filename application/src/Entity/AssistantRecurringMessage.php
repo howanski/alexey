@@ -60,6 +60,14 @@ class AssistantRecurringMessage
         return '#' . strval($this->getPriority()) . ' ' . $this->getName() . ' [' . $this->getModel() . ']';
     }
 
+    public function getDisplayNameShort(): string
+    {
+        if ($this->isDefault()) {
+            return '👑';
+        }
+        return $this->getName();
+    }
+
     public function isDefault(): bool
     {
         return $this->priority === self::DEFAULT_PRIORITY;

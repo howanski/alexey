@@ -22,9 +22,9 @@ final class AssistantCallRepository extends ServiceEntityRepository
     /**
      * @return AssistantCall[]
      */
-    public function getUserChats(UserInterface $user): array
+    public function getUserChats(UserInterface $user, ?int $filterByAssistantId = null): array
     {
-        return $this->createQueryBuilder('c')
+        $qb = $this->createQueryBuilder('c')
             ->andWhere('c.user = :user')
             ->andWhere('c.type = :chatType')
             ->andWhere('c.root IS NULL')
@@ -32,7 +32,13 @@ final class AssistantCallRepository extends ServiceEntityRepository
             ->setParameters([
                 'user' => $user,
                 'chatType' => AssistantCall::TYPE_CHAT,
-            ])
+            ]);
+        if (!is_null($filterByAssistantId)) {
+            $qb
+                ->andWhere('c.systemMessage = :assistantId')
+                ->setParameter('assistantId', $filterByAssistantId);
+        }
+        return $qb
             ->getQuery()
             ->getResult();
     }

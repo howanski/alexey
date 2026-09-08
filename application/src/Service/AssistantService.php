@@ -149,9 +149,9 @@ final class AssistantService
         return $call;
     }
 
-    public function getUserChats(UserInterface $user): array
+    public function getUserChats(UserInterface $user, ?int $filterByAssistantId = null): array
     {
-        return $this->assistantCallRepository->getUserChats($user);
+        return $this->assistantCallRepository->getUserChats($user, $filterByAssistantId);
     }
 
     public function getModelChoices(UserInterface $user, bool $choiceAsId = true): array
