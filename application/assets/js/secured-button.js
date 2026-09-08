@@ -7,27 +7,30 @@ function clickSecureBtn(event) {
     var question = data.confirmationQuestion;
     var csrf = data.csrf;
 
-    if (window.confirm(question)) {
-        var formData = new FormData();
-        formData.append("_token", csrf);
-        var fetchOptions = {
-            method: "POST",
-            body: formData,
-        };
-
-        fetch(url, fetchOptions)
-            .then((response) => {
-                if (response.redirected) {
-                    location.href = response.url;
-                    return;
-                } else {
-                    window.location.reload(true);
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+    // Skip the confirmation dialog when the question is empty
+    if (question && !window.confirm(question)) {
+        return;
     }
+
+    var formData = new FormData();
+    formData.append("_token", csrf);
+    var fetchOptions = {
+        method: "POST",
+        body: formData,
+    };
+
+    fetch(url, fetchOptions)
+        .then((response) => {
+            if (response.redirected) {
+                location.href = response.url;
+                return;
+            } else {
+                window.location.reload(true);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 function addListener(elem) {

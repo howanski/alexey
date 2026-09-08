@@ -20,6 +20,25 @@
 			{% set agent_edit_path = path('assistant_agent_edit', {'id': custom_agent.id}) %}
 		{% endif %}
 		{% set actions %}
+			{% if not loop.first %}
+				{% include 'table_action_button_secure.html.twig' with {
+					'button_color_hover': 'bg-nord10',
+					'confirmation': '',
+					'csrf': csrf_token('move_agent_' ~ custom_agent.id ~ '_up'),
+					'href': path('assistant_agent_move', {'id': custom_agent.id, 'direction': 'up'}),
+					'name': '<i class="fas fa-arrow-up"></i>',
+				} only %}
+			{% endif %}
+
+			{% if not loop.last %}
+				{% include 'table_action_button_secure.html.twig' with {
+					'button_color_hover': 'bg-nord10',
+					'confirmation': '',
+					'csrf': csrf_token('move_agent_' ~ custom_agent.id ~ '_down'),
+					'href': path('assistant_agent_move', {'id': custom_agent.id, 'direction': 'down'}),
+					'name': '<i class="fas fa-arrow-down"></i>',
+				} only %}
+			{% endif %}
 			{% include 'table_action_button.html.twig' with {
 				'button_color_hover': 'bg-nord10',
 				'href': agent_edit_path,

@@ -196,4 +196,62 @@ final class AssistantAgentController extends AlexeyAbstractController
         $this->flashSuccess($translator->translateFlash('deleted'));
         return $this->redirectToRoute('assistant_agent_list', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route(
+        '/move/{id}/{direction}',
+        name: 'assistant_agent_move',
+        methods: ['POST'],
+        requirements: ['direction' => 'up|down'],
+    )]
+    public function move(
+        AlexeyTranslator $translator,
+        int $id,
+        string $direction,
+        Request $request,
+    ): Response {
+        $user = $this->alexeyUser();
+
+        $agent = $this->fetchEntityById(AssistantRecurringMessage::class, $id);
+
+        if (!($agent instanceof AssistantRecurringMessage)) {
+            return $this->redirectToRoute('assistant_agent_list', [], Response::HTTP_SEE_OTHER);
+        }
+
+        if (!($agent->getUser() === $user)) {
+            return $this->redirectToRoute('assistant_agent_list', [], Response::HTTP_SEE_OTHER);
+        }
+
+        if (!($agent->getType() === AssistantRecurringMessage::TYPE_SYSTEM_MESSAGE)) {
+            return $this->redirectToRoute('assistant_agent_list', [], Response::HTTP_SEE_OTHER);
+        }
+
+        if (
+            !$this->isCsrfTokenValid(
+                'move_agent_' . $agent->getId() . '_' . $direction,
+                (string) $request->request->get('_token')
+            )
+        ) {
+            $this->flashError($translator->translateFlash('delete_forbidden'));
+            return $this->redirectToRoute('assistant_agent_list', [], Response::HTTP_SEE_OTHER);
+        }
+
+        $delta = 'up' === $direction ? -1 : 1;
+        $neighbor = $this->em->getRepository(AssistantRecurringMessage::class)->findOneBy([
+            'user' => $user,
+            'type' => $agent->getType(),
+            'priority' => $agent->getPriority() + $delta,
+        ]);
+
+        // Nothing to swap with
+        if (is_null($neighbor)) {
+            return $this->redirectToRoute('assistant_agent_list', [], Response::HTTP_SEE_OTHER);
+        }
+
+        $agentPriority = $agent->getPriority();
+        $agent->setPriority((int) $neighbor->getPriority());
+        $neighbor->setPriority((int) $agentPriority);
+        $this->em->flush();
+
+        return $this->redirectToRoute('assistant_agent_list', [], Response::HTTP_SEE_OTHER);
+    }
 }
